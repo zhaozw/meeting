@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_create">Create</string>
+    <string name="title_meet">Meet</string>
+    <string name="title_tags">My Tags</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notification">Notifications</string>
+
+</resources>

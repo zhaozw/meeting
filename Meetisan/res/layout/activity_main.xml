@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <include
+            android:id="@+id/include_title"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/activity_title_height"
+            layout="@layout/main_tab_title" />
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0" />
+        
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.0"
+            android:visibility="gone" />
+
+        <RadioGroup
+            android:id="@+id/rg_tabgroup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/activity_title_bg_color"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/rb_create"
+                style="@style/MainTabStyle"
+                android:drawableTop="@drawable/tab_icon"
+                android:gravity="center"
+                android:text="@string/title_create" />
+
+            <RadioButton
+                android:id="@+id/rb_meet"
+                style="@style/MainTabStyle"
+                android:drawableTop="@drawable/tab_icon"
+                android:gravity="center"
+                android:text="@string/title_meet" />
+
+            <RadioButton
+                android:id="@+id/rb_tags"
+                style="@style/MainTabStyle"
+                android:drawableTop="@drawable/tab_icon"
+                android:gravity="center"
+                android:checked="true"
+                android:text="@string/title_tags" />
+
+            <RadioButton
+                android:id="@+id/rb_dashboard"
+                style="@style/MainTabStyle"
+                android:drawableTop="@drawable/tab_icon"
+                android:gravity="center"
+                android:text="@string/title_dashboard" />
+
+            <RadioButton
+                android:id="@+id/rb_notifications"
+                style="@style/MainTabStyle"
+                android:drawableTop="@drawable/tab_icon"
+                android:gravity="center"
+                android:text="@string/title_notification" />
+        </RadioGroup>
+    </LinearLayout>
+
+</TabHost>

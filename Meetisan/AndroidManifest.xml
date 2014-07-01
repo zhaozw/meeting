@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="8" />
+        android:targetSdkVersion="16" />
 
     <application
         android:allowBackup="true"
@@ -14,13 +14,33 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Black.NoTitleBar" >
         <activity
-            android:name="com.meetisan.meetisan.LoadingActivity"
+            android:name="com.meetisan.meetisan.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.CreateActivity"
+            android:label="@string/title_create" >
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.MeetActivity"
+            android:label="@string/title_meet" >
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.TagsActivity"
+            android:label="@string/title_tags" >
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.DashboardActivity"
+            android:label="@string/title_dashboard" >
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.NotificationsActivity"
+            android:label="@string/title_notification" >
         </activity>
     </application>
 
