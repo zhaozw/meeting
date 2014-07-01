@@ -9,8 +9,8 @@
 *.class
 
 # Generated files
-bin/
-gen/
+Meetisan/bin/
+Meetisan/gen/
 
 # Gradle files
 .gradle/
