@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <!-- google maps API key -->
+    <string name="api_key_debug_home_shz">AIzaSyAyrurBDjZe6kt8OcGnJE7TN1MaLg6-Muo</string>
+    <string name="api_key_debug_company_eli">AIzaSyBs2VsnXpy1hlNCw1l0wqIUXfklWF3sH50</string>
+    <string name="api_key_release">AIzaSyB6kbOSvsRj-qpUCRTc9VlXDojElIxUMmQ</string>
 
     <string name="app_name">Meetisan</string>
     <string name="hello_world">Hello world!</string>
