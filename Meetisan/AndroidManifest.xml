@@ -99,7 +99,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.meetisan.meetisan.service.GCMIntentService" />
+        <service android:name="com.meetisan.meetisan.GCMIntentService" />
     </application>
 
 </manifest>
