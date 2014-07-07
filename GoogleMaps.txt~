@@ -1,0 +1,18 @@
+Android Google Maps 使用注意事项:
+	1、更新 SDK Manager，安装 Google APIs 以及 Extras/Google Play services.
+	2、修改 google-play-services_lib 和 Meetisan 的 Build Target 为 Google APIs.
+	3、修改 Meetisan 的 Manifest 和 MapView 的 API key为相应的使用环境（不同Eclipse 的 debug API key不相同）.
+	4、Meetisan->Properties->Android->Library->Add:google-play-services_lib.
+
+Google APIs Console:
+	账号:	dev.meetisan@gmail.com
+	密码:	meetisan123
+
+Android GCM 使用注意事项:
+	1、更新 SDK Manager，安装 Extras/Google Cloud Messaging for Android.
+	2、
+
+Google Cloud Messaging(GCM):
+	Project ID:		golden-veld-629
+	Project Number:		647678123306	(Use for GCM sender ID)
+	API KEY (for test):	AIzaSyAANlSATWRGSP_Mv-9HsFoxGj9xksha1Hk
