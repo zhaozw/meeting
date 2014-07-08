@@ -16,8 +16,8 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 
 	public static final String LOG_ACTIVITY_SERVICE = "=====MainActivity====";
 
-	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_create, R.id.rb_meet,
-			R.id.rb_tags, R.id.rb_dashboard, R.id.rb_notifications };
+	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_create, R.id.rb_meet, R.id.rb_tags,
+			R.id.rb_dashboard, R.id.rb_notifications };
 
 	private static final String TAB_1 = "create";
 	private static final String TAB_2 = "meet";
@@ -25,8 +25,8 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	private static final String TAB_4 = "dashboard";
 	private static final String TAB_5 = "notifications";
 	private static final String[] TABS = { TAB_1, TAB_2, TAB_3, TAB_4, TAB_5 };
-	private static final int[] TABS_TITLE = { R.string.title_create, R.string.title_meet,
-			R.string.title_tags, R.string.title_dashboard, R.string.title_notification };
+	private static final int[] TABS_TITLE = { R.string.title_create, R.string.title_meet, R.string.title_tags,
+			R.string.title_dashboard, R.string.title_notification };
 
 	private Intent mCreateIntent, mMeetIntent, mTagsIntent, mDashboardIntent, mNotificationsIntent;
 	private Intent[] mIntents = new Intent[TABS.length];
@@ -54,8 +54,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		mTagsIntent = new Intent(this, TagsActivity.class);
 		mDashboardIntent = new Intent(this, DashboardActivity.class);
 		mNotificationsIntent = new Intent(this, NotificationsActivity.class);
-		mIntents = new Intent[] { mCreateIntent, mMeetIntent, mTagsIntent, mDashboardIntent,
-				mNotificationsIntent };
+		mIntents = new Intent[] { mCreateIntent, mMeetIntent, mTagsIntent, mDashboardIntent, mNotificationsIntent };
 		initTab();
 	}
 
@@ -84,4 +83,9 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		}
 	}
 
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		System.exit(0);
+	}
 }

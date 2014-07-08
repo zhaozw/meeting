@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
+    <string name="app_name">Meetisan</string>
+    
     <!-- google maps API key -->
     <string name="api_key_debug_home_shz">AIzaSyAyrurBDjZe6kt8OcGnJE7TN1MaLg6-Muo</string>
     <string name="api_key_debug_company_eli">AIzaSyBs2VsnXpy1hlNCw1l0wqIUXfklWF3sH50</string>
     <string name="api_key_release">AIzaSyB6kbOSvsRj-qpUCRTc9VlXDojElIxUMmQ</string>
 
-    <string name="app_name">Meetisan</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="positive">Yes</string> 
+    <string name="negative">No</string>
+    <string name="exit">Exit</string>
     
-    <string name="title_register_gcm_device">Registration</string>
-    <string name="content_register_gcm_device">Register your device...</string>
-
+    <string name="google_play_services_missing">This app won\'t run without Google Play services, which are missing from your device.</string>
+    <string name="register_device_to_gcm_failed">Failed to register your device to GCM.\nPlease check whether the device is connected to the network.</string>
+    <string name="device_not_support_google_play_services">Your device is not supported Google Play services.</string>
+    
 </resources>

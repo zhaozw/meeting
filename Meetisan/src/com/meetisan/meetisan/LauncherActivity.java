@@ -3,8 +3,8 @@ package com.meetisan.meetisan;
 import java.io.IOException;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,13 +14,18 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.meetisan.meetisan.gcm.GCMKeeper;
-import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.DialogUtils;
+import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
 
-public class RegisterGCMActivity extends Activity {
-	private static final String TAG = RegisterGCMActivity.class.getSimpleName();
-	private static final int PLAY_SERVICES_REQUEST = 9000;
+public class LauncherActivity extends Activity {
+	private static final String TAG = LauncherActivity.class.getSimpleName();
 	/**
-	 * GCM Sender ID, obtained from the Google APIs Console (https://code.google.com/apis/console)
+	 * LauncherActivity shortest display time
+	 */
+	private static final int SHORTEST_DISPLAY_TIME = 1000;
+	/**
+	 * GCM Sender ID, obtained from the Google APIs Console
+	 * (https://code.google.com/apis/console)
 	 * 
 	 * @category Account: dev.meetisan@gmail.com
 	 * 
@@ -37,9 +42,9 @@ public class RegisterGCMActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_test_gcm);
 
-		initViews();
+		setContentView(R.layout.activity_splash);
+
 		if (checkGooglePlayServices()) {
 			registerGCMDevice(SENDER_ID);
 		}
@@ -48,7 +53,6 @@ public class RegisterGCMActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		checkGooglePlayServices();
 	}
 
 	@Override
@@ -57,9 +61,6 @@ public class RegisterGCMActivity extends Activity {
 		if (mGCM != null) {
 			mGCM.close();
 		}
-	}
-
-	private void initViews() {
 	}
 
 	private void registerGCMDevice(String senderId) {
@@ -88,9 +89,9 @@ public class RegisterGCMActivity extends Activity {
 	public class RegisterGCMTask extends AsyncTask<Void, Integer, String> {
 
 		private Context context;
-		private ProgressDialog mDialog;
 		private String senderId;
 		private String regId;
+		private long starTime = 0, curTime = 0;
 
 		public RegisterGCMTask(Context context, String senderId) {
 			this.context = context;
@@ -100,27 +101,29 @@ public class RegisterGCMActivity extends Activity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			mDialog = ProgressDialog.show(context,
-					context.getResources().getString(R.string.title_register_gcm_device), context
-							.getResources().getString(R.string.content_register_gcm_device), true,
-					false);
+			starTime = System.currentTimeMillis();
 			regId = GCMKeeper.readGCMRegistrationId(context, null);
 		}
 
 		@Override
 		protected String doInBackground(Void... arg0) {
 			// if regId is exist in SharedPreference
-			if (regId != null) {
+			if (regId == null) {
+				try {
+					Log.d(TAG, "The device has not registered, register now ...");
+					regId = getGCMInstance().register(senderId);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
 				Log.d(TAG, "The device has registered");
-				return regId;
 			}
 
-			try {
-				Log.d(TAG, "The device has not registered, register now ...");
-				regId = getGCMInstance().register(senderId);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			do {
+				curTime = System.currentTimeMillis();
+				Log.d(TAG, "time = " + (curTime - starTime));
+			} while (curTime - starTime < SHORTEST_DISPLAY_TIME);
+
 			return regId;
 		}
 
@@ -128,31 +131,56 @@ public class RegisterGCMActivity extends Activity {
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			Log.d(TAG, "Register device over , RegId = " + regId);
-			mDialog.dismiss();
 			if (regId != null) {
 				GCMKeeper.writeGCMRegistrationId(context, regId);
-				ToastHelper.showToast("Register device success: id = " + regId);
+				Intent intent = new Intent(LauncherActivity.this, MainActivity.class);
+				startActivity(intent);
 			} else {
-				ToastHelper.showToast("Register device failure");
+				DialogUtils.showDialog(LauncherActivity.this, R.string.register_device_to_gcm_failed,
+						DialogUtils.RESOURCE_ID_NONE, R.string.exit, new OnDialogClickListener() {
+
+							@Override
+							public void onClick(boolean isPositiveBtn) {
+								// TODO Auto-generated method stub
+								LauncherActivity.this.finish();
+							}
+						});
 			}
 		}
+
 	}
 
 	/**
-	 * Check the device to make sure it has the Google Play Services APK. If it doesn't, display a
-	 * dialog that allows users to download the APK from the Google Play Store or enable it in the
-	 * device's system settings.
+	 * Check the device to make sure it has the Google Play Services APK. If it
+	 * doesn't, display a dialog that allows users to download the APK from the
+	 * Google Play Store or enable it in the device's system settings.
 	 */
 	private boolean checkGooglePlayServices() {
 		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 		if (resultCode != ConnectionResult.SUCCESS) {
 			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_REQUEST)
-						.show();
+				DialogUtils.showDialog(LauncherActivity.this, R.string.google_play_services_missing,
+						DialogUtils.RESOURCE_ID_NONE, R.string.exit, new OnDialogClickListener() {
+
+							@Override
+							public void onClick(boolean isPositiveBtn) {
+								// TODO Auto-generated method stub
+								LauncherActivity.this.finish();
+							}
+						});
 			} else {
 				Log.e(TAG, "This device is not supported.");
-				finish();
+				DialogUtils.showDialog(LauncherActivity.this, R.string.device_not_support_google_play_services,
+						DialogUtils.RESOURCE_ID_NONE, R.string.exit, new OnDialogClickListener() {
+
+							@Override
+							public void onClick(boolean isPositiveBtn) {
+								// TODO Auto-generated method stub
+								LauncherActivity.this.finish();
+							}
+						});
 			}
+
 			return false;
 		}
 		return true;
