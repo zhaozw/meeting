@@ -18,7 +18,7 @@ public class MeetActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(MeetActivity.this, TestGCMActivity.class);
+				Intent intent = new Intent(MeetActivity.this, RegisterGCMActivity.class);
 				startActivity(intent);
 			}
 		});

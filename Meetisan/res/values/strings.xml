@@ -8,5 +8,8 @@
 
     <string name="app_name">Meetisan</string>
     <string name="hello_world">Hello world!</string>
+    
+    <string name="title_register_gcm_device">Registration</string>
+    <string name="content_register_gcm_device">Register your device...</string>
 
 </resources>
