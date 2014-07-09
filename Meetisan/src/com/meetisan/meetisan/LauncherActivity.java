@@ -22,7 +22,7 @@ public class LauncherActivity extends Activity {
 	/**
 	 * LauncherActivity shortest display time
 	 */
-	private static final int SHORTEST_DISPLAY_TIME = 1000;
+	private static final int SHORTEST_DISPLAY_TIME = 800;
 	/**
 	 * GCM Sender ID, obtained from the Google APIs Console
 	 * (https://code.google.com/apis/console)
@@ -133,8 +133,9 @@ public class LauncherActivity extends Activity {
 			Log.d(TAG, "Register device over , RegId = " + regId);
 			if (regId != null) {
 				GCMKeeper.writeGCMRegistrationId(context, regId);
-				Intent intent = new Intent(LauncherActivity.this, MainActivity.class);
+				Intent intent = new Intent(LauncherActivity.this, LoginActivity.class);
 				startActivity(intent);
+				LauncherActivity.this.finish();
 			} else {
 				DialogUtils.showDialog(LauncherActivity.this, R.string.register_device_to_gcm_failed,
 						DialogUtils.RESOURCE_ID_NONE, R.string.exit, new OnDialogClickListener() {

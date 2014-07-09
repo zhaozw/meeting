@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pic_background"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/activity_title_height"
+        layout="@layout/title_transparent_bg" />
+
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp" >
+
+            <TextView
+                android:id="@+id/txt_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/insert_email_tips"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_small" />
+
+            <EditText
+                android:id="@+id/email"
+                style="@style/EditTextStyle"
+                android:layout_marginTop="20dp"
+                android:hint="@string/prompt_email"
+                android:inputType="textEmailAddress" />
+
+            <Button
+                android:id="@+id/btn_send_code"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="20dp"
+                android:text="@string/send_code" />
+
+            <TextView
+                android:id="@+id/txt_support_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="150dp"
+                android:text="@string/support_email_tips"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_middle" />
+
+            <TextView
+                android:id="@+id/txt_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/support_more_tips"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_small" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
