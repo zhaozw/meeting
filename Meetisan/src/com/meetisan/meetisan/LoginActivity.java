@@ -32,10 +32,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	private void initView() {
-		TextView mTitleTxt = (TextView)findViewById(R.id.txt_title);
+		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
 		mTitleTxt.setText(R.string.login);
 		mTitleTxt.setVisibility(View.VISIBLE);
-		
+
 		mEmailTxt = (EditText) findViewById(R.id.email);
 		mPwdTxt = (EditText) findViewById(R.id.password);
 		mForgotPwdTxt = (TextView) findViewById(R.id.txt_forget_pwd);
@@ -50,8 +50,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.txt_forget_pwd:
-			// Intent intent1 = new Intent(this, InsertEmailActivity.class);
-			// startActivity(intent1);
+			Intent intent1 = new Intent(this, InsertEmailActivity.class);
+			startActivity(intent1);
 			break;
 		case R.id.txt_sign_up:
 			Intent intent2 = new Intent(this, InsertEmailActivity.class);
