@@ -90,7 +90,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	private void doLogin() {
 		// assume login result
-		boolean loginResult = false;
+		boolean loginResult = true;
 		if (loginResult) {
 			Intent intent = new Intent(this, MainActivity.class);
 			startActivity(intent);
