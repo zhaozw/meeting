@@ -7,4 +7,6 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notification">Notifications</string>
 
+    <string name="all_meetings">All Meetings</string>
+    <string name="upcoming_meetings">Upcoming Meetings</string>
 </resources>
