@@ -4,9 +4,7 @@
     <string name="app_name">Meetisan</string>
     
     <!-- google maps API key -->
-    <string name="api_key_debug_home_shz">AIzaSyAyrurBDjZe6kt8OcGnJE7TN1MaLg6-Muo</string>
-    <string name="api_key_debug_company_eli">AIzaSyBs2VsnXpy1hlNCw1l0wqIUXfklWF3sH50</string>
-    <string name="api_key_release">AIzaSyB6kbOSvsRj-qpUCRTc9VlXDojElIxUMmQ</string>
+    <string name="api_key_google_map">AIzaSyCfa7n2tJ9A7HaR_8H19S9fT2zQVvw6ZbY</string>
 
     <string name="positive">Yes</string> 
     <string name="negative">No</string>

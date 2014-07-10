@@ -8,7 +8,7 @@
         android:id="@+id/map"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:apiKey="@string/api_key_debug_company_eli"
+        android:apiKey="@string/api_key_google_map"
         android:clickable="true"
         android:enabled="true" />
 
