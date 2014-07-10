@@ -1,5 +1,7 @@
 package com.meetisan.meetisan;
 
+import com.meetisan.view.tags.TagsActivity;
+
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;

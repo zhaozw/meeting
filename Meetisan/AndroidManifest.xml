@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="8"
+        android:targetSdkVersion="18" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -72,7 +72,7 @@
             android:label="@string/title_meet" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.TagsActivity"
+            android:name="com.meetisan.view.tags.TagsActivity"
             android:label="@string/title_tags" >
         </activity>
         <activity

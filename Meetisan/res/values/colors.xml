@@ -1,6 +1,7 @@
 <resources>
 
-    <color name="activity_title_bg_color">#FF66CCFF</color>
-    <color name="activity_main_tab_check_color">#FFFF0066</color>
-
+    <color name="activity_title_bg_color">#8CC3CF</color>
+    <color name="activity_main_tab_check_color">#F47C7C</color>
+	<color name="activity_main_tab_background_color">#8CC3CF</color>
+	
 </resources>

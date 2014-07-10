@@ -33,7 +33,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/activity_title_bg_color"
+            android:background="@color/activity_main_tab_background_color"
             android:gravity="center"
             android:orientation="horizontal" >
 
@@ -41,36 +41,36 @@
                 android:id="@+id/rb_create"
                 style="@style/MainTabStyle"
                 android:checked="true"
-                android:drawableTop="@drawable/tab_icon"
-                android:gravity="center"
+                android:drawableTop="@drawable/common_create"
+                android:gravity="bottom|center_horizontal"
                 android:text="@string/title_create" />
 
             <RadioButton
                 android:id="@+id/rb_meet"
                 style="@style/MainTabStyle"
-                android:drawableTop="@drawable/tab_icon"
-                android:gravity="center"
+                android:drawableTop="@drawable/common_meet"
+                android:gravity="bottom|center_horizontal"
                 android:text="@string/title_meet" />
 
             <RadioButton
                 android:id="@+id/rb_tags"
                 style="@style/MainTabStyle"
-                android:drawableTop="@drawable/tab_icon"
-                android:gravity="center"
+                android:drawableTop="@drawable/common_tags"
+                android:gravity="bottom|center_horizontal"
                 android:text="@string/title_tags" />
 
             <RadioButton
                 android:id="@+id/rb_dashboard"
                 style="@style/MainTabStyle"
-                android:drawableTop="@drawable/tab_icon"
-                android:gravity="center"
+                android:drawableTop="@drawable/common_dashboard"
+                android:gravity="bottom|center_horizontal"
                 android:text="@string/title_dashboard" />
 
             <RadioButton
                 android:id="@+id/rb_notifications"
                 style="@style/MainTabStyle"
-                android:drawableTop="@drawable/tab_icon"
-                android:gravity="center"
+                android:drawableTop="@drawable/common_notifications"
+                android:gravity="bottom"
                 android:text="@string/title_notification" />
         </RadioGroup>
     </LinearLayout>
