@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
-import com.meetisan.meetisan.utils.FormatUtils;
 import com.meetisan.meetisan.utils.ToastHelper;
 
 public class ActivationActivity extends Activity implements OnClickListener {
@@ -73,6 +72,11 @@ public class ActivationActivity extends Activity implements OnClickListener {
 
 	private void doCheckActivationCode(String email) {
 		// TODO..
+		
+		//assume check success
+		Intent intent = new Intent(this, SetPasswordActivity.class);
+		startActivity(intent);
+		this.finish();
 	}
 
 }

@@ -109,8 +109,8 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.ForgotPwdActivity"
-            android:label="@string/forget_password"
+            android:name="com.meetisan.meetisan.signup.SetPasswordActivity"
+            android:label="@string/password"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
 
