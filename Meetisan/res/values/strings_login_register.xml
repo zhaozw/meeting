@@ -22,4 +22,11 @@
     <string name="enter_activation_code_tips">Please enter the activation code in your email</string>
     <string name="submit">Submit</string>
     <string name="resend_code">Resend my activation code</string>
+    
+    <string name="set_pwd">Set Password</string>
+    <string name="set_pwd_tips">Please set your password</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="empty_confirm_pwd_tips">Please confirm your password</string>
+    <string name="error_pwd_not_match">The two passwords do not match</string>
 </resources>
