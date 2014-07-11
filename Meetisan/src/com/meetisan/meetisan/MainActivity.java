@@ -1,7 +1,5 @@
 package com.meetisan.meetisan;
 
-import com.meetisan.view.tags.TagsActivity;
-
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +7,9 @@ import android.view.Window;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
+
+import com.meetisan.meetisan.dashboard.DashboardActivity;
+import com.meetisan.view.tags.TagsActivity;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity implements OnCheckedChangeListener {
