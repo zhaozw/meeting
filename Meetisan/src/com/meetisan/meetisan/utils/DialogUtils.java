@@ -15,22 +15,17 @@ import com.meetisan.meetisan.R;
 
 public class DialogUtils {
 	private static final String TAG = DialogUtils.class.getSimpleName();
-	
+
 	public static final int RESOURCE_ID_NONE = -1;
 
 	/**
 	 * Show customized dialog, parameter determines the dialog UI
 	 * 
-	 * @param activity
-	 *            current Activity, it is necessary
-	 * @param contentId
-	 *            dialog content text resource id
-	 * @param positiveId
-	 *            positive button text resource id
-	 * @param negativeId
-	 *            negative button text resource id
-	 * @param mListener
-	 *            dialog button click listener
+	 * @param activity current Activity, it is necessary
+	 * @param contentId dialog content text resource id
+	 * @param positiveId positive button text resource id
+	 * @param negativeId negative button text resource id
+	 * @param mListener dialog button click listener
 	 */
 	public static void showDialog(Activity activity, int contentId, int positiveId, int negativeId,
 			final OnDialogClickListener mListener) {
@@ -47,19 +42,14 @@ public class DialogUtils {
 	/**
 	 * Show customized dialog, parameter determines the dialog UI
 	 * 
-	 * @param activity
-	 *            current Activity, it is necessary
-	 * @param contentTxt
-	 *            dialog content text
-	 * @param positiveTxt
-	 *            positive button text
-	 * @param negativeTxt
-	 *            negative button text
-	 * @param mListener
-	 *            dialog button click listener
+	 * @param activity current Activity, it is necessary
+	 * @param contentTxt dialog content text
+	 * @param positiveTxt positive button text
+	 * @param negativeTxt negative button text
+	 * @param mListener dialog button click listener
 	 */
-	public static void showDialog(Activity activity, String contentTxt, String positiveTxt, String negativeTxt,
-			final OnDialogClickListener mListener) {
+	public static void showDialog(Activity activity, String contentTxt, String positiveTxt,
+			String negativeTxt, final OnDialogClickListener mListener) {
 		if (activity == null || contentTxt == null) {
 			Log.e(TAG, "activity or dialog content is null");
 			return;
@@ -78,7 +68,6 @@ public class DialogUtils {
 			TextView contentTextView = (TextView) dialogView.findViewById(R.id.layout_content);
 			contentTextView.setText(contentTxt);
 		}
-		mDialog.setContentView(dialogView);
 
 		if (positiveTxt != null) {
 			Button positiveBtn = (Button) dialogView.findViewById(R.id.positive);
@@ -113,6 +102,8 @@ public class DialogUtils {
 			line.setVisibility(View.VISIBLE);
 		}
 
+		mDialog.setContentView(dialogView);
+		mDialog.setCancelable(false);
 		mDialog.show();
 	}
 
@@ -126,9 +117,7 @@ public class DialogUtils {
 		/**
 		 * On dialog button click
 		 * 
-		 * @param isPositiveBtn
-		 *            if true is positive button clicked, else is negative
-		 *            button clicked
+		 * @param isPositiveBtn if true is positive button clicked, else is negative button clicked
 		 */
 		void onClick(boolean isPositiveBtn);
 	}
