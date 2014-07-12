@@ -10,30 +10,35 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.widget.CompoundButton;
 
 @SuppressLint("DrawAllocation")
 public class SwitchButton extends CompoundButton implements Runnable {
-	Paint mPaint = new Paint();// 畫筆
-	boolean mTouch = false;// 記錄手指是否觸碰螢幕
-	int mCurrentX;// 當前觸碰的x位置
-	int mDirection;// 記錄移動方向
-	boolean mAlreadyLoaded = false; // 是否已完成第一次繪畫
-	boolean mTempCheck = true;// 未繪畫前的暫存
+	private int mClickTimeout;
+	private Paint mPaint = new Paint();// 畫筆
+	private boolean mTouch = false;// 記錄手指是否觸碰螢幕
+	private int mCurrentX;// 當前觸碰的x位置
+	private int mDirection;// 記錄移動方向
+	private boolean mAlreadyLoaded = false; // 是否已完成第一次繪畫
+	private boolean mDefaultCheck = true;// 未繪畫前的暫存
 
-	final int DIRECTION_N = -1;// flag_未到邊界
-	final int DIRECTION_L = -2;// flag_左邊界
-	final int DIRECTION_R = -3;// flag_右邊界
+	private final int DIRECTION_N = -1;// flag_未到邊界
+	private final int DIRECTION_L = -2;// flag_左邊界
+	private final int DIRECTION_R = -3;// flag_右邊界
 
 	public SwitchButton(Context context) {
 		super(context);
 		mPaint.setAntiAlias(true);// 反鋸齒
+		mClickTimeout = ViewConfiguration.getPressedStateDuration() + ViewConfiguration.getTapTimeout();
 	}
 
 	public SwitchButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mPaint.setAntiAlias(true);// 反鋸齒
+		mClickTimeout = ViewConfiguration.getPressedStateDuration() + ViewConfiguration.getTapTimeout();
 	}
 
 	@Override
@@ -83,7 +88,7 @@ public class SwitchButton extends CompoundButton implements Runnable {
 		mPaint.setStyle(Style.FILL);// 畫筆設為實心，無邊框
 		canvas.drawCircle(circleX, circleY, circleRadius, mPaint);// 填充圓點
 
-		if (mTempCheck && !mAlreadyLoaded)
+		if (mDefaultCheck && !mAlreadyLoaded)
 			smoothToSide(DIRECTION_R);
 		mAlreadyLoaded = true;
 	}
@@ -101,7 +106,12 @@ public class SwitchButton extends CompoundButton implements Runnable {
 			break;
 		case MotionEvent.ACTION_UP:// 手指離開螢幕
 			mTouch = false;
-			smoothToSide(mCurrentX < getWidth() / 2 ? DIRECTION_L : DIRECTION_R);
+			long time = event.getEventTime() - event.getDownTime();
+			if (time < mClickTimeout) {
+				smoothToSide(mDirection == DIRECTION_L ? DIRECTION_R : DIRECTION_L);
+			} else {
+				smoothToSide(mCurrentX < getWidth() / 2 ? DIRECTION_L : DIRECTION_R);
+			}
 			break;
 		}
 		invalidate();// 要求View重新繪製，也就是呼叫onDraw方法
@@ -113,7 +123,7 @@ public class SwitchButton extends CompoundButton implements Runnable {
 		if (mAlreadyLoaded)
 			smoothToSide(checked ? DIRECTION_R : DIRECTION_L);
 		else
-			mTempCheck = checked;
+			mDefaultCheck = checked;
 	}
 
 	private void smoothToSide(int direction) {

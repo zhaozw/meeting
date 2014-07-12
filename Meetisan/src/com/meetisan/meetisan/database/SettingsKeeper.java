@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 public class SettingsKeeper {
-	private static final String TAG = SettingsKeeper.class.getSimpleName();
+	// private static final String TAG = SettingsKeeper.class.getSimpleName();
 
 	private static final String PERFER_NAME = "com_meetisan_settings";
 	/** settings of notify when someone joins meeting */
