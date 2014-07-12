@@ -19,9 +19,8 @@
         android:layout_toLeftOf="@+id/btn_switch"
         android:ellipsize="end"
         android:singleLine="true"
-        android:layout_marginRight="5dp"
         android:textColor="@android:color/darker_gray"
-        android:textSize="@dimen/text_size_middle" />
+        android:textSize="@dimen/text_size_small" />
 
     <com.meetisan.meetisan.widget.SwitchButton
         android:id="@+id/btn_switch"
