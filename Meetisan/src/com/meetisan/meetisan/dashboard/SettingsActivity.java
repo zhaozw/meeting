@@ -30,8 +30,10 @@ public class SettingsActivity extends Activity implements OnClickListener{
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);
 		
-		LabelWithIcon mAboutLabel = (LabelWithIcon)findViewById(R.id.btn_about);
-		mAboutLabel.setOnClickListener(this);
+		LabelWithIcon mLabel = (LabelWithIcon)findViewById(R.id.btn_about);
+		mLabel.setOnClickListener(this);
+		mLabel = (LabelWithIcon)findViewById(R.id.btn_notify);
+		mLabel.setOnClickListener(this);
 	}
 
 	@Override
@@ -40,6 +42,9 @@ public class SettingsActivity extends Activity implements OnClickListener{
 		switch (v.getId()) {
 		case R.id.btn_title_icon_left:
 			this.finish();
+			break;
+		case R.id.btn_notify:
+			intent = new Intent(this, SettingsNotifyActivity.class);
 			break;
 		case R.id.btn_about:
 			intent = new Intent(this, SettingsAboutActivity.class);
