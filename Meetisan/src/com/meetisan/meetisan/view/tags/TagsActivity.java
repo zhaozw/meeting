@@ -1,15 +1,14 @@
-package com.meetisan.view.tags;
-
-import com.meetisan.meetisan.R;
-import com.meetisan.meetisan.R.layout;
+package com.meetisan.meetisan.view.tags;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.meetisan.meetisan.R;
 
 public class TagsActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_tabs);
+		setContentView(R.layout.activity_tags);
 	}
 }

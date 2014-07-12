@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_title_height"
+        android:background="@color/activity_title_bg_color" >
+
+        <com.android.segmented.SegmentedGroup
+            android:id="@+id/group_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center|right"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/radio_mile"
+                style="@style/RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_meetisan" />
+
+            <RadioButton
+                android:id="@+id/radio_km"
+                style="@style/RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/activation_code" />
+        </com.android.segmented.SegmentedGroup>
+    </RelativeLayout>
+
+    <com.meetisan.meetisan.widget.SearchPanel
+        android:id="@+id/search_panel"
+        style="@style/SearchLayout" >
+    </com.meetisan.meetisan.widget.SearchPanel>
+
+</LinearLayout>
