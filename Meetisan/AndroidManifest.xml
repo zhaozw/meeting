@@ -98,6 +98,11 @@
             android:name="com.meetisan.meetisan.dashboard.SettingsNotifyActivity"
             android:label="@string/about_meetisan"
             android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.dashboard.SettingsPrivacyActivity"
+            android:label="@string/about_meetisan"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -12,6 +12,12 @@ public class SettingsKeeper {
 	public static final String KEY_NOTIFY_JOIN = "settings_notify_join";
 	/** settings of notify when receive an invitation to a meeting */
 	public static final String KEY_NOTIFY_INVITE = "settings_notify_invite";
+	/** settings of privacy, allow others to see my tags */
+	public static final String KEY_PRIVACY_MY_TAGS = "settings_privacy_my_tags";
+	/** settings of privacy, allow others to see meetings I have create */
+	public static final String KEY_PRIVACY_MEETINGS_CREATED = "settings_privacy_meetings_create";
+	/** settings of privacy, allow others to see meetings I have attend */
+	public static final String KEY_PRIVACY_MEETINGS_ATTENDED = "settings_privacy_meetings_attend";
 
 	/**
 	 * write settings to preferences
