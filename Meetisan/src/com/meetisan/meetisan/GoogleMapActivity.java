@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -35,13 +35,15 @@ public class GoogleMapActivity extends FragmentActivity {
 		bestProvider = locationManager.getBestProvider(criteria, false);
 		location = locationManager.getLastKnownLocation(bestProvider);
 
-		// Fragment mapFragment = new Fragment();
-		// getSupportFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
-		// mMap = ((SupportMapFragment) mapFragment).getMap();
-
-		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-		updateMapLocation(location, "Meetisan");
+//		 Fragment mapFragment = new Fragment();
+//		 getSupportFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
+//		 mMap = ((SupportMapFragment) mapFragment).getMap();
+		
+//		SupportMapFragment fragment = new SupportMapFragment();
+//        getSupportFragmentManager().beginTransaction().add(R.id.map, fragment).commit();
+//		mMap = fragment.getMap();
+//		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+//		updateMapLocation(location, "Meetisan");
 
 		// 设置监听器，自动更新的最小时间为间隔N秒(1秒为1*1000，这样写主要为了方便)或最小位移变化超过N
 		locationManager.requestLocationUpdates(bestProvider, 3 * 1000, 8, new LocationListener() {

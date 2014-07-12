@@ -13,6 +13,8 @@ Meetisan/bin/
 Meetisan/gen/
 google-play-services_lib/bin/
 google-play-services_lib/gen/
+SegmentGroup/bin/
+SegmentGroup/gen/
 
 # Gradle files
 .gradle/
