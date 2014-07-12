@@ -9,4 +9,5 @@
     <color name="meetisan_btn_bg_normal">#FF66FFFF</color>
     <color name="meetisan_btn_bg_press">#FF66CCFF</color>
 
+	<color name="label_with_icon_preesed">#FFDDDDDD</color>
 </resources>

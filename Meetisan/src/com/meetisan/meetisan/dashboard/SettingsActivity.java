@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -30,8 +31,19 @@ public class SettingsActivity extends Activity implements OnClickListener{
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);
 		
-		LabelWithIcon mAboutLabel = (LabelWithIcon)findViewById(R.id.btn_about);
-		mAboutLabel.setOnClickListener(this);
+		Button mLogoutBtn = (Button)findViewById(R.id.btn_logout);
+		mLogoutBtn.setOnClickListener(this);
+		
+		LabelWithIcon mLabel = (LabelWithIcon)findViewById(R.id.btn_about);
+		mLabel.setOnClickListener(this);
+		mLabel = (LabelWithIcon)findViewById(R.id.btn_notify);
+		mLabel.setOnClickListener(this);
+		mLabel = (LabelWithIcon)findViewById(R.id.btn_push);
+		mLabel.setOnClickListener(this);
+		mLabel = (LabelWithIcon)findViewById(R.id.btn_privacy);
+		mLabel.setOnClickListener(this);
+		mLabel = (LabelWithIcon)findViewById(R.id.btn_blocked);
+		mLabel.setOnClickListener(this);
 	}
 
 	@Override
@@ -41,8 +53,21 @@ public class SettingsActivity extends Activity implements OnClickListener{
 		case R.id.btn_title_icon_left:
 			this.finish();
 			break;
+		case R.id.btn_notify:
+			intent = new Intent(this, SettingsNotifyActivity.class);
+			break;
+		case R.id.btn_privacy:
+			intent = new Intent(this, SettingsPrivacyActivity.class);
+			break;
+		case R.id.btn_push:
+			break;
+		case R.id.btn_blocked:
+			break;
 		case R.id.btn_about:
 			intent = new Intent(this, SettingsAboutActivity.class);
+			break;
+		case R.id.btn_logout:
+			
 			break;
 		default:
 			break;

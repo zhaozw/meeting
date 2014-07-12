@@ -2,10 +2,21 @@
 <resources>
     
     <string name="settings">Settings</string>
+    
+    <!-- settings of notify me when -->
     <string name="notify">Notify</string>
     <string name="notify_me_when">Notify me when</string>
+    <string name="someone_joins_meeting">Someone joins my meeting</string>
+    <string name="receive_invitation_meeting">I receive an invitation to a meeting</string>
+    
     <string name="push_notifications">Push Notifications</string>
+    
+    <!-- settings of notify me when -->
     <string name="privacy">Privacy</string>
+    <string name="public_my_tags">Allow others to see my tags</string>
+    <string name="public_meetings_create">Allow others to see meetings I\'ve created</string>
+    <string name="public_meetings_attend">Allow others to see meetings I\'ve attended</string>
+    
     <string name="blocked_people">People I\'ve blocked</string>
     
     <!-- settings of about meetisan -->

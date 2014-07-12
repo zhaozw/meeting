@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/activity_title_height"
+        layout="@layout/title_main_tab" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/white"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="@string/privacy"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_middle" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gap_line_color" />
+
+            <com.meetisan.meetisan.widget.LabelWithSwitchButton
+                android:id="@+id/switch_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/public_my_tags" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gap_line_color" />
+
+            <com.meetisan.meetisan.widget.LabelWithSwitchButton
+                android:id="@+id/switch_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/public_meetings_create" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gap_line_color" />
+
+            <com.meetisan.meetisan.widget.LabelWithSwitchButton
+                android:id="@+id/switch_attend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/public_meetings_attend" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gap_line_color" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
