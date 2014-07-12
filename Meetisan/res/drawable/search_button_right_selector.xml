@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+Drawable selector for navigation bar button.
+Author: Yuri V. Suhanov (Yuri.Suhanov@gmail.com)
+Modified: 15.12.2010
+Version: 1.0.0
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:drawable="@drawable/search_button_right_pressed" android:state_pressed="true"/>
+	<item android:drawable="@drawable/search_button_right_normal"/>
+</selector>

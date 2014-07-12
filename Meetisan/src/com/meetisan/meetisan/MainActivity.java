@@ -9,7 +9,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 
 import com.meetisan.meetisan.dashboard.DashboardActivity;
-import com.meetisan.view.tags.TagsActivity;
+import com.meetisan.meetisan.view.tags.TagsActivity;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity implements OnCheckedChangeListener {

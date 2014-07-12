@@ -10,4 +10,12 @@
     <color name="meetisan_btn_bg_press">#FF66CCFF</color>
 
 	<color name="label_with_icon_preesed">#FFDDDDDD</color>
+
+	<!-- for search panel -->
+    <color name="search_list_divider_color">#EBEBEB</color>
+    <color name="search_list_border_color">#B3B3B3</color>
+    <color name="search_list_pressed_color">#B3B3B3</color>
+	<color name="button_title">#FFFFFF</color>
+	<color name="button_title_pressed">#B7B7B7</color>
+	<color name="button_title_shadow">#777777</color>
 </resources>
