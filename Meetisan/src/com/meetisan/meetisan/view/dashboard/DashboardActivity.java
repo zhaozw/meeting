@@ -1,4 +1,4 @@
-package com.meetisan.meetisan.dashboard;
+package com.meetisan.meetisan.view.dashboard;
 
 import android.app.Activity;
 import android.content.Intent;

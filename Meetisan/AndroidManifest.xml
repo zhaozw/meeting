@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="8"
         android:targetSdkVersion="18" />
 
     <uses-feature
@@ -85,27 +85,32 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.dashboard.DashboardActivity"
+            android:name="com.meetisan.meetisan.view.tags.SwipeListActivity"
+            android:label="@string/title_tags"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.view.dashboard.DashboardActivity"
             android:label="@string/title_dashboard"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.dashboard.SettingsActivity"
+            android:name="com.meetisan.meetisan.view.dashboard.SettingsActivity"
             android:label="@string/settings"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.dashboard.SettingsAboutActivity"
+            android:name="com.meetisan.meetisan.view.dashboard.SettingsAboutActivity"
             android:label="@string/about_meetisan"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.dashboard.SettingsNotifyActivity"
+            android:name="com.meetisan.meetisan.view.dashboard.SettingsNotifyActivity"
             android:label="@string/notify"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.dashboard.SettingsPrivacyActivity"
+            android:name="com.meetisan.meetisan.view.dashboard.SettingsPrivacyActivity"
             android:label="@string/privacy"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>

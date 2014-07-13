@@ -37,7 +37,13 @@
 
     <com.meetisan.meetisan.widget.SearchPanel
         android:id="@+id/search_panel"
-        style="@style/SearchLayout" >
-    </com.meetisan.meetisan.widget.SearchPanel>
+        style="@style/SearchLayout" />
+
+    <Button
+        android:id="@+id/btn_test_swipe"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="TestSwipeListView" />
 
 </LinearLayout>
