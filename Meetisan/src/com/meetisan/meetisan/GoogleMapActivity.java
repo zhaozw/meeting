@@ -12,6 +12,7 @@ import android.util.Log;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -36,8 +37,14 @@ public class GoogleMapActivity extends FragmentActivity {
 		location = locationManager.getLastKnownLocation(bestProvider);
 
 		// Fragment mapFragment = new Fragment();
-		// getSupportFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
+		// getSupportFragmentManager().beginTransaction().add(R.id.map,
+		// mapFragment).commit();
 		// mMap = ((SupportMapFragment) mapFragment).getMap();
+
+		// SupportMapFragment fragment = new SupportMapFragment();
+		// getSupportFragmentManager().beginTransaction().add(R.id.map,
+		// fragment).commit();
+		// mMap = fragment.getMap();
 
 		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -72,8 +79,10 @@ public class GoogleMapActivity extends FragmentActivity {
 	/**
 	 * Update Google Map to new location
 	 * 
-	 * @param location new location
-	 * @param tips location tips
+	 * @param location
+	 *            new location
+	 * @param tips
+	 *            location tips
 	 */
 	private void updateMapLocation(Location location, String tips) {
 		if (location == null) {
@@ -95,7 +104,8 @@ public class GoogleMapActivity extends FragmentActivity {
 		markerOpt.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon));
 		mMap.addMarker(markerOpt);
 		// set camera to set position
-		cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17)// set scale
+		cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17)// set
+																				// scale
 				.bearing(0) // Sets the orientation of the camera to east
 				.tilt(30) // Sets the tilt of the camera to 30 degrees
 				.build(); // Creates a CameraPosition from the builder

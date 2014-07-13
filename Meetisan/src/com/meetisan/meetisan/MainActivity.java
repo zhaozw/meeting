@@ -8,7 +8,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 
-import com.meetisan.meetisan.dashboard.DashboardActivity;
+import com.meetisan.meetisan.view.dashboard.DashboardActivity;
 import com.meetisan.meetisan.view.tags.TagsActivity;
 
 @SuppressWarnings("deprecation")
