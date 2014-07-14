@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="18" />
 
     <uses-feature
@@ -86,6 +86,11 @@
         </activity>
         <activity
             android:name="com.meetisan.meetisan.view.tags.SwipeListActivity"
+            android:label="@string/title_tags"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.view.tags.IndexableListActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>

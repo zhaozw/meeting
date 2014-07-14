@@ -38,7 +38,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@color/activity_main_tab_check_color"
+        android:background="@drawable/selector_swipe_list_del_btn_bg"
+        android:clickable="true"
         android:visibility="gone" >
 
         <ImageButton
@@ -47,6 +48,7 @@
             android:layout_height="20dp"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
+            android:clickable="false"
             android:gravity="center"
             android:scaleType="centerInside"
             android:src="@drawable/icon_delete" />

@@ -18,4 +18,8 @@
 	<color name="button_title">#FFFFFF</color>
 	<color name="button_title_pressed">#B7B7B7</color>
 	<color name="button_title_shadow">#777777</color>
+	
+	<!-- for swipe listview -->
+	<color name="swipe_list_del_btn_bg_normal">#F47C7C</color>
+	<color name="swipe_list_del_btn_bg_pressed">#8CC3CF</color>
 </resources>
