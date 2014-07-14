@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@android:color/transparent" >
+
+    <com.meetisan.meetisan.widget.CircleImageView
+        xmlns:customized="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/iv_portrait"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:src="@drawable/portrait"
+        customized:border_color="@android:color/white"
+        customized:border_width="2dp" />
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/iv_portrait"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/text_size_middle" />
+
+</RelativeLayout>

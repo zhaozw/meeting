@@ -11,12 +11,13 @@
         android:layout_height="@dimen/activity_title_height"
         layout="@layout/title_main_tab" />
 
-    <com.meetisan.meetisan.widget.listview.swipe.SwipeListView
+    <com.meetisan.meetisan.widget.listview.indexable.IndexableListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
         android:dividerHeight="0.5dp"
+        android:fastScrollEnabled="true"
         android:padding="5dp"
         android:scrollbars="none" />
 

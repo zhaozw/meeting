@@ -22,17 +22,14 @@ public class SwipeListView extends ListView {
 
 	public SwipeListView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	public SwipeListView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 	}
 
 	public SwipeListView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -151,6 +148,7 @@ public class SwipeListView extends ListView {
 				 * 这时候左右滑动当前一个item,那个右边布局显示的item隐藏其右边布局
 				 */
 				hiddenRight(mPreItemView);
+				return true;
 			}
 
 			if (mIsHorizontal) {

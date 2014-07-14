@@ -24,5 +24,14 @@ public class TagsActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+		((Button) findViewById(R.id.btn_test_indexable)).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(TagsActivity.this, IndexableListActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 }

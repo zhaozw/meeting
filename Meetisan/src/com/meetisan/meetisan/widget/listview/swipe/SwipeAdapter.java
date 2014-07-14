@@ -14,13 +14,14 @@ import android.widget.TextView;
 import com.meetisan.meetisan.R;
 
 public class SwipeAdapter extends BaseAdapter {
-	private Context mContext = null;
+	
+	private LayoutInflater inflater;
 	private List<String> data;
 
 	private onRightItemClickListener mListener = null;
 
-	public SwipeAdapter(Context ctx, List<String> data) {
-		mContext = ctx;
+	public SwipeAdapter(Context mContext, List<String> data) {
+		inflater = LayoutInflater.from(mContext);
 		this.data = data;
 	}
 
@@ -42,9 +43,10 @@ public class SwipeAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
-		ViewHolder holder;
+		final ViewHolder holder;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.item_swipe_listview, parent, false);
+			convertView = inflater.inflate(R.layout.item_swipe_listview,
+					parent, false);
 			holder = new ViewHolder();
 			holder.mLeftItem = (RelativeLayout) convertView.findViewById(R.id.item_left);
 			holder.mRightItem = (RelativeLayout) convertView.findViewById(R.id.item_right);
@@ -57,11 +59,13 @@ public class SwipeAdapter extends BaseAdapter {
 
 		holder.mTitleTxt.setText(data.get(position));
 		holder.mRightItem.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
+				holder.mRightItem.setVisibility(View.GONE); // to ensure that A is hiding
+				data.remove(position); // remove list item
 				if (mListener != null) {
-					mListener.onRightItemClick(v, position);
+					mListener.onRightItemClick(holder.mRightItem, position);
 				}
+				notifyDataSetChanged();
 			}
 		});
 		return convertView;
