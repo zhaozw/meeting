@@ -3,6 +3,7 @@ package com.meetisan.meetisan.widget;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -33,8 +34,12 @@ public class CustomizedProgressDialog extends ProgressDialog {
 			@Override
 			public void onShow(DialogInterface dialog) {
 				ImageView image = (ImageView) CustomizedProgressDialog.this.findViewById(R.id.loading_imgeview);
-				Animation animation = AnimationUtils.loadAnimation(context, R.anim.anim_progress);
-				image.startAnimation(animation);
+				AnimationDrawable animationDrawable = (AnimationDrawable) image.getBackground();
+				animationDrawable.stop();
+				animationDrawable.start();
+//				Animation animation = AnimationUtils.loadAnimation(context, R.anim.progress_indicator);
+//				image.startAnimation(animation);
+				
 				TextView tipsTxt = (TextView) CustomizedProgressDialog.this.findViewById(R.id.txt_tips);
 				if (tipsTxt != null) {
 					tipsTxt.setText(context.getResources().getString(msgId));
