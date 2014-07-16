@@ -22,4 +22,8 @@
 	<!-- for swipe listview -->
 	<color name="swipe_list_del_btn_bg_normal">#F47C7C</color>
 	<color name="swipe_list_del_btn_bg_pressed">#8CC3CF</color>
+	
+	<!-- Custom prgress dialog -->
+	<color name="border_square_color_gray">#55000000</color>
+	
 </resources>

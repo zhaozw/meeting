@@ -1,18 +1,30 @@
 package com.meetisan.meetisan;
 
-import com.meetisan.meetisan.signup.InsertEmailActivity;
-import com.meetisan.meetisan.utils.FormatUtils;
-import com.meetisan.meetisan.utils.ToastHelper;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.meetisan.meetisan.signup.InsertEmailActivity;
+import com.meetisan.meetisan.utils.FormatUtils;
+import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.ServerKeys;
+import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class LoginActivity extends Activity implements OnClickListener {
 	// private static final String TAG = LoginActivity.class.getSimpleName();
@@ -38,6 +50,16 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		mEmailTxt = (EditText) findViewById(R.id.email);
 		mPwdTxt = (EditText) findViewById(R.id.password);
+		mPwdTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+				if (id == R.id.login || id == EditorInfo.IME_NULL) {
+					attemptLogin();
+					return true;
+				}
+				return false;
+			}
+		});
 		mForgotPwdTxt = (TextView) findViewById(R.id.txt_forget_pwd);
 		mForgotPwdTxt.setOnClickListener(this);
 		mSignUpTxt = (TextView) findViewById(R.id.txt_sign_up);
@@ -85,19 +107,53 @@ public class LoginActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		doLogin();
+		doLogin(email, pwd);
 	}
 
-	private void doLogin() {
+	CustomizedProgressDialog mProgressDialog = null;
+
+	private void doLogin(String email, String pwd) {
 		// assume login result
-		boolean loginResult = true;
-		if (loginResult) {
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
-			this.finish();
+		HttpRequest request = new HttpRequest();
+
+		if (mProgressDialog == null) {
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
 		} else {
-			ToastHelper.showToast(R.string.error_incorrect_email_or_pwd);
+			if (mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+			}
 		}
+		
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, JSONObject result) {
+				mProgressDialog.dismiss();
+				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+				startActivity(intent);
+				finish();
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+			}
+		});
+
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put(ServerKeys.KEY_EMAIL, email);
+		data.put(ServerKeys.KEY_PASSWORD, pwd);
+		request.post(ServerKeys.FULL_URL_LOGIN, data);
+		mProgressDialog.show();
+//		boolean loginResult = true;
+//		if (loginResult) {
+//			Intent intent = new Intent(this, MainActivity.class);
+//			startActivity(intent);
+//			this.finish();
+//		} else {
+//			ToastHelper.showToast(R.string.error_incorrect_email_or_pwd);
+//		}
 	}
 
 }
