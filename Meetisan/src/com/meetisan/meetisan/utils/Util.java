@@ -1,11 +1,15 @@
 package com.meetisan.meetisan.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
 
 public class Util {
@@ -96,36 +100,59 @@ public class Util {
 		editor.commit();
 	}
 
-	public static List<byte[]> getTestBytesList() {
-		byte[] info = new byte[] { (byte) 0x04, (byte) 0x01, (byte) 0x53, (byte) 0xA7, (byte) 0x76,
-				(byte) 0xE6, (byte) 0x00, (byte) 0x0F, (byte) 0xFF, (byte) 0x1D, (byte) 0xBC,
-				(byte) 0x5A, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x20,
-				(byte) 0x20, (byte) 0x20, (byte) 0x20 };
-		byte[] info2 = new byte[] { (byte) 0x04, (byte) 0x02, (byte) 0x54, 0x20 };
-		byte[] info3 = new byte[] { (byte) 0x04, (byte) 0x03, (byte) 0x54, (byte) 0x20 };
-		List<byte[]> list = new ArrayList<byte[]>();
-		list.add(info);
-		list.add(info2);
-		list.add(info);
-		list.add(info2);
-		list.add(info);
-		list.add(info2);
-		list.add(info);
-		list.add(info2);
-		list.add(info);
-		list.add(info2);
-		list.add(info);
-		list.add(info2);
-		list.add(info);
-		list.add(info2);
-		list.add(info3);
-		return list;
+	public static boolean hasSdcard() {
+		String state = Environment.getExternalStorageState();
+		if (state.equals(Environment.MEDIA_MOUNTED)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public static byte[] getActivityInfoTestData() {
-		byte[] info = new byte[] { (byte) 0x23,(byte) 0x53, (byte) 0xA7, (byte) 0x76,
-				(byte) 0xE6, (byte) 0x00, (byte) 0x24, (byte) 0x10, (byte) 0x10, (byte) 0x00,
-				(byte) 0x00, (byte) 0x00, (byte) 0x2E, (byte) 0xD5 };
-		return info;
+	/**
+	 * bitmap转为base64
+	 * 
+	 * @param bitmap
+	 * @return
+	 */
+	public static String bitmapToBase64(Bitmap bitmap) {
+
+		String result = null;
+		ByteArrayOutputStream baos = null;
+		try {
+			if (bitmap != null) {
+				baos = new ByteArrayOutputStream();
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+				baos.flush();
+				baos.close();
+
+				byte[] bitmapBytes = baos.toByteArray();
+				result = Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (baos != null) {
+					baos.flush();
+					baos.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * base64转为bitmap
+	 * 
+	 * @param base64Data
+	 * @return
+	 */
+	public static Bitmap base64ToBitmap(String base64Data) {
+		byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
+		return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 	}
 }
