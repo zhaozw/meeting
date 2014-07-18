@@ -89,7 +89,11 @@ public class HttpRequest {
 			try {
 				JSONObject json = new JSONObject(t);
 				if (json.getInt(ServerKeys.KEY_STATUS_CODE) == ServerKeys.STATUS_SUCCESS) {
-					mListener.onSuccess(myUrl, json.getJSONObject(ServerKeys.KEY_DATA));
+					if (json.isNull(ServerKeys.KEY_DATA)) {
+						mListener.onSuccess(myUrl, null);
+					} else {
+						mListener.onSuccess(myUrl, json.getJSONObject(ServerKeys.KEY_DATA));
+					}
 				} else {
 					mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED,
 							json.getString(ServerKeys.KEY_MSG));
