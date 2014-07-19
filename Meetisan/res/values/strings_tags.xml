@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="my_tags">My Tags</string>
+    <string name="all_tags">All Tags</string>
+    
+    <string name="endorsed_you">endorsed you</string>
+    
+</resources>

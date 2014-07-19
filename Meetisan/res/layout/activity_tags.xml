@@ -11,7 +11,7 @@
         android:background="@color/activity_title_bg_color" >
 
         <com.android.segmented.SegmentedGroup
-            android:id="@+id/group_distance"
+            android:id="@+id/group_tags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -23,34 +23,32 @@
                 style="@style/RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/about_meetisan" />
+                android:checked="true"
+                android:text="@string/my_tags" />
 
             <RadioButton
                 android:id="@+id/radio_km"
                 style="@style/RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/activation_code" />
+                android:text="@string/all_tags" />
         </com.android.segmented.SegmentedGroup>
+
+        <ImageButton
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:src="@drawable/selector_button_search" />
     </RelativeLayout>
 
-    <com.meetisan.meetisan.widget.SearchPanel
+    <!--
+         <com.meetisan.meetisan.widget.SearchPanel
         android:id="@+id/search_panel"
         style="@style/SearchLayout" />
-
-    <Button
-        android:id="@+id/btn_test_swipe"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="TestSwipeListView" />
-
-    <Button
-        android:id="@+id/btn_test_indexable"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="TestIndexableListView" />
+    -->
 
 </LinearLayout>

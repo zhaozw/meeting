@@ -1,4 +1,4 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="radio_button_conner_radius">5dp</dimen>
+    <dimen name="radio_button_conner_radius">2dp</dimen>
     </resources>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@android:color/transparent" >
+
+    <com.meetisan.meetisan.widget.CircleImageView
+        xmlns:customized="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/iv_portrait"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/portrait"
+        customized:border_color="@android:color/white"
+        customized:border_width="0dp" />
+
+    <RelativeLayout
+        android:id="@+id/item_left"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/btn_right_arrow"
+        android:layout_toRightOf="@id/iv_portrait"
+        android:gravity="center"
+        android:padding="10dp" >
+
+        <RelativeLayout
+            android:id="@+id/layout_name"
+            android:layout_width="fill_parent"
+            android:layout_height="25dp"
+            android:padding="2dp" >
+
+            <ImageView
+                android:id="@+id/iv_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/txt_title"
+                android:scaleType="centerInside"
+                android:src="@drawable/icon_star_small" />
+
+            <TextView
+                android:id="@+id/txt_endorsed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/iv_star"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="0"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_min" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/txt_endorsed"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/endorsed_you"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_min" />
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Tag name"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_middle" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_name"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="2dp" >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/icon_people_small" />
+
+            <TextView
+                android:id="@+id/txt_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="13"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_min" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/icon_meetings_small" />
+
+            <TextView
+                android:id="@+id/txt_meetings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="120"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_min" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/btn_right_arrow"
+        android:layout_width="65dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
+        android:clickable="false"
+        android:gravity="center"
+        android:scaleType="centerInside"
+        android:src="@drawable/icon_right_arrow" />
+
+    <RelativeLayout
+        android:id="@+id/item_right"
+        android:layout_width="65dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/selector_swipe_list_del_btn_bg"
+        android:clickable="true"
+        android:visibility="" >
+
+        <ImageButton
+            android:id="@+id/item_right_btn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_delete" />
+    </RelativeLayout>
+
+</RelativeLayout>
