@@ -1,5 +1,7 @@
 <resources>
 
+    <color name="gray">#C0C0C0</color>
+    
     <color name="activity_title_bg_color">#8CC3CF</color>
     <color name="activity_main_tab_check_color">#F47C7C</color>
 	<color name="activity_main_tab_background_color">#8CC3CF</color>
@@ -30,4 +32,6 @@
 	<!-- Custom prgress dialog -->
 	<color name="border_square_color_gray">#55000000</color>
 	
+    <color name="tag_label_bg">#66CC66</color>
+    
 </resources>

@@ -7,10 +7,10 @@
     <com.meetisan.meetisan.widget.CircleImageView
         xmlns:customized="http://schemas.android.com/apk/res-auto"
         android:id="@+id/iv_portrait"
-        android:layout_width="60dp"
+        android:layout_width="55dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:src="@drawable/portrait"
         customized:border_color="@android:color/white"
         customized:border_width="0dp" />
@@ -22,20 +22,32 @@
         android:layout_toLeftOf="@+id/btn_right_arrow"
         android:layout_toRightOf="@id/iv_portrait"
         android:gravity="center"
-        android:padding="10dp" >
+        android:padding="5dp" >
 
         <RelativeLayout
             android:id="@+id/layout_name"
             android:layout_width="fill_parent"
-            android:layout_height="25dp"
-            android:padding="2dp" >
+            android:layout_height="30dp"
+            android:padding="0dp" >
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_small" />
 
             <ImageView
                 android:id="@+id/iv_star"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/txt_title"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/txt_name"
                 android:scaleType="centerInside"
                 android:src="@drawable/icon_star_small" />
 
@@ -44,11 +56,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@+id/iv_star"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="0"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_min" />
 
@@ -56,25 +67,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/txt_endorsed"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="@string/endorsed_you"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_min" />
-
-            <TextView
-                android:id="@+id/txt_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="Tag name"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_middle" />
         </RelativeLayout>
 
         <LinearLayout
@@ -83,7 +82,7 @@
             android:layout_below="@+id/layout_name"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="2dp" >
+            android:padding="0dp" >
 
             <ImageView
                 android:layout_width="20dp"
@@ -95,7 +94,7 @@
                 android:id="@+id/txt_people"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="3dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="13"
@@ -113,7 +112,7 @@
                 android:id="@+id/txt_meetings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="3dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="120"
@@ -142,7 +141,7 @@
         android:layout_centerVertical="true"
         android:background="@drawable/selector_swipe_list_del_btn_bg"
         android:clickable="true"
-        android:visibility="" >
+        android:visibility="gone" >
 
         <ImageButton
             android:id="@+id/item_right_btn"

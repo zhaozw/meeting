@@ -6,6 +6,8 @@ public class TagInfo {
 
 	/** tag id */
 	private long id = 0;
+	/** tag category id */
+	private long categroyId = 0;
 	/** tag name */
 	private String name = null;
 	/** tag title */
@@ -25,6 +27,11 @@ public class TagInfo {
 	private String hostName = null;
 	/** tag endorsed times */
 	private long endorsed = 0;
+	/** tag people ?? */
+	private long people = 0;
+	/** tag meetings ?? */
+	private long meetings = 0;
+
 	/** tag moment */
 	private TagMoment tagMoment = null;
 
@@ -34,6 +41,14 @@ public class TagInfo {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public long getCategroyId() {
+		return categroyId;
+	}
+
+	public void setCategroyId(long categroyId) {
+		this.categroyId = categroyId;
 	}
 
 	public String getName() {
@@ -106,6 +121,22 @@ public class TagInfo {
 
 	public void setEndorsed(long endorsed) {
 		this.endorsed = endorsed;
+	}
+
+	public long getPeople() {
+		return people;
+	}
+
+	public void setPeople(long people) {
+		this.people = people;
+	}
+
+	public long getMeetings() {
+		return meetings;
+	}
+
+	public void setMeetings(long meetings) {
+		this.meetings = meetings;
 	}
 
 	public TagMoment getTagMoment() {

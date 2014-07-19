@@ -1,11 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical" >
+    android:background="@android:color/white" >
 
     <RelativeLayout
+        android:id="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/activity_title_height"
         android:background="@color/activity_title_bg_color" >
@@ -19,7 +19,7 @@
             android:orientation="horizontal" >
 
             <RadioButton
-                android:id="@+id/radio_mile"
+                android:id="@+id/radio_my_tags"
                 style="@style/RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
                 android:text="@string/my_tags" />
 
             <RadioButton
-                android:id="@+id/radio_km"
+                android:id="@+id/radio_all_tags"
                 style="@style/RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,10 +45,26 @@
             android:src="@drawable/selector_button_search" />
     </RelativeLayout>
 
-    <!--
-         <com.meetisan.meetisan.widget.SearchPanel
-        android:id="@+id/search_panel"
-        style="@style/SearchLayout" />
-    -->
+    <com.meetisan.meetisan.widget.listview.swipe.SwipeListView
+        android:id="@+id/list_my_tags"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_title"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/gray"
+        android:dividerHeight="0.5dp"
+        android:scrollbars="none"
+        android:visibility="gone" />
 
-</LinearLayout>
+    <com.meetisan.meetisan.widget.listview.swipe.SwipeListView
+        android:id="@+id/list_tags_category"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_title"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/gray"
+        android:dividerHeight="0.5dp"
+        android:scrollbars="none"
+        android:visibility="gone" />
+
+</RelativeLayout>
