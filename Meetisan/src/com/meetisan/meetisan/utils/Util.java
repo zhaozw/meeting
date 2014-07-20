@@ -2,14 +2,18 @@ package com.meetisan.meetisan.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.os.Environment;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 public class Util {
@@ -84,8 +88,7 @@ public class Util {
 		if (context == null || key == null) {
 			return defValue;
 		}
-		SharedPreferences preferences = context.getSharedPreferences(SHARE_PREFERENCES_NAME,
-				Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(SHARE_PREFERENCES_NAME, Context.MODE_PRIVATE);
 		return preferences.getBoolean(key, defValue);
 	}
 
@@ -93,8 +96,7 @@ public class Util {
 		if (context == null || key == null) {
 			return;
 		}
-		SharedPreferences preferences = context.getSharedPreferences(SHARE_PREFERENCES_NAME,
-				Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(SHARE_PREFERENCES_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 		editor.putBoolean(key, value);
 		editor.commit();
@@ -154,5 +156,129 @@ public class Util {
 	public static Bitmap base64ToBitmap(String base64Data) {
 		byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
 		return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+	}
+
+	/**
+	 * InFrame Foto, for tag moments view
+	 * 
+	 * @param mFoto
+	 *            moment pictures
+	 * @param width
+	 *            widget width
+	 * @return bitmap
+	 */
+	public static Bitmap inFrameFoto(List<Bitmap> mFotos, int width) {
+		int size = width / 2;
+		if (size / 2 <= 0 || mFotos == null || mFotos.size() <= 0) {
+			Log.e("--Util--", "size = " + size);
+			return null;
+		}
+		Log.d("--Util--", "size = " + size);
+
+		Bitmap mFotoBitmap = Bitmap.createBitmap(size * 2, size, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(mFotoBitmap);
+
+		Bitmap mBitmap1 = null, mBitmap2 = null, mBitmap3 = null, mBitmap4 = null, mBitmap5 = null;
+		int count = mFotos.size();
+		Log.d("--Util--", "count = " + count);
+		if (count >= 1) {
+			mBitmap1 = cropSquareBitmap(mFotos.get(0), size);
+			if (mBitmap1 != null) {
+				canvas.drawBitmap(mBitmap1, 0, 0, null);
+				mBitmap1.recycle();
+			}
+		}
+		if (count >= 2) {
+			mBitmap2 = cropSquareBitmap(mFotos.get(1), size / 2);
+			if (mBitmap2 != null) {
+				canvas.drawBitmap(mBitmap2, size, 0, null);
+				mBitmap2.recycle();
+			}
+		}
+		if (count >= 3) {
+			mBitmap3 = cropSquareBitmap(mFotos.get(2), size / 2);
+			if (mBitmap3 != null) {
+				canvas.drawBitmap(mBitmap3, size + size / 2, 0, null);
+				mBitmap3.recycle();
+			}
+		}
+		if (count >= 4) {
+			mBitmap4 = cropSquareBitmap(mFotos.get(3), size / 2);
+			if (mBitmap4 != null) {
+				canvas.drawBitmap(mBitmap4, size, size / 2, null);
+				mBitmap4.recycle();
+			}
+		}
+		if (count >= 5) {
+			mBitmap5 = cropSquareBitmap(mFotos.get(4), size / 2);
+			if (mBitmap5 != null) {
+				canvas.drawBitmap(mBitmap5, size + size / 2, size / 2, null);
+				mBitmap5.recycle();
+			}
+		}
+
+		return mFotoBitmap;
+	}
+
+	/**
+	 * cut pictures into square
+	 * 
+	 * @param bitmap
+	 *            source picture
+	 * @param edgeLen
+	 *            square picture size
+	 * @return square picture
+	 */
+	public static Bitmap cropSquareBitmap(Bitmap bitmap, int edgeLen) {
+		if (null == bitmap || edgeLen <= 0) {
+			return null;
+		}
+
+		Bitmap squareBitmap = bitmap;
+		int widthOrg = bitmap.getWidth();
+		int heightOrg = bitmap.getHeight();
+
+		if (widthOrg > edgeLen && heightOrg > edgeLen) {
+			int longerEdge = (int) (edgeLen * Math.max(widthOrg, heightOrg) / Math.min(widthOrg, heightOrg));
+			int scaledWidth = widthOrg > heightOrg ? longerEdge : edgeLen;
+			int scaledHeight = widthOrg > heightOrg ? edgeLen : longerEdge;
+			Bitmap scaledBitmap;
+
+			try {
+				scaledBitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true);
+			} catch (Exception e) {
+				return null;
+			}
+
+			int xTopLeft = (scaledWidth - edgeLen) / 2;
+			int yTopLeft = (scaledHeight - edgeLen) / 2;
+
+			try {
+				squareBitmap = Bitmap.createBitmap(scaledBitmap, xTopLeft, yTopLeft, edgeLen, edgeLen);
+				scaledBitmap.recycle();
+			} catch (Exception e) {
+				return null;
+			}
+		}
+
+		return squareBitmap;
+	}
+
+	/**
+	 * get windows size (width or height)
+	 * 
+	 * @param activity
+	 * @param isWidth
+	 *            is needs windows width size
+	 * @return windows width or height
+	 */
+	public static int getWindowsSize(Activity activity, boolean isWidth) {
+		DisplayMetrics dm = new DisplayMetrics();
+		// 获取屏幕信息
+		activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		if (isWidth)
+			return dm.widthPixels;
+		else
+			return dm.heightPixels;
 	}
 }
