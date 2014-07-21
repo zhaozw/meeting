@@ -1,5 +1,7 @@
 <resources>
 
+    <color name="gray">#C0C0C0</color>
+    
     <color name="activity_title_bg_color">#8CC3CF</color>
     <color name="activity_main_tab_check_color">#F47C7C</color>
 	<color name="activity_main_tab_background_color">#8CC3CF</color>
@@ -10,6 +12,7 @@
     <color name="meetisan_btn_bg_press">#FF66CCFF</color>
 
 	<color name="label_with_icon_preesed">#FFDDDDDD</color>
+	<color name="listview_bg_preesed">#FFDDDDDD</color>
 
 	<!-- for search panel -->
     <color name="search_list_divider_color">#EBEBEB</color>
@@ -23,7 +26,13 @@
 	<color name="swipe_list_del_btn_bg_normal">#F47C7C</color>
 	<color name="swipe_list_del_btn_bg_pressed">#8CC3CF</color>
 	
+	<!-- for segment group -->
+	<color name="segment_group_bg_check">@android:color/white</color>
+	<color name="segment_group_text_check">#8CC3CF</color>
+	
 	<!-- Custom prgress dialog -->
 	<color name="border_square_color_gray">#55000000</color>
 	
+    <color name="tag_label_bg">#66CC66</color>
+    
 </resources>
