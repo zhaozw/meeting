@@ -53,6 +53,7 @@
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/gray"
         android:dividerHeight="0.5dp"
+        android:listSelector="@android:color/transparent"
         android:scrollbars="none"
         android:visibility="gone" />
 
@@ -64,6 +65,7 @@
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/gray"
         android:dividerHeight="0.5dp"
+        android:listSelector="@android:color/transparent"
         android:scrollbars="none"
         android:visibility="gone" />
 

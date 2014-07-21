@@ -5,10 +5,8 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
@@ -48,8 +46,6 @@ public class TagsAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_listview_tags, parent, false);
 			holder = new ViewHolder();
-			holder.mLeftItem = (RelativeLayout) convertView.findViewById(R.id.item_left);
-			holder.mRightItem = (RelativeLayout) convertView.findViewById(R.id.item_right);
 			holder.mCircleImage = (CircleImageView) convertView.findViewById(R.id.iv_portrait);
 			holder.mNameTxt = (TextView) convertView.findViewById(R.id.txt_name);
 			holder.mEndoredTxt = (TextView) convertView.findViewById(R.id.txt_endorsed);
@@ -74,22 +70,10 @@ public class TagsAdapter extends BaseAdapter {
 		holder.mPeopleTxt.setText(String.valueOf(mTagInfo.getPeople()));
 		holder.mMeetingsTxt.setText(String.valueOf(mTagInfo.getMeetings()));
 
-		holder.mRightItem.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				holder.mRightItem.setVisibility(View.GONE);
-				tagData.remove(position); // remove list item
-				if (mListener != null) {
-					mListener.onRightItemClick(holder.mRightItem, position);
-				}
-				notifyDataSetChanged();
-			}
-		});
 		return convertView;
 	}
 
 	static class ViewHolder {
-		RelativeLayout mLeftItem;
-		RelativeLayout mRightItem;
 		CircleImageView mCircleImage;
 		TextView mNameTxt;
 		TextView mEndoredTxt;

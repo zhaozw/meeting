@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:background="@android:color/transparent" >
+    android:background="@drawable/selector_listview_bg" >
 
     <com.meetisan.meetisan.widget.CircleImageView
         xmlns:customized="http://schemas.android.com/apk/res-auto"
@@ -97,7 +97,6 @@
                 android:layout_marginLeft="3dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="13"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_min" />
 
@@ -115,7 +114,6 @@
                 android:layout_marginLeft="3dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="120"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_min" />
         </LinearLayout>

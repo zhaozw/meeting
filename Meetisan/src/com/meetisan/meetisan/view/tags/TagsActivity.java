@@ -20,6 +20,7 @@ import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.model.TagsAdapter;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.widget.listview.swipe.SwipeListView;
+import com.meetisan.meetisan.widget.listview.swipe.SwipeListView.OnItemDeleteListener;
 
 public class TagsActivity extends Activity {
 
@@ -56,24 +57,23 @@ public class TagsActivity extends Activity {
 		});
 
 		mTagsListView = (SwipeListView) findViewById(R.id.list_my_tags);
-		TagsAdapter mTagsAdapter = new TagsAdapter(this, mTagsData);
+		final TagsAdapter mTagsAdapter = new TagsAdapter(this, mTagsData);
 		mTagsListView.setAdapter(mTagsAdapter);
 		mTagsListView.setVisibility(View.VISIBLE);
 		mTagsListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				ToastHelper.showToast("Click " + arg2 + " Item");
-			}
-		});
-		mTagsListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(TagsActivity.this, TagProfileActivity.class);
 				startActivity(intent);
+			}
+		});
+		mTagsListView.setOnItemDeleteListener(new OnItemDeleteListener() {
+
+			@Override
+			public void onSwipeDelete(View view, int position) {
+				mTagsData.remove(position);
+				mTagsAdapter.notifyDataSetChanged();
 			}
 		});
 

@@ -12,6 +12,7 @@
     <color name="meetisan_btn_bg_press">#FF66CCFF</color>
 
 	<color name="label_with_icon_preesed">#FFDDDDDD</color>
+	<color name="listview_bg_preesed">#FFDDDDDD</color>
 
 	<!-- for search panel -->
     <color name="search_list_divider_color">#EBEBEB</color>
