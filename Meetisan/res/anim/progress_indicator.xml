@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animation-list android:oneshot="false"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:duration="70" android:drawable="@drawable/progress_indicator00" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator01" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator02" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator03" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator04" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator05" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator06" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator07" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator08" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator09" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator10" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator11" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator12" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator13" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator14" />
+    <item android:duration="70" android:drawable="@drawable/progress_indicator15" />
+</animation-list> 
