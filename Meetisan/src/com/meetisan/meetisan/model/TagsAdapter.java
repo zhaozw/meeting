@@ -17,8 +17,6 @@ public class TagsAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<TagInfo> tagData;
 
-	private onRightItemClickListener mListener = null;
-
 	public TagsAdapter(Context mContext, List<TagInfo> tagData) {
 		inflater = LayoutInflater.from(mContext);
 		this.tagData = tagData;
@@ -44,7 +42,7 @@ public class TagsAdapter extends BaseAdapter {
 
 		final ViewHolder holder;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.item_listview_tags, parent, false);
+			convertView = inflater.inflate(R.layout.item_listview_tags_tag, parent, false);
 			holder = new ViewHolder();
 			holder.mCircleImage = (CircleImageView) convertView.findViewById(R.id.iv_portrait);
 			holder.mNameTxt = (TextView) convertView.findViewById(R.id.txt_name);
@@ -81,11 +79,4 @@ public class TagsAdapter extends BaseAdapter {
 		TextView mMeetingsTxt;
 	}
 
-	public void setOnRightItemClickListener(onRightItemClickListener listener) {
-		mListener = listener;
-	}
-
-	public interface onRightItemClickListener {
-		void onRightItemClick(View view, int position);
-	}
 }
