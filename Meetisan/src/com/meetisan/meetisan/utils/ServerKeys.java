@@ -11,10 +11,12 @@ public class ServerKeys {
 	public static final int STATUS_SUCCESS = 0;
 	public static final int STATUS_FAILED = 1;
 	private static final String API_TUSER = "/api/tuser/";
-	
-	//URL
-	public static final String FULL_URL_LOGIN = SERVER_ADDRESS + API_TUSER + "/Login";
-	
+
+	// URL
+	public static final String FULL_URL_LOGIN = SERVER_ADDRESS + API_TUSER + "Login";
+	public static final String FULL_URL_SEND_CODE = SERVER_ADDRESS + API_TUSER + "SendActivationCode";
+	public static final String FULL_URL_CHECK_CODE = SERVER_ADDRESS + API_TUSER + "CheckActivationCode";
+
 	// Keys
 	public static final String KEY_EMAIL = "Email";
 	public static final String KEY_PASSWORD = "Password";

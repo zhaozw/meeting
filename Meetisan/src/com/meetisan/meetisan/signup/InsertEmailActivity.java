@@ -1,5 +1,8 @@
 package com.meetisan.meetisan.signup;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.utils.FormatUtils;
+import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class InsertEmailActivity extends Activity implements OnClickListener {
 
@@ -70,12 +78,49 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 		doSendCodeToEmail(email);
 	}
 
+	private CustomizedProgressDialog mProgressDialog = null;
+
 	private void doSendCodeToEmail(String email) {
-		// TODO..
-		// assume send success
-		Intent intent = new Intent(this, ActivationActivity.class);
-		startActivity(intent);
-		this.finish();
+		HttpRequest request = new HttpRequest();
+
+		if (mProgressDialog == null) {
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+		} else {
+			if (mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+			}
+		}
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+				String code = null;
+				try {
+					JSONObject json = new JSONObject(result);
+					code = json.getString(ServerKeys.KEY_DATA);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				Intent intent = new Intent();
+				Bundle bundle = new Bundle();
+				bundle.putString("ActivationCode", code);
+				intent.setClass(InsertEmailActivity.this, ActivationActivity.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
+				InsertEmailActivity.this.finish();
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+			}
+		});
+
+		request.get(ServerKeys.FULL_URL_SEND_CODE + "/" + email, null);
+		mProgressDialog.show();
 	}
 
 }

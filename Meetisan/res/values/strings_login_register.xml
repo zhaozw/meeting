@@ -29,4 +29,6 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="empty_confirm_pwd_tips">Please confirm your password</string>
     <string name="error_pwd_not_match">The two passwords do not match</string>
+    
+    <string name="app_occurred_exception">I\'m sorry, the application occurred exception</string>
 </resources>

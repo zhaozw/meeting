@@ -4,24 +4,43 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class ActivationActivity extends Activity implements OnClickListener {
 
 	private Button mSubmitBtn;
 	private EditText mCodeTxt;
+	private String mActivationCode = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_activation_code);
+
+		Bundle bundle = new Bundle();
+		bundle = this.getIntent().getExtras();
+		if (bundle != null) {
+			mActivationCode = bundle.getString("ActivationCode", null);
+		}
+
+		if (mActivationCode == null) {
+			ToastHelper.showToast(R.string.app_occurred_exception);
+			this.finish();
+		}
+		Log.d("ActivationActivity", "Activation Code: " + mActivationCode);
 
 		initView();
 	}
@@ -70,13 +89,38 @@ public class ActivationActivity extends Activity implements OnClickListener {
 		doCheckActivationCode(code);
 	}
 
-	private void doCheckActivationCode(String email) {
-		// TODO..
-		
-		//assume check success
-		Intent intent = new Intent(this, SetPasswordActivity.class);
-		startActivity(intent);
-		this.finish();
+	private CustomizedProgressDialog mProgressDialog = null;
+
+	private void doCheckActivationCode(String code) {
+		HttpRequest request = new HttpRequest();
+
+		if (mProgressDialog == null) {
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+		} else {
+			if (mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+			}
+		}
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+				Intent intent = new Intent(ActivationActivity.this, SetPasswordActivity.class);
+				startActivity(intent);
+				ActivationActivity.this.finish();
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+			}
+		});
+
+		request.get(ServerKeys.FULL_URL_CHECK_CODE + "/" + mActivationCode + "/?code=" + code, null);
+		mProgressDialog.show();
 	}
 
 }

@@ -82,7 +82,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 		case R.id.btn_login:
 			attemptLogin();
 			break;
-
 		default:
 			break;
 		}
@@ -113,7 +112,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 	CustomizedProgressDialog mProgressDialog = null;
 
 	private void doLogin(String email, String pwd) {
-		// assume login result
 		HttpRequest request = new HttpRequest();
 
 		if (mProgressDialog == null) {
@@ -127,7 +125,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		request.setOnHttpRequestListener(new OnHttpRequestListener() {
 
 			@Override
-			public void onSuccess(String url, JSONObject result) {
+			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 				startActivity(intent);
