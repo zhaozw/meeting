@@ -3,13 +3,9 @@ package com.meetisan.meetisan.widget;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
