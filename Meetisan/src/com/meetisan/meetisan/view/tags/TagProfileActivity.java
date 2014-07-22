@@ -23,7 +23,7 @@ public class TagProfileActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_tag_profile);
+		setContentView(R.layout.activity_tags_profile);
 
 		initView();
 

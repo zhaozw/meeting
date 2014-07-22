@@ -78,7 +78,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.MeetActivity"
+            android:name="com.meetisan.meetisan.view.meet.MeetActivity"
             android:label="@string/title_meet" >
         </activity>
         <activity
@@ -103,6 +103,11 @@
         </activity>
         <activity
             android:name="com.meetisan.meetisan.view.dashboard.DashboardActivity"
+            android:label="@string/title_dashboard"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.view.dashboard.PersonProfileActivity"
             android:label="@string/title_dashboard"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>

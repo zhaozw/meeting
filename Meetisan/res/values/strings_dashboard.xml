@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
+    <string name="all_meetings">All Meetings</string>
+    <string name="upcoming_meetings">Upcoming Meetings</string>
+    
     <string name="settings">Settings</string>
     
     <!-- settings of notify me when -->
@@ -27,4 +30,13 @@
     <string name="feedback">Feedback</string>
     
     <string name="logout">LogOut</string>
+    
+    <!-- Dashboard Person Profile -->
+    <string name="person_profile">Person Profile</string>
+    <string name="top_tags">Top Tags</string>
+    <string name="university">University</string>
+    <string name="more_information">More Information</string>
+    <string name="let_us_meet">Let\'s Meet!</string>
+    <string name="report">Report</string>
+    
 </resources>

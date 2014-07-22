@@ -121,7 +121,7 @@ public class SwipeListView extends ListView {
 			if (!mIsHorizontalScroll) {
 				break;
 			}
-			Log.i(TAG, "onTouchEvent ACTION_MOVE");
+			// Log.i(TAG, "onTouchEvent ACTION_MOVE");
 			// if (mIsHorizontalScroll) {
 			// if (isShown && mPreItemView != mCurItemView) {
 			// Log.i(TAG, "2---> hiddenRight");
@@ -173,7 +173,7 @@ public class SwipeListView extends ListView {
 				} else {
 					long time = ev.getEventTime() - ev.getDownTime();
 					if (time < mClickTimeout) {
-						Log.d(TAG, "-----On Item Click-----");
+						Log.i(TAG, "-----On Item Click-----");
 						performItemClick(mCurItemView, mCurPosition, mCurItemView.getId());
 					} else {
 						Log.i(TAG, "5---> hiddenRight");

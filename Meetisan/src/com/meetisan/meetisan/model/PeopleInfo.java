@@ -3,12 +3,20 @@ package com.meetisan.meetisan.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagCategory {
-	/** tag category id */
+import android.graphics.Bitmap;
+
+public class PeopleInfo {
+	/** people id */
 	private long id = 0;
-	/** tag category name */
+	/** people name */
 	private String name = null;
-	/** tags in this category */
+	/** people icon */
+	private Bitmap logo = null;
+	/** people college */
+	private String college = null;
+	/** people distance */
+	private long distance = 0;
+	/** people tags */
 	private List<TagInfo> tags = new ArrayList<TagInfo>();
 
 	public long getId() {
@@ -27,6 +35,30 @@ public class TagCategory {
 		this.name = name;
 	}
 
+	public Bitmap getLogo() {
+		return logo;
+	}
+
+	public void setLogo(Bitmap logo) {
+		this.logo = logo;
+	}
+
+	public String getCollege() {
+		return college;
+	}
+
+	public void setCollege(String college) {
+		this.college = college;
+	}
+
+	public long getDistance() {
+		return distance;
+	}
+
+	public void setDistance(long distance) {
+		this.distance = distance;
+	}
+
 	public List<TagInfo> getTags() {
 		return tags;
 	}
@@ -41,5 +73,4 @@ public class TagCategory {
 		}
 		return this.tags.add(tag);
 	}
-
 }

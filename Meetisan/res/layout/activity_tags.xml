@@ -8,6 +8,7 @@
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/activity_title_height"
+        android:layout_alignParentTop="true"
         android:background="@color/activity_title_bg_color" >
 
         <com.android.segmented.SegmentedGroup
