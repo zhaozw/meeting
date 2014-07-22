@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/activity_title_height"
+        layout="@layout/title_with_image_btn" />
+
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/layout_top"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/pic_background"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/txt_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="100dp"
+                        android:singleLine="true"
+                        android:text="Person Name"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_big" />
+
+                    <TextView
+                        android:id="@+id/txt_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:background="@android:color/white"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:maxLines="2"
+                        android:paddingLeft="100dp"
+                        android:text="I am jack, bala bala bala bala bala bala bala bala bala bala bala bala bala"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_min" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical" >
+
+                    <com.meetisan.meetisan.widget.CircleImageView
+                        xmlns:customized="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/iv_portrait"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="20dp"
+                        android:clickable="true"
+                        android:src="@drawable/portrait_default"
+                        customized:border_color="@android:color/white"
+                        customized:border_width="2dp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="@string/top_tags"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/gap_line_color" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="5dp" >
+
+                    <TextView
+                        android:id="@+id/txt_tag_one"
+                        style="@style/TagLabelStyle" />
+
+                    <TextView
+                        android:id="@+id/txt_tag_two"
+                        style="@style/TagLabelStyle" />
+
+                    <TextView
+                        android:id="@+id/txt_tag_three"
+                        style="@style/TagLabelStyle" />
+
+                    <TextView
+                        android:id="@+id/txt_tag_four"
+                        style="@style/TagLabelStyle" />
+
+                    <TextView
+                        android:id="@+id/txt_tag_five"
+                        style="@style/TagLabelStyle" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/gap_line_color" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/gap_line_color" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="10dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/university"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/txt_university"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15dp"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="UNSW"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_small" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/gap_line_color" />
+
+                <com.meetisan.meetisan.widget.LabelWithIcon
+                    android:id="@+id/btn_connected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/more_information" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/gap_line_color" />
+
+                <Button
+                    android:id="@+id/btn_meet"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/let_us_meet" />
+
+                <TextView
+                    android:id="@+id/txt_report"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/report"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
