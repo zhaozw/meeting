@@ -19,10 +19,10 @@
     <uses-permission android:name="com.meetisan.meetisan.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--
      The following two permissions are not required to use
-     Google Maps Android API v2, but are recommended.
+     Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -37,14 +37,16 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name="com.meetisan.meetisan.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Black.NoTitleBar" >
 
-        <!-- email:dev.meetisan@gmail.com
-        	password:meetisan123 -->
+        <!--
+             email:dev.meetisan@gmail.com
+        	password:meetisan123
+        -->
         <!-- API key for google maps -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -58,72 +60,13 @@
             android:required="true" />
 
         <activity
-            android:name="com.meetisan.meetisan.LauncherActivity"
+            android:name=".LauncherActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.CreateActivity"
-            android:label="@string/title_create"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.MeetActivity"
-            android:label="@string/title_meet" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.view.tags.TagsActivity"
-            android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.view.tags.SwipeListActivity"
-            android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.view.tags.IndexableListActivity"
-            android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.view.dashboard.DashboardActivity"
-            android:label="@string/title_dashboard"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.view.dashboard.SettingsActivity"
-            android:label="@string/settings"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.view.dashboard.SettingsAboutActivity"
-            android:label="@string/about_meetisan"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.view.dashboard.SettingsNotifyActivity"
-            android:label="@string/notify"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.view.dashboard.SettingsPrivacyActivity"
-            android:label="@string/privacy"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.NotificationsActivity"
-            android:label="@string/title_notification"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.meetisan.meetisan.LoginActivity"
-            android:label="@string/login"
             android:windowSoftInputMode="adjustResize|stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -132,28 +75,87 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.signup.InsertEmailActivity"
+            android:name=".view.create.CreateActivity"
+            android:label="@string/title_create"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".MeetActivity"
+            android:label="@string/title_meet" >
+        </activity>
+        <activity
+            android:name=".view.tags.TagsActivity"
+            android:label="@string/title_tags"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.tags.SwipeListActivity"
+            android:label="@string/title_tags"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.tags.IndexableListActivity"
+            android:label="@string/title_tags"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.dashboard.DashboardActivity"
+            android:label="@string/title_dashboard"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.dashboard.SettingsActivity"
+            android:label="@string/settings"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.dashboard.SettingsAboutActivity"
+            android:label="@string/about_meetisan"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.dashboard.SettingsNotifyActivity"
+            android:label="@string/notify"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.dashboard.SettingsPrivacyActivity"
+            android:label="@string/privacy"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".NotificationsActivity"
+            android:label="@string/title_notification"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/login"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".signup.InsertEmailActivity"
             android:label="@string/insert_email"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.signup.ActivationActivity"
+            android:name=".signup.ActivationActivity"
             android:label="@string/activation_code"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.signup.SetPasswordActivity"
+            android:name=".signup.SetPasswordActivity"
             android:label="@string/password"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.GoogleMapActivity"
+            android:name=".GoogleMapActivity"
             android:label="@string/settings"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
 
         <receiver
-            android:name="com.meetisan.meetisan.gcm.GCMBroadcastReceiver"
+            android:name=".gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
         </receiver>
 

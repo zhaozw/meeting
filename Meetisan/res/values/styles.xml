@@ -93,4 +93,13 @@
 	<style name="SearchLayout.Button.Right">
 		<item name="android:background">@drawable/search_button_right_selector</item>
 	</style>
+	
+	<!-- Create Activity dividing line style -->
+	<style name="CreateActivityDividingLineStyle">
+	    <item name="android:layout_width">match_parent</item>
+	    <item name="android:layout_height">2dp</item>
+	    <item name="android:background">@color/activity_create_dividing_line_color</item>
+	    <item name="android:layout_marginLeft">10dp</item>
+	    <item name="android:layout_marginRight">10dp</item>
+	</style>
 </resources>

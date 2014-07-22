@@ -1,5 +1,6 @@
 <resources>
 
+	<color name="gray">#FFC0C0C0</color>
     <color name="activity_title_bg_color">#8CC3CF</color>
     <color name="activity_main_tab_check_color">#F47C7C</color>
 	<color name="activity_main_tab_background_color">#8CC3CF</color>
@@ -25,5 +26,8 @@
 	
 	<!-- Custom prgress dialog -->
 	<color name="border_square_color_gray">#55000000</color>
+	
+	<!-- Create activity colors -->
+	<color name="activity_create_dividing_line_color">#F6F6F6</color>
 	
 </resources>
