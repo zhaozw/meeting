@@ -80,7 +80,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name=".MeetActivity"
+            android:name="com.meetisan.meetisan.view.meet.MeetActivity"
             android:label="@string/title_meet" >
         </activity>
         <activity
@@ -89,7 +89,12 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name=".view.tags.SwipeListActivity"
+            android:name="com.meetisan.meetisan.view.tags.TagProfileActivity"
+            android:label="@string/title_tags"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.view.tags.SwipeListActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
@@ -104,7 +109,12 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name=".view.dashboard.SettingsActivity"
+            android:name="com.meetisan.meetisan.view.dashboard.PersonProfileActivity"
+            android:label="@string/title_dashboard"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.meetisan.meetisan.view.dashboard.SettingsActivity"
             android:label="@string/settings"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>

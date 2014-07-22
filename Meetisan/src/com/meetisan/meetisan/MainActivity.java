@@ -10,6 +10,7 @@ import android.widget.TabHost;
 
 import com.meetisan.meetisan.view.create.CreateActivity;
 import com.meetisan.meetisan.view.dashboard.DashboardActivity;
+import com.meetisan.meetisan.view.meet.MeetActivity;
 import com.meetisan.meetisan.view.tags.TagsActivity;
 
 @SuppressWarnings("deprecation")

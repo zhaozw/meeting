@@ -5,11 +5,12 @@
     android:background="@android:color/white"
     tools:context="com.meetisan.meetisan.view.create.CreateStep2Fragment" >
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <TextView
+    <ListView
+        android:id="@+id/lv_create_select_tags_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:dividerHeight="2dp"
+        android:divider="@color/activity_create_dividing_line_color"
+        android:layout_height="match_parent" >
+    </ListView>
 
 </FrameLayout>

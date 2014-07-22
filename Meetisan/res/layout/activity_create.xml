@@ -10,7 +10,7 @@
         android:id="@+id/include_title"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/activity_title_height"
-        layout="@layout/title_main_tab" />
+        layout="@layout/title_with_image_btn" />
 
     <FrameLayout
         android:id="@+id/fl_fragment_container"

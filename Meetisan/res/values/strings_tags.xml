@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="my_tags">My Tags</string>
+    <string name="all_tags">All Tags</string>
+    
+    <string name="endorsed_you">endorsed you</string>
+    
+    <!-- Tag Profile -->
+    <string name="tag_profile">Tag Profile</string>
+    <string name="general_details">General Details</string>
+    <string name="tag_description">Tag Description:</string>
+    <string name="tag_host">Tag Host:</string>
+    <string name="tag_link">Link:</string>
+    <string name="associated_tags">Associated Tag</string>
+    <string name="tag_moments">Moments</string>
+    <string name="view_all_moments">View All Moments</string>
+    <string name="tag_history">Your tag history with</string>
+    <string name="people_connected">People Connected</string>
+    <string name="meetings_attended">Meetings Attended</string>
+    
+</resources>

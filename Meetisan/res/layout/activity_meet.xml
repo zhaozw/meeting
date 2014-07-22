@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity="center" >
+
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_title_height"
+        android:layout_alignParentTop="true"
+        android:background="@color/activity_title_bg_color" >
+
+        <com.android.segmented.SegmentedGroup
+            android:id="@+id/group_meet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center|right"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/radio_people"
+                style="@style/RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/people" />
+
+            <RadioButton
+                android:id="@+id/radio_meetings"
+                style="@style/RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/meetings" />
+        </com.android.segmented.SegmentedGroup>
+
+        <ImageButton
+            android:id="@+id/btn_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:src="@drawable/selector_button_filter" />
+    </RelativeLayout>
+
+    <com.meetisan.meetisan.widget.SearchPanel
+        android:id="@+id/search_panel"
+        style="@style/SearchLayout"
+        android:layout_below="@+id/layout_title" />
+
+    <ListView
+        android:id="@+id/list_people"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_panel"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/gray"
+        android:dividerHeight="0.5dp"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/list_meetings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_panel"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/gray"
+        android:dividerHeight="0.5dp"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none"
+        android:visibility="gone" />
+
+</RelativeLayout>

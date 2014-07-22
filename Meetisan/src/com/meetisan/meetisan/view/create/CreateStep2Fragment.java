@@ -1,14 +1,20 @@
 package com.meetisan.meetisan.view.create;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.model.TagInfo;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment
@@ -18,38 +24,12 @@ import com.meetisan.meetisan.R;
  * of this fragment.
  * 
  */
-public class CreateStep2Fragment extends Fragment {
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
-
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
-
+public class CreateStep2Fragment extends Fragment implements OnItemClickListener {
 	private OnFragmentInteractionListener mListener;
-
-	/**
-	 * Use this factory method to create a new instance of this fragment using
-	 * the provided parameters.
-	 * 
-	 * @param param1
-	 *            Parameter 1.
-	 * @param param2
-	 *            Parameter 2.
-	 * @return A new instance of fragment CreateStep2Fragment.
-	 */
-	// TODO: Rename and change types and number of parameters
-	public static CreateStep2Fragment newInstance(String param1, String param2) {
-		CreateStep2Fragment fragment = new CreateStep2Fragment();
-		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
-		fragment.setArguments(args);
-		return fragment;
-	}
-
+	private ListView mSelectTagsListView;
+	private SelectTagsAdapter mAdapter;
+	private List<TagInfo> mTagsData = new ArrayList<TagInfo>();
+	
 	public CreateStep2Fragment() {
 		// Required empty public constructor
 	}
@@ -57,25 +37,35 @@ public class CreateStep2Fragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
-		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_create_step2, container, false);
+		View view = inflater.inflate(R.layout.fragment_create_step2, container, false);
+		mSelectTagsListView = (ListView) view.findViewById(R.id.lv_create_select_tags_list);
+		mSelectTagsListView.setOnItemClickListener(this);
+		initTagsData();
+		mAdapter = new SelectTagsAdapter(getActivity(), mTagsData);
+		mSelectTagsListView.setAdapter(mAdapter);
+		
+		return view;
 	}
 
-	// TODO: Rename method, update argument and hook method into UI event
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.onFragmentInteraction(uri);
+	private void initTagsData() {
+		mTagsData.clear();
+		// data for test
+		for (int i = 0; i < 15; i++) {
+			TagInfo mInfo = new TagInfo();
+			mInfo.setName("Tags Name " + i);
+			mInfo.setDescription("tags description" + 1);
+			mInfo.setState(0);
+			mInfo.setEndorsed(i * 5);
+			mInfo.setPeople(i * 3);
+			mInfo.setMeetings(i * 8);
+			
+			mTagsData.add(mInfo);
 		}
 	}
-
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -91,5 +81,16 @@ public class CreateStep2Fragment extends Fragment {
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		TagInfo info = mTagsData.get(position);
+		if (info.getState() == 0) {
+			info.setState(1);
+		} else {
+			info.setState(0);
+		}
+		mAdapter.notifyDataSetChanged();
 	}
 }
