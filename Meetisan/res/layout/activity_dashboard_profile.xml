@@ -43,12 +43,11 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="100dp"
                         android:singleLine="true"
-                        android:text="Person Name"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_big" />
 
                     <TextView
-                        android:id="@+id/txt_description"
+                        android:id="@+id/txt_signature"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:background="@android:color/white"
@@ -56,7 +55,6 @@
                         android:gravity="center_vertical"
                         android:maxLines="2"
                         android:paddingLeft="100dp"
-                        android:text="I am jack, bala bala bala bala bala bala bala bala bala bala bala bala bala"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/text_size_min" />
                 </LinearLayout>
@@ -128,6 +126,15 @@
                     <TextView
                         android:id="@+id/txt_tag_five"
                         style="@style/TagLabelStyle" />
+
+                    <TextView
+                        android:id="@+id/txt_no_tags"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_small"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <View
@@ -145,9 +152,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp" >
+                    android:orientation="horizontal" >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -165,7 +172,6 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="UNSW"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/text_size_small" />
                 </LinearLayout>

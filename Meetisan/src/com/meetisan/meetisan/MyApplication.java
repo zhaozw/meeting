@@ -2,9 +2,13 @@ package com.meetisan.meetisan;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 
 public class MyApplication extends Application {
 	private static Context context = null;
+
+	/** for store user logo image */
+	private static Bitmap mLogoBitmap = null;
 
 	@Override
 	public void onCreate() {
@@ -15,4 +19,13 @@ public class MyApplication extends Application {
 	public static Context getAppContext() {
 		return MyApplication.context;
 	}
+
+	public static Bitmap getmLogoBitmap() {
+		return mLogoBitmap;
+	}
+
+	public static void setmLogoBitmap(Bitmap mLogoBitmap) {
+		MyApplication.mLogoBitmap = mLogoBitmap;
+	}
+
 }

@@ -66,9 +66,9 @@ public class PeopleAdapter extends BaseAdapter {
 			holder.mCircleImage.setImageResource(R.drawable.portrait_default);
 		}
 		holder.mNameTxt.setText(mPeopleInfo.getName());
-		holder.mCollegeTxt.setText(String.valueOf(mPeopleInfo.getCollege()));
+		holder.mCollegeTxt.setText(String.valueOf(mPeopleInfo.getUniversity()));
 		holder.mDistanceTxt.setText(String.valueOf(mPeopleInfo.getDistance() + "m"));
-		List<TagInfo> tagsList = mPeopleInfo.getTags();
+		List<TagInfo> tagsList = mPeopleInfo.getTopTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {
 			holder.mTagOneTxt.setText(tagsList.get(0).getName());

@@ -1,6 +1,10 @@
 package com.meetisan.meetisan.signup;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -8,14 +12,22 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.meetisan.meetisan.MainActivity;
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class SetPasswordActivity extends Activity implements OnClickListener {
 
 	private Button mSetPwdBtn;
 	private EditText mPwdTxt, mConfirmPwdTxt;
+	private String email = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,6 +35,8 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_set_password);
 
 		initView();
+
+		syncUserInfoFromPerferences();
 	}
 
 	private void initView() {
@@ -33,6 +47,10 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 		mSetPwdBtn.setOnClickListener(this);
 		mPwdTxt = (EditText) findViewById(R.id.txt_pwd);
 		mConfirmPwdTxt = (EditText) findViewById(R.id.txt_confirm_pwd);
+	}
+
+	private void syncUserInfoFromPerferences() {
+		email = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_EMAIL, null);
 	}
 
 	@Override
@@ -63,11 +81,49 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		doSetPassword(pwd);
+		doSetPassword(email, pwd);
 	}
 
-	private void doSetPassword(String pwd) {
-		// TODO..
+	private CustomizedProgressDialog mProgressDialog = null;
+
+	private void doSetPassword(String email, String pwd) {
+		if (email == null || TextUtils.isEmpty(email)) {
+			return;
+		}
+
+		HttpRequest request = new HttpRequest();
+
+		if (mProgressDialog == null) {
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+		} else {
+			if (mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+			}
+		}
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+
+				Intent intent = new Intent(SetPasswordActivity.this, MainActivity.class);
+				startActivity(intent);
+				finish();
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+			}
+		});
+
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put(ServerKeys.KEY_EMAIL, email);
+		data.put(ServerKeys.KEY_PASSWORD, pwd);
+		request.post(ServerKeys.FULL_URL_REGISTER, data);
+		mProgressDialog.show();
 	}
 
 }

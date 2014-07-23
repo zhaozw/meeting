@@ -8,14 +8,35 @@ public class ServerKeys {
 	public static final String KEY_STATUS_CODE = "StatusCode";
 	public static final String KEY_MSG = "Msg";
 	public static final String KEY_DATA = "Data";
+	public static final String KEY_USER = "User";
+	public static final String KEY_TOP_TAGS = "TopTags";
 	public static final int STATUS_SUCCESS = 0;
 	public static final int STATUS_FAILED = 1;
 	private static final String API_TUSER = "/api/tuser/";
-	
-	//URL
-	public static final String FULL_URL_LOGIN = SERVER_ADDRESS + API_TUSER + "/Login";
-	
+
+	// URL
+	public static final String FULL_URL_LOGIN = SERVER_ADDRESS + API_TUSER + "Login";
+	public static final String FULL_URL_SEND_CODE = SERVER_ADDRESS + API_TUSER + "SendActivationCode";
+	public static final String FULL_URL_CHECK_CODE = SERVER_ADDRESS + API_TUSER + "CheckActivationCode";
+	public static final String FULL_URL_REGISTER = SERVER_ADDRESS + API_TUSER + "Register";
+	public static final String FULL_URL_GET_USER_INFO = SERVER_ADDRESS + API_TUSER + "Get";
+
 	// Keys
+	public static final String KEY_ID = "ID";
 	public static final String KEY_EMAIL = "Email";
+	public static final String KEY_NAME = "Name";
 	public static final String KEY_PASSWORD = "Password";
+	public static final String KEY_LOGO = "BackGroundImg";
+	public static final String KEY_UNIVERSITY = "University";
+	public static final String KEY_SIGNATURE = "Signature";
+	public static final String KEY_CITY = "City";
+	public static final String KEY_AGE = "Age";
+	public static final String KEY_GENDER = "Gender";
+	public static final String KEY_EXPERIENCE = "Experience";
+	public static final String KEY_EDUCATION = "Education";
+	public static final String KEY_SKILLS = "Skills";
+	public static final String KEY_LON = "Lon";
+	public static final String KEY_LAT = "Lat";
+	public static final String KEY_CREATE_DATE = "CreateDate";
+	public static final String KEY_REG_ID = "RegistrationID";
 }
