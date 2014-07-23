@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.internal.n;
 import com.meetisan.meetisan.R;
 
 public class CreateActivity extends FragmentActivity implements OnClickListener,
@@ -23,7 +24,6 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	private ImageButton mLeftButton;
 	private TextView mTitleTextView;
 	private Button mRightButton;
-	private FrameLayout mContainerLayout;
 	private final int totoalSteps = 3;
 	/**
 	 * step index start from 1
@@ -32,14 +32,14 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	private String[] mStepsTitleText;
 	private CreateStep1Fragment mCreateStep1Fragment;
 	private CreateStep2Fragment mCreateStep2Fragment;
-
+	private CreateStep3Fragment mCreateStep3Fragment;
+	private CreateDoneFragment	mCreateDoneFragment;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create);
 		initTitle();
-
-		mContainerLayout = (FrameLayout) findViewById(R.id.fl_fragment_container);
 	}
 
 	private void initTitle() {
@@ -80,11 +80,17 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 			mRightButton.setText(R.string.next);
 			break;
 		case 3:
-			mLeftButton.setVisibility(View.VISIBLE);
 			String string2 = String.format(getString(R.string.format_step_index), stepIndex,
 					totoalSteps);
 			mTitleTextView.setText(mStepsTitleText[stepIndex - 1] + string2);
-			mRightButton.setText(R.string.done);
+			mRightButton.setVisibility(View.VISIBLE);
+			mRightButton.setText(R.string.create);
+			break;
+		case 4:
+			String string3 = getString(R.string.create_successful);
+			mTitleTextView.setText(string3);
+			mRightButton.setVisibility(View.GONE);
+			break;
 		default:
 			break;
 		}
@@ -113,6 +119,12 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 			break;
 		case 2:
 			transaction.hide(mCreateStep2Fragment);
+			break;
+		case 3:
+			transaction.hide(mCreateStep3Fragment);
+			break;
+		case 4:
+			transaction.hide(mCreateDoneFragment);
 			break;
 		default:
 			break;
@@ -147,6 +159,22 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 				transaction.show(mCreateStep2Fragment);
 			}
 			break;
+		case 3:
+			if (mCreateStep3Fragment == null) {
+				mCreateStep3Fragment = new CreateStep3Fragment();
+				transaction.add(R.id.fl_fragment_container, mCreateStep3Fragment);
+			} else {
+				transaction.show(mCreateStep3Fragment);
+			}
+			break;
+		case 4:
+			if (mCreateDoneFragment == null) {
+				mCreateDoneFragment = new CreateDoneFragment();
+				transaction.add(R.id.fl_fragment_container, mCreateDoneFragment);
+			} else {
+				transaction.show(mCreateDoneFragment);
+			}
+			break;
 		default:
 			break;
 		}
@@ -159,31 +187,4 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		// TODO Auto-generated method stub
 	}
 
-	private FragmentPagerAdapter mFragmentPagerAdapter = new FragmentPagerAdapter(
-			getSupportFragmentManager()) {
-
-		@Override
-		public Fragment getItem(int position) {
-			switch (position) {
-			case 1:
-				return new CreateStep1Fragment();
-			case 2:
-				return new CreateStep2Fragment();
-			default:
-				return new CreateStep1Fragment();
-			}
-		}
-
-		@Override
-		public int getCount() {
-			return 2;
-		}
-
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
-			// 这里Destroy的是Fragment的视图层次，并不是Destroy Fragment对象
-			super.destroyItem(container, position, object);
-			Log.i("INFO", "Destroy Item...");
-		}
-	};
 }

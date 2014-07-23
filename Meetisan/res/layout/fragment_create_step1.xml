@@ -22,7 +22,7 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_small" />
 
-        <View style="@style/CreateActivityDividingLineStyle" />
+        <View style="@style/CreateActivityDividingLine" />
 
         <EditText
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
             android:padding="5dp"
             android:singleLine="true" />
 
-        <View style="@style/CreateActivityDividingLineStyle" />
+        <View style="@style/CreateActivityDividingLine" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,7 +41,7 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
-        <View style="@style/CreateActivityDividingLineStyle" />
+        <View style="@style/CreateActivityDividingLine" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                 android:layout_centerVertical="true" />
         </RelativeLayout>
 
-        <View style="@style/CreateActivityDividingLineStyle" />
+        <View style="@style/CreateActivityDividingLine" />
     </LinearLayout>
 
 </LinearLayout>
