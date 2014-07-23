@@ -33,7 +33,7 @@ public class ActivationActivity extends Activity implements OnClickListener {
 		Bundle bundle = new Bundle();
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
-			mActivationCode = bundle.getString("ActivationCode", null);
+			mActivationCode = bundle.getString("ActivationCode");
 		}
 
 		if (mActivationCode == null) {

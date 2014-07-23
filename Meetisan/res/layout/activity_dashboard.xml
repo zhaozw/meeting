@@ -53,7 +53,6 @@
         android:layout_below="@+id/layout_top"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Gao Yun"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size_middle" />
 
@@ -87,7 +86,6 @@
             android:layout_toLeftOf="@+id/ic_arrow"
             android:layout_toRightOf="@+id/txt_meetings"
             android:focusable="false"
-            android:text="335"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_small" />
 

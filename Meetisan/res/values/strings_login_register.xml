@@ -27,8 +27,11 @@
     <string name="set_pwd_tips">Please set your password</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="empty_confirm_pwd_tips">Please confirm your password</string>
+    <string name="empty_confirm_pwd_tips">Please confirm your password!</string>
     <string name="error_pwd_not_match">The two passwords do not match</string>
     
-    <string name="app_occurred_exception">I\'m sorry, the application occurred exception</string>
+    <string name="login_expired">Login has expired, you need to re login!</string>
+    
+    <string name="app_occurred_exception">I\'m sorry, the application occurred exception!</string>
+    <string name="server_response_exception">I\'m sorry, the server occurred exception!</string>
 </resources>

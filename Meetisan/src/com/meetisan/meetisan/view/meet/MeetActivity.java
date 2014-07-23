@@ -72,7 +72,7 @@ public class MeetActivity extends Activity {
 			PeopleInfo mPeople = new PeopleInfo();
 
 			mPeople.setName("Jacky " + i);
-			mPeople.setCollege("UNSW");
+			mPeople.setUniversity("UNSW");
 			mPeople.setDistance(150);
 
 			TagInfo mInfo1 = new TagInfo();
@@ -82,14 +82,14 @@ public class MeetActivity extends Activity {
 			TagInfo mInfo3 = new TagInfo();
 			mInfo3.setName("Tags Name " + i * 3);
 			if (i % 2 == 0) {
-				mPeople.addTags(mInfo1);
-				mPeople.addTags(mInfo2);
+				mPeople.addTopTag(mInfo1);
+				mPeople.addTopTag(mInfo2);
 			} else if (i % 3 == 0) {
-				mPeople.addTags(mInfo1);
-				mPeople.addTags(mInfo2);
-				mPeople.addTags(mInfo3);
+				mPeople.addTopTag(mInfo1);
+				mPeople.addTopTag(mInfo2);
+				mPeople.addTopTag(mInfo3);
 			} else {
-				mPeople.addTags(mInfo1);
+				mPeople.addTopTag(mInfo1);
 			}
 
 			mPeopleData.add(mPeople);

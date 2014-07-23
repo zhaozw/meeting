@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.utils.FormatUtils;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
@@ -80,7 +81,7 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 
 	private CustomizedProgressDialog mProgressDialog = null;
 
-	private void doSendCodeToEmail(String email) {
+	private void doSendCodeToEmail(final String email) {
 		HttpRequest request = new HttpRequest();
 
 		if (mProgressDialog == null) {
@@ -100,16 +101,21 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 				try {
 					JSONObject json = new JSONObject(result);
 					code = json.getString(ServerKeys.KEY_DATA);
+
+					UserInfoKeeper.writeUserInfo(InsertEmailActivity.this,
+							UserInfoKeeper.KEY_USER_EMAIL, email);
+
+					Intent intent = new Intent();
+					Bundle bundle = new Bundle();
+					bundle.putString("ActivationCode", code);
+					intent.setClass(InsertEmailActivity.this, ActivationActivity.class);
+					intent.putExtras(bundle);
+					startActivity(intent);
+					InsertEmailActivity.this.finish();
 				} catch (JSONException e) {
 					e.printStackTrace();
+					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
 				}
-				Intent intent = new Intent();
-				Bundle bundle = new Bundle();
-				bundle.putString("ActivationCode", code);
-				intent.setClass(InsertEmailActivity.this, ActivationActivity.class);
-				intent.putExtras(bundle);
-				startActivity(intent);
-				InsertEmailActivity.this.finish();
 			}
 
 			@Override

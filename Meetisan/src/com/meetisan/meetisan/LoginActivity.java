@@ -3,8 +3,6 @@ package com.meetisan.meetisan;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.signup.InsertEmailActivity;
 import com.meetisan.meetisan.utils.FormatUtils;
 import com.meetisan.meetisan.utils.HttpRequest;
@@ -111,7 +110,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	CustomizedProgressDialog mProgressDialog = null;
 
-	private void doLogin(String email, String pwd) {
+	private void doLogin(final String email, final String pwd) {
 		HttpRequest request = new HttpRequest();
 
 		if (mProgressDialog == null) {
@@ -121,12 +120,16 @@ public class LoginActivity extends Activity implements OnClickListener {
 				mProgressDialog.dismiss();
 			}
 		}
-		
+
 		request.setOnHttpRequestListener(new OnHttpRequestListener() {
 
 			@Override
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
+				UserInfoKeeper.writeUserInfo(LoginActivity.this, UserInfoKeeper.KEY_USER_EMAIL,
+						email);
+				UserInfoKeeper.writeUserInfo(LoginActivity.this, UserInfoKeeper.KEY_USER_PWD, pwd);
+				
 				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 				startActivity(intent);
 				finish();
@@ -144,14 +147,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 		data.put(ServerKeys.KEY_PASSWORD, pwd);
 		request.post(ServerKeys.FULL_URL_LOGIN, data);
 		mProgressDialog.show();
-//		boolean loginResult = true;
-//		if (loginResult) {
-//			Intent intent = new Intent(this, MainActivity.class);
-//			startActivity(intent);
-//			this.finish();
-//		} else {
-//			ToastHelper.showToast(R.string.error_incorrect_email_or_pwd);
-//		}
+		// boolean loginResult = true;
+		// if (loginResult) {
+		// Intent intent = new Intent(this, MainActivity.class);
+		// startActivity(intent);
+		// this.finish();
+		// } else {
+		// ToastHelper.showToast(R.string.error_incorrect_email_or_pwd);
+		// }
 	}
 
 }
