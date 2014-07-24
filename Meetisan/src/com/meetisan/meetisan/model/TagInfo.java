@@ -1,6 +1,7 @@
 package com.meetisan.meetisan.model;
 
 import android.graphics.Bitmap;
+import android.nfc.Tag;
 
 public class TagInfo {
 
@@ -21,10 +22,6 @@ public class TagInfo {
 	/** tag state, 0 or 1 */
 	private int state = 0;
 
-	/** tag create user (host) id */
-	private long hostId = 0;
-	/** tag create user (host) name */
-	private String hostName = null;
 	/** tag endorsed times */
 	private long endorsed = 0;
 	/** tag people ?? */
@@ -32,8 +29,15 @@ public class TagInfo {
 	/** tag meetings ?? */
 	private long meetings = 0;
 
+	/** tag host */
+	private TagHost tagHost = null;
 	/** tag moment */
 	private TagMoment tagMoment = null;
+	
+	public TagInfo() {
+		tagHost = new TagHost();
+		tagMoment = new TagMoment();
+	}
 
 	public long getId() {
 		return id;
@@ -99,22 +103,6 @@ public class TagInfo {
 		this.state = state;
 	}
 
-	public long getHostId() {
-		return hostId;
-	}
-
-	public void setHostId(long hostId) {
-		this.hostId = hostId;
-	}
-
-	public String getHostName() {
-		return hostName;
-	}
-
-	public void setHostName(String hostName) {
-		this.hostName = hostName;
-	}
-
 	public long getEndorsed() {
 		return endorsed;
 	}
@@ -137,6 +125,14 @@ public class TagInfo {
 
 	public void setMeetings(long meetings) {
 		this.meetings = meetings;
+	}
+
+	public TagHost getTagHost() {
+		return tagHost;
+	}
+
+	public void setTagHost(TagHost tagHost) {
+		this.tagHost = tagHost;
 	}
 
 	public TagMoment getTagMoment() {

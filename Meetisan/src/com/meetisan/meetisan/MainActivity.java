@@ -165,8 +165,8 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 					}
 					UserInfoKeeper.writeUserInfo(MainActivity.this, mUserInfo);
 
-					if (!data.isNull(ServerKeys.KEY_LOGO)) {
-						String base64Data = data.getString(ServerKeys.KEY_LOGO);
+					if (!data.isNull(ServerKeys.KEY_AVATAR)) {
+						String base64Data = data.getString(ServerKeys.KEY_AVATAR);
 						if (base64Data != null) {
 							MyApplication.setmLogoBitmap(Util.base64ToBitmap(base64Data));
 						}
