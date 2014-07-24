@@ -58,16 +58,21 @@
         android:scrollbars="none"
         android:visibility="gone" />
 
-    <com.meetisan.meetisan.widget.listview.swipe.SwipeListView
+    <com.meetisan.meetisan.widget.listview.refresh.DropDownListView
+        xmlns:dropListView="http://schemas.android.com/apk/res/com.meetisan.meetisan"
         android:id="@+id/list_tags_category"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/layout_title"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/gray"
         android:dividerHeight="0.5dp"
+        android:drawSelectorOnTop="false"
         android:listSelector="@android:color/transparent"
         android:scrollbars="none"
-        android:visibility="gone" />
+        android:visibility="gone"
+        dropListView:isAutoLoadOnBottom="true"
+        dropListView:isDropDownStyle="true"
+        dropListView:isOnBottomStyle="true" />
 
 </RelativeLayout>

@@ -71,15 +71,15 @@ public class PeopleAdapter extends BaseAdapter {
 		List<TagInfo> tagsList = mPeopleInfo.getTopTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {
-			holder.mTagOneTxt.setText(tagsList.get(0).getName());
+			holder.mTagOneTxt.setText(tagsList.get(0).getTitle());
 			holder.mTagOneTxt.setVisibility(View.VISIBLE);
 		}
 		if (tagsCount >= 2) {
-			holder.mTagTwoTxt.setText(tagsList.get(1).getName());
+			holder.mTagTwoTxt.setText(tagsList.get(1).getTitle());
 			holder.mTagTwoTxt.setVisibility(View.VISIBLE);
 		}
 		if (tagsCount >= 3) {
-			holder.mTagThreeTxt.setText(tagsList.get(2).getName());
+			holder.mTagThreeTxt.setText(tagsList.get(2).getTitle());
 			holder.mTagThreeTxt.setVisibility(View.VISIBLE);
 		}
 

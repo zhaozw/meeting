@@ -61,20 +61,20 @@ public class TagCategoryAdapter extends BaseAdapter {
 
 		TagCategory mTagCategory = categoryData.get(position);
 
-		holder.mNameTxt.setText(mTagCategory.getName());
+		holder.mNameTxt.setText(mTagCategory.getTitle());
 
 		List<TagInfo> tagsList = mTagCategory.getTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {
-			holder.mOneTxt.setText(tagsList.get(0).getName());
+			holder.mOneTxt.setText(tagsList.get(0).getTitle());
 			holder.mOneTxt.setVisibility(View.VISIBLE);
 		}
 		if (tagsCount >= 2) {
-			holder.mTwoTxt.setText(tagsList.get(1).getName());
+			holder.mTwoTxt.setText(tagsList.get(1).getTitle());
 			holder.mTwoTxt.setVisibility(View.VISIBLE);
 		}
 		if (tagsCount >= 3) {
-			holder.mThreeTxt.setText(tagsList.get(2).getName());
+			holder.mThreeTxt.setText(tagsList.get(2).getTitle());
 			holder.mThreeTxt.setVisibility(View.VISIBLE);
 		}
 

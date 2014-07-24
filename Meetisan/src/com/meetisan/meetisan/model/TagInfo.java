@@ -12,7 +12,7 @@ public class TagInfo {
 	/** tag category id */
 	private long categroyId = 0;
 	/** tag name */
-	private String name = null;
+	// private String name = null;
 	/** tag title */
 	private String title = null;
 	/** tag description */
@@ -36,12 +36,12 @@ public class TagInfo {
 	private String link = null;
 
 	/** tag host */
-	private TagHost tagHost = null;
+	private List<TagHost> tagHosts;
 	/** tag moment */
 	private List<TagMoment> tagMoments;
 
 	public TagInfo() {
-		tagHost = new TagHost();
+		tagHosts = new ArrayList<TagHost>();
 		tagMoments = new ArrayList<TagMoment>();
 	}
 
@@ -61,13 +61,13 @@ public class TagInfo {
 		this.categroyId = categroyId;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+	// public String getName() {
+	// return name;
+	// }
+	//
+	// public void setName(String name) {
+	// this.name = name;
+	// }
 
 	public String getTitle() {
 		return title;
@@ -149,12 +149,16 @@ public class TagInfo {
 		this.link = link;
 	}
 
-	public TagHost getTagHost() {
-		return tagHost;
+	public List<TagHost> getTagHosts() {
+		return tagHosts;
 	}
 
-	public void setTagHost(TagHost tagHost) {
-		this.tagHost = tagHost;
+	public void setTagHosts(List<TagHost> tagHosts) {
+		this.tagHosts = tagHosts;
+	}
+
+	public boolean addTagHost(TagHost tagHost) {
+		return this.tagHosts.add(tagHost);
 	}
 
 	public List<TagMoment> getTagMoments() {

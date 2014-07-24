@@ -59,7 +59,7 @@ public class TagsAdapter extends BaseAdapter {
 		if (mTagInfo.getLogo() != null) {
 			holder.mCircleImage.setImageBitmap(mTagInfo.getLogo());
 		}
-		holder.mNameTxt.setText(mTagInfo.getName());
+		holder.mNameTxt.setText(mTagInfo.getTitle());
 		holder.mEndoredTxt.setText(String.valueOf(mTagInfo.getEndorsed()));
 		holder.mPeopleTxt.setText(String.valueOf(mTagInfo.getPeople()));
 		holder.mMeetingsTxt.setText(String.valueOf(mTagInfo.getMeetings()));

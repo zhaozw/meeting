@@ -11,6 +11,7 @@ public class ServerKeys {
 	public static final String KEY_MSG = "Msg";
 	public static final String KEY_DATA = "Data";
 	public static final String KEY_TAG = "Tag";
+	public static final String KEY_TAGS = "Tags";
 	public static final String KEY_TAG_HOST = "TagHost";
 	public static final String KEY_TAG_MOMENTS = "Moments";
 	public static final String KEY_DATA_LIST = "DataList";
@@ -21,6 +22,7 @@ public class ServerKeys {
 	public static final int STATUS_FAILED = 1;
 	private static final String API_TUSER = "/api/tuser/";
 	private static final String API_TTAG = "/api/ttag/";
+	private static final String API_TTAG_CATEGORY = "/api/tTagCategory/";
 
 	// URL
 	public static final String FULL_URL_LOGIN = SERVER_ADDRESS + API_TUSER + "Login";
@@ -32,6 +34,8 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_USER_TAG =  SERVER_ADDRESS + API_TTAG + "GetUserTag";
 	/** http://{域名}/api/ttag/get/{tag的ID}/?UserID={当前用户ID，用于检测用户是否添加过该tag} */
 	public static final String FULL_URL_GET_TAG_INFO =  SERVER_ADDRESS + API_TTAG + "get";
+	/** http://{域名}/api/tTagCategory/GetList/?pageindex={页码}&pagesize={每页数量} */
+	public static final String FULL_URL_GET_TAG_LIST =  SERVER_ADDRESS + API_TTAG_CATEGORY + "GetList";
 	
 	// Keys
 	public static final String KEY_ID = "ID";

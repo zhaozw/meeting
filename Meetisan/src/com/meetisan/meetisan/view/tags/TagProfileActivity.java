@@ -10,16 +10,15 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.model.TagHost;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.model.TagMoment;
 import com.meetisan.meetisan.utils.HttpRequest;
@@ -35,7 +34,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 
 	private ImageView mMomentView;
 	private CircleImageView mPortraitView;
-	private TextView mNameTxt, mDescriptionTxt, mHostTxt, mLinkTxt;
+	private TextView mNameTxt, mDescriptionTxt, mHostTxt, mLinkTxt, mNoMomentTxt;
 
 	private long mTagID = -1, mUserID = -1;
 	private TagInfo mTagInfo = new TagInfo();
@@ -67,6 +66,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		((ImageButton) findViewById(R.id.btn_title_icon_left)).setOnClickListener(this);
 
 		mMomentView = (ImageView) findViewById(R.id.iv_moments);
+		mNoMomentTxt = (TextView) findViewById(R.id.txt_no_moments);
 		mPortraitView = (CircleImageView) findViewById(R.id.iv_portrait);
 		mNameTxt = (TextView) findViewById(R.id.txt_name);
 		mDescriptionTxt = (TextView) findViewById(R.id.txt_tag_description);
@@ -93,24 +93,40 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		if (mTagInfo.getLogo() != null) {
 			mPortraitView.setImageBitmap(mTagInfo.getLogo());
 		}
-		mNameTxt.setText(mTagInfo.getName());
-		mDescriptionTxt.setText(mTagInfo.getDescription());
-		mHostTxt.setText(mTagInfo.getTagHost().getHostName());
-		mLinkTxt.setText(mTagInfo.getLink());
+		mNameTxt.setText(mTagInfo.getTitle());
+		mDescriptionTxt.setText("Tag Description:	" + mTagInfo.getDescription());
+		mLinkTxt.setText("Link:		" + mTagInfo.getLink());
+
+		String hostNames = "";
+		for (TagHost host : mTagInfo.getTagHosts()) {
+			hostNames += "  " + host.getHostName();
+		}
+		mHostTxt.setText("Tag Hosts:	" + hostNames);
 		setMomentView(mTagInfo.getTagMoments());
 	}
 
 	private void setMomentView(List<TagMoment> mTagMoments) {
+
 		List<Bitmap> mBitmaps = new ArrayList<Bitmap>();
 		for (TagMoment tagMoment : mTagMoments) {
-			mBitmaps.add(tagMoment.getImage());
+			if (tagMoment.getImage() != null) {
+				mBitmaps.add(tagMoment.getImage());
+			}
+		}
+		if (mBitmaps.size() <= 0) {
+			mMomentView.setVisibility(View.GONE);
+			mNoMomentTxt.setVisibility(View.VISIBLE);
+			return;
 		}
 
 		Bitmap mBitmap = Util.inFrameFoto(mBitmaps, Util.getWindowsSize(this, true) - 20);
 		if (mBitmap != null) {
 			mMomentView.setImageBitmap(mBitmap);
+			mNoMomentTxt.setVisibility(View.GONE);
+			mMomentView.setVisibility(View.VISIBLE);
 		} else {
-			Log.e(TAG, "moment bitmap is null");
+			mMomentView.setVisibility(View.GONE);
+			mNoMomentTxt.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -133,14 +149,14 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 				try {
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 
 					mTagInfo.setFollow(dataJson.getInt(ServerKeys.KEY_FOLLOW_STATUS));
 
 					JSONObject tagJson = dataJson.getJSONObject(ServerKeys.KEY_TAG);
 					mTagInfo.setId(tagJson.getLong(ServerKeys.KEY_ID));
 					// mTagInfo.setCategroyId(tagJson.getLong(ServerKeys.KEY_CATEGORY_ID));
+					mTagInfo.setCategroyId(tagJson.getLong("CategroyID"));
 					mTagInfo.setTitle(tagJson.getString(ServerKeys.KEY_TITLE));
 					mTagInfo.setLink(tagJson.getString(ServerKeys.KEY_LINK));
 					mTagInfo.setLogo(Util.base64ToBitmap(tagJson.getString(ServerKeys.KEY_LOGO)));
@@ -148,9 +164,14 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 					mTagInfo.setCreateDate(tagJson.getString(ServerKeys.KEY_CREATE_DATE));
 					mTagInfo.setState(tagJson.getInt(ServerKeys.KEY_STATUS));
 
-					// JSONObject hostJson = dataJson.getJSONObject(ServerKeys.KEY_TAG_HOST);
-					// mTagInfo.getTagHost().setHostId(hostJson.getLong(ServerKeys.KEY_USER_ID));
-					// mTagInfo.getTagHost().setHostName(hostJson.getString(ServerKeys.KEY_NAME));
+					JSONArray hostArray = dataJson.getJSONArray(ServerKeys.KEY_TAG_HOST);
+					for (int i = 0; i < hostArray.length(); i++) {
+						JSONObject hostJson = hostArray.getJSONObject(i);
+						TagHost tagHost = new TagHost();
+						tagHost.setHostId(hostJson.getLong(ServerKeys.KEY_USER_ID));
+						tagHost.setHostName(hostJson.getString(ServerKeys.KEY_NAME));
+						mTagInfo.addTagHost(tagHost);
+					}
 
 					JSONArray momentsArray = dataJson.getJSONArray(ServerKeys.KEY_TAG_MOMENTS);
 					for (int i = 0; i < momentsArray.length(); i++) {
@@ -158,9 +179,9 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 						TagMoment tagMoment = new TagMoment();
 						tagMoment.setId(momJson.getLong(ServerKeys.KEY_ID));
 						tagMoment.setTagId(momJson.getLong(ServerKeys.KEY_TAG_ID));
-						tagMoment.setUserId(momJson.getLong(ServerKeys.KEY_USER_ID));
-						tagMoment.setImage(Util.base64ToBitmap(momJson
-								.getString(ServerKeys.KEY_IMAGE)));
+						// tagMoment.setUserId(momJson.getLong(ServerKeys.KEY_USER_ID));
+						tagMoment.setUserId(momJson.getLong("UserId"));
+						tagMoment.setImage(Util.base64ToBitmap(momJson.getString(ServerKeys.KEY_IMAGE)));
 						tagMoment.setTitle(momJson.getString(ServerKeys.KEY_TITLE));
 						tagMoment.setCreateDate(momJson.getString(ServerKeys.KEY_CREATE_DATE));
 						mTagInfo.addTagMoment(tagMoment);

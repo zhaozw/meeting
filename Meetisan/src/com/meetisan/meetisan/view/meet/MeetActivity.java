@@ -76,11 +76,11 @@ public class MeetActivity extends Activity {
 			mPeople.setDistance(150);
 
 			TagInfo mInfo1 = new TagInfo();
-			mInfo1.setName("Tags Name " + i);
+			mInfo1.setTitle("Tags Name " + i);
 			TagInfo mInfo2 = new TagInfo();
-			mInfo2.setName("Tags Name " + i * 2);
+			mInfo2.setTitle("Tags Name " + i * 2);
 			TagInfo mInfo3 = new TagInfo();
-			mInfo3.setName("Tags Name " + i * 3);
+			mInfo3.setTitle("Tags Name " + i * 3);
 			if (i % 2 == 0) {
 				mPeople.addTopTag(mInfo1);
 				mPeople.addTopTag(mInfo2);
@@ -106,11 +106,11 @@ public class MeetActivity extends Activity {
 			mMeeting.setDistance(150);
 
 			TagInfo mInfo1 = new TagInfo();
-			mInfo1.setName("Tags" + i);
+			mInfo1.setTitle("Tags" + i);
 			TagInfo mInfo2 = new TagInfo();
-			mInfo2.setName("Tags" + i * 2);
+			mInfo2.setTitle("Tags" + i * 2);
 			TagInfo mInfo3 = new TagInfo();
-			mInfo3.setName("Tags" + i * 3);
+			mInfo3.setTitle("Tags" + i * 3);
 			if (i % 2 == 0) {
 				mMeeting.addTags(mInfo1);
 				mMeeting.addTags(mInfo2);
