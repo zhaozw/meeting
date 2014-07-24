@@ -78,7 +78,6 @@
                     android:layout_toLeftOf="@+id/btn_connections"
                     android:layout_toRightOf="@+id/iv_portrait"
                     android:gravity="center_vertical"
-                    android:text="@string/app_name"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_middle" />
 

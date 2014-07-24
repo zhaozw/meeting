@@ -10,6 +10,9 @@ public class ServerKeys {
 	public static final String KEY_STATUS_CODE = "StatusCode";
 	public static final String KEY_MSG = "Msg";
 	public static final String KEY_DATA = "Data";
+	public static final String KEY_TAG = "Tag";
+	public static final String KEY_TAG_HOST = "TagHost";
+	public static final String KEY_TAG_MOMENTS = "Moments";
 	public static final String KEY_DATA_LIST = "DataList";
 	public static final String KEY_TOTAL_COUNT = "TotalCount";
 	public static final String KEY_USER = "User";
@@ -27,7 +30,9 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_USER_INFO = SERVER_ADDRESS + API_TUSER + "Get";
 	/**	http://{域名}/api/ttag/GetUserTag/{userId}/?pageindex={页码}&pagesize={每页数量}&name={按tag的名字搜索，否则请传空} */
 	public static final String FULL_URL_GET_USER_TAG =  SERVER_ADDRESS + API_TTAG + "GetUserTag";
-
+	/** http://{域名}/api/ttag/get/{tag的ID}/?UserID={当前用户ID，用于检测用户是否添加过该tag} */
+	public static final String FULL_URL_GET_TAG_INFO =  SERVER_ADDRESS + API_TTAG + "get";
+	
 	// Keys
 	public static final String KEY_ID = "ID";
 	public static final String KEY_EMAIL = "Email";
@@ -51,7 +56,11 @@ public class ServerKeys {
 	public static final String KEY_CATEGORY_ID = "CategoryID";
 	public static final String KEY_TITLE = "Title";
 	public static final String KEY_LOGO = "Logo";
+	public static final String KEY_IMAGE = "Image";
 	public static final String KEY_ENDORSEMENTS = "Endorsements";
 	public static final String KEY_PEOPLES = "Peoples";
 	public static final String KEY_MEETINGS = "Meetings";
+	public static final String KEY_LINK = "Link";
+	public static final String KEY_DESCRIPTION = "Description";
+	public static final String KEY_FOLLOW_STATUS = "FollowStatus";
 }

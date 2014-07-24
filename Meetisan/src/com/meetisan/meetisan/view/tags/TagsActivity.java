@@ -80,10 +80,14 @@ public class TagsActivity extends Activity {
 		mTagsListView.setAdapter(mTagsAdapter);
 		mTagsListView.setVisibility(View.VISIBLE);
 		mTagsListView.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Intent intent = new Intent(TagsActivity.this, TagProfileActivity.class);
+				Intent intent = new Intent();
+				Bundle bundle = new Bundle();
+				bundle.putLong("TagID", mTagsData.get(arg2).getId());
+				bundle.putLong("UserID", mUserId);
+				intent.setClass(TagsActivity.this, TagProfileActivity.class);
+				intent.putExtras(bundle);
 				startActivity(intent);
 			}
 		});

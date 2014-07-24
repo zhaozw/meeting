@@ -1,7 +1,9 @@
 package com.meetisan.meetisan.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.graphics.Bitmap;
-import android.nfc.Tag;
 
 public class TagInfo {
 
@@ -21,6 +23,8 @@ public class TagInfo {
 	private String createDate = null;
 	/** tag state, 0 or 1 */
 	private int state = 0;
+	/** tag follow, 0 or 1 */
+	private int follow = 0;
 
 	/** tag endorsed times */
 	private long endorsed = 0;
@@ -28,15 +32,17 @@ public class TagInfo {
 	private long people = 0;
 	/** tag meetings ?? */
 	private long meetings = 0;
+	/** tag link */
+	private String link = null;
 
 	/** tag host */
 	private TagHost tagHost = null;
 	/** tag moment */
-	private TagMoment tagMoment = null;
-	
+	private List<TagMoment> tagMoments;
+
 	public TagInfo() {
 		tagHost = new TagHost();
-		tagMoment = new TagMoment();
+		tagMoments = new ArrayList<TagMoment>();
 	}
 
 	public long getId() {
@@ -103,6 +109,14 @@ public class TagInfo {
 		this.state = state;
 	}
 
+	public int getFollow() {
+		return follow;
+	}
+
+	public void setFollow(int follow) {
+		this.follow = follow;
+	}
+
 	public long getEndorsed() {
 		return endorsed;
 	}
@@ -127,6 +141,14 @@ public class TagInfo {
 		this.meetings = meetings;
 	}
 
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
 	public TagHost getTagHost() {
 		return tagHost;
 	}
@@ -135,12 +157,15 @@ public class TagInfo {
 		this.tagHost = tagHost;
 	}
 
-	public TagMoment getTagMoment() {
-		return tagMoment;
+	public List<TagMoment> getTagMoments() {
+		return tagMoments;
 	}
 
-	public void setTagMoment(TagMoment tagMoment) {
-		this.tagMoment = tagMoment;
+	public void setTagMoments(List<TagMoment> tagMoments) {
+		this.tagMoments = tagMoments;
 	}
 
+	public boolean addTagMoment(TagMoment tagMoment) {
+		return this.tagMoments.add(tagMoment);
+	}
 }
