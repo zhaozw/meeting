@@ -16,7 +16,7 @@ public class PeopleInfo {
 	private String name = null;
 	/** people icon */
 	private Bitmap avatar = null;
-	/** people backgroud image */
+	/** people background image */
 	private Bitmap bgImage = null;
 	/** people signature */
 	private String signature = null;
@@ -45,7 +45,7 @@ public class PeopleInfo {
 	/** people registration ID */
 	private String regId = null;
 	/** people distance */
-	private long distance = 0;
+	private double distance = 0.0;
 	/** people tags */
 	private List<TagInfo> topTags = new ArrayList<TagInfo>();
 
@@ -201,11 +201,11 @@ public class PeopleInfo {
 		this.regId = regId;
 	}
 
-	public long getDistance() {
+	public double getDistance() {
 		return distance;
 	}
 
-	public void setDistance(long distance) {
+	public void setDistance(double distance) {
 		this.distance = distance;
 	}
 

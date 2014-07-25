@@ -59,15 +59,12 @@ public class PeopleAdapter extends BaseAdapter {
 
 		PeopleInfo mPeopleInfo = peopleData.get(position);
 
-		// for test
-		if (position % 2 == 0) {
-			holder.mCircleImage.setImageResource(R.drawable.portrait);
-		} else {
-			holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		if (mPeopleInfo.getAvatar() != null) {
+			holder.mCircleImage.setImageBitmap(mPeopleInfo.getAvatar());
 		}
 		holder.mNameTxt.setText(mPeopleInfo.getName());
 		holder.mCollegeTxt.setText(String.valueOf(mPeopleInfo.getUniversity()));
-		holder.mDistanceTxt.setText(String.valueOf(mPeopleInfo.getDistance() + "m"));
+		holder.mDistanceTxt.setText(String.format("%.2f", mPeopleInfo.getDistance()) + "m");
 		List<TagInfo> tagsList = mPeopleInfo.getTopTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {

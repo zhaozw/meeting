@@ -22,6 +22,7 @@ public class ServerKeys {
 	public static final int STATUS_FAILED = 1;
 	private static final String API_TUSER = "/api/tuser/";
 	private static final String API_TTAG = "/api/ttag/";
+	private static final String API_TMEET = "/api/tmeeting/";
 	private static final String API_TTAG_CATEGORY = "/api/tTagCategory/";
 
 	// URL
@@ -36,6 +37,10 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_TAG_INFO =  SERVER_ADDRESS + API_TTAG + "get";
 	/** http://{域名}/api/tTagCategory/GetList/?pageindex={页码}&pagesize={每页数量} */
 	public static final String FULL_URL_GET_TAG_LIST =  SERVER_ADDRESS + API_TTAG_CATEGORY + "GetList";
+	/** http://{域名}/api/tuser/getlist/{当前用户ID}/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户纬度}&tagIDs={按tag筛选时传入tag id，ID以逗号隔开，否则传空.例：3,4}&name={按用户名称搜索传入用户名，否则传空} */
+	public static final String FULL_URL_GET_UESR_LIST = SERVER_ADDRESS + API_TUSER + "getlist";
+	/** http://{域名}/api/tmeeting/getlist/?pageindex={页码}&pagesize={每页数量}&ordertype={排序方式，0：按距离升序 1：按开始时间升序 2：按创建时间降序}&lat={当前用户经度}&lon={当前用户经度}&tagIDs={按tag筛选时传入tag id，ID以逗号隔开，否则传空.例：3,4}&title={按meeting名称搜索时传入meeting title字段，否则传空} */
+	public static final String FULL_URL_GET_MEET_LIST = SERVER_ADDRESS + API_TMEET + "getlist";
 	
 	// Keys
 	public static final String KEY_ID = "ID";
@@ -64,7 +69,9 @@ public class ServerKeys {
 	public static final String KEY_ENDORSEMENTS = "Endorsements";
 	public static final String KEY_PEOPLES = "Peoples";
 	public static final String KEY_MEETINGS = "Meetings";
+	public static final String KEY_MEETING = "Meeting";
 	public static final String KEY_LINK = "Link";
 	public static final String KEY_DESCRIPTION = "Description";
 	public static final String KEY_FOLLOW_STATUS = "FollowStatus";
+	public static final String KEY_DISTANCE = "Distance";
 }

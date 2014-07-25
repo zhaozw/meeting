@@ -1,6 +1,8 @@
 package com.meetisan.meetisan.view.tags;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -59,7 +61,7 @@ public class TagsActivity extends Activity {
 		mUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
 
 		getMyTagsFromServer(1);
-		getAllTagsFromServer(1);
+		getAllTagsFromServer(1, true);
 		initView();
 	}
 
@@ -119,8 +121,7 @@ public class TagsActivity extends Activity {
 		mCategoryListView.setOnDropDownListener(new OnDropDownListener() {
 			@Override
 			public void onDropDown() {
-				mCategoryData.clear();
-				getAllTagsFromServer(1);
+				getAllTagsFromServer(1, true);
 			}
 		});
 		mCategoryListView.setOnBottomListener(new OnClickListener() {
@@ -128,11 +129,12 @@ public class TagsActivity extends Activity {
 			public void onClick(View v) {
 				int count = mCategoryListView.getCount();
 				if (count < mMaxAllTags) {
+					mCategoryListView.setHasMore(true);
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
-					getAllTagsFromServer(pageIndex);
+					getAllTagsFromServer(pageIndex, false);
 				} else {
+					mCategoryListView.setHasMore(false);
 					mCategoryListView.onBottomComplete();
-					ToastHelper.showToast(R.string.loading_complete);
 				}
 			}
 		});
@@ -142,10 +144,14 @@ public class TagsActivity extends Activity {
 		mTagsAdapter.notifyDataSetChanged();
 	}
 
-	private void updateAllTagsListView() {
+	private void updateAllTagsListView(boolean isRefresh) {
 		mCategoryAdapter.notifyDataSetChanged();
-		mCategoryListView.onBottomComplete();
-		mCategoryListView.onDropDownComplete();
+		if (isRefresh) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm:ss");
+			mCategoryListView.onDropDownComplete("Last: " + dateFormat.format(new Date()));
+		} else {
+			mCategoryListView.onBottomComplete();
+		}
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;
@@ -153,8 +159,7 @@ public class TagsActivity extends Activity {
 	/**
 	 * get My Tags from server
 	 * 
-	 * @param pageIndex
-	 *            load page index
+	 * @param pageIndex load page index
 	 */
 	private void getMyTagsFromServer(int pageIndex) {
 		HttpRequest request = new HttpRequest();
@@ -173,7 +178,8 @@ public class TagsActivity extends Activity {
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 				try {
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
 					mMaxMyTags = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 					JSONArray tagArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
 					for (int i = 0; i < tagArray.length(); i++) {
@@ -203,9 +209,8 @@ public class TagsActivity extends Activity {
 			}
 		});
 
-		mUserId = 5; // TODO.. for test
-		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
-				+ ServerKeys.PAGE_SIZE + "&name=", null);
+		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex
+				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&name=", null);
 		mProgressDialog.show();
 	}
 
@@ -214,7 +219,8 @@ public class TagsActivity extends Activity {
 		private int lastVisibleIndex = 0;
 
 		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+				int totalItemCount) {
 			lastVisibleIndex = firstVisibleItem + visibleItemCount;
 		}
 
@@ -234,10 +240,9 @@ public class TagsActivity extends Activity {
 	/**
 	 * get All Tags from server
 	 * 
-	 * @param pageIndex
-	 *            load page index
+	 * @param pageIndex load page index
 	 */
-	private void getAllTagsFromServer(int pageIndex) {
+	private void getAllTagsFromServer(int pageIndex, final boolean isRefresh) {
 		HttpRequest request = new HttpRequest();
 
 		if (mProgressDialog == null) {
@@ -254,8 +259,13 @@ public class TagsActivity extends Activity {
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 				try {
+					if (isRefresh) {
+						mCategoryData.clear();
+					}
+
 					Log.d("TagsActivity", "All Tags: " + result);
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
 					mMaxAllTags = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 
 					JSONArray categoryArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
@@ -277,7 +287,7 @@ public class TagsActivity extends Activity {
 
 						mCategoryData.add(tagCategory);
 					}
-					updateAllTagsListView();
+					updateAllTagsListView(isRefresh);
 				} catch (JSONException e) {
 					e.printStackTrace();
 					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
@@ -291,9 +301,8 @@ public class TagsActivity extends Activity {
 			}
 		});
 
-		request.get(
-				ServerKeys.FULL_URL_GET_TAG_LIST + "/?pageindex=" + pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE,
-				null);
+		request.get(ServerKeys.FULL_URL_GET_TAG_LIST + "/?pageindex=" + pageIndex + "&pagesize="
+				+ ServerKeys.PAGE_SIZE, null);
 		mProgressDialog.show();
 	}
 }

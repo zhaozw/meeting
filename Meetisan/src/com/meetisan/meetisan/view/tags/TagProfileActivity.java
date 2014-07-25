@@ -55,7 +55,6 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			ToastHelper.showToast(R.string.app_occurred_exception);
 			this.finish();
 		}
-		mTagID = 4; // TODO.. for test
 
 		initView();
 

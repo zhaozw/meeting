@@ -15,16 +15,16 @@ import com.meetisan.meetisan.widget.CircleImageView;
 public class MeetingAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
-	private List<MeetingInfo> peopleData;
+	private List<MeetingInfo> meetingData;
 
-	public MeetingAdapter(Context mContext, List<MeetingInfo> peopleData) {
+	public MeetingAdapter(Context mContext, List<MeetingInfo> meetingData) {
 		inflater = LayoutInflater.from(mContext);
-		this.peopleData = peopleData;
+		this.meetingData = meetingData;
 	}
 
 	@Override
 	public int getCount() {
-		return peopleData.size();
+		return meetingData.size();
 	}
 
 	@Override
@@ -56,17 +56,14 @@ public class MeetingAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		MeetingInfo mPeopleInfo = peopleData.get(position);
+		MeetingInfo mMeetingInfo = meetingData.get(position);
 
-		// for test
-		if (position % 2 == 0) {
-			holder.mCircleImage.setImageResource(R.drawable.portrait);
-		} else {
-			holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		if (mMeetingInfo.getLogo() != null) {
+			holder.mCircleImage.setImageBitmap(mMeetingInfo.getLogo());
 		}
-		holder.mNameTxt.setText(mPeopleInfo.getName());
-		holder.mDistanceTxt.setText(String.valueOf(mPeopleInfo.getDistance() + "m"));
-		List<TagInfo> tagsList = mPeopleInfo.getTags();
+		holder.mNameTxt.setText(mMeetingInfo.getTitle());
+		holder.mDistanceTxt.setText(String.format("%.2f", mMeetingInfo.getDistance()) + "m");
+		List<TagInfo> tagsList = mMeetingInfo.getTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {
 			holder.mTagOneTxt.setText(tagsList.get(0).getTitle());
