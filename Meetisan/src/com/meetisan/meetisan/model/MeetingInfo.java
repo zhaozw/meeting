@@ -9,11 +9,11 @@ public class MeetingInfo {
 	/** people id */
 	private long id = 0;
 	/** people name */
-	private String name = null;
+	private String title = null;
 	/** people icon */
 	private Bitmap logo = null;
 	/** people distance */
-	private long distance = 0;
+	private double distance = 0.0;
 	/** people tags */
 	private List<TagInfo> tags = new ArrayList<TagInfo>();
 
@@ -25,12 +25,12 @@ public class MeetingInfo {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Bitmap getLogo() {
@@ -41,11 +41,11 @@ public class MeetingInfo {
 		this.logo = logo;
 	}
 
-	public long getDistance() {
+	public double getDistance() {
 		return distance;
 	}
 
-	public void setDistance(long distance) {
+	public void setDistance(double distance) {
 		this.distance = distance;
 	}
 
@@ -57,7 +57,7 @@ public class MeetingInfo {
 		this.tags = tags;
 	}
 
-	public boolean addTags(TagInfo tag) {
+	public boolean addTag(TagInfo tag) {
 		if (tag == null) {
 			return false;
 		}

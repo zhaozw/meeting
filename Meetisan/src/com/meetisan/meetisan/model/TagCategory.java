@@ -3,11 +3,15 @@ package com.meetisan.meetisan.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Bitmap;
+
 public class TagCategory {
 	/** tag category id */
 	private long id = 0;
 	/** tag category name */
-	private String name = null;
+	private String title = null;
+	/** tag category logo */
+	private Bitmap logo = null;
 	/** tags in this category */
 	private List<TagInfo> tags = new ArrayList<TagInfo>();
 
@@ -19,12 +23,20 @@ public class TagCategory {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Bitmap getLogo() {
+		return logo;
+	}
+
+	public void setLogo(Bitmap logo) {
+		this.logo = logo;
 	}
 
 	public List<TagInfo> getTags() {

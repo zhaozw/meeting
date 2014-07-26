@@ -174,7 +174,9 @@ public class SwipeListView extends ListView {
 					long time = ev.getEventTime() - ev.getDownTime();
 					if (time < mClickTimeout) {
 						Log.i(TAG, "-----On Item Click-----");
-						performItemClick(mCurItemView, mCurPosition, mCurItemView.getId());
+						if (mCurItemView != null) {
+							performItemClick(mCurItemView, mCurPosition, mCurItemView.getId());
+						}
 					} else {
 						Log.i(TAG, "5---> hiddenRight");
 						/**
@@ -194,6 +196,9 @@ public class SwipeListView extends ListView {
 	}
 
 	private void showRight(final View rightView, final int curPosition) {
+		if (rightView == null) {
+			return;
+		}
 		RelativeLayout rightLayout = (RelativeLayout) rightView.findViewById(R.id.item_right);
 		rightLayout.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

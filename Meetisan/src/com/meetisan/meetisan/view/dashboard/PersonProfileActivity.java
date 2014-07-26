@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,12 +24,14 @@ import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.LabelWithIcon;
 
 public class PersonProfileActivity extends Activity implements OnClickListener {
 
 	private Bitmap mUserLogo;
 	private TextView mSignatureTxt, mUniversityTxt, mTagOneTxt, mTagTwoTxt, mTagThreeTxt,
 			mTagFourTxt, mTagFiveTxt, mTagNoTxt;
+	private LabelWithIcon mMoreBtn;
 	private PeopleInfo mUserInfo;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,13 +51,15 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 	}
 
 	private void initView() {
-		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
+		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
 		mTitleTxt.setText(R.string.person_profile);
 		mTitleTxt.setVisibility(View.VISIBLE);
-		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_icon_left);
+		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);
 
+		mMoreBtn = (LabelWithIcon) findViewById(R.id.btn_more);
+		mMoreBtn.setOnClickListener(this);
 		TextView mNameTxt = (TextView) findViewById(R.id.txt_name);
 		if (mUserInfo.getName() != null) {
 			mNameTxt.setText(mUserInfo.getName());
@@ -115,8 +120,12 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_title_icon_left:
+		case R.id.btn_title_left:
 			finish();
+			break;
+		case R.id.btn_more:
+			Intent intent = new Intent(this, MoreInfoActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			break;

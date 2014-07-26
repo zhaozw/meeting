@@ -56,14 +56,10 @@ public class TagsAdapter extends BaseAdapter {
 		}
 
 		TagInfo mTagInfo = tagData.get(position);
-
-		// for test
-		if (position % 2 == 0) {
-			holder.mCircleImage.setImageResource(R.drawable.portrait);
-		} else {
-			holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		if (mTagInfo.getLogo() != null) {
+			holder.mCircleImage.setImageBitmap(mTagInfo.getLogo());
 		}
-		holder.mNameTxt.setText(mTagInfo.getName());
+		holder.mNameTxt.setText(mTagInfo.getTitle());
 		holder.mEndoredTxt.setText(String.valueOf(mTagInfo.getEndorsed()));
 		holder.mPeopleTxt.setText(String.valueOf(mTagInfo.getPeople()));
 		holder.mMeetingsTxt.setText(String.valueOf(mTagInfo.getMeetings()));

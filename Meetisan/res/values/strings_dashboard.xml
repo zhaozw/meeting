@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="all_meetings">All Meetings</string>
     <string name="upcoming_meetings">Upcoming Meetings</string>
-    
     <string name="settings">Settings</string>
-    
+
     <!-- settings of notify me when -->
     <string name="notify">Notify</string>
     <string name="notify_me_when">Notify me when</string>
     <string name="someone_joins_meeting">Someone joins my meeting</string>
     <string name="receive_invitation_meeting">I receive an invitation to a meeting</string>
-    
     <string name="push_notifications">Push Notifications</string>
-    
+
     <!-- settings of notify me when -->
     <string name="privacy">Privacy</string>
     <string name="public_my_tags">Allow others to see my tags</string>
     <string name="public_meetings_create">Allow others to see meetings I\'ve created</string>
     <string name="public_meetings_attend">Allow others to see meetings I\'ve attended</string>
-    
     <string name="blocked_people">People I\'ve blocked</string>
-    
+
     <!-- settings of about meetisan -->
     <string name="about_meetisan">About Meetisan</string>
     <string name="to_score">To score</string>
     <string name="link_us_on_facebook">Link us on Facebook</string>
     <string name="follow_us_on_linkedin">Follow us on Linkedin</string>
     <string name="feedback">Feedback</string>
-    
     <string name="logout">LogOut</string>
-    
+
     <!-- Dashboard Person Profile -->
     <string name="person_profile">Person Profile</string>
     <string name="top_tags">Top Tags</string>
@@ -38,5 +34,18 @@
     <string name="more_information">More Information</string>
     <string name="let_us_meet">Let\'s Meet!</string>
     <string name="report">Report</string>
-    
+
+    <!-- Dashboard Person Profile More Information -->
+    <string name="information">Information</string>
+    <string name="profile_university">University Profile</string>
+    <string name="profile_name">Name:</string>
+    <string name="profile_school">School:</string>
+    <string name="profile_city">City:</string>
+    <string name="profile_age">Age:</string>
+    <string name="profile_gender">Gender:</string>
+    <string name="profile_professional">Professional Profile</string>
+    <string name="profile_experience">Experience:</string>
+    <string name="profile_education">Education:</string>
+    <string name="profile_skills">Skills:</string>
+
 </resources>

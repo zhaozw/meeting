@@ -66,7 +66,7 @@ public class SelectTagsAdapter extends BaseAdapter {
 		if (info.getLogo() != null) {
 			holder.icon.setImageBitmap(info.getLogo());
 		}
-		holder.name.setText(info.getName());
+		holder.name.setText(info.getTitle());
 		holder.description.setText(info.getDescription());
 		holder.people.setText(String.valueOf(info.getPeople()));
 		holder.meetings.setText(String.valueOf(info.getMeetings()));

@@ -78,7 +78,6 @@
                     android:layout_toLeftOf="@+id/btn_connections"
                     android:layout_toRightOf="@+id/iv_portrait"
                     android:gravity="center_vertical"
-                    android:text="@string/app_name"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_middle" />
 
@@ -211,6 +210,15 @@
                     <TextView
                         android:id="@+id/txt_tag_three"
                         style="@style/TagLabelStyle" />
+
+                    <TextView
+                        android:id="@+id/txt_no_tags"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_middle"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <TextView
@@ -242,7 +250,18 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:scaleType="center"
-                        android:src="@drawable/portrait_default" />
+                        android:src="@drawable/portrait_default"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/txt_no_moments"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_middle"
+                        android:text="@string/no_tag_moment_image"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <TextView

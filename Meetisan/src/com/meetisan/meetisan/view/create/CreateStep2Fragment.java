@@ -65,7 +65,7 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 		// data for test
 		for (int i = 0; i < 15; i++) {
 			TagInfo mInfo = new TagInfo();
-			mInfo.setName("Tags Name " + i);
+			mInfo.setTitle("Tags Name " + i);
 			mInfo.setDescription("tags description" + 1);
 			mInfo.setState(0);
 			mInfo.setEndorsed(i * 5);
