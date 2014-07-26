@@ -2,20 +2,14 @@ package com.meetisan.meetisan.view.create;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.internal.n;
 import com.meetisan.meetisan.R;
 
 public class CreateActivity extends FragmentActivity implements OnClickListener,
@@ -129,13 +123,15 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		default:
 			break;
 		}
+		
 		switch (id) {
 		case R.id.btn_title_left:
-			// TODO back
 			mCurrentStepIndex--;
 			break;
 		case R.id.btn_title_right:
-			// TODO next
+			if (!checkUserInput(mCurrentStepIndex)) {
+				return;
+			}
 			mCurrentStepIndex++;
 			break;
 		default:
@@ -182,6 +178,20 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		setTitleViews(mCurrentStepIndex);
 	}
 
+	private boolean checkUserInput(int index) {
+		switch (index) {
+		case 1:
+			return mCreateStep1Fragment.checkUserInput();
+		case 2:
+			return mCreateStep2Fragment.checkUserInput();
+		case 3:
+			
+		default:
+			break;
+		}
+		return true;
+	}
+	
 	@Override
 	public void onFragmentInteraction(Uri uri) {
 		// TODO Auto-generated method stub

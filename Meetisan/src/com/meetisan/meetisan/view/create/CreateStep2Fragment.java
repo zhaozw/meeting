@@ -51,6 +51,15 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 		return view;
 	}
 
+	public boolean checkUserInput() {
+		for (TagInfo tagInfo : mTagsData) {
+			if (tagInfo.getState() == 1) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void initTagsData() {
 		mTagsData.clear();
 		// data for test
@@ -66,6 +75,7 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 			mTagsData.add(mInfo);
 		}
 	}
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
