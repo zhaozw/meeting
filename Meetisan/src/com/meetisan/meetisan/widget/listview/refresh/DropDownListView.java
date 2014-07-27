@@ -406,13 +406,13 @@ public class DropDownListView extends ListView implements OnScrollListener {
                  * when state of ListView is SCROLL_STATE_TOUCH_SCROLL(ListView is scrolling and finger is on screen)
                  * and header status is not HEADER_STATUS_LOADING
                  * <ul>
-                 * if header layout is visiable,
+                 * if header layout is visible,
                  * <li>if height of header is higher than a fixed value, then set header status to
                  * HEADER_STATUS_RELEASE_TO_LOAD.</li>
                  * <li>else set header status to HEADER_STATUS_DROP_DOWN_TO_LOAD.</li>
                  * </ul>
                  * <ul>
-                 * if header layout is not visiable,
+                 * if header layout is not visible,
                  * <li>set header status to HEADER_STATUS_CLICK_TO_LOAD.</li>
                  * </ul>
                  */
