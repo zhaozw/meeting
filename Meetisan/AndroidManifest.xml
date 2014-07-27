@@ -93,7 +93,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.tags.SwipeListActivity"
+            android:name="com.meetisan.meetisan.view.tags.TagsCategoryActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>

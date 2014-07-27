@@ -76,7 +76,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_right_arrow"
         android:layout_width="40dp"
         android:layout_height="20dp"

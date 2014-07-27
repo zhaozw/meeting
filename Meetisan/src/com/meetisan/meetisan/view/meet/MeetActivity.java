@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
@@ -106,6 +108,14 @@ public class MeetActivity extends Activity {
 				}
 			}
 		});
+		mPeopleListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				ToastHelper.showToast("Click Item: " + arg2);
+			}
+		});
 
 		mMeetingsListView = (DropDownListView) findViewById(R.id.list_meetings);
 		mMeetingAdapter = new MeetingAdapter(this, mMeetingData);
@@ -159,14 +169,19 @@ public class MeetActivity extends Activity {
 	/**
 	 * get Peoples from server
 	 * 
-	 * @param pageIndex load page index
-	 * @param mLat location
-	 * @param mLon location
-	 * @param isRefresh is refresh or load more
-	 * @param isNeedsDialog weather show progress dialog
+	 * @param pageIndex
+	 *            load page index
+	 * @param mLat
+	 *            location
+	 * @param mLon
+	 *            location
+	 * @param isRefresh
+	 *            is refresh or load more
+	 * @param isNeedsDialog
+	 *            weather show progress dialog
 	 */
-	private void getPeoplesFromServer(int pageIndex, float mLat, float mLon,
-			final boolean isRefresh, final boolean isNeedsDialog) {
+	private void getPeoplesFromServer(int pageIndex, float mLat, float mLon, final boolean isRefresh,
+			final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -191,8 +206,7 @@ public class MeetActivity extends Activity {
 						mPeopleData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 					mTotalPeople = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 
 					JSONArray peopleArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
@@ -209,10 +223,8 @@ public class MeetActivity extends Activity {
 						if (!userJson.isNull(ServerKeys.KEY_UNIVERSITY)) {
 							peopleInfo.setUniversity(userJson.getString(ServerKeys.KEY_UNIVERSITY));
 						}
-						Log.d(TAG, "---People Name: " + peopleInfo.getName() + "; UNIV: "
-								+ peopleInfo.getUniversity());
-						peopleInfo.setAvatar(Util.base64ToBitmap(userJson
-								.getString(ServerKeys.KEY_AVATAR)));
+						Log.d(TAG, "---People Name: " + peopleInfo.getName() + "; UNIV: " + peopleInfo.getUniversity());
+						peopleInfo.setAvatar(Util.base64ToBitmap(userJson.getString(ServerKeys.KEY_AVATAR)));
 						peopleInfo.setDistance(userJson.getDouble(ServerKeys.KEY_DISTANCE));
 
 						JSONArray tagArray = peopleJson.getJSONArray(ServerKeys.KEY_TAGS);
@@ -245,9 +257,8 @@ public class MeetActivity extends Activity {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_UESR_LIST + "/" + mUserId + "/?pageindex=" + pageIndex
-				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&lat=" + mLat + "&lon=" + mLon
-				+ "&tagIDs=" + "&name=", null);
+		request.get(ServerKeys.FULL_URL_GET_UESR_LIST + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
+				+ ServerKeys.PAGE_SIZE + "&lat=" + mLat + "&lon=" + mLon + "&tagIDs=" + "&name=", null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();
@@ -257,15 +268,21 @@ public class MeetActivity extends Activity {
 	/**
 	 * get Meetings from server
 	 * 
-	 * @param pageIndex load page index
-	 * @param orderType get list order by edition
-	 * @param mLat location
-	 * @param mLon location
-	 * @param isRefresh is refresh or load more
-	 * @param isNeedsDialog weather show progress dialog
+	 * @param pageIndex
+	 *            load page index
+	 * @param orderType
+	 *            get list order by edition
+	 * @param mLat
+	 *            location
+	 * @param mLon
+	 *            location
+	 * @param isRefresh
+	 *            is refresh or load more
+	 * @param isNeedsDialog
+	 *            weather show progress dialog
 	 */
-	private void getMeetingsFromServer(int pageIndex, int orderType, float mLat, float mLon,
-			final boolean isRefresh, final boolean isNeedsDialog) {
+	private void getMeetingsFromServer(int pageIndex, int orderType, float mLat, float mLon, final boolean isRefresh,
+			final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -290,8 +307,7 @@ public class MeetActivity extends Activity {
 						mMeetingData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 					mTotalPeople = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 
 					JSONArray peopleArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
@@ -306,8 +322,7 @@ public class MeetActivity extends Activity {
 							meetingInfo.setTitle(meetingJson.getString(ServerKeys.KEY_TITLE));
 						}
 						meetingInfo.setDistance(meetingJson.getDouble(ServerKeys.KEY_DISTANCE));
-						meetingInfo.setLogo(Util.base64ToBitmap(meetingJson
-								.getString(ServerKeys.KEY_LOGO)));
+						meetingInfo.setLogo(Util.base64ToBitmap(meetingJson.getString(ServerKeys.KEY_LOGO)));
 
 						JSONArray tagArray = meetJson.getJSONArray(ServerKeys.KEY_TAGS);
 						for (int j = 0; j < tagArray.length(); j++) {
@@ -340,8 +355,8 @@ public class MeetActivity extends Activity {
 		});
 
 		request.get(ServerKeys.FULL_URL_GET_MEET_LIST + "/?pageindex=" + pageIndex + "&pagesize="
-				+ ServerKeys.PAGE_SIZE + "&ordertype=" + orderType + "&lat=" + mLat + "&lon="
-				+ mLon + "&tagIDs=" + "&title=", null);
+				+ ServerKeys.PAGE_SIZE + "&ordertype=" + orderType + "&lat=" + mLat + "&lon=" + mLon + "&tagIDs="
+				+ "&title=", null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();

@@ -6,12 +6,12 @@
     android:gravity="center" >
 
     <Button
-        android:id="@+id/btn_test_gcm"
+        android:id="@+id/btn_test_google_map"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
-        android:text="TestGCM"
+        android:text="TestGoogleMap"
         android:background="@android:color/transparent"
         android:scaleType="centerInside" />
 
