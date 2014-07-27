@@ -2,6 +2,8 @@ package com.meetisan.meetisan.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -286,5 +288,29 @@ public class Util {
 			return dm.widthPixels;
 		else
 			return dm.heightPixels;
+	}
+
+	/**
+	 * get current Format Date
+	 * 
+	 * @param format
+	 *            Date Format, default is [MM-dd HH:mm:ss]
+	 * @return current Format Date
+	 */
+	public static String getCurFormatDate(String format) {
+		if (format == null) {
+			format = "MM-dd HH:mm:ss";
+		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+		return dateFormat.format(new Date());
+	}
+
+	/**
+	 * get current Format Date
+	 * 
+	 * @return current Date [MM-dd HH:mm:ss]
+	 */
+	public static String getCurFormatDate() {
+		return getCurFormatDate("MM-dd HH:mm:ss");
 	}
 }

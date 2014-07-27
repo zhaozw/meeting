@@ -8,5 +8,7 @@
     <dimen name="wheel_value_text_size">20sp</dimen>
     <dimen name="wheel_label_text_size">12sp</dimen>
     
+    <dimen name="pull_to_refresh_header_text_size">14sp</dimen>
+    
 </resources>
 

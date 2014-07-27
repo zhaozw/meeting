@@ -1,8 +1,6 @@
 package com.meetisan.meetisan.view.tags;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -14,12 +12,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.segmented.SegmentedGroup;
@@ -37,13 +35,17 @@ import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.DeleteTouchListener;
 import com.meetisan.meetisan.widget.DeleteTouchListener.OnDeleteCallback;
-import com.meetisan.meetisan.widget.listview.refresh.DropDownListView;
-import com.meetisan.meetisan.widget.listview.refresh.DropDownListView.OnDropDownListener;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnLastItemVisibleListener;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
 public class TagsActivity extends Activity {
 
-	private DropDownListView mTagsListView;
-	private DropDownListView mCategoryListView;
+	// private DropDownListView mTagsListView;
+	private PullToRefreshListView mPullTagsListView, mPullCategoryListView;
+	private ListView mTagsListView;
+	private ListView mCategoryListView;
 	private List<TagInfo> mTagsData = new ArrayList<TagInfo>();
 	private List<TagCategory> mCategoryData = new ArrayList<TagCategory>();
 
@@ -72,21 +74,56 @@ public class TagsActivity extends Activity {
 		mTagsGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
+				mEmptyView.setVisibility(View.GONE);
 				if (checkedId == R.id.radio_my_tags) {
-					mCategoryListView.setVisibility(View.GONE);
-					mTagsListView.setVisibility(View.VISIBLE);
+					mPullCategoryListView.setVisibility(View.GONE);
+					mPullTagsListView.setVisibility(View.VISIBLE);
+					if (mTagsData.size() == 0) {
+						mEmptyView.setText("You don\'t have any Tags !");
+						mEmptyView.setVisibility(View.VISIBLE);
+					}
 				} else {
-					mTagsListView.setVisibility(View.GONE);
-					mCategoryListView.setVisibility(View.VISIBLE);
+					mPullTagsListView.setVisibility(View.GONE);
+					mPullCategoryListView.setVisibility(View.VISIBLE);
+					if (mCategoryData.size() == 0) {
+						mEmptyView.setText("You don\'t have any Tags !");
+						mEmptyView.setVisibility(View.VISIBLE);
+					}
 				}
 			}
 		});
 
-		mTagsListView = (DropDownListView) findViewById(R.id.list_my_tags);
+		mPullTagsListView = (PullToRefreshListView) findViewById(R.id.list_my_tags);
+		TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
+		mEmptyView.setText("You don\'t have any Tags !");
+		mPullTagsListView.setEmptyView(mEmptyView);
+		mPullTagsListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				// TODO Auto-generated method stub
+				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel("Last Refresh: " + Util.getCurFormatDate());
+				getMyTagsFromServer(1, true, false);
+			}
+		});
+		mPullTagsListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+
+			@Override
+			public void onLastItemVisible() {
+				// TODO Auto-generated method stub
+				int count = mTagsListView.getCount();
+				if (count < mMaxMyTags) {
+					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
+					getMyTagsFromServer(pageIndex, false, false);
+				}
+			}
+		});
+		mTagsListView = mPullTagsListView.getRefreshableView();
+		registerForContextMenu(mTagsListView);
 		mTagsAdapter = new TagsAdapter(this, mTagsData);
 		mTagsListView.setAdapter(mTagsAdapter);
-		mTagsListView.setVisibility(View.VISIBLE);
-		mTagsTouchListener = new DeleteTouchListener(mTagsListView, new OnDeleteCallback() {
+		mTagsTouchListener = new DeleteTouchListener((ListView) mTagsListView, new OnDeleteCallback() {
 
 			@Override
 			public void onDelete(ListView listView, int position) {
@@ -111,28 +148,33 @@ public class TagsActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		mTagsListView.setOnDropDownListener(new OnDropDownListener() {
+		mPullTagsListView.setVisibility(View.VISIBLE);
+
+		mPullCategoryListView = (PullToRefreshListView) findViewById(R.id.list_tags_category);
+		mPullCategoryListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
 			@Override
-			public void onDropDown() {
-				getMyTagsFromServer(1, true, false);
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				// TODO Auto-generated method stub
+				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel("Last Refresh: " + Util.getCurFormatDate());
+
+				getAllTagsFromServer(1, true, false);
 			}
 		});
-		mTagsListView.setOnBottomListener(new OnClickListener() {
+		mPullCategoryListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+
 			@Override
-			public void onClick(View v) {
-				int count = mTagsListView.getCount();
-				if (count < mMaxMyTags) {
-					mTagsListView.setHasMore(true);
+			public void onLastItemVisible() {
+				// TODO Auto-generated method stub
+				int count = mCategoryListView.getCount();
+				if (count < mMaxAllTags) {
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
-					getMyTagsFromServer(pageIndex, false, false);
-				} else {
-					mTagsListView.setHasMore(false);
-					mTagsListView.onBottomComplete();
+					getAllTagsFromServer(pageIndex, false, false);
 				}
 			}
 		});
-
-		mCategoryListView = (DropDownListView) findViewById(R.id.list_tags_category);
+		mCategoryListView = mPullCategoryListView.getRefreshableView();
+		registerForContextMenu(mTagsListView);
 		mCategoryAdapter = new TagCategoryAdapter(this, mCategoryData);
 		mCategoryListView.setAdapter(mCategoryAdapter);
 		mCategoryListView.setOnItemClickListener(new OnItemClickListener() {
@@ -147,45 +189,20 @@ public class TagsActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		mCategoryListView.setOnDropDownListener(new OnDropDownListener() {
-			@Override
-			public void onDropDown() {
-				getAllTagsFromServer(1, true, false);
-			}
-		});
-		mCategoryListView.setOnBottomListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				int count = mCategoryListView.getCount();
-				if (count < mMaxAllTags) {
-					mCategoryListView.setHasMore(true);
-					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
-					getAllTagsFromServer(pageIndex, false, false);
-				} else {
-					mCategoryListView.setHasMore(false);
-					mCategoryListView.onBottomComplete();
-				}
-			}
-		});
+		mPullCategoryListView.setVisibility(View.GONE);
 	}
 
 	private void updateMyTagsListView(boolean isRefresh) {
 		mTagsAdapter.notifyDataSetChanged();
 		if (isRefresh) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm:ss");
-			mTagsListView.onDropDownComplete("Last: " + dateFormat.format(new Date()));
-		} else {
-			mTagsListView.onBottomComplete();
+			mPullTagsListView.onRefreshComplete();
 		}
 	}
 
 	private void updateAllTagsListView(boolean isRefresh) {
 		mCategoryAdapter.notifyDataSetChanged();
 		if (isRefresh) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm:ss");
-			mCategoryListView.onDropDownComplete("Last: " + dateFormat.format(new Date()));
-		} else {
-			mCategoryListView.onBottomComplete();
+			mPullCategoryListView.onRefreshComplete();
 		}
 	}
 

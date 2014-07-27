@@ -9,10 +9,4 @@
         <attr name="android:text" />
         <attr name="android:src" />
     </declare-styleable>
-    <declare-styleable name="DropListView">
-        <attr name="isDropDownStyle" format="boolean" />
-        <attr name="isOnBottomStyle" format="boolean" />
-        <attr name="isAutoLoadOnBottom" format="boolean" />
-    </declare-styleable>
-
-</resources>
+</resources>

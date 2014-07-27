@@ -1,8 +1,6 @@
 package com.meetisan.meetisan.view.meet;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -13,11 +11,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.segmented.SegmentedGroup;
@@ -34,13 +33,16 @@ import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
-import com.meetisan.meetisan.widget.listview.refresh.DropDownListView;
-import com.meetisan.meetisan.widget.listview.refresh.DropDownListView.OnDropDownListener;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnLastItemVisibleListener;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
 public class MeetActivity extends Activity {
 	private static final String TAG = MeetActivity.class.getSimpleName();
 
-	private DropDownListView mPeopleListView, mMeetingsListView;
+	private PullToRefreshListView mPullPeopleView, mPullMeetingsView;
+	private ListView mPeopleListView, mMeetingsListView;
 	private List<PeopleInfo> mPeopleData = new ArrayList<PeopleInfo>();
 	private List<MeetingInfo> mMeetingData = new ArrayList<MeetingInfo>();
 
@@ -72,42 +74,57 @@ public class MeetActivity extends Activity {
 		mTagsGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
+				mEmptyView.setVisibility(View.GONE);
 				if (checkedId == R.id.radio_people) {
-					mMeetingsListView.setVisibility(View.GONE);
-					mPeopleListView.setVisibility(View.VISIBLE);
+					mPullMeetingsView.setVisibility(View.GONE);
+					mPullPeopleView.setVisibility(View.VISIBLE);
+					if (mPeopleData.size() == 0) {
+						mEmptyView.setText("Don\'t have any People !");
+						mEmptyView.setVisibility(View.VISIBLE);
+					}
 				} else {
-					mPeopleListView.setVisibility(View.GONE);
-					mMeetingsListView.setVisibility(View.VISIBLE);
+					mPullPeopleView.setVisibility(View.GONE);
+					mPullMeetingsView.setVisibility(View.VISIBLE);
+					if (mMeetingData.size() == 0) {
+						mEmptyView.setText("You don\'t have any Meeting !");
+						mEmptyView.setVisibility(View.VISIBLE);
+					}
 				}
 			}
 		});
 
-		mPeopleListView = (DropDownListView) findViewById(R.id.list_people);
-		mPeopleAdapter = new PeopleAdapter(this, mPeopleData);
-		mPeopleListView.setAdapter(mPeopleAdapter);
-		mPeopleAdapter.notifyDataSetChanged();
-		mPeopleListView.setVisibility(View.VISIBLE);
-		mPeopleListView.setOnDropDownListener(new OnDropDownListener() {
+		mPullPeopleView = (PullToRefreshListView) findViewById(R.id.list_people);
+		TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
+		mEmptyView.setText("Don\'t have any People !");
+		mPullPeopleView.setEmptyView(mEmptyView);
+		mPullPeopleView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
 			@Override
-			public void onDropDown() {
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				// TODO Auto-generated method stub
+				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel("Last Refresh: " + Util.getCurFormatDate());
 				getPeoplesFromServer(1, mLat, mLon, true, false);
 			}
 		});
-		mPeopleListView.setOnBottomListener(new OnClickListener() {
+		mPullPeopleView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 
 			@Override
-			public void onClick(View v) {
+			public void onLastItemVisible() {
+				// TODO Auto-generated method stub
 				int count = mPeopleListView.getCount();
 				if (count < mTotalPeople) {
-					mPeopleListView.setHasMore(true);
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
 					getPeoplesFromServer(pageIndex, mLat, mLon, false, false);
-				} else {
-					mPeopleListView.setHasMore(false);
-					mPeopleListView.onBottomComplete();
 				}
 			}
 		});
+		mPeopleListView = mPullPeopleView.getRefreshableView();
+		registerForContextMenu(mPeopleListView);
+		mPeopleAdapter = new PeopleAdapter(this, mPeopleData);
+		mPeopleListView.setAdapter(mPeopleAdapter);
+		mPeopleAdapter.notifyDataSetChanged();
+		mPullPeopleView.setVisibility(View.VISIBLE);
 		mPeopleListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -116,51 +133,49 @@ public class MeetActivity extends Activity {
 				ToastHelper.showToast("Click Item: " + arg2);
 			}
 		});
+		mPullPeopleView.setVisibility(View.VISIBLE);
 
-		mMeetingsListView = (DropDownListView) findViewById(R.id.list_meetings);
-		mMeetingAdapter = new MeetingAdapter(this, mMeetingData);
-		mMeetingsListView.setAdapter(mMeetingAdapter);
-		mMeetingAdapter.notifyDataSetChanged();
-		mMeetingsListView.setOnDropDownListener(new OnDropDownListener() {
+		mPullMeetingsView = (PullToRefreshListView) findViewById(R.id.list_meetings);
+		mPullMeetingsView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
 			@Override
-			public void onDropDown() {
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				// TODO Auto-generated method stub
+				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel("Last Refresh: " + Util.getCurFormatDate());
 				getMeetingsFromServer(1, mOrderType, mLat, mLon, true, false);
 			}
 		});
-		mMeetingsListView.setOnBottomListener(new OnClickListener() {
+		mPullMeetingsView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 
 			@Override
-			public void onClick(View v) {
+			public void onLastItemVisible() {
+				// TODO Auto-generated method stub
 				int count = mMeetingsListView.getCount();
 				if (count < mTotalMeetings) {
-					mMeetingsListView.setHasMore(true);
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
 					getMeetingsFromServer(pageIndex, mOrderType, mLat, mLon, true, true);
-				} else {
-					mMeetingsListView.setHasMore(false);
-					mMeetingsListView.onBottomComplete();
 				}
 			}
 		});
+		mMeetingsListView = mPullMeetingsView.getRefreshableView();
+		registerForContextMenu(mMeetingsListView);
+		mMeetingAdapter = new MeetingAdapter(this, mMeetingData);
+		mMeetingsListView.setAdapter(mMeetingAdapter);
+		mMeetingAdapter.notifyDataSetChanged();
+		mPullMeetingsView.setVisibility(View.GONE);
 	}
 
 	private void updatePeopleListView(boolean isRefresh) {
 		mPeopleAdapter.notifyDataSetChanged();
 		if (isRefresh) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm:ss");
-			mPeopleListView.onDropDownComplete("Last: " + dateFormat.format(new Date()));
-		} else {
-			mPeopleListView.onBottomComplete();
+			mPullPeopleView.onRefreshComplete();
 		}
 	}
 
 	private void updateMeetingsListView(boolean isRefresh) {
 		mMeetingAdapter.notifyDataSetChanged();
 		if (isRefresh) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm:ss");
-			mMeetingsListView.onDropDownComplete("Last: " + dateFormat.format(new Date()));
-		} else {
-			mMeetingsListView.onBottomComplete();
+			mPullMeetingsView.onRefreshComplete();
 		}
 	}
 

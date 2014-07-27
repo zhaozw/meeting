@@ -12,6 +12,8 @@
 
 	<color name="label_with_icon_preesed">#FFDDDDDD</color>
 	<color name="listview_bg_preesed">#FFDDDDDD</color>
+	
+	<color name="content_empty_tips_text_color">#8CC3CF</color>
 
 	<!-- for search panel -->
     <color name="search_list_divider_color">#EBEBEB</color>
