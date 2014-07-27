@@ -37,7 +37,7 @@
                 <RadioButton
                     android:id="@+id/rb_create_maximum_number_single"
                     style="@style/CreateActivityItemSelected"
-                    android:checked="false"
+                    android:checked="true"
                     android:text="@string/single_meeting" />
 
                 <View style="@style/CreateActivityDividingLine" />
@@ -45,7 +45,6 @@
                 <RadioButton
                     android:id="@+id/rb_create_maximum_number_multiple"
                     style="@style/CreateActivityItemSelected"
-                    android:checked="true"
                     android:text="@string/multiple_meeting" />
             </RadioGroup>
 
@@ -54,18 +53,21 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="@dimen/activity_create_item_height"
             android:layout_marginTop="30dp"
             android:orientation="vertical" >
 
             <View style="@style/CreateActivityDividingLine" />
 
             <RelativeLayout
+                android:id="@+id/rl_create_location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical" >
+                android:layout_gravity="center_vertical"
+                android:clickable="true" >
 
                 <TextView
+                    android:id="@+id/tv_create_location_tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -86,6 +88,19 @@
                     android:gravity="center"
                     android:scaleType="centerInside"
                     android:src="@drawable/icon_right_arrow" />
+
+                <TextView
+                    android:id="@+id/tv_create_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toLeftOf="@id/iv_right_arrow"
+                    android:layout_toRightOf="@id/tv_create_location_tips"
+                    android:ellipsize="end"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black" />
             </RelativeLayout>
 
             <View style="@style/CreateActivityDividingLine" />

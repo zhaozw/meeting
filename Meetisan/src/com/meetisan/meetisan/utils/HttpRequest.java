@@ -63,6 +63,11 @@ public class HttpRequest {
 		finalHttp.post(fullUrl, params, new MyAjaxCallBack(fullUrl));
 	}
 
+	public void delete(String fullUrl) {
+		Log.d(LOG_CAT, "URL of Delete method:" + fullUrl);
+		finalHttp.delete(fullUrl, new MyAjaxCallBack(fullUrl));
+	}
+
 	private class MyAjaxCallBack extends AjaxCallBack<String> {
 		private String myUrl;
 
@@ -95,10 +100,12 @@ public class HttpRequest {
 					mListener.onSuccess(myUrl, result);
 					// }
 				} else {
-					mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED, json.getString(ServerKeys.KEY_MSG));
+					mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED,
+							json.getString(ServerKeys.KEY_MSG));
 				}
 			} catch (JSONException e) {
-				mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED, "Request data is not correct json object");
+				mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED,
+						"Request data is not correct json object");
 				e.printStackTrace();
 			}
 		}

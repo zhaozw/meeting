@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.model.TagInfo;
+import com.meetisan.meetisan.utils.ToastHelper;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment
@@ -51,6 +52,16 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 		return view;
 	}
 
+	public boolean checkUserInput() {
+		for (TagInfo tagInfo : mTagsData) {
+			if (tagInfo.getState() == 1) {
+				return true;
+			}
+		}
+		ToastHelper.showToast(R.string.please_select_some_tags);
+		return false;
+	}
+	
 	private void initTagsData() {
 		mTagsData.clear();
 		// data for test
@@ -66,6 +77,7 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 			mTagsData.add(mInfo);
 		}
 	}
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
