@@ -15,6 +15,8 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import cn.jpush.android.api.JPushInterface;
+
 import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
@@ -188,6 +190,10 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		Map<String, String> data = new TreeMap<String, String>();
 		data.put(ServerKeys.KEY_EMAIL, email);
 		data.put(ServerKeys.KEY_PASSWORD, pwd);
+		String registrationID = JPushInterface.getRegistrationID(getApplicationContext());
+		if (registrationID != null) {
+			data.put(ServerKeys.KEY_REG_ID, registrationID);
+		}
 		request.post(ServerKeys.FULL_URL_LOGIN, data);
 		mProgressDialog.show();
 	}
