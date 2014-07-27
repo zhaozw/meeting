@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
@@ -18,7 +17,7 @@ public class TagCategoryAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<TagCategory> categoryData;
 
-	private onRightItemClickListener mListener = null;
+	// private onRightItemClickListener mListener = null;
 
 	public TagCategoryAdapter(Context mContext, List<TagCategory> categoryData) {
 		inflater = LayoutInflater.from(mContext);
@@ -78,16 +77,16 @@ public class TagCategoryAdapter extends BaseAdapter {
 			holder.mThreeTxt.setVisibility(View.VISIBLE);
 		}
 
-		holder.mRightItem.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				holder.mRightItem.setVisibility(View.GONE);
-				categoryData.remove(position); // remove list item
-				if (mListener != null) {
-					mListener.onRightItemClick(holder.mRightItem, position);
-				}
-				notifyDataSetChanged();
-			}
-		});
+		// holder.mRightItem.setOnClickListener(new OnClickListener() {
+		// public void onClick(View v) {
+		// holder.mRightItem.setVisibility(View.GONE);
+		// categoryData.remove(position); // remove list item
+		// if (mListener != null) {
+		// mListener.onRightItemClick(holder.mRightItem, position);
+		// }
+		// notifyDataSetChanged();
+		// }
+		// });
 		return convertView;
 	}
 
@@ -100,11 +99,12 @@ public class TagCategoryAdapter extends BaseAdapter {
 		TextView mThreeTxt;
 	}
 
-	public void setOnRightItemClickListener(onRightItemClickListener listener) {
-		mListener = listener;
-	}
-
-	public interface onRightItemClickListener {
-		void onRightItemClick(View view, int position);
-	}
+	// public void setOnRightItemClickListener(onRightItemClickListener
+	// listener) {
+	// mListener = listener;
+	// }
+	//
+	// public interface onRightItemClickListener {
+	// void onRightItemClick(View view, int position);
+	// }
 }

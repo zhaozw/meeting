@@ -22,7 +22,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--
      The following two permissions are not required to use
-     Google Maps Android API v2, but are recommended.
+     Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -45,7 +45,7 @@
 
         <!--
              email:dev.meetisan@gmail.com
-        	password:meetisan123
+        	password:meetisan123
         -->
         <!-- API key for google maps -->
         <meta-data
@@ -94,7 +94,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.tags.SwipeListActivity"
+            android:name="com.meetisan.meetisan.view.tags.TagsCategoryActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
