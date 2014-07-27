@@ -63,7 +63,8 @@
                 android:id="@+id/rl_create_location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical" >
+                android:layout_gravity="center_vertical"
+                android:clickable="true" >
 
                 <TextView
                     android:id="@+id/tv_create_location_tips"
