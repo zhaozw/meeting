@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -138,7 +139,7 @@ public class MeetActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				// TODO Auto-generated method stub
-				ToastHelper.showToast("Click Item: " + arg2);
+				Intent intent = new Intent();
 			}
 		});
 		mPullPeopleView.setVisibility(View.VISIBLE);
@@ -175,6 +176,20 @@ public class MeetActivity extends Activity {
 		registerForContextMenu(mMeetingsListView);
 		mMeetingAdapter = new MeetingAdapter(this, mMeetingData);
 		mMeetingsListView.setAdapter(mMeetingAdapter);
+		mMeetingsListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				Bundle bundle = new Bundle();
+				bundle.putLong("MeetingID", mMeetingData.get(arg2 - 1).getId());
+				bundle.putLong("UserID", mUserId);
+				intent.setClass(MeetActivity.this, MeetProfileActivity.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		});
 		mMeetingAdapter.notifyDataSetChanged();
 		mPullMeetingsView.setVisibility(View.GONE);
 	}

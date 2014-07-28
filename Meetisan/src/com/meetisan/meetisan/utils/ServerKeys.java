@@ -23,6 +23,7 @@ public class ServerKeys {
 	private static final String API_TUSER = "/api/tuser/";
 	private static final String API_TTAG = "/api/ttag/";
 	private static final String API_TMEET = "/api/tmeeting/";
+	private static final String API_TMEET_MEMBER = "/api/tmeetingmember/";
 	private static final String API_TTAG_CATEGORY = "/api/tTagCategory/";
 
 	// URL
@@ -43,6 +44,10 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_MEET_LIST = SERVER_ADDRESS + API_TMEET + "getlist";
 	/** http://{域名}/api/ttag/GetByCategory/{tag分类ID}/?pageindex={页码}&pagesize={每页数量}&name={按tag的名字搜索，否则请传空} */
 	public static final String FULL_URL_GET_TAGS_BY_CATEGORY = SERVER_ADDRESS + API_TTAG + "GetByCategory";
+	/** http://{域名}/api/tmeeting/get/{meeting的ID}/?UserID={当前用户ID，用于判断是否参加了该meeting} */
+	public static final String FULL_URL_GET_MEET_INFO = SERVER_ADDRESS + API_TMEET + "get";
+	/** http://{域名}/api/tmeetingmember/getlist/{meeting的ID}/?pageindex={页码}&pagesize={每页数量} */
+	public static final String FULL_URL_GET_MEET_MEMBER = SERVER_ADDRESS + API_TMEET_MEMBER + "getlist";
 	
 	// Keys
 	public static final String KEY_ID = "ID";
@@ -75,5 +80,9 @@ public class ServerKeys {
 	public static final String KEY_LINK = "Link";
 	public static final String KEY_DESCRIPTION = "Description";
 	public static final String KEY_FOLLOW_STATUS = "FollowStatus";
+	public static final String KEY_JOIN_STATUS = "JoinStatus";
 	public static final String KEY_DISTANCE = "Distance";
+	public static final String KEY_ADDRESS = "Address";
+	public static final String KEY_START_TIME = "DetermineStartTime";
+	public static final String KEY_END_TIME = "DetermineEndTime";
 }

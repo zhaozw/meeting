@@ -24,24 +24,13 @@
             android:src="@drawable/icon_back" />
 
         <TextView
-            android:id="@+id/txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:ellipsize="end"
-            android:text="@string/tag_profile"
+            android:text="@string/meeting_details"
             android:textColor="@android:color/white"
             android:textSize="@dimen/activity_title_text_size" />
-
-        <ImageButton
-            android:id="@+id/btn_title_icon_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="5dp"
-            android:background="@android:color/transparent"
-            android:scaleType="centerInside"
-            android:src="@drawable/common_add" />
     </RelativeLayout>
 
     <ScrollView
@@ -62,7 +51,7 @@
 
                 <com.meetisan.meetisan.widget.CircleImageView
                     xmlns:customized="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/iv_portrait"
+                    android:id="@+id/iv_logo"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_centerVertical="true"
@@ -71,12 +60,12 @@
                     customized:border_width="0dp" />
 
                 <TextView
-                    android:id="@+id/txt_name"
+                    android:id="@+id/txt_meet_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_toLeftOf="@+id/btn_connections"
-                    android:layout_toRightOf="@+id/iv_portrait"
+                    android:layout_toRightOf="@+id/iv_logo"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:singleLine="true"
@@ -87,22 +76,11 @@
                     android:id="@+id/btn_connections"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@+id/btn_meeting"
-                    android:background="@android:color/transparent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/btn_people" />
-
-                <ImageButton
-                    android:id="@+id/btn_meeting"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:background="@android:color/transparent"
                     android:scaleType="centerInside"
-                    android:src="@drawable/btn_meetings" />
+                    android:src="@drawable/btn_people" />
             </RelativeLayout>
 
             <LinearLayout
@@ -115,75 +93,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="@string/general_details"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@android:color/darker_gray" />
-
-                <TextView
-                    android:id="@+id/txt_tag_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/tag_description"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="@dimen/text_size_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.6dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/gap_line_color" />
-
-                <TextView
-                    android:id="@+id/txt_tag_host"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/tag_host"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="@dimen/text_size_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.6dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/gap_line_color" />
-
-                <TextView
-                    android:id="@+id/txt_tag_link"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/tag_link"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="@dimen/text_size_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.6dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/gap_line_color" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="@string/associated_tags"
+                    android:text="@string/meeting_tags"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_small" />
 
@@ -202,15 +114,15 @@
                     android:padding="5dp" >
 
                     <TextView
-                        android:id="@+id/txt_tag_one"
+                        android:id="@+id/txt_meet_one"
                         style="@style/TagLabelStyle" />
 
                     <TextView
-                        android:id="@+id/txt_tag_two"
+                        android:id="@+id/txt_meet_two"
                         style="@style/TagLabelStyle" />
 
                     <TextView
-                        android:id="@+id/txt_tag_three"
+                        android:id="@+id/txt_meet_three"
                         style="@style/TagLabelStyle" />
 
                     <TextView
@@ -224,12 +136,42 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txt_tag_moments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/meeting_description"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/txt_meet_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/text_size_small" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/gap_line_color" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="@string/tag_moments"
+                    android:text="@string/meeting_time"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_small" />
 
@@ -240,72 +182,95 @@
                     android:background="@android:color/darker_gray" />
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp" >
-
-                    <ImageView
-                        android:id="@+id/iv_moments"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:scaleType="center"
-                        android:src="@drawable/portrait_default"
-                        android:visibility="gone" />
+                    android:padding="5dp" >
 
                     <TextView
-                        android:id="@+id/txt_no_moments"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/no_tag_moment_image"
+                        android:text="@string/start"
                         android:textColor="@android:color/darker_gray"
-                        android:textSize="@dimen/text_size_middle"
-                        android:visibility="gone" />
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/txt_time_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|right"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_small" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/txt_tag_history"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/gap_line_color" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="5dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/end"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/txt_time_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|right"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_small" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/gap_line_color" />
+
+                <com.meetisan.meetisan.widget.LabelWithIcon
+                    android:id="@+id/btn_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/location" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/gap_line_color" />
+
+                <Button
+                    android:id="@+id/btn_meet"
+                    style="@style/ButtonStyle"
                     android:layout_marginTop="20dp"
+                    android:text="@string/meet_or_cancel" />
+
+                <TextView
+                    android:id="@+id/txt_report"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:clickable="true"
                     android:gravity="center"
-                    android:text="@string/tag_history"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@android:color/darker_gray" />
-
-                <com.meetisan.meetisan.widget.LabelWithIcon
-                    android:id="@+id/btn_connected"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/people_connected" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.6dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/gap_line_color" />
-
-                <com.meetisan.meetisan.widget.LabelWithIcon
-                    android:id="@+id/btn_attended"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/meetings_attended"
-                    android:textSize="@dimen/text_size_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.6dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/gap_line_color" />
+                    android:padding="5dp"
+                    android:text="@string/report"
+                    android:textColor="@android:color/black" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

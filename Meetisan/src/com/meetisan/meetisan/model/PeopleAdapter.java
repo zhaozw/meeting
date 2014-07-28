@@ -63,8 +63,10 @@ public class PeopleAdapter extends BaseAdapter {
 			holder.mCircleImage.setImageBitmap(mPeopleInfo.getAvatar());
 		}
 		holder.mNameTxt.setText(mPeopleInfo.getName());
-		holder.mCollegeTxt.setText(String.valueOf(mPeopleInfo.getUniversity()));
-		holder.mDistanceTxt.setText(String.format("%.2f", mPeopleInfo.getDistance()) + "m");
+		holder.mCollegeTxt.setText(mPeopleInfo.getUniversity());
+		if (mPeopleInfo.getDistance() >= 0) {
+			holder.mDistanceTxt.setText(String.format("%.2f", mPeopleInfo.getDistance()) + "km");
+		}
 		List<TagInfo> tagsList = mPeopleInfo.getTopTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {

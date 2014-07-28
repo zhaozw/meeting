@@ -4,4 +4,15 @@
     <string name="people">People</string>
     <string name="meetings">Meetings</string>
     
+    
+    <string name="meeting_details">Meeting Details</string>
+    <string name="meeting_tags">Meeting Tags</string>
+    <string name="meeting_description">Meeting Description</string>
+    <string name="meeting_time">Meeting Time</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="location">Location</string>
+    <string name="meet_or_cancel">Meet/Cancel</string>
+    
+    <string name="meet_member">People in this meeting</string>
 </resources>

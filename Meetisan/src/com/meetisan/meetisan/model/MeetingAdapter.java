@@ -62,7 +62,7 @@ public class MeetingAdapter extends BaseAdapter {
 			holder.mCircleImage.setImageBitmap(mMeetingInfo.getLogo());
 		}
 		holder.mNameTxt.setText(mMeetingInfo.getTitle());
-		holder.mDistanceTxt.setText(String.format("%.2f", mMeetingInfo.getDistance()) + "m");
+		holder.mDistanceTxt.setText(String.format("%.2f", mMeetingInfo.getDistance()) + "km");
 		List<TagInfo> tagsList = mMeetingInfo.getTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {

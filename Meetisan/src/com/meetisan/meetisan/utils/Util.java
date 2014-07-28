@@ -313,4 +313,20 @@ public class Util {
 	public static String getCurFormatDate() {
 		return getCurFormatDate("MM-dd HH:mm:ss");
 	}
+
+	/**
+	 * convert Date[2014-07-18T10:03:41.753] to [2014-07-18 10:03]
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static String convertDateTime(String date) {
+		if (date == null || !date.contains("T")) {
+			return null;
+		}
+		int gapIndex = date.lastIndexOf("T");
+		String day = date.substring(0, gapIndex);
+		String time = date.substring(gapIndex + 1, gapIndex + 1 + 5);
+		return time + " " + day;
+	}
 }
