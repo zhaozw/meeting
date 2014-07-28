@@ -30,8 +30,8 @@ import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
-import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnLastItemVisibleListener;
-import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
 public class TagsCategoryActivity extends Activity {
@@ -68,6 +68,7 @@ public class TagsCategoryActivity extends Activity {
 		getMyTagsFromServer(1, true, true);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
 		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
 		mTitleTxt.setText(mTagCategoryName);
@@ -82,27 +83,32 @@ public class TagsCategoryActivity extends Activity {
 		mBackBtn.setVisibility(View.VISIBLE);
 
 		mPullTagsView = (PullToRefreshListView) findViewById(R.id.list_category_tags);
+		mPullTagsView.setMode(Mode.BOTH);
 		TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
 		mEmptyView.setText("Don\'t have any Tags !");
 		mPullTagsView.setEmptyView(mEmptyView);
-		mPullTagsView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+		mPullTagsView.setOnRefreshListener(new OnRefreshListener2() {
 
 			@Override
-			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
 				// TODO Auto-generated method stub
-				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel("Last Refresh: " + Util.getCurFormatDate());
+				refreshView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(
+						"Last Refresh: " + Util.getCurFormatDate());
 				getMyTagsFromServer(1, true, false);
 			}
-		});
-		mPullTagsView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 
 			@Override
-			public void onLastItemVisible() {
+			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
 				// TODO Auto-generated method stub
-				int count = mTagsListView.getCount();
+				refreshView.getLoadingLayoutProxy(false, true).setLastUpdatedLabel(
+						"Last Loading: " + Util.getCurFormatDate());
+				int count = mTagsListView.getCount() - 2;
 				if (count < mMaxTags) {
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
 					getMyTagsFromServer(pageIndex, false, false);
+				} else {
+					ToastHelper.showToast("All the data has been loaded ");
+					updateTagsListView();
 				}
 			}
 		});
@@ -124,11 +130,9 @@ public class TagsCategoryActivity extends Activity {
 		});
 	}
 
-	private void updateTagsListView(boolean isRefresh) {
+	private void updateTagsListView() {
 		mTagsAdapter.notifyDataSetChanged();
-		if (isRefresh) {
-			mPullTagsView.onRefreshComplete();
-		}
+		mPullTagsView.onRefreshComplete();
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;
@@ -136,10 +140,10 @@ public class TagsCategoryActivity extends Activity {
 	/**
 	 * get My Tags from server
 	 * 
-	 * @param pageIndex
-	 *            load page index
+	 * @param pageIndex load page index
 	 */
-	private void getMyTagsFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
+	private void getMyTagsFromServer(int pageIndex, final boolean isRefresh,
+			final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -164,7 +168,8 @@ public class TagsCategoryActivity extends Activity {
 						mTagsData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
 					mMaxTags = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 					JSONArray tagArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
 					for (int i = 0; i < tagArray.length(); i++) {
@@ -180,10 +185,11 @@ public class TagsCategoryActivity extends Activity {
 						info.setMeetings(json.getLong(ServerKeys.KEY_MEETINGS));
 						mTagsData.add(info);
 					}
-					updateTagsListView(isRefresh);
 				} catch (JSONException e) {
 					e.printStackTrace();
 					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
+				} finally {
+					updateTagsListView();
 				}
 			}
 
@@ -196,8 +202,8 @@ public class TagsCategoryActivity extends Activity {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_TAGS_BY_CATEGORY + "/" + mTagCategoryId + "/?pageindex=" + pageIndex
-				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&name=", null);
+		request.get(ServerKeys.FULL_URL_GET_TAGS_BY_CATEGORY + "/" + mTagCategoryId
+				+ "/?pageindex=" + pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE + "&name=", null);
 		if (isNeedsDialog) {
 			mProgressDialog.show();
 		}

@@ -36,8 +36,8 @@ import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.DeleteTouchListener;
 import com.meetisan.meetisan.widget.DeleteTouchListener.OnDeleteCallback;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
-import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnLastItemVisibleListener;
-import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
 public class TagsActivity extends Activity {
@@ -67,6 +67,7 @@ public class TagsActivity extends Activity {
 		initView();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
 		SegmentedGroup mTagsGroup = (SegmentedGroup) findViewById(R.id.group_tags);
 		mTagsGroup.setTintColor(getResources().getColor(R.color.segment_group_bg_check),
@@ -95,27 +96,32 @@ public class TagsActivity extends Activity {
 		});
 
 		mPullTagsListView = (PullToRefreshListView) findViewById(R.id.list_my_tags);
+		mPullTagsListView.setMode(Mode.BOTH);
 		TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
 		mEmptyView.setText("You don\'t have any Tags !");
 		mPullTagsListView.setEmptyView(mEmptyView);
-		mPullTagsListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+		mPullTagsListView.setOnRefreshListener(new OnRefreshListener2() {
 
 			@Override
-			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
 				// TODO Auto-generated method stub
-				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel("Last Refresh: " + Util.getCurFormatDate());
+				refreshView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(
+						"Last Refresh: " + Util.getCurFormatDate());
 				getMyTagsFromServer(1, true, false);
 			}
-		});
-		mPullTagsListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 
 			@Override
-			public void onLastItemVisible() {
+			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
 				// TODO Auto-generated method stub
-				int count = mTagsListView.getCount();
+				refreshView.getLoadingLayoutProxy(false, true).setLastUpdatedLabel(
+						"Last Loading: " + Util.getCurFormatDate());
+				int count = mTagsListView.getCount() - 2;
 				if (count < mMaxMyTags) {
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
 					getMyTagsFromServer(pageIndex, false, false);
+				} else {
+					ToastHelper.showToast("All the data has been loaded ");
+					updateMyTagsListView();
 				}
 			}
 		});
@@ -123,17 +129,18 @@ public class TagsActivity extends Activity {
 		registerForContextMenu(mTagsListView);
 		mTagsAdapter = new TagsAdapter(this, mTagsData);
 		mTagsListView.setAdapter(mTagsAdapter);
-		mTagsTouchListener = new DeleteTouchListener((ListView) mTagsListView, new OnDeleteCallback() {
+		mTagsTouchListener = new DeleteTouchListener((ListView) mTagsListView,
+				new OnDeleteCallback() {
 
-			@Override
-			public void onDelete(ListView listView, int position) {
-				position = position - 1; // ListView Header
-				if (position < mTagsListView.getCount()) {
-					mTagsData.remove(position);
-				}
-				mTagsAdapter.notifyDataSetChanged();
-			}
-		});
+					@Override
+					public void onDelete(ListView listView, int position) {
+						position = position - 1; // ListView Header
+						if (position < mTagsListView.getCount()) {
+							mTagsData.remove(position);
+						}
+						mTagsAdapter.notifyDataSetChanged();
+					}
+				});
 		mTagsListView.setOnTouchListener(mTagsTouchListener);
 		mTagsListView.setOnScrollListener(mTagsTouchListener.makeScrollListener());
 		mTagsListView.setOnItemClickListener(new OnItemClickListener() {
@@ -151,25 +158,29 @@ public class TagsActivity extends Activity {
 		mPullTagsListView.setVisibility(View.VISIBLE);
 
 		mPullCategoryListView = (PullToRefreshListView) findViewById(R.id.list_tags_category);
-		mPullCategoryListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+		mPullCategoryListView.setMode(Mode.BOTH);
+		mPullCategoryListView.setOnRefreshListener(new OnRefreshListener2() {
 
 			@Override
-			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
 				// TODO Auto-generated method stub
-				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel("Last Refresh: " + Util.getCurFormatDate());
-
+				refreshView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(
+						"Last Refresh: " + Util.getCurFormatDate());
 				getAllTagsFromServer(1, true, false);
 			}
-		});
-		mPullCategoryListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 
 			@Override
-			public void onLastItemVisible() {
+			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
 				// TODO Auto-generated method stub
-				int count = mCategoryListView.getCount();
+				refreshView.getLoadingLayoutProxy(false, true).setLastUpdatedLabel(
+						"Last Loading: " + Util.getCurFormatDate());
+				int count = mCategoryListView.getCount() - 2;
 				if (count < mMaxAllTags) {
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
 					getAllTagsFromServer(pageIndex, false, false);
+				} else {
+					ToastHelper.showToast("All the data has been loaded ");
+					updateAllTagsListView();
 				}
 			}
 		});
@@ -192,18 +203,14 @@ public class TagsActivity extends Activity {
 		mPullCategoryListView.setVisibility(View.GONE);
 	}
 
-	private void updateMyTagsListView(boolean isRefresh) {
+	private void updateMyTagsListView() {
 		mTagsAdapter.notifyDataSetChanged();
-		if (isRefresh) {
-			mPullTagsListView.onRefreshComplete();
-		}
+		mPullTagsListView.onRefreshComplete();
 	}
 
-	private void updateAllTagsListView(boolean isRefresh) {
+	private void updateAllTagsListView() {
 		mCategoryAdapter.notifyDataSetChanged();
-		if (isRefresh) {
-			mPullCategoryListView.onRefreshComplete();
-		}
+		mPullCategoryListView.onRefreshComplete();
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;
@@ -211,10 +218,10 @@ public class TagsActivity extends Activity {
 	/**
 	 * get My Tags from server
 	 * 
-	 * @param pageIndex
-	 *            load page index
+	 * @param pageIndex load page index
 	 */
-	private void getMyTagsFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
+	private void getMyTagsFromServer(int pageIndex, final boolean isRefresh,
+			final boolean isNeedsDialog) {
 		if (mTagsTouchListener != null) {
 			mTagsTouchListener.hideDeleteLayout();// to hide delete layout
 		}
@@ -243,7 +250,8 @@ public class TagsActivity extends Activity {
 						mTagsData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
 					mMaxMyTags = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 					JSONArray tagArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
 					for (int i = 0; i < tagArray.length(); i++) {
@@ -260,10 +268,11 @@ public class TagsActivity extends Activity {
 						mTagsData.add(info);
 					}
 
-					updateMyTagsListView(isRefresh);
 				} catch (JSONException e) {
 					e.printStackTrace();
 					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
+				} finally {
+					updateMyTagsListView();
 				}
 			}
 
@@ -277,8 +286,8 @@ public class TagsActivity extends Activity {
 		});
 
 		mUserId = 5;
-		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
-				+ ServerKeys.PAGE_SIZE + "&name=", null);
+		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex
+				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&name=", null);
 		if (isNeedsDialog) {
 			mProgressDialog.show();
 		}
@@ -287,10 +296,10 @@ public class TagsActivity extends Activity {
 	/**
 	 * get All Tags from server
 	 * 
-	 * @param pageIndex
-	 *            load page index
+	 * @param pageIndex load page index
 	 */
-	private void getAllTagsFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
+	private void getAllTagsFromServer(int pageIndex, final boolean isRefresh,
+			final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -316,7 +325,8 @@ public class TagsActivity extends Activity {
 					}
 
 					Log.d("TagsActivity", "All Tags: " + result);
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
 					mMaxAllTags = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 
 					JSONArray categoryArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
@@ -338,10 +348,12 @@ public class TagsActivity extends Activity {
 
 						mCategoryData.add(tagCategory);
 					}
-					updateAllTagsListView(isRefresh);
+
 				} catch (JSONException e) {
 					e.printStackTrace();
 					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
+				} finally {
+					updateAllTagsListView();
 				}
 			}
 
@@ -354,9 +366,8 @@ public class TagsActivity extends Activity {
 			}
 		});
 
-		request.get(
-				ServerKeys.FULL_URL_GET_TAG_LIST + "/?pageindex=" + pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE,
-				null);
+		request.get(ServerKeys.FULL_URL_GET_TAG_LIST + "/?pageindex=" + pageIndex + "&pagesize="
+				+ ServerKeys.PAGE_SIZE, null);
 		if (isNeedsDialog) {
 			mProgressDialog.show();
 		}
