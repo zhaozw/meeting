@@ -233,7 +233,6 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		mMeetingID = 1; // TODO.. for test
 		request.get(ServerKeys.FULL_URL_GET_MEET_MEMBER + "/" + mMeetingID + "/?pageindex="
 				+ pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE, null);
 
