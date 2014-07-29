@@ -14,7 +14,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 import android.widget.Toast;
-
 import cn.jpush.android.api.JPushInterface;
 
 import com.meetisan.meetisan.database.UserInfoKeeper;
@@ -30,6 +29,7 @@ import com.meetisan.meetisan.view.meet.MeetActivity;
 import com.meetisan.meetisan.view.tags.TagsActivity;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
+@SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity implements OnCheckedChangeListener {
 	// private static final String LOG_TAG = MainActivity.class.getSimpleName();
 

@@ -1,11 +1,13 @@
 package com.meetisan.meetisan.view.dashboard;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.model.PeopleInfo;
+import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
@@ -26,8 +29,8 @@ import com.meetisan.meetisan.widget.LabelWithIcon;
 public class PersonProfileActivity extends Activity implements OnClickListener {
 
 	private CircleImageView mPortraitView;
-	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagOneTxt, mTagTwoTxt, mTagThreeTxt,
-			mTagFourTxt, mTagFiveTxt, mTagNoTxt;
+	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagOneTxt, mTagTwoTxt, mTagThreeTxt, mTagFourTxt,
+			mTagFiveTxt, mTagNoTxt;
 	private LabelWithIcon mMoreBtn;
 	private PeopleInfo mUserInfo = new PeopleInfo();
 	private long userId = -1;
@@ -102,19 +105,24 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 			mTagFiveTxt.setVisibility(View.GONE);
 		} else {
 			mTagNoTxt.setVisibility(View.GONE);
-			if (tagsCount <= 1) {
+			if (tagsCount >= 1) {
+				mTagOneTxt.setText(mUserInfo.getTopTags().get(0).getTitle());
 				mTagOneTxt.setVisibility(View.VISIBLE);
 			}
-			if (tagsCount <= 2) {
+			if (tagsCount >= 2) {
+				mTagTwoTxt.setText(mUserInfo.getTopTags().get(1).getTitle());
 				mTagTwoTxt.setVisibility(View.VISIBLE);
 			}
-			if (tagsCount <= 3) {
+			if (tagsCount >= 3) {
+				mTagThreeTxt.setText(mUserInfo.getTopTags().get(2).getTitle());
 				mTagThreeTxt.setVisibility(View.VISIBLE);
 			}
-			if (tagsCount <= 4) {
+			if (tagsCount >= 4) {
+				mTagFourTxt.setText(mUserInfo.getTopTags().get(3).getTitle());
 				mTagFourTxt.setVisibility(View.VISIBLE);
 			}
-			if (tagsCount <= 5) {
+			if (tagsCount >= 5) {
+				mTagFiveTxt.setText(mUserInfo.getTopTags().get(4).getTitle());
 				mTagFiveTxt.setVisibility(View.VISIBLE);
 			}
 		}
@@ -164,11 +172,13 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 				try {
 					json = new JSONObject(result);
 					json2PeopleInfo(json, mUserInfo);
-					// UserInfoKeeper.writeUserInfo(PersonProfileActivity.this, mUserInfo);
+					// UserInfoKeeper.writeUserInfo(PersonProfileActivity.this,
+					// mUserInfo);
 					// TODO.. for edit current user info
 				} catch (JSONException e) {
 					e.printStackTrace();
-					// TODO.. server response exception, if Data is null, return is JSONArray not
+					// TODO.. server response exception, if Data is null, return
+					// is JSONArray not
 					// JSONObject
 					// ToastHelper.showToast(R.string.app_occurred_exception);
 				} finally {
@@ -226,7 +236,8 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		// } else {
 		// userInfo.setSkills(null);
 		// }
-		// userInfo.setLongitude((float) userData.getDouble(ServerKeys.KEY_LON));
+		// userInfo.setLongitude((float)
+		// userData.getDouble(ServerKeys.KEY_LON));
 		// userInfo.setLatitude((float) userData.getDouble(ServerKeys.KEY_LAT));
 		userInfo.setStatus(userData.getInt(ServerKeys.KEY_STATUS));
 		// if (!userData.isNull(ServerKeys.KEY_CREATE_DATE)) {
@@ -236,6 +247,18 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		// }
 		if (!userData.isNull(ServerKeys.KEY_REG_ID)) {
 			userInfo.setRegId(userData.getString(ServerKeys.KEY_REG_ID));
+		}
+
+		JSONArray tagArray = data.getJSONArray(ServerKeys.KEY_TOP_TAGS);
+		for (int j = 0; j < tagArray.length(); j++) {
+			TagInfo tagInfo = new TagInfo();
+			JSONObject tagJson = tagArray.getJSONObject(j);
+			// tagInfo.setId(tagJson.getLong(ServerKeys.KEY_ID));
+			if (!tagJson.isNull(ServerKeys.KEY_TITLE)) {
+				tagInfo.setTitle(tagJson.getString(ServerKeys.KEY_TITLE));
+			}
+			tagInfo.setEndorsed(tagJson.getLong(ServerKeys.KEY_ENDORSEMENTS));
+			userInfo.addTopTag(tagInfo);
 		}
 	}
 }
