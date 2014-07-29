@@ -25,6 +25,7 @@ public class ServerKeys {
 	private static final String API_TUSER = "/api/tuser/";
 	private static final String API_TTAG = "/api/ttag/";
 	private static final String API_TMEET = "/api/tmeeting/";
+	private static final String API_TNOTIFICATION = "/api/tnotification/";
 	private static final String API_TMEET_MEMBER = "/api/tmeetingmember/";
 	private static final String API_TTAG_CATEGORY = "/api/tTagCategory/";
 
@@ -57,7 +58,8 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_USER_CONNECTION_LIST = SERVER_ADDRESS + API_TUSER + "GetConnection";
 	/** http://{域名}/api/tmeeting/GetUpcoming/{用户ID}/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户经度} */
 	public static final String FULL_URL_GET_UPCOMING_MEET = SERVER_ADDRESS + API_TMEET + "GetUpcoming";
-	
+	/**http://{域名}/api/tNotification/getlist/{当前用户ID}/?pageindex={页码}&pagesize={每页数量}*/
+	public static final String FULL_URL_GET_NOTIFICATION = SERVER_ADDRESS + API_TNOTIFICATION + "getlist";
 	
 	// Keys
 	public static final String KEY_ID = "ID";
@@ -96,4 +98,6 @@ public class ServerKeys {
 	public static final String KEY_CREATE_USER_ID = "CreateUserID";
 	public static final String KEY_START_TIME = "DetermineStartTime";
 	public static final String KEY_END_TIME = "DetermineEndTime";
+	public static final String KEY_REPORT_OBJECT_ID = "ReportObjectID";
+	public static final String KEY_TYPE = "Type";
 }
