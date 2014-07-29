@@ -186,7 +186,9 @@
                     android:id="@+id/btn_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/more_information" />
+                    android:text="@string/more_information"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
 
                 <View
                     android:layout_width="match_parent"

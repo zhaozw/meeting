@@ -139,6 +139,9 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		if (tagsCount <= 0) {
 			mNoTagTxt.setText("Don\'t have any Tag !");
 			mNoTagTxt.setVisibility(View.VISIBLE);
+			mFirstTagTxt.setVisibility(View.GONE);
+			mSecondTagTxt.setVisibility(View.GONE);
+			mThirdTagTxt.setVisibility(View.GONE);
 		}
 	}
 

@@ -28,6 +28,7 @@ import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.view.dashboard.PersonProfileActivity;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
@@ -115,8 +116,12 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				// Intent intent = new Intent();
+				Intent intent = new Intent();
+				Bundle bundle = new Bundle();
+				bundle.putLong("UserID", mPeopleData.get(arg2 - 1).getId());
+				intent.setClass(MeetMemberActivity.this, PersonProfileActivity.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
 			}
 		});
 	}
@@ -126,17 +131,6 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.btn_title_icon_left:
 			finish();
-			break;
-		case R.id.btn_location:
-
-			break;
-		case R.id.btn_connections:
-			Intent intent = new Intent();
-			Bundle bundle = new Bundle();
-			bundle.putLong("MeetingID", mMeetingID);
-			intent.setClass(MeetMemberActivity.this, MeetMemberActivity.class);
-			intent.putExtras(bundle);
-			startActivity(intent);
 			break;
 		default:
 			break;
@@ -153,14 +147,12 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 	/**
 	 * get Peoples from server
 	 * 
-	 * @param pageIndex
-	 *            load page index
-	 * @param isRefresh
-	 *            is refresh or load more
-	 * @param isNeedsDialog
-	 *            weather show progress dialog
+	 * @param pageIndex load page index
+	 * @param isRefresh is refresh or load more
+	 * @param isNeedsDialog weather show progress dialog
 	 */
-	private void getPeoplesFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
+	private void getPeoplesFromServer(int pageIndex, final boolean isRefresh,
+			final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -185,7 +177,8 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 						mPeopleData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
 					mTotalPeople = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 					Log.d(TAG, "Total People Count: " + mTotalPeople);
 
@@ -194,7 +187,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 						PeopleInfo peopleInfo = new PeopleInfo();
 						JSONObject userJson = peopleArray.getJSONObject(i);
 
-						peopleInfo.setId(userJson.getLong(ServerKeys.KEY_ID));
+						peopleInfo.setId(userJson.getLong(ServerKeys.KEY_USER_ID));
 						// peopleInfo.setEmail(userJson.getString(ServerKeys.KEY_EMAIL));
 						if (!userJson.isNull(ServerKeys.KEY_NAME)) {
 							peopleInfo.setName(userJson.getString(ServerKeys.KEY_NAME));
@@ -202,7 +195,8 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 						// if (!userJson.isNull(ServerKeys.KEY_UNIVERSITY)) {
 						// peopleInfo.setUniversity(userJson.getString(ServerKeys.KEY_UNIVERSITY));
 						// }
-						peopleInfo.setAvatar(Util.base64ToBitmap(userJson.getString(ServerKeys.KEY_AVATAR)));
+						peopleInfo.setAvatar(Util.base64ToBitmap(userJson
+								.getString(ServerKeys.KEY_AVATAR)));
 						peopleInfo.setDistance(-1); // for do not show this item
 
 						// JSONArray tagArray =
@@ -222,7 +216,9 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 
 				} catch (JSONException e) {
 					e.printStackTrace();
-					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
+					// TODO.. server response exception, if Data is null, return is JSONArray not
+					// JSONObject
+					// ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
 				} finally {
 					updatePeopleListView();
 				}
@@ -237,9 +233,9 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		mMeetingID = 1;
-		request.get(ServerKeys.FULL_URL_GET_MEET_MEMBER + "/" + mMeetingID + "/?pageindex=" + pageIndex + "&pagesize="
-				+ ServerKeys.PAGE_SIZE, null);
+		mMeetingID = 1; // TODO.. for test
+		request.get(ServerKeys.FULL_URL_GET_MEET_MEMBER + "/" + mMeetingID + "/?pageindex="
+				+ pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE, null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();

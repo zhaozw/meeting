@@ -69,7 +69,11 @@ public class DashboardActivity extends Activity implements OnClickListener {
 			startActivity(intent1);
 			break;
 		case R.id.iv_portrait:
-			Intent intent2 = new Intent(DashboardActivity.this, PersonProfileActivity.class);
+			Intent intent2 = new Intent();
+			Bundle bundle = new Bundle();
+			bundle.putLong("UserID", mUserInfo.getId());
+			intent2.setClass(DashboardActivity.this, PersonProfileActivity.class);
+			intent2.putExtras(bundle);
 			startActivity(intent2);
 			break;
 

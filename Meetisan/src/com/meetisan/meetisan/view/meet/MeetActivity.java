@@ -33,6 +33,7 @@ import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.view.dashboard.PersonProfileActivity;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
@@ -140,6 +141,11 @@ public class MeetActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
+				Bundle bundle = new Bundle();
+				bundle.putLong("UserID", mPeopleData.get(arg2 - 1).getId());
+				intent.setClass(MeetActivity.this, PersonProfileActivity.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
 			}
 		});
 		mPullPeopleView.setVisibility(View.VISIBLE);
