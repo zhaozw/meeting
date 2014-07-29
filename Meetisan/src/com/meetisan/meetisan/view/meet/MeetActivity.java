@@ -352,7 +352,7 @@ public class MeetActivity extends Activity {
 
 					JSONObject dataJson = (new JSONObject(result))
 							.getJSONObject(ServerKeys.KEY_DATA);
-					mTotalPeople = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
+					mTotalMeetings = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 
 					JSONArray peopleArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
 					for (int i = 0; i < peopleArray.length(); i++) {

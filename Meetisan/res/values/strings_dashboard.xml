@@ -48,4 +48,8 @@
     <string name="profile_education">Education:</string>
     <string name="profile_skills">Skills:</string>
 
+    <!-- Dashboard My Meetings Activity -->
+    <string name="my_meetings">My Meetings</string>
+    <string name="my_connections">My Connections</string>
+    
 </resources>
