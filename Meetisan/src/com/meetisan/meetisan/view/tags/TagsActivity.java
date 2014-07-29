@@ -75,31 +75,20 @@ public class TagsActivity extends Activity {
 		mTagsGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
-				mEmptyView.setVisibility(View.GONE);
 				if (checkedId == R.id.radio_my_tags) {
 					mPullCategoryListView.setVisibility(View.GONE);
 					mPullTagsListView.setVisibility(View.VISIBLE);
-					if (mTagsData.size() == 0) {
-						mEmptyView.setText("You don\'t have any Tags !");
-						mEmptyView.setVisibility(View.VISIBLE);
-					}
 				} else {
 					mPullTagsListView.setVisibility(View.GONE);
 					mPullCategoryListView.setVisibility(View.VISIBLE);
-					if (mCategoryData.size() == 0) {
-						mEmptyView.setText("You don\'t have any Tags !");
-						mEmptyView.setVisibility(View.VISIBLE);
-					}
 				}
 			}
 		});
 
 		mPullTagsListView = (PullToRefreshListView) findViewById(R.id.list_my_tags);
 		mPullTagsListView.setMode(Mode.BOTH);
-		TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
-		mEmptyView.setText("You don\'t have any Tags !");
-		mPullTagsListView.setEmptyView(mEmptyView);
+		TextView mEmptyTagsView = (TextView) findViewById(R.id.txt_empty_tags);
+		mPullTagsListView.setEmptyView(mEmptyTagsView);
 		mPullTagsListView.setOnRefreshListener(new OnRefreshListener2() {
 
 			@Override
@@ -158,6 +147,8 @@ public class TagsActivity extends Activity {
 		mPullTagsListView.setVisibility(View.VISIBLE);
 
 		mPullCategoryListView = (PullToRefreshListView) findViewById(R.id.list_tags_category);
+		TextView mEmptyCategoryView = (TextView) findViewById(R.id.txt_empty_category);
+		mPullCategoryListView.setEmptyView(mEmptyCategoryView);
 		mPullCategoryListView.setMode(Mode.BOTH);
 		mPullCategoryListView.setOnRefreshListener(new OnRefreshListener2() {
 
@@ -282,6 +273,7 @@ public class TagsActivity extends Activity {
 					mProgressDialog.dismiss();
 				}
 				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				updateMyTagsListView();
 			}
 		});
 
@@ -363,6 +355,7 @@ public class TagsActivity extends Activity {
 					mProgressDialog.dismiss();
 				}
 				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				updateAllTagsListView();
 			}
 		});
 

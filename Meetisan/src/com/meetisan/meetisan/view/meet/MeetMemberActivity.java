@@ -74,7 +74,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 
 		/** -----------Init People ListView-------------- */
 		mPullPeopleView = (PullToRefreshListView) findViewById(R.id.list_people);
-		TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
+		TextView mEmptyView = (TextView) findViewById(R.id.txt_empty_meetings);
 		mEmptyView.setText("Don\'t have any People !");
 		mPullPeopleView.setEmptyView(mEmptyView);
 		mPullPeopleView.setMode(Mode.BOTH);
@@ -230,6 +230,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 					mProgressDialog.dismiss();
 				}
 				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				updatePeopleListView();
 			}
 		});
 

@@ -77,31 +77,30 @@ public class MeetActivity extends Activity {
 		mTagsGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
-				mEmptyView.setVisibility(View.GONE);
+//				TextView mEmptyView = (TextView) findViewById(R.id.txt_empty_meetings);
+//				mEmptyView.setVisibility(View.GONE);
 				if (checkedId == R.id.radio_people) {
 					mPullMeetingsView.setVisibility(View.GONE);
 					mPullPeopleView.setVisibility(View.VISIBLE);
-					if (mPeopleData.size() == 0) {
-						mEmptyView.setText("Don\'t have any People !");
-						mEmptyView.setVisibility(View.VISIBLE);
-					}
+//					if (mPeopleData.size() == 0) {
+//						mEmptyView.setText("Don\'t have any People !");
+//						mEmptyView.setVisibility(View.VISIBLE);
+//					}
 				} else {
 					mPullPeopleView.setVisibility(View.GONE);
 					mPullMeetingsView.setVisibility(View.VISIBLE);
-					if (mMeetingData.size() == 0) {
-						mEmptyView.setText("You don\'t have any Meeting !");
-						mEmptyView.setVisibility(View.VISIBLE);
-					}
+//					if (mMeetingData.size() == 0) {
+//						mEmptyView.setText("You don\'t have any Meeting !");
+//						mEmptyView.setVisibility(View.VISIBLE);
+//					}
 				}
 			}
 		});
 
 		/** -----------Init People ListView-------------- */
 		mPullPeopleView = (PullToRefreshListView) findViewById(R.id.list_people);
-		TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
-		mEmptyView.setText("Don\'t have any People !");
-		mPullPeopleView.setEmptyView(mEmptyView);
+		TextView mPeopleEmptyView = (TextView) findViewById(R.id.txt_empty_people);
+		mPullPeopleView.setEmptyView(mPeopleEmptyView);
 		mPullPeopleView.setMode(Mode.BOTH);
 		mPullPeopleView.setOnRefreshListener(new OnRefreshListener2() {
 
@@ -152,6 +151,8 @@ public class MeetActivity extends Activity {
 
 		/** -----------Init Meetings ListView-------------- */
 		mPullMeetingsView = (PullToRefreshListView) findViewById(R.id.list_meetings);
+		TextView mMeetingsEmptyView = (TextView) findViewById(R.id.txt_empty_meetings);
+		mPullMeetingsView.setEmptyView(mMeetingsEmptyView);
 		mPullMeetingsView.setMode(Mode.BOTH);
 		mPullMeetingsView.setOnRefreshListener(new OnRefreshListener2() {
 
@@ -300,6 +301,7 @@ public class MeetActivity extends Activity {
 					mProgressDialog.dismiss();
 				}
 				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				updatePeopleListView();
 			}
 		});
 
@@ -395,6 +397,7 @@ public class MeetActivity extends Activity {
 					mProgressDialog.dismiss();
 				}
 				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				updateMeetingsListView();
 			}
 		});
 

@@ -84,8 +84,7 @@ public class TagsCategoryActivity extends Activity {
 
 		mPullTagsView = (PullToRefreshListView) findViewById(R.id.list_category_tags);
 		mPullTagsView.setMode(Mode.BOTH);
-		TextView mEmptyView = (TextView) findViewById(R.id.txt_content_empty);
-		mEmptyView.setText("Don\'t have any Tags !");
+		TextView mEmptyView = (TextView) findViewById(R.id.txt_empty_meetings);
 		mPullTagsView.setEmptyView(mEmptyView);
 		mPullTagsView.setOnRefreshListener(new OnRefreshListener2() {
 
@@ -187,7 +186,7 @@ public class TagsCategoryActivity extends Activity {
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
-					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
+					// ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
 				} finally {
 					updateTagsListView();
 				}
@@ -199,6 +198,7 @@ public class TagsCategoryActivity extends Activity {
 					mProgressDialog.dismiss();
 				}
 				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				updateTagsListView();
 			}
 		});
 
