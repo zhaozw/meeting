@@ -133,6 +133,16 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
+            android:name=".view.dashboard.MyMeetingsActivity"
+            android:label="@string/title_dashboard"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.dashboard.MyConnectionsActivity"
+            android:label="@string/title_dashboard"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
             android:name="com.meetisan.meetisan.view.dashboard.PersonProfileActivity"
             android:label="@string/title_dashboard"
             android:windowSoftInputMode="adjustResize|stateHidden" >

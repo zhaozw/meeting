@@ -97,10 +97,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		if (!FormatUtils.checkEmailAvailable(email)) {
-			ToastHelper.showToast(R.string.error_invalid_email);
-			return;
-		}
+		// if (!FormatUtils.checkEmailAvailable(email)) {
+		// ToastHelper.showToast(R.string.error_invalid_email);
+		// return;
+		// }
 
 		if (TextUtils.isEmpty(pwd)) {
 			ToastHelper.showToast(R.string.empty_pwd_tips);
@@ -128,10 +128,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 			@Override
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
-				UserInfoKeeper.writeUserInfo(LoginActivity.this, UserInfoKeeper.KEY_USER_EMAIL,
-						email);
+				UserInfoKeeper.writeUserInfo(LoginActivity.this, UserInfoKeeper.KEY_USER_EMAIL, email);
 				UserInfoKeeper.writeUserInfo(LoginActivity.this, UserInfoKeeper.KEY_USER_PWD, pwd);
-				
+
 				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 				startActivity(intent);
 				finish();

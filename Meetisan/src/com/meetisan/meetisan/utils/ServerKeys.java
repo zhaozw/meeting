@@ -16,6 +16,8 @@ public class ServerKeys {
 	public static final String KEY_TAG_MOMENTS = "Moments";
 	public static final String KEY_DATA_LIST = "DataList";
 	public static final String KEY_TOTAL_COUNT = "TotalCount";
+	public static final String KEY_MEET_COUNT = "MeetingCount";
+	public static final String KEY_UPCOMING_MEET = "UpcomingMeeting";
 	public static final String KEY_USER = "User";
 	public static final String KEY_TOP_TAGS = "TopTags";
 	public static final int STATUS_SUCCESS = 0;
@@ -49,6 +51,13 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_MEET_INFO = SERVER_ADDRESS + API_TMEET + "get";
 	/** http://{域名}/api/tmeetingmember/getlist/{meeting的ID}/?pageindex={页码}&pagesize={每页数量} */
 	public static final String FULL_URL_GET_MEET_MEMBER = SERVER_ADDRESS + API_TMEET_MEMBER + "getlist";
+	/** http://{域名}/api/tmeeting/GetUserMeetingList/{用户ID}/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户经度} */
+	public static final String FULL_URL_GET_USER_MEET_LIST = SERVER_ADDRESS + API_TMEET + "GetUserMeetingList";
+	/** http://{域名}/api/tuser/GetConnection/{当前用户ID}/?pageindex={页码}&pagesize={每页数量} */
+	public static final String FULL_URL_GET_USER_CONNECTION_LIST = SERVER_ADDRESS + API_TUSER + "GetConnection";
+	/** http://{域名}/api/tmeeting/GetUpcoming/{用户ID}/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户经度} */
+	public static final String FULL_URL_GET_UPCOMING_MEET = SERVER_ADDRESS + API_TMEET + "GetUpcoming";
+	
 	
 	// Keys
 	public static final String KEY_ID = "ID";
@@ -84,6 +93,7 @@ public class ServerKeys {
 	public static final String KEY_JOIN_STATUS = "JoinStatus";
 	public static final String KEY_DISTANCE = "Distance";
 	public static final String KEY_ADDRESS = "Address";
+	public static final String KEY_CREATE_USER_ID = "CreateUserID";
 	public static final String KEY_START_TIME = "DetermineStartTime";
 	public static final String KEY_END_TIME = "DetermineEndTime";
 }
