@@ -19,6 +19,7 @@ import cn.jpush.android.api.JPushInterface;
 
 import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.PeopleInfo;
+import com.meetisan.meetisan.notifications.NotificationsActivity;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;

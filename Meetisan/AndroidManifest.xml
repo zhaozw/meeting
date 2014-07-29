@@ -163,7 +163,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name=".NotificationsActivity"
+            android:name="com.meetisan.meetisan.notifications.NotificationsActivity"
             android:label="@string/title_notification"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
