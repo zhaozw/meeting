@@ -266,7 +266,8 @@ public class TagsActivity extends Activity {
 
 				} catch (JSONException e) {
 					e.printStackTrace();
-					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
+					// ToastHelper.showToast(R.string.server_response_exception,
+					// Toast.LENGTH_LONG);
 				} finally {
 					updateMyTagsListView();
 				}
