@@ -118,18 +118,16 @@ public class TagsActivity extends Activity {
 		registerForContextMenu(mTagsListView);
 		mTagsAdapter = new TagsAdapter(this, mTagsData);
 		mTagsListView.setAdapter(mTagsAdapter);
-		mTagsTouchListener = new DeleteTouchListener((ListView) mTagsListView,
-				new OnDeleteCallback() {
+		mTagsTouchListener = new DeleteTouchListener(mTagsListView, new OnDeleteCallback() {
 
-					@Override
-					public void onDelete(ListView listView, int position) {
-						position = position - 1; // ListView Header
-						if (position < mTagsListView.getCount()) {
-							mTagsData.remove(position);
-						}
-						mTagsAdapter.notifyDataSetChanged();
-					}
-				});
+			@Override
+			public void onDelete(ListView listView, int position) {
+				position = position - 1; // ListView Header
+				if (position < mTagsListView.getCount()) {
+					deleteUserTagFromServer(mTagsData.get(position).getUserTagId(), position, true);
+				}
+			}
+		});
 		mTagsListView.setOnTouchListener(mTagsTouchListener);
 		mTagsListView.setOnScrollListener(mTagsTouchListener.makeScrollListener());
 		mTagsListView.setOnItemClickListener(new OnItemClickListener() {
@@ -194,6 +192,13 @@ public class TagsActivity extends Activity {
 		mPullCategoryListView.setVisibility(View.GONE);
 	}
 
+	private void updateDeleteResult(boolean result, int position) {
+		if (result && mTagsData.size() > position) {
+			mTagsData.remove(position);
+		}
+		mTagsAdapter.notifyDataSetChanged();
+	}
+
 	private void updateMyTagsListView() {
 		mTagsAdapter.notifyDataSetChanged();
 		mPullTagsListView.onRefreshComplete();
@@ -209,10 +214,10 @@ public class TagsActivity extends Activity {
 	/**
 	 * get My Tags from server
 	 * 
-	 * @param pageIndex load page index
+	 * @param pageIndex
+	 *            load page index
 	 */
-	private void getMyTagsFromServer(int pageIndex, final boolean isRefresh,
-			final boolean isNeedsDialog) {
+	private void getMyTagsFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
 		if (mTagsTouchListener != null) {
 			mTagsTouchListener.hideDeleteLayout();// to hide delete layout
 		}
@@ -241,14 +246,14 @@ public class TagsActivity extends Activity {
 						mTagsData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 					mMaxMyTags = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 					JSONArray tagArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
 					for (int i = 0; i < tagArray.length(); i++) {
 						TagInfo info = new TagInfo();
 						JSONObject json = tagArray.getJSONObject(i);
 						info.setId(json.getLong(ServerKeys.KEY_TAG_ID));
+						info.setUserTagId(json.getLong(ServerKeys.KEY_USER_TAG_ID));
 						// info.setUserId(json.getLong(ServerKeys.KEY_USER_ID));
 						info.setCategroyId(json.getLong(ServerKeys.KEY_CATEGORY_ID));
 						info.setTitle(json.getString(ServerKeys.KEY_TITLE));
@@ -278,8 +283,8 @@ public class TagsActivity extends Activity {
 		});
 
 		mUserId = 5;
-		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex
-				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&name=", null);
+		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
+				+ ServerKeys.PAGE_SIZE + "&name=", null);
 		if (isNeedsDialog) {
 			mProgressDialog.show();
 		}
@@ -288,10 +293,10 @@ public class TagsActivity extends Activity {
 	/**
 	 * get All Tags from server
 	 * 
-	 * @param pageIndex load page index
+	 * @param pageIndex
+	 *            load page index
 	 */
-	private void getAllTagsFromServer(int pageIndex, final boolean isRefresh,
-			final boolean isNeedsDialog) {
+	private void getAllTagsFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -317,8 +322,7 @@ public class TagsActivity extends Activity {
 					}
 
 					Log.d("TagsActivity", "All Tags: " + result);
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 					mMaxAllTags = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 
 					JSONArray categoryArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
@@ -359,8 +363,56 @@ public class TagsActivity extends Activity {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_TAG_LIST + "/?pageindex=" + pageIndex + "&pagesize="
-				+ ServerKeys.PAGE_SIZE, null);
+		request.get(
+				ServerKeys.FULL_URL_GET_TAG_LIST + "/?pageindex=" + pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE,
+				null);
+		if (isNeedsDialog) {
+			mProgressDialog.show();
+		}
+	}
+
+	/**
+	 * delete user Tag from server
+	 * 
+	 * @param tagId
+	 * @param position
+	 * @param isNeedsDialog
+	 */
+	private void deleteUserTagFromServer(long tagId, final int position, final boolean isNeedsDialog) {
+
+		HttpRequest request = new HttpRequest();
+
+		if (isNeedsDialog) {
+			if (mProgressDialog == null) {
+				mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+			} else {
+				if (mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
+			}
+		}
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				if (isNeedsDialog) {
+					mProgressDialog.dismiss();
+				}
+				updateDeleteResult(true, position);
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				if (isNeedsDialog) {
+					mProgressDialog.dismiss();
+				}
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				updateDeleteResult(false, position);
+			}
+		});
+
+		request.delete(ServerKeys.FULL_URL_DEL_TAG + "/" + tagId);
 		if (isNeedsDialog) {
 			mProgressDialog.show();
 		}

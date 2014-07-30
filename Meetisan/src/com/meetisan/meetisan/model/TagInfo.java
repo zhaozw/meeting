@@ -9,6 +9,8 @@ public class TagInfo {
 
 	/** tag id */
 	private long id = 0;
+	/** tag user tag id, for delete user tag */
+	private long userTagId = 0;
 	/** tag category id */
 	private long categroyId = 0;
 	/** tag name */
@@ -51,6 +53,14 @@ public class TagInfo {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public long getUserTagId() {
+		return userTagId;
+	}
+
+	public void setUserTagId(long userTagId) {
+		this.userTagId = userTagId;
 	}
 
 	public long getCategroyId() {

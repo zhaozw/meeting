@@ -5,6 +5,7 @@
     <string name="loading">Loading&#8230;</string>
     <string name="loading_complete">Loading Complete</string>
     <string name="please_waiting">Please waiting&#8230;</string>
+    <string name="deleting">Deleting&#8230;</string>
     <string name="loading_userinfo">Loading user information&#8230;</string>
     <!-- google maps API key -->
     <string name="api_key_google_map">AIzaSyCfa7n2tJ9A7HaR_8H19S9fT2zQVvw6ZbY</string>

@@ -57,6 +57,8 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_USER_CONNECTION_LIST = SERVER_ADDRESS + API_TUSER + "GetConnection";
 	/** http://{域名}/api/tmeeting/GetUpcoming/{用户ID}/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户经度} */
 	public static final String FULL_URL_GET_UPCOMING_MEET = SERVER_ADDRESS + API_TMEET + "GetUpcoming";
+	/** http://{域名}/api/ttag/DeleteUserTag/{传入MyTags页面获取到的UserTagID字段} */	
+	public static final String FULL_URL_DEL_TAG = SERVER_ADDRESS + API_TTAG + "DeleteUserTag";
 	
 	
 	// Keys
@@ -78,6 +80,7 @@ public class ServerKeys {
 	public static final String KEY_CREATE_DATE = "CreateDate";
 	public static final String KEY_REG_ID = "RegistrationID";
 	public static final String KEY_TAG_ID = "TagID";
+	public static final String KEY_USER_TAG_ID = "UserTagID";
 	public static final String KEY_USER_ID = "UserID";
 	public static final String KEY_CATEGORY_ID = "CategoryID";
 	public static final String KEY_TITLE = "Title";
