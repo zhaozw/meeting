@@ -103,4 +103,5 @@ public class ServerKeys {
 	public static final String KEY_END_TIME = "DetermineEndTime";
 	public static final String KEY_REPORT_OBJECT_ID = "ReportObjectID";
 	public static final String KEY_TYPE = "Type";
+	public static final String KEY_MEETING_ID = "MeetingID";
 }

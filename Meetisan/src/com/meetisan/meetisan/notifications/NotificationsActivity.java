@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,8 @@ import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.view.meet.MeetProfileActivity;
+import com.meetisan.meetisan.view.tags.TagProfileActivity;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
@@ -60,7 +63,6 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initContentView() {
-		/** -----------Init People ListView-------------- */
 		mPullView = (PullToRefreshListView) findViewById(R.id.list_notifications);
 		TextView mEmptyView = new TextView(this);
 		mEmptyView.setText(R.string.content_empty_default);
@@ -83,7 +85,7 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 						"Last Loading: " + Util.getCurFormatDate());
 				int count = mListView.getCount() - 2; // reduce header and
 														// footer item
-				// Log.d(TAG, "-------total = " + mTotalPeople + "; count = " +
+				// Log.d(TAG, "-------total = " + mTotalNotifications + "; count = " +
 				// count);
 				if (count < mTotal) {
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
@@ -138,13 +140,11 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 						return;
 					}
 					mTotal = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
-					Log.d(TAG, "Total People Count: " + mTotal);
+					Log.d(TAG, "Total Notifications Count: " + mTotal);
 
 					JSONArray notificationArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
 					for (int i = 0; i < notificationArray.length(); i++) {
 						NotificationInfo info = new NotificationInfo();
-						// JSONObject peopleJson =
-						// notificationArray.getJSONObject(i);
 
 						JSONObject userJson = notificationArray.getJSONObject(i);
 						info.setId(userJson.getLong(ServerKeys.KEY_ID));
@@ -189,15 +189,29 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		//
-		// Intent intent = new Intent();
-		// Bundle bundle = new Bundle();
-		// bundle.putLong("UserID", mPeopleData.get(arg2 - 1).getId());
-		// intent.setClass(MeetActivity.this, PersonProfileActivity.class);
-		// intent.putExtras(bundle);
-		// startActivity(intent);
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		NotificationInfo info = mData.get(position);
+		int type = info.getType();
+		switch (type) {
+		case NotificationInfo.TYPE_MEETING_INVITATION:
+		case NotificationInfo.TYPE_MEETING_INVITE_JOIN:
+		case NotificationInfo.TYPE_MEETING_INVITE_REFUSE:
+			Intent meetIntent = new Intent(getApplicationContext(), MeetProfileActivity.class);
+			meetIntent.putExtra(ServerKeys.KEY_USER_ID, info.getUserID());
+			meetIntent.putExtra(ServerKeys.KEY_MEETING_ID, info.getReportObjectID());
+			meetIntent.putExtra(ServerKeys.KEY_TYPE, type);
+			startActivity(meetIntent);
+			break;
+		case NotificationInfo.TYPE_TAG_CREATE_FAILED:
+		case NotificationInfo.TYPE_TAG_CREATE_SUCCESS:
+			Intent tagIntent = new Intent(getApplicationContext(), TagProfileActivity.class);
+			tagIntent.putExtra(ServerKeys.KEY_USER_ID, info.getUserID());
+			tagIntent.putExtra(ServerKeys.KEY_TAG_ID, info.getReportObjectID());
+			tagIntent.putExtra(ServerKeys.KEY_TYPE, type);
+			break;
+		default:
+			break;
+		}
 	}
 
 }
