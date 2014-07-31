@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="meeting_title">Meeting Title</string>
+	<string name="insert_a_meeting_title_tip">Insert a Meeting Title</string>
+	<string name="private_meeting_tip">Private meeting</string>
+	<string name="format_step_index">(%1$d/%2$d)</string>
+	<string name="maximum_number">Maximum number of people for your meeting</string>
+	<string name="single_meeting">Single Meeting</string>
+	<string name="multiple_meeting">Multiple meeting</string>
+	<string name="location">Location</string>
+	<string name="time_sample">7/10/2014 19:00</string>
+	<string name="time_sample2">7/10/2014 21:00</string>
+	<string name="i_want_my_meeting_time_to_be">I want my meeting time to be</string>
+	<string name="set_by_me">Set by me</string>
+	<string name="set_by_him_her">Set by him/her</string>
+	<string name="provide_free_time_slots">Provide free time slots</string>
+	<string name="set_the_time">Set the time</string>
+	<string name="start">Start</string>
+	<string name="end">End</string>
+	<string name="create">Create</string>
+	<string name="create_successful">Create Successful</string>
+	<string name="please_input_meeting_title">Please input meeting title</string>
+	<string name="please_select_some_tags">Please select some tags</string>
+</resources>

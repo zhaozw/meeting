@@ -64,7 +64,7 @@
                 android:id="@+id/rb_notifications"
                 style="@style/MainTabStyle"
                 android:drawableTop="@drawable/common_notifications"
-                android:gravity="bottom"
+                android:gravity="bottom|center_horizontal"
                 android:text="@string/title_notification" />
         </RadioGroup>
     </LinearLayout>

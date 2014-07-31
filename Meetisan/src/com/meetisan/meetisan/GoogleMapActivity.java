@@ -12,11 +12,11 @@ import android.util.Log;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.meetisan.meetisan.utils.ToastHelper;
 
 public class GoogleMapActivity extends FragmentActivity {
 	private static final String TAG = GoogleMapActivity.class.getSimpleName();
@@ -31,6 +31,12 @@ public class GoogleMapActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_google_map);
 
+		try {
+			Class.forName("com.google.android.maps.MapActivity");
+		} catch (Exception e) {
+			ToastHelper.showToast(R.string.can_not_use_google_map);
+			return;
+		}
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
 		bestProvider = locationManager.getBestProvider(criteria, false);
@@ -46,9 +52,10 @@ public class GoogleMapActivity extends FragmentActivity {
 		// fragment).commit();
 		// mMap = fragment.getMap();
 
-		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-		updateMapLocation(location, "Meetisan");
+//		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+//				.getMap();
+//		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+//		updateMapLocation(location, "Meetisan");
 
 		// 设置监听器，自动更新的最小时间为间隔N秒(1秒为1*1000，这样写主要为了方便)或最小位移变化超过N
 		locationManager.requestLocationUpdates(bestProvider, 3 * 1000, 8, new LocationListener() {
@@ -111,7 +118,6 @@ public class GoogleMapActivity extends FragmentActivity {
 				.build(); // Creates a CameraPosition from the builder
 		mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 	}
-
 }
 
 // private void checkGoogleMapsInstalled() {

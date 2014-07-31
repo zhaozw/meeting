@@ -3,8 +3,6 @@ package com.meetisan.meetisan;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +16,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.jpush.android.api.JPushInterface;
+
+import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.signup.InsertEmailActivity;
 import com.meetisan.meetisan.utils.FormatUtils;
 import com.meetisan.meetisan.utils.HttpRequest;
@@ -82,7 +83,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 		case R.id.btn_login:
 			attemptLogin();
 			break;
-
 		default:
 			break;
 		}
@@ -97,10 +97,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		if (!FormatUtils.checkEmailAvailable(email)) {
-			ToastHelper.showToast(R.string.error_invalid_email);
-			return;
-		}
+		// if (!FormatUtils.checkEmailAvailable(email)) {
+		// ToastHelper.showToast(R.string.error_invalid_email);
+		// return;
+		// }
 
 		if (TextUtils.isEmpty(pwd)) {
 			ToastHelper.showToast(R.string.empty_pwd_tips);
@@ -112,8 +112,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	CustomizedProgressDialog mProgressDialog = null;
 
-	private void doLogin(String email, String pwd) {
-		// assume login result
+	private void doLogin(final String email, final String pwd) {
 		HttpRequest request = new HttpRequest();
 
 		if (mProgressDialog == null) {
@@ -123,12 +122,15 @@ public class LoginActivity extends Activity implements OnClickListener {
 				mProgressDialog.dismiss();
 			}
 		}
-		
+
 		request.setOnHttpRequestListener(new OnHttpRequestListener() {
 
 			@Override
-			public void onSuccess(String url, JSONObject result) {
+			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
+				UserInfoKeeper.writeUserInfo(LoginActivity.this, UserInfoKeeper.KEY_USER_EMAIL, email);
+				UserInfoKeeper.writeUserInfo(LoginActivity.this, UserInfoKeeper.KEY_USER_PWD, pwd);
+
 				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 				startActivity(intent);
 				finish();
@@ -144,16 +146,20 @@ public class LoginActivity extends Activity implements OnClickListener {
 		Map<String, String> data = new TreeMap<String, String>();
 		data.put(ServerKeys.KEY_EMAIL, email);
 		data.put(ServerKeys.KEY_PASSWORD, pwd);
+		String registrationID = JPushInterface.getRegistrationID(getApplicationContext());
+		if (registrationID != null) {
+			data.put(ServerKeys.KEY_REG_ID, registrationID);
+		}
 		request.post(ServerKeys.FULL_URL_LOGIN, data);
 		mProgressDialog.show();
-//		boolean loginResult = true;
-//		if (loginResult) {
-//			Intent intent = new Intent(this, MainActivity.class);
-//			startActivity(intent);
-//			this.finish();
-//		} else {
-//			ToastHelper.showToast(R.string.error_incorrect_email_or_pwd);
-//		}
+		// boolean loginResult = true;
+		// if (loginResult) {
+		// Intent intent = new Intent(this, MainActivity.class);
+		// startActivity(intent);
+		// this.finish();
+		// } else {
+		// ToastHelper.showToast(R.string.error_incorrect_email_or_pwd);
+		// }
 	}
 
 }

@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:gravity="center" >
+    android:background="@android:color/white" >
 
     <RelativeLayout
         android:id="@+id/layout_title"
@@ -52,7 +51,7 @@
         style="@style/SearchLayout"
         android:layout_below="@+id/layout_title" />
 
-    <ListView
+    <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
         android:id="@+id/list_people"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -60,11 +59,11 @@
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/gray"
         android:dividerHeight="0.5dp"
-        android:listSelector="@android:color/transparent"
-        android:scrollbars="none"
-        android:visibility="gone" />
+        android:fadingEdge="none"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true" />
 
-    <ListView
+    <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
         android:id="@+id/list_meetings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -72,8 +71,30 @@
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/gray"
         android:dividerHeight="0.5dp"
-        android:listSelector="@android:color/transparent"
-        android:scrollbars="none"
+        android:fadingEdge="none"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true" />
+
+    <TextView
+        android:id="@+id/txt_empty_meetings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/content_empty_default"
+        android:textColor="@color/content_empty_tips_text_color"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txt_empty_people"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/content_empty_default"
+        android:textColor="@color/content_empty_tips_text_color"
+        android:textSize="@dimen/text_size_small"
         android:visibility="gone" />
 
 </RelativeLayout>

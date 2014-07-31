@@ -124,6 +124,10 @@ public class SwitchButton extends CompoundButton implements Runnable {
 		else
 			mDefaultCheck = checked;
 	}
+	
+	public boolean isChecked() {
+		return mDirection == DIRECTION_R;
+	}
 
 	private void smoothToSide(int direction) {
 		mDirection = direction;

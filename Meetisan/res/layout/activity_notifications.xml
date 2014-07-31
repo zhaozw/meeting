@@ -11,13 +11,15 @@
         android:layout_height="@dimen/activity_title_height"
         layout="@layout/title_with_image_btn" />
 
-    <com.meetisan.meetisan.widget.listview.swipe.SwipeListView
-        android:id="@+id/listView"
+    <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
+        android:id="@+id/list_notifications"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/gray"
         android:dividerHeight="0.5dp"
-        android:padding="5dp"
-        android:scrollbars="none" />
+        android:fadingEdge="none"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true" />
 
 </LinearLayout>

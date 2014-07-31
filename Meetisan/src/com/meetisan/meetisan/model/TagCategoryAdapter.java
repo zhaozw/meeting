@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
@@ -18,7 +17,7 @@ public class TagCategoryAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<TagCategory> categoryData;
 
-	private onRightItemClickListener mListener = null;
+	// private onRightItemClickListener mListener = null;
 
 	public TagCategoryAdapter(Context mContext, List<TagCategory> categoryData) {
 		inflater = LayoutInflater.from(mContext);
@@ -61,33 +60,33 @@ public class TagCategoryAdapter extends BaseAdapter {
 
 		TagCategory mTagCategory = categoryData.get(position);
 
-		holder.mNameTxt.setText(mTagCategory.getName());
+		holder.mNameTxt.setText(mTagCategory.getTitle());
 
 		List<TagInfo> tagsList = mTagCategory.getTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {
-			holder.mOneTxt.setText(tagsList.get(0).getName());
+			holder.mOneTxt.setText(tagsList.get(0).getTitle());
 			holder.mOneTxt.setVisibility(View.VISIBLE);
 		}
 		if (tagsCount >= 2) {
-			holder.mTwoTxt.setText(tagsList.get(1).getName());
+			holder.mTwoTxt.setText(tagsList.get(1).getTitle());
 			holder.mTwoTxt.setVisibility(View.VISIBLE);
 		}
 		if (tagsCount >= 3) {
-			holder.mThreeTxt.setText(tagsList.get(2).getName());
+			holder.mThreeTxt.setText(tagsList.get(2).getTitle());
 			holder.mThreeTxt.setVisibility(View.VISIBLE);
 		}
 
-		holder.mRightItem.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				holder.mRightItem.setVisibility(View.GONE);
-				categoryData.remove(position); // remove list item
-				if (mListener != null) {
-					mListener.onRightItemClick(holder.mRightItem, position);
-				}
-				notifyDataSetChanged();
-			}
-		});
+		// holder.mRightItem.setOnClickListener(new OnClickListener() {
+		// public void onClick(View v) {
+		// holder.mRightItem.setVisibility(View.GONE);
+		// categoryData.remove(position); // remove list item
+		// if (mListener != null) {
+		// mListener.onRightItemClick(holder.mRightItem, position);
+		// }
+		// notifyDataSetChanged();
+		// }
+		// });
 		return convertView;
 	}
 
@@ -100,11 +99,12 @@ public class TagCategoryAdapter extends BaseAdapter {
 		TextView mThreeTxt;
 	}
 
-	public void setOnRightItemClickListener(onRightItemClickListener listener) {
-		mListener = listener;
-	}
-
-	public interface onRightItemClickListener {
-		void onRightItemClick(View view, int position);
-	}
+	// public void setOnRightItemClickListener(onRightItemClickListener
+	// listener) {
+	// mListener = listener;
+	// }
+	//
+	// public interface onRightItemClickListener {
+	// void onRightItemClick(View view, int position);
+	// }
 }

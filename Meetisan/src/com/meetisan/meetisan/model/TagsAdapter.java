@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
@@ -44,6 +45,7 @@ public class TagsAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_listview_tags_tag, parent, false);
 			holder = new ViewHolder();
+			holder.mRightLayout = (RelativeLayout) convertView.findViewById(R.id.item_right);
 			holder.mCircleImage = (CircleImageView) convertView.findViewById(R.id.iv_portrait);
 			holder.mNameTxt = (TextView) convertView.findViewById(R.id.txt_name);
 			holder.mEndoredTxt = (TextView) convertView.findViewById(R.id.txt_endorsed);
@@ -55,15 +57,12 @@ public class TagsAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		TagInfo mTagInfo = tagData.get(position);
 
-		// for test
-		if (position % 2 == 0) {
-			holder.mCircleImage.setImageResource(R.drawable.portrait);
-		} else {
-			holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		TagInfo mTagInfo = tagData.get(position);
+		if (mTagInfo.getLogo() != null) {
+			holder.mCircleImage.setImageBitmap(mTagInfo.getLogo());
 		}
-		holder.mNameTxt.setText(mTagInfo.getName());
+		holder.mNameTxt.setText(mTagInfo.getTitle());
 		holder.mEndoredTxt.setText(String.valueOf(mTagInfo.getEndorsed()));
 		holder.mPeopleTxt.setText(String.valueOf(mTagInfo.getPeople()));
 		holder.mMeetingsTxt.setText(String.valueOf(mTagInfo.getMeetings()));
@@ -72,6 +71,7 @@ public class TagsAdapter extends BaseAdapter {
 	}
 
 	static class ViewHolder {
+		RelativeLayout mRightLayout;
 		CircleImageView mCircleImage;
 		TextView mNameTxt;
 		TextView mEndoredTxt;

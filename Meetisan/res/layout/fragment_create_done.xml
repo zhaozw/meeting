@@ -1,0 +1,190 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context=".CreateStep1Fragment" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        tools:context=".CreateStep1Fragment" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:paddingTop="10dp"
+                android:text="@string/meeting_title"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_middle" />
+
+            <View style="@style/CreateActivityDividingLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/meeting_title"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:padding="0dp" >
+
+                    <TextView
+                        android:id="@+id/txt_tag_one"
+                        style="@style/TagLabelStyle"
+                        android:text="tag1 name"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/txt_tag_two"
+                        style="@style/TagLabelStyle"
+                        android:text="tag2 name"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/txt_tag_three"
+                        style="@style/TagLabelStyle"
+                        android:text="tag3 name"
+                        android:visibility="visible" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View style="@style/CreateActivityDividingLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical" >
+
+            <View style="@style/CreateActivityDividingLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/location"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+            </RelativeLayout>
+
+            <View style="@style/CreateActivityDividingLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_set_start_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <View style="@style/CreateActivityDividingLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/start"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/time_sample"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+            </RelativeLayout>
+
+            <View style="@style/CreateActivityDividingLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_set_end_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/end"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/time_sample2"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+            </RelativeLayout>
+
+            <View style="@style/CreateActivityDividingLine" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_create_done"
+            android:layout_width="200dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/activity_create_button_done"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/done"
+            android:textSize="@dimen/text_size_big"
+            android:textColor="@color/selector_create_text_done"
+            android:layout_height="50dp" />
+    </LinearLayout>
+
+</ScrollView>

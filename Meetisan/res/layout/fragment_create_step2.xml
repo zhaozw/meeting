@@ -1,0 +1,16 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.meetisan.meetisan.view.create.CreateStep2Fragment" >
+
+    <ListView
+        android:id="@+id/lv_create_select_tags_list"
+        android:layout_width="match_parent"
+        android:dividerHeight="2dp"
+        android:divider="@color/activity_create_dividing_line_color"
+        android:layout_height="match_parent" >
+    </ListView>
+
+</FrameLayout>

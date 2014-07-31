@@ -119,7 +119,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_right_arrow"
         android:layout_width="65dp"
         android:layout_height="20dp"
@@ -131,26 +131,24 @@
         android:scaleType="centerInside"
         android:src="@drawable/icon_right_arrow" />
 
-    <RelativeLayout
+    <com.meetisan.meetisan.widget.ShaderAnimLayout
         android:id="@+id/item_right"
         android:layout_width="65dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/selector_swipe_list_del_btn_bg"
-        android:clickable="true"
+        android:background="@android:color/transparent"
         android:visibility="gone" >
 
-        <ImageButton
-            android:id="@+id/item_right_btn"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+        <ImageView
+            android:id="@+id/item_right_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:background="@android:color/transparent"
-            android:clickable="false"
+            android:background="@drawable/selector_delete_listview_btn_bg"
             android:gravity="center"
             android:scaleType="centerInside"
             android:src="@drawable/icon_delete" />
-    </RelativeLayout>
+    </com.meetisan.meetisan.widget.ShaderAnimLayout>
 
 </RelativeLayout>

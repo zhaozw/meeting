@@ -59,27 +59,26 @@ public class PeopleAdapter extends BaseAdapter {
 
 		PeopleInfo mPeopleInfo = peopleData.get(position);
 
-		// for test
-		if (position % 2 == 0) {
-			holder.mCircleImage.setImageResource(R.drawable.portrait);
-		} else {
-			holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		if (mPeopleInfo.getAvatar() != null) {
+			holder.mCircleImage.setImageBitmap(mPeopleInfo.getAvatar());
 		}
 		holder.mNameTxt.setText(mPeopleInfo.getName());
-		holder.mCollegeTxt.setText(String.valueOf(mPeopleInfo.getCollege()));
-		holder.mDistanceTxt.setText(String.valueOf(mPeopleInfo.getDistance() + "m"));
-		List<TagInfo> tagsList = mPeopleInfo.getTags();
+		holder.mCollegeTxt.setText(mPeopleInfo.getUniversity());
+		if (mPeopleInfo.getDistance() >= 0) {
+			holder.mDistanceTxt.setText(String.format("%.2f", mPeopleInfo.getDistance()) + "km");
+		}
+		List<TagInfo> tagsList = mPeopleInfo.getTopTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {
-			holder.mTagOneTxt.setText(tagsList.get(0).getName());
+			holder.mTagOneTxt.setText(tagsList.get(0).getTitle());
 			holder.mTagOneTxt.setVisibility(View.VISIBLE);
 		}
 		if (tagsCount >= 2) {
-			holder.mTagTwoTxt.setText(tagsList.get(1).getName());
+			holder.mTagTwoTxt.setText(tagsList.get(1).getTitle());
 			holder.mTagTwoTxt.setVisibility(View.VISIBLE);
 		}
 		if (tagsCount >= 3) {
-			holder.mTagThreeTxt.setText(tagsList.get(2).getName());
+			holder.mTagThreeTxt.setText(tagsList.get(2).getTitle());
 			holder.mTagThreeTxt.setVisibility(View.VISIBLE);
 		}
 

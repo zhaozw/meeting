@@ -1,0 +1,231 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context=".CreateStep1Fragment" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        tools:context=".CreateStep1Fragment" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:paddingTop="10dp"
+                android:text="@string/maximum_number"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_middle" />
+
+            <View style="@style/CreateActivityDividingLine" />
+
+            <RadioGroup
+                android:id="@+id/rg_create_maximum_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rb_create_maximum_number_single"
+                    style="@style/CreateActivityItemSelected"
+                    android:checked="true"
+                    android:text="@string/single_meeting" />
+
+                <View style="@style/CreateActivityDividingLine" />
+
+                <RadioButton
+                    android:id="@+id/rb_create_maximum_number_multiple"
+                    style="@style/CreateActivityItemSelected"
+                    android:text="@string/multiple_meeting" />
+            </RadioGroup>
+
+            <View style="@style/CreateActivityDividingLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_create_item_height"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical" >
+
+            <View style="@style/CreateActivityDividingLine" />
+
+            <RelativeLayout
+                android:id="@+id/rl_create_location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:clickable="true" >
+
+                <TextView
+                    android:id="@+id/tv_create_location_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/location"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+
+                <ImageView
+                    android:id="@+id/iv_right_arrow"
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:clickable="false"
+                    android:contentDescription="@string/app_name"
+                    android:gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_right_arrow" />
+
+                <TextView
+                    android:id="@+id/tv_create_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toLeftOf="@id/iv_right_arrow"
+                    android:layout_toRightOf="@id/tv_create_location_tips"
+                    android:ellipsize="end"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black" />
+            </RelativeLayout>
+
+            <View style="@style/CreateActivityDividingLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:paddingTop="10dp"
+                android:text="@string/i_want_my_meeting_time_to_be"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_middle" />
+
+            <View style="@style/CreateActivityDividingLine" />
+
+            <RadioGroup
+                android:id="@+id/rg_create_set_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rb_create_set_time_by_me"
+                    style="@style/CreateActivityItemSelected"
+                    android:checked="false"
+                    android:text="@string/set_by_me" />
+
+                <View style="@style/CreateActivityDividingLine" />
+
+                <RadioButton
+                    android:id="@+id/rb_create_set_time_by_him_her"
+                    style="@style/CreateActivityItemSelected"
+                    android:checked="true"
+                    android:text="@string/set_by_him_her" />
+            </RadioGroup>
+
+            <View style="@style/CreateActivityDividingLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_set_start_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:paddingTop="10dp"
+                android:text="@string/set_the_time"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_middle" />
+
+            <View style="@style/CreateActivityDividingLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/start"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/time_sample"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+            </RelativeLayout>
+
+            <View style="@style/CreateActivityDividingLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_set_end_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/end"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/time_sample2"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_middle" />
+            </RelativeLayout>
+
+            <View style="@style/CreateActivityDividingLine" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

@@ -21,10 +21,10 @@ public class SettingsAboutActivity extends Activity implements OnClickListener {
 	}
 
 	private void initView() {
-		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
+		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
 		mTitleTxt.setText(R.string.about_meetisan);
 		mTitleTxt.setVisibility(View.VISIBLE);
-		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_icon_left);
+		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);
 	}
@@ -32,7 +32,7 @@ public class SettingsAboutActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_title_icon_left:
+		case R.id.btn_title_left:
 			this.finish();
 			break;
 		default:

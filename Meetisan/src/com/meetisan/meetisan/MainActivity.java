@@ -1,5 +1,11 @@
 package com.meetisan.meetisan;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +13,22 @@ import android.view.Window;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
+import android.widget.Toast;
+import cn.jpush.android.api.JPushInterface;
 
+import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.model.PeopleInfo;
+import com.meetisan.meetisan.notifications.NotificationsActivity;
+import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.ServerKeys;
+import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.view.create.CreateActivity;
 import com.meetisan.meetisan.view.dashboard.DashboardActivity;
 import com.meetisan.meetisan.view.meet.MeetActivity;
 import com.meetisan.meetisan.view.tags.TagsActivity;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity implements OnCheckedChangeListener {
@@ -27,7 +45,8 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	private static final String TAB_4 = "dashboard";
 	private static final String TAB_5 = "notifications";
 	private static final String[] TABS = { TAB_1, TAB_2, TAB_3, TAB_4, TAB_5 };
-	// private static final int[] TABS_TITLE = { R.string.title_create, R.string.title_meet,
+	// private static final int[] TABS_TITLE = { R.string.title_create,
+	// R.string.title_meet,
 	// R.string.title_tags,
 	// R.string.title_dashboard, R.string.title_notification };
 
@@ -35,6 +54,8 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	private Intent[] mIntents = new Intent[TABS.length];
 	private TabHost mHost;
 	private RadioGroup mRadioGroup;
+
+	private PeopleInfo mUserInfo;
 
 	// private TextView mTitleTxt;
 
@@ -45,6 +66,8 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		setContentView(R.layout.activity_main);
 
 		setup();
+
+		syncUserInfoFromServer();
 	}
 
 	@Override
@@ -63,6 +86,17 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		initTab();
 	}
 
+	private void syncUserInfoFromServer() {
+		mUserInfo = UserInfoKeeper.readUserInfo(this);
+		String email = mUserInfo.getEmail();
+		String pwd = mUserInfo.getPwd();
+		if (email == null || pwd == null) {
+			reLogin();
+			return;
+		}
+		getUserInfoFromServer(email, pwd);
+	}
+
 	private void initTab() {
 		// mTitleTxt = (TextView) findViewById(R.id.txt_title);
 		// mTitleTxt.setVisibility(View.VISIBLE);
@@ -75,6 +109,16 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		mRadioGroup = (RadioGroup) findViewById(R.id.rg_tabgroup);
 		mRadioGroup.setOnCheckedChangeListener(this);
 		// mTitleTxt.setText(TABS_TITLE[mHost.getCurrentTab()]);
+	}
+
+	/**
+	 * re login if needs
+	 */
+	private void reLogin() {
+		ToastHelper.showToast(R.string.login_expired, Toast.LENGTH_LONG);
+		Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+		startActivity(intent);
+		MainActivity.this.finish();
 	}
 
 	@Override
@@ -92,5 +136,66 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	public void onBackPressed() {
 		super.onBackPressed();
 		System.exit(0);
+	}
+
+	private CustomizedProgressDialog mProgressDialog = null;
+
+	private void getUserInfoFromServer(String email, String pwd) {
+		HttpRequest request = new HttpRequest();
+
+		if (mProgressDialog == null) {
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.loading_userinfo);
+		} else {
+			if (mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+			}
+		}
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+				JSONObject json;
+				try {
+					json = new JSONObject(result);
+					JSONObject data = json.getJSONObject(ServerKeys.KEY_DATA);
+					mUserInfo.setId(data.getLong(ServerKeys.KEY_ID));
+					mUserInfo.setEmail(data.getString(ServerKeys.KEY_EMAIL));
+					mUserInfo.setPwd(data.getString(ServerKeys.KEY_PASSWORD));
+					if (!data.isNull(ServerKeys.KEY_NAME)) {
+						mUserInfo.setName(data.getString(ServerKeys.KEY_NAME));
+					}
+					UserInfoKeeper.writeUserInfo(MainActivity.this, mUserInfo);
+
+					if (!data.isNull(ServerKeys.KEY_AVATAR)) {
+						String base64Data = data.getString(ServerKeys.KEY_AVATAR);
+						if (base64Data != null) {
+							MyApplication.setmLogoBitmap(Util.base64ToBitmap(base64Data));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+					ToastHelper.showToast(R.string.app_occurred_exception);
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				reLogin();
+			}
+		});
+
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put(ServerKeys.KEY_EMAIL, email);
+		data.put(ServerKeys.KEY_PASSWORD, pwd);
+		String registrationID = JPushInterface.getRegistrationID(getApplicationContext());
+		if (registrationID != null) {
+			data.put(ServerKeys.KEY_REG_ID, registrationID);
+		}
+		request.post(ServerKeys.FULL_URL_LOGIN, data);
+		mProgressDialog.show();
 	}
 }

@@ -87,7 +87,7 @@
         android:textColor="@color/segment_group_text_check"
         android:textSize="@dimen/text_size_small" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_right_arrow"
         android:layout_width="40dp"
         android:layout_height="20dp"
