@@ -46,16 +46,47 @@
             android:src="@drawable/selector_button_filter" />
     </RelativeLayout>
 
-    <com.meetisan.meetisan.widget.SearchPanel
-        android:id="@+id/search_panel"
-        style="@style/SearchLayout"
-        android:layout_below="@+id/layout_title" />
+    <RelativeLayout
+        android:id="@+id/layout_control"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_search_and_sort_panel_height"
+        android:layout_below="@+id/layout_title" >
+
+        <RadioGroup
+            android:id="@+id/group_control"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <RadioButton
+                android:id="@+id/rb_create"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:background="@drawable/selector_radio_tag"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/rb_meet"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:background="@drawable/selector_radio_sort"
+                android:button="@null" />
+        </RadioGroup>
+
+        <com.meetisan.meetisan.widget.SearchPanel
+            android:id="@+id/search_panel"
+            style="@style/SearchLayout" />
+    </RelativeLayout>
 
     <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
         android:id="@+id/list_people"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/search_panel"
+        android:layout_below="@+id/layout_control"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/gray"
         android:dividerHeight="0.5dp"
@@ -67,7 +98,7 @@
         android:id="@+id/list_meetings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/search_panel"
+        android:layout_below="@+id/layout_control"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/gray"
         android:dividerHeight="0.5dp"
@@ -79,6 +110,7 @@
         android:id="@+id/txt_empty_meetings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/layout_control"
         android:gravity="center"
         android:padding="10dp"
         android:text="@string/content_empty_default"
@@ -90,6 +122,7 @@
         android:id="@+id/txt_empty_people"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/layout_control"
         android:gravity="center"
         android:padding="10dp"
         android:text="@string/content_empty_default"

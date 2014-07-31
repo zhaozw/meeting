@@ -67,7 +67,7 @@
     <!-- Search bar layout -->
     <style name="SearchLayout">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
         <item name="android:background">@drawable/search_background</item>
         <item name="android:padding">5dp</item>
     </style>
