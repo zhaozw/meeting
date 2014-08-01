@@ -52,6 +52,10 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_MEET_INFO = SERVER_ADDRESS + API_TMEET + "get";
 	/** http://{域名}/api/tmeetingmember/getlist/{meeting的ID}/?pageindex={页码}&pagesize={每页数量} */
 	public static final String FULL_URL_GET_MEET_MEMBER = SERVER_ADDRESS + API_TMEET_MEMBER + "getlist";
+	/** http://{域名}/api/tMeetingMember/add/ */
+	public static final String FULL_URL_ATTEND_MEET = SERVER_ADDRESS + API_TMEET_MEMBER + "add";
+	/** http://{域名}/api/tMeetingMember/Delete/*/
+	public static final String FULL_URL_CANCEL_ATTEND_MEET = SERVER_ADDRESS + API_TMEET_MEMBER + "Delete";
 	/** http://{域名}/api/tmeeting/GetUserMeetingList/{用户ID}/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户经度} */
 	public static final String FULL_URL_GET_USER_MEET_LIST = SERVER_ADDRESS + API_TMEET + "GetUserMeetingList";
 	/** http://{域名}/api/tuser/GetConnection/{当前用户ID}/?pageindex={页码}&pagesize={每页数量} */
@@ -84,6 +88,7 @@ public class ServerKeys {
 	public static final String KEY_TAG_ID = "TagID";
 	public static final String KEY_USER_TAG_ID = "UserTagID";
 	public static final String KEY_USER_ID = "UserID";
+	public static final String KEY_USER_NAME = "UserName";
 	public static final String KEY_CATEGORY_ID = "CategoryID";
 	public static final String KEY_TITLE = "Title";
 	public static final String KEY_LOGO = "Logo";
@@ -92,6 +97,8 @@ public class ServerKeys {
 	public static final String KEY_PEOPLES = "Peoples";
 	public static final String KEY_MEETINGS = "Meetings";
 	public static final String KEY_MEETING = "Meeting";
+	public static final String KEY_MEETING_ID = "MeetingID";
+	public static final String KEY_MEETING_USER_ID = "MeetingUserID";
 	public static final String KEY_LINK = "Link";
 	public static final String KEY_DESCRIPTION = "Description";
 	public static final String KEY_FOLLOW_STATUS = "FollowStatus";

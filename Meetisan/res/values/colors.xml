@@ -33,6 +33,8 @@
 	
 	<!-- Custom prgress dialog -->
 	<color name="border_square_color_gray">#55000000</color>
+	<!-- Custom Popup Menu -->
+	<color name="popup_menu_bg">#77000000</color>
 	
 	<!-- Create activity colors -->
 	<color name="activity_create_dividing_line_color">#F6F6F6</color>

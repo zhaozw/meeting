@@ -1,8 +1,9 @@
 <resources>
 
     <dimen name="activity_title_text_size">20sp</dimen>
-    <dimen name="activity_title_height">44sp</dimen>
-    <dimen name="activity_edittxt_height">44sp</dimen>
+    <dimen name="activity_title_height">44dp</dimen>
+    <dimen name="activity_main_tab_bottom_height">60dp</dimen>
+    <dimen name="activity_edittxt_height">44dp</dimen>
     <dimen name="layout_search_and_sort_panel_height">46dp</dimen>
 
 </resources>

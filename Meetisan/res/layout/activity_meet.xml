@@ -61,7 +61,7 @@
             android:visibility="gone" >
 
             <RadioButton
-                android:id="@+id/rb_create"
+                android:id="@+id/rb_tag"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.0"
@@ -69,7 +69,7 @@
                 android:button="@null" />
 
             <RadioButton
-                android:id="@+id/rb_meet"
+                android:id="@+id/rb_sort"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.0"
@@ -82,52 +82,55 @@
             style="@style/SearchLayout" />
     </RelativeLayout>
 
-    <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
-        android:id="@+id/list_people"
+    <RelativeLayout
+        android:id="@+id/layout_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/layout_control"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@color/gray"
-        android:dividerHeight="0.5dp"
-        android:fadingEdge="none"
-        android:footerDividersEnabled="true"
-        android:headerDividersEnabled="true" />
+        android:layout_below="@+id/layout_control" >
 
-    <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
-        android:id="@+id/list_meetings"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layout_control"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@color/gray"
-        android:dividerHeight="0.5dp"
-        android:fadingEdge="none"
-        android:footerDividersEnabled="true"
-        android:headerDividersEnabled="true" />
+        <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
+            android:id="@+id/list_people"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@color/gray"
+            android:dividerHeight="0.5dp"
+            android:fadingEdge="none"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true" />
 
-    <TextView
-        android:id="@+id/txt_empty_meetings"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layout_control"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/content_empty_default"
-        android:textColor="@color/content_empty_tips_text_color"
-        android:textSize="@dimen/text_size_small"
-        android:visibility="gone" />
+        <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
+            android:id="@+id/list_meetings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@color/gray"
+            android:dividerHeight="0.5dp"
+            android:fadingEdge="none"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true" />
 
-    <TextView
-        android:id="@+id/txt_empty_people"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layout_control"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/content_empty_default"
-        android:textColor="@color/content_empty_tips_text_color"
-        android:textSize="@dimen/text_size_small"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/txt_empty_meetings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/content_empty_default"
+            android:textColor="@color/content_empty_tips_text_color"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_empty_people"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/content_empty_default"
+            android:textColor="@color/content_empty_tips_text_color"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </RelativeLayout>
