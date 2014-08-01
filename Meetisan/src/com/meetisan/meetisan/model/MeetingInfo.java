@@ -30,8 +30,8 @@ public class MeetingInfo {
 	private String endTime = null;
 	/** meet create date */
 	private String createDate = null;
-	/** meet join status */
-	private int join = 0;
+	/** meet join status, 0:已参加;  1：未参加;  2：当前用户为meeting创建人 */
+	private int joinStatus = 0;
 	/** meet status */
 	private int status = 0;
 	/** meet tags */
@@ -117,12 +117,12 @@ public class MeetingInfo {
 		this.description = description;
 	}
 
-	public int getJoin() {
-		return join;
+	public int getJoinStatus() {
+		return joinStatus;
 	}
 
-	public void setJoin(int join) {
-		this.join = join;
+	public void setJoinStatus(int joinStatus) {
+		this.joinStatus = joinStatus;
 	}
 
 	public int getStatus() {

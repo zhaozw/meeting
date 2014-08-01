@@ -258,8 +258,7 @@
                 <Button
                     android:id="@+id/btn_meet"
                     style="@style/ButtonStyle"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/meet_or_cancel" />
+                    android:layout_marginTop="20dp" />
 
                 <TextView
                     android:id="@+id/txt_report"

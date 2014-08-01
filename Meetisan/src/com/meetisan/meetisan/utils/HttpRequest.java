@@ -67,7 +67,7 @@ public class HttpRequest {
 		Log.d(LOG_CAT, "URL of Delete method:" + fullUrl);
 		finalHttp.delete(fullUrl, new MyAjaxCallBack(fullUrl));
 	}
-
+	
 	private class MyAjaxCallBack extends AjaxCallBack<String> {
 		private String myUrl;
 
