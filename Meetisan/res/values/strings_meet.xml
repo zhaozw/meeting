@@ -20,4 +20,7 @@
     <string name="cancel_attend_meeting_failure">Failed To Cancel Attend This Meeting</string>
     
     <string name="meet_member">People In This Meeting</string>
+    
+    <string name="meeting_location">Meeting Location</string>
+    <string name="set_meeting_location">Set Meeting Location</string>
 </resources>

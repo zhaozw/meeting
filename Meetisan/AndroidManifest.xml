@@ -40,9 +40,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--
      The following two permissions are not required to use
-     Google Maps Android API v2, but are recommended.
+     Google Maps Android API v2, but are recommended.
     -->
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -73,7 +72,7 @@
 
         <uses-library
             android:name="com.google.android.maps"
-            android:required="false" />
+            android:required="true" />
 
         <activity
             android:name=".LauncherActivity"
@@ -204,11 +203,12 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
 
+        <!--
         <receiver
             android:name=".gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
         </receiver>
-
+        -->
         <!-- <service android:name="com.meetisan.meetisan.GCMIntentService" /> -->
 
 

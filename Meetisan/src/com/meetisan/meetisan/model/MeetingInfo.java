@@ -19,9 +19,9 @@ public class MeetingInfo {
 	/** meet icon */
 	private Bitmap logo = null;
 	/** people longitude */
-	private float longitude = 0.0f;
+	private double longitude = 0.0f;
 	/** people latitude */
-	private float latitude = 0.0f;
+	private double latitude = 0.0f;
 	/** meet distance */
 	private double distance = 0.0;
 	/** meet start time */
@@ -30,7 +30,7 @@ public class MeetingInfo {
 	private String endTime = null;
 	/** meet create date */
 	private String createDate = null;
-	/** meet join status, 0:已参加;  1：未参加;  2：当前用户为meeting创建人 */
+	/** meet join status, 0:已参加; 1：未参加; 2：当前用户为meeting创建人 */
 	private int joinStatus = 0;
 	/** meet status */
 	private int status = 0;
@@ -69,19 +69,19 @@ public class MeetingInfo {
 		this.address = address;
 	}
 
-	public float getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(float longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 
-	public float getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(float latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 

@@ -109,6 +109,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		mRadioGroup = (RadioGroup) findViewById(R.id.rg_tabgroup);
 		mRadioGroup.setOnCheckedChangeListener(this);
 		// mTitleTxt.setText(TABS_TITLE[mHost.getCurrentTab()]);
+		mHost.setCurrentTab(1);
 	}
 
 	/**

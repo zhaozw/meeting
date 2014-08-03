@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.widget.LabelWithSwitchButton;
 import com.meetisan.meetisan.widget.SwitchButton;
 
 /**
@@ -23,7 +24,7 @@ import com.meetisan.meetisan.widget.SwitchButton;
 public class CreateStep1Fragment extends Fragment {
 	private OnFragmentInteractionListener mListener;
 	private EditText mMeetingTitle;
-	private SwitchButton mPrivateMeeting;
+	private LabelWithSwitchButton mPrivateMeeting;
 	
 	public CreateStep1Fragment() {
 		// Required empty public constructor
@@ -41,8 +42,8 @@ public class CreateStep1Fragment extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_create_step1, container, false);
 		mMeetingTitle = (EditText) view.findViewById(R.id.et_create_meeting_title);
-		mPrivateMeeting = (SwitchButton) view.findViewById(R.id.sb_create_private_meeting);
-		
+		mPrivateMeeting = (LabelWithSwitchButton) view.findViewById(R.id.switch_create_private_meeting);
+
 		return view;
 	}
 

@@ -11,13 +11,16 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.meetisan.meetisan.GoogleMapActivity;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.MeetingInfo;
@@ -97,7 +100,18 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_location:
-
+			Intent mapIntent = new Intent();
+			Bundle mapBundle = new Bundle();
+			mapBundle.putBoolean("IsLocation", false);
+			mapBundle.putDouble("Latitude", mMeetInfo.getLatitude());
+			mapBundle.putDouble("Longitude", mMeetInfo.getLongitude());
+			mapBundle.putString("MeetTitle", mMeetInfo.getTitle());
+			Log.d(TAG,
+					"Location: " + false + "; Latitude: " + mMeetInfo.getLatitude() + "; Longitude: "
+							+ mMeetInfo.getLongitude() + "; Title: " + mMeetInfo.getTitle());
+			mapIntent.setClass(this, GoogleMapActivity.class);
+			mapIntent.putExtras(mapBundle);
+			startActivity(mapIntent);
 			break;
 		case R.id.btn_connections:
 			Intent intent = new Intent();
@@ -137,7 +151,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		if (mMeetInfo.getJoinStatus() == 2) {
 			// Current User is the Meeting Host
 			// TODO ..
-			mMeetOrCancelBtn.setVisibility(View.GONE);
+			((LinearLayout) findViewById(R.id.layout_meet_and_report)).setVisibility(View.GONE);
 		} else if (mMeetInfo.getJoinStatus() == 1) {
 			mMeetOrCancelBtn.setText(R.string.meet);
 		} else if (mMeetInfo.getJoinStatus() == 0) {
@@ -208,8 +222,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					if (!meetJson.isNull(ServerKeys.KEY_DESCRIPTION)) {
 						mMeetInfo.setDescription(meetJson.getString(ServerKeys.KEY_DESCRIPTION));
 					}
-					mMeetInfo.setLatitude((float) meetJson.getDouble(ServerKeys.KEY_LAT));
-					mMeetInfo.setLongitude((float) meetJson.getDouble(ServerKeys.KEY_LON));
+					mMeetInfo.setLatitude(meetJson.getDouble(ServerKeys.KEY_LAT));
+					mMeetInfo.setLongitude(meetJson.getDouble(ServerKeys.KEY_LON));
 					if (!meetJson.isNull(ServerKeys.KEY_ADDRESS)) {
 						mMeetInfo.setAddress(meetJson.getString(ServerKeys.KEY_ADDRESS));
 					}
@@ -314,7 +328,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		Map<String, String> data = new TreeMap<String, String>();
 		data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
 		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
-		request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET);
+
+		// request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
 		mProgressDialog.show();
 	}
 }
