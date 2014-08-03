@@ -6,16 +6,21 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,11 +36,12 @@ import com.meetisan.meetisan.utils.ToastHelper;
 public class GoogleMapActivity extends Activity implements OnMapClickListener {
 	private static final String TAG = GoogleMapActivity.class.getSimpleName();
 	private GoogleMap mMap;
-	private Location mLocation;
-	private String mBestProvider;
+	/** 设置的Meeting位置 */
+	private LatLng mSetLatLng;
+	private String mAddressName;
 
-	/** 标识是需要定位还是显示某一位置 */
-	private boolean isLocation = true;
+	/** 标识是否是设置位置 */
+	private boolean isSetLocation = true;
 	/** 需要定位到位置的 纬度 */
 	private double mLatitude = 0.0f;
 	/** 需要定位到位置的 经度 */
@@ -51,18 +57,18 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		Bundle bundle = new Bundle();
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
-			isLocation = bundle.getBoolean("IsLocation");
-			if (!isLocation) {
+			isSetLocation = bundle.getBoolean("IsSetLocation");
+			if (!isSetLocation) {
 				mLatitude = bundle.getDouble("Latitude", 0.0f);
 				mLongitude = bundle.getDouble("Longitude", 0.0f);
 				mMeetTitle = bundle.getString("MeetTitle", null);
 			}
-			Log.d(TAG, "Location: " + isLocation + "; Latitude: " + mLatitude + "; Longitude: " + mLongitude
+			Log.d(TAG, "Location: " + isSetLocation + "; Latitude: " + mLatitude + "; Longitude: " + mLongitude
 					+ "; Title: " + mMeetTitle);
 		} else {
 			Log.e(TAG, "Bundle is NULL");
 			// assume is location
-			isLocation = true;
+			isSetLocation = true;
 		}
 		initTitleBar();
 
@@ -75,12 +81,11 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		// getSupportFragmentManager().beginTransaction().add(R.id.map,
 		// fragment).commit();
 		// mMap = fragment.getMap();
-
 		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		if (mMap != null) {
 			mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-			if (isLocation) {
+			if (isSetLocation) {
 				// mMap.setOnMarkerDragListener(this); // 设置拖动监听器
 				mMap.setOnMapClickListener(this);// 设置点击地图监听器
 				zoomToCurrentLocation(mMap); // 定位到用户当前位置
@@ -92,9 +97,17 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		}
 	}
 
+	@Override
+	public void onMapClick(LatLng arg0) {
+		mSetLatLng = arg0;
+		mAddressName = getAddressByLatLng(arg0);
+		String snippet = "Location: " + mAddressName;
+		setMarkerOptions(mMap, arg0, snippet);
+	}
+
 	private void initTitleBar() {
 		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
-		if (isLocation) {
+		if (isSetLocation) {
 			mTitleTxt.setText(R.string.set_meeting_location);
 		} else {
 			mTitleTxt.setText(R.string.meeting_location);
@@ -104,10 +117,49 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		mBackBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				GoogleMapActivity.this.finish();
+				if (mSetLatLng == null) {
+					ToastHelper.showToast(R.string.error_set_meeting_location_empty);
+				} else {
+					Intent data = new Intent();
+					data.putExtra("Latitude", mSetLatLng.latitude);
+					data.putExtra("Longitude", mSetLatLng.longitude);
+					data.putExtra("Address", mAddressName);
+					Log.d(TAG, "Return Info: Latitude=" + mSetLatLng.latitude + "; Longitude=" + mSetLatLng.longitude
+							+ "; Address=" + mAddressName);
+					setResult(RESULT_OK, data);
+					GoogleMapActivity.this.finish();
+				}
 			}
 		});
 		mBackBtn.setVisibility(View.VISIBLE);
+
+		if (isSetLocation) {
+			RelativeLayout mSearchLayout = (RelativeLayout) findViewById(R.id.layout_search);
+			mSearchLayout.setVisibility(View.VISIBLE);
+			Button mSearchBtn = (Button) findViewById(R.id.btn_search);
+			final EditText mSearchTxt = (EditText) findViewById(R.id.search_edit_text);
+			mSearchBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					String locationName = mSearchTxt.getText().toString();
+					if (locationName == null || TextUtils.isEmpty(locationName)) {
+						ToastHelper.showToast("Please enter your search position!");
+					} else {
+						List<Address> addressList = getAddressByName(locationName);
+						if (addressList.size() > 0) {
+							Address address = addressList.get(0);
+							LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+							mSetLatLng = latLng;
+							mAddressName = getAddressByLatLng(latLng);
+							String snippet = "Location: " + mAddressName;
+							setMarkerOptions(mMap, latLng, snippet);
+						} else {
+							ToastHelper.showToast("Can not find you enter position!");
+						}
+					}
+				}
+			});
+		}
 	}
 
 	/**
@@ -126,9 +178,9 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		if (snippet == null) {
 			snippet = "Do not set Meeting Title !";
 		}
-		snippet = "Location: " + snippet;
+		snippet = "Title: " + snippet;
 		LatLng latLng = new LatLng(mLatitude, mLongitude);
-		addMarkerOptions(mMap, latLng, snippet);
+		setMarkerOptions(mMap, latLng, snippet);
 	}
 
 	/**
@@ -146,8 +198,8 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 
 		LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
-		mBestProvider = mLocationManager.getBestProvider(criteria, false);
-		mLocation = mLocationManager.getLastKnownLocation(mBestProvider);
+		String mBestProvider = mLocationManager.getBestProvider(criteria, false);
+		Location mLocation = mLocationManager.getLastKnownLocation(mBestProvider);
 		LatLng latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
 		zoomCameraPosition(latLng);
 	}
@@ -161,7 +213,7 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 	}
 
-	private void addMarkerOptions(GoogleMap map, LatLng latLng, String snippet) {
+	private void setMarkerOptions(GoogleMap map, LatLng latLng, String snippet) {
 		map.clear();
 
 		MarkerOptions markerOpt = new MarkerOptions();
@@ -183,7 +235,7 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 	 * @param latLng
 	 * @return location details string
 	 */
-	private String getAddressInfoByLocation(LatLng latLng) {
+	private String getAddressByLatLng(LatLng latLng) {
 		if (latLng == null) {
 			return null;
 		}
@@ -221,10 +273,25 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		return addressInfo;
 	}
 
-	@Override
-	public void onMapClick(LatLng arg0) {
-		String snippet = "Location: " + getAddressInfoByLocation(arg0);
-		addMarkerOptions(mMap, arg0, snippet);
+	private List<Address> getAddressByName(String locationName) {
+		if (locationName == null) {
+			return null;
+		}
+
+		List<Address> address = null;
+		try {
+			Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+			address = geocoder.getFromLocationName(locationName, 5);
+
+			for (Address add : address) {
+				Log.d(TAG, "GetFromLocationName: Latitude: " + add.getLatitude() + "; Longitude: " + add.getLongitude());
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return address;
 	}
 }
 

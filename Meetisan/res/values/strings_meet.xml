@@ -23,4 +23,6 @@
     
     <string name="meeting_location">Meeting Location</string>
     <string name="set_meeting_location">Set Meeting Location</string>
+    
+    <string name="error_set_meeting_location_empty">Please Set Meeting Location</string>
 </resources>
