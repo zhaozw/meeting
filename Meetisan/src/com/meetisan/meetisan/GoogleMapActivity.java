@@ -47,7 +47,12 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_google_map);
-
+		try {
+			Class.forName("com.google.android.maps.MapActivity");
+		} catch (Exception e) {
+			ToastHelper.showToast(R.string.can_not_use_google_map);
+			return;
+		}
 		Bundle bundle = new Bundle();
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
