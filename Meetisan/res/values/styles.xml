@@ -101,7 +101,7 @@
         <item name="android:shadowColor">@color/button_title_shadow</item>
         <item name="android:shadowDx">0.0</item>
         <item name="android:shadowDy">-1.0</item>
-        <item name="android:shadowRadius">1.0</item>
+        <item name="android:shadowRadius">2.0</item>
     </style>
 
     <!-- Navigation bar Right button -->

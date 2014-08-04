@@ -102,7 +102,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		case R.id.btn_location:
 			Intent mapIntent = new Intent();
 			Bundle mapBundle = new Bundle();
-			mapBundle.putBoolean("IsLocation", false);
+			mapBundle.putBoolean("IsSetLocation", false);
 			mapBundle.putDouble("Latitude", mMeetInfo.getLatitude());
 			mapBundle.putDouble("Longitude", mMeetInfo.getLongitude());
 			mapBundle.putString("MeetTitle", mMeetInfo.getTitle());

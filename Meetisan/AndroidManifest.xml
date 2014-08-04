@@ -200,7 +200,7 @@
         <activity
             android:name=".GoogleMapActivity"
             android:label="@string/settings"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustNothing|adjustResize|stateHidden" >
         </activity>
 
         <!--
