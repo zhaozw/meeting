@@ -191,6 +191,13 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 					mProgressDialog.dismiss();
 				}
 				ToastHelper.showToast("Create Meeting Success");
+
+				FragmentActivity activity = getActivity();
+				
+				if (activity instanceof CreateActivity) {
+					CreateActivity createActivity = (CreateActivity) activity;
+					createActivity.showFirstFragment();
+				}
 			}
 
 			@Override

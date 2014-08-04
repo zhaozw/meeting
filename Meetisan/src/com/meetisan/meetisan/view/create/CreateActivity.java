@@ -110,6 +110,19 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		}
 	}
 
+	public void showFirstFragment() {
+		mCurrentStepIndex = 1;
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		if (mCreateStep1Fragment == null) {
+			mCreateStep1Fragment = new CreateStep1Fragment();
+			transaction.add(R.id.fl_fragment_container, mCreateStep1Fragment);
+		} else {
+			transaction.show(mCreateStep1Fragment);
+		}
+		transaction.commit();
+		setTitleViews(mCurrentStepIndex);
+	}
+	
 	private void changeFragment(int id) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		switch (mCurrentStepIndex) {
