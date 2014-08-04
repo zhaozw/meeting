@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,12 +33,24 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	private CreateStep1Fragment mCreateStep1Fragment;
 	private CreateStep2Fragment mCreateStep2Fragment;
 	private CreateStep3Fragment mCreateStep3Fragment;
-	private CreateDoneFragment mCreateDoneFragment;
+
+	private CreateDoneFragment	mCreateDoneFragment;
+	
+	private long meetPersonID = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create);
+		Log.d("CreateActivity", "On Create");
+		
+		Bundle bundle = new Bundle();
+		bundle = this.getIntent().getExtras();
+		if (bundle != null) {
+			meetPersonID = bundle.getLong("PersonID", -1L);
+			Log.d("CreateActivity", "Meet Person ID: " + meetPersonID);
+		}
+		
 		initTitle();
 	}
 

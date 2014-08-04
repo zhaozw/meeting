@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.meetisan.meetisan.MainActivity;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
@@ -21,6 +22,7 @@ import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.view.create.CreateActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.LabelWithIcon;
@@ -68,6 +70,7 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);
 
+		findViewById(R.id.btn_meet).setOnClickListener(this);
 		mMoreBtn = (LabelWithIcon) findViewById(R.id.btn_more);
 		mMoreBtn.setOnClickListener(this);
 		mNameTxt = (TextView) findViewById(R.id.txt_name);
@@ -140,6 +143,17 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 			intent.setClass(this, PersonMoreInfoActivity.class);
 			intent.putExtras(bundle);
 			startActivity(intent);
+			break;
+		case R.id.btn_meet:
+			Intent meetIntent = new Intent();
+			Bundle meetBundle = new Bundle();
+			meetBundle.putBoolean("IsMeetPerson", true);
+			meetBundle.putLong("PersonID", userId);
+			meetIntent.setClass(PersonProfileActivity.this, MainActivity.class);
+			meetIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);// 设置不要刷新将要跳到的界面
+			meetIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// 它可以关掉所要到的界面中间的activity
+			meetIntent.putExtras(meetBundle);
+			startActivity(meetIntent);
 			break;
 		default:
 			break;
