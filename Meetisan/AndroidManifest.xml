@@ -40,7 +40,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--
      The following two permissions are not required to use
-     Google Maps Android API v2, but are recommended.
+     Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -95,15 +95,15 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.meet.MeetActivity"
+            android:name=".view.meet.MeetActivity"
             android:label="@string/title_meet" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.meet.MeetProfileActivity"
+            android:name=".view.meet.MeetProfileActivity"
             android:label="@string/title_meet" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.meet.MeetMemberActivity"
+            android:name=".view.meet.MeetMemberActivity"
             android:label="@string/title_meet" >
         </activity>
         <activity
@@ -112,12 +112,12 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.tags.TagProfileActivity"
+            android:name=".view.tags.TagProfileActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.tags.TagsCategoryActivity"
+            android:name=".view.tags.TagsCategoryActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
@@ -142,17 +142,17 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.dashboard.PersonProfileActivity"
+            android:name=".view.dashboard.PersonProfileActivity"
             android:label="@string/title_dashboard"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.dashboard.PersonMoreInfoActivity"
+            android:name=".view.dashboard.PersonMoreInfoActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.dashboard.SettingsActivity"
+            android:name=".view.dashboard.SettingsActivity"
             android:label="@string/settings"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
@@ -172,7 +172,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.notifications.NotificationsActivity"
+            android:name=".notifications.NotificationsActivity"
             android:label="@string/title_notification"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
@@ -207,7 +207,7 @@
         <receiver
             android:name=".gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
-        </receiver>
+        </receiver>
         -->
         <!-- <service android:name="com.meetisan.meetisan.GCMIntentService" /> -->
 
@@ -284,6 +284,11 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="76f6944960b6980d205d72e0" />
+
+        <activity
+            android:name="com.meetisan.meetisan.view.create.SetTimeActivity"
+            android:label="@string/title_activity_set_time" >
+        </activity>
     </application>
 
 </manifest>

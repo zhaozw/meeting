@@ -22,4 +22,5 @@
 	<string name="create_successful">Create Successful</string>
 	<string name="please_input_meeting_title">Please input meeting title</string>
 	<string name="please_select_some_tags">Please select some tags</string>
+	<string name="set">Set</string>
 </resources>

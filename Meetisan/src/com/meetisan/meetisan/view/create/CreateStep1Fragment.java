@@ -1,5 +1,8 @@
 package com.meetisan.meetisan.view.create;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.widget.LabelWithSwitchButton;
 import com.meetisan.meetisan.widget.SwitchButton;
 
@@ -67,6 +71,13 @@ public class CreateStep1Fragment extends Fragment {
 		return true;
 	}
 
+	public Map<String, Object> getData() {
+		Map<String, Object> data = new TreeMap<String, Object>();
+		data.put(ServerKeys.KEY_TITLE, mMeetingTitle.getText().toString());
+		data.put(ServerKeys.KEY_IS_PRIVATE, mPrivateMeeting.isChecked() ? 1 : 2);
+		return data;
+	}
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);

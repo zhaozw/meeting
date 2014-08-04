@@ -1,5 +1,9 @@
 package com.meetisan.meetisan.view.create;
 
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.model.TagInfo;
 
 public class CreateActivity extends FragmentActivity implements OnClickListener,
 		OnFragmentInteractionListener {
@@ -27,8 +32,8 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	private CreateStep1Fragment mCreateStep1Fragment;
 	private CreateStep2Fragment mCreateStep2Fragment;
 	private CreateStep3Fragment mCreateStep3Fragment;
-	private CreateDoneFragment	mCreateDoneFragment;
-	
+	private CreateDoneFragment mCreateDoneFragment;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -123,7 +128,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		default:
 			break;
 		}
-		
+
 		switch (id) {
 		case R.id.btn_title_left:
 			mCurrentStepIndex--;
@@ -137,7 +142,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		default:
 			break;
 		}
-		
+
 		switch (mCurrentStepIndex) {
 		case 1:
 			if (mCreateStep1Fragment == null) {
@@ -185,16 +190,31 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		case 2:
 			return mCreateStep2Fragment.checkUserInput();
 		case 3:
-			
+
 		default:
 			break;
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void onFragmentInteraction(Uri uri) {
 		// TODO Auto-generated method stub
 	}
 
+	public Map<String, Object> getData() {
+		Map<String, Object> data = new TreeMap<String, Object>();
+		if (mCreateStep1Fragment != null) {
+			data.putAll(mCreateStep1Fragment.getData());
+		}
+		
+		if (mCreateStep3Fragment != null) {
+			data.putAll(mCreateStep3Fragment.getData());
+		}
+		return data;
+	}
+	
+	public List<TagInfo> getTagInfos() {
+		return mCreateStep2Fragment.getData();
+	}
 }

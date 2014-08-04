@@ -3,6 +3,10 @@ package com.meetisan.meetisan.view.create;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,10 +16,22 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.TagInfo;
+import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
+import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment
@@ -27,10 +43,16 @@ import com.meetisan.meetisan.utils.ToastHelper;
  */
 public class CreateStep2Fragment extends Fragment implements OnItemClickListener {
 	private OnFragmentInteractionListener mListener;
-	private ListView mSelectTagsListView;
+	private PullToRefreshListView mPullTagsListView;
+	private ListView mTagsListView;
+
 	private SelectTagsAdapter mAdapter;
 	private List<TagInfo> mTagsData = new ArrayList<TagInfo>();
-	
+
+	private long mMaxMyTags = 0;
+
+	private long mUserId = -1;
+
 	public CreateStep2Fragment() {
 		// Required empty public constructor
 	}
@@ -38,18 +60,138 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mUserId = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_ID, -1L);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_create_step2, container, false);
-		mSelectTagsListView = (ListView) view.findViewById(R.id.lv_create_select_tags_list);
-		mSelectTagsListView.setOnItemClickListener(this);
-		initTagsData();
+		mPullTagsListView = (PullToRefreshListView) view
+				.findViewById(R.id.list_create_select_tags_list);
+		mPullTagsListView.setOnItemClickListener(this);
+		mPullTagsListView.setMode(Mode.BOTH);
+		TextView mEmptyTagsView = (TextView) view.findViewById(R.id.txt_empty_tags);
+		mPullTagsListView.setEmptyView(mEmptyTagsView);
+		mPullTagsListView.setOnRefreshListener(new OnRefreshListener2() {
+
+			@Override
+			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+				// TODO Auto-generated method stub
+				refreshView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(
+						"Last Refresh: " + Util.getCurFormatDate());
+				getMyTagsFromServer(1, true, false);
+			}
+
+			@Override
+			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+				// TODO Auto-generated method stub
+				refreshView.getLoadingLayoutProxy(false, true).setLastUpdatedLabel(
+						"Last Loading: " + Util.getCurFormatDate());
+				int count = mTagsListView.getCount() - 2;
+				if (count < mMaxMyTags) {
+					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
+					getMyTagsFromServer(pageIndex, false, false);
+				} else {
+					ToastHelper.showToast("All the data has been loaded ");
+					updateMyTagsListView();
+				}
+			}
+		});
+		mTagsListView = mPullTagsListView.getRefreshableView();
+		registerForContextMenu(mTagsListView);
 		mAdapter = new SelectTagsAdapter(getActivity(), mTagsData);
-		mSelectTagsListView.setAdapter(mAdapter);
-		
+		mTagsListView.setAdapter(mAdapter);
+
+		mPullTagsListView.setVisibility(View.VISIBLE);
+		getMyTagsFromServer(1, true, true);
 		return view;
+	}
+
+	private void updateMyTagsListView() {
+		mAdapter.notifyDataSetChanged();
+		mPullTagsListView.onRefreshComplete();
+	}
+
+	private CustomizedProgressDialog mProgressDialog = null;
+
+	/**
+	 * get My Tags from server
+	 * 
+	 * @param pageIndex
+	 *            load page index
+	 */
+	private void getMyTagsFromServer(int pageIndex, final boolean isRefresh,
+			final boolean isNeedsDialog) {
+
+		HttpRequest request = new HttpRequest();
+
+		if (isNeedsDialog) {
+			if (mProgressDialog == null) {
+				mProgressDialog = new CustomizedProgressDialog(getActivity(),
+						R.string.please_waiting);
+			} else {
+				if (mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
+			}
+		}
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				if (isNeedsDialog) {
+					mProgressDialog.dismiss();
+				}
+				try {
+					if (isRefresh) {
+						mTagsData.clear();
+					}
+
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
+					mMaxMyTags = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
+					JSONArray tagArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
+					for (int i = 0; i < tagArray.length(); i++) {
+						TagInfo info = new TagInfo();
+						JSONObject json = tagArray.getJSONObject(i);
+						info.setId(json.getLong(ServerKeys.KEY_TAG_ID));
+						info.setUserTagId(json.getLong(ServerKeys.KEY_USER_TAG_ID));
+						// info.setUserId(json.getLong(ServerKeys.KEY_USER_ID));
+						info.setCategroyId(json.getLong(ServerKeys.KEY_CATEGORY_ID));
+						info.setTitle(json.getString(ServerKeys.KEY_TITLE));
+						info.setLogo(Util.base64ToBitmap(json.getString(ServerKeys.KEY_LOGO)));
+						info.setEndorsed(json.getLong(ServerKeys.KEY_ENDORSEMENTS));
+						info.setPeople(json.getLong(ServerKeys.KEY_PEOPLES));
+						info.setMeetings(json.getLong(ServerKeys.KEY_MEETINGS));
+						mTagsData.add(info);
+					}
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+					// ToastHelper.showToast(R.string.server_response_exception,
+					// Toast.LENGTH_LONG);
+				} finally {
+					updateMyTagsListView();
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				if (isNeedsDialog) {
+					mProgressDialog.dismiss();
+				}
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				updateMyTagsListView();
+			}
+		});
+
+		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex
+				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&name=", null);
+		if (isNeedsDialog) {
+			mProgressDialog.show();
+		}
 	}
 
 	public boolean checkUserInput() {
@@ -61,23 +203,18 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 		ToastHelper.showToast(R.string.please_select_some_tags);
 		return false;
 	}
-	
-	private void initTagsData() {
-		mTagsData.clear();
-		// data for test
-		for (int i = 0; i < 15; i++) {
-			TagInfo mInfo = new TagInfo();
-			mInfo.setTitle("Tags Name " + i);
-			mInfo.setDescription("tags description" + 1);
-			mInfo.setState(0);
-			mInfo.setEndorsed(i * 5);
-			mInfo.setPeople(i * 3);
-			mInfo.setMeetings(i * 8);
-			
-			mTagsData.add(mInfo);
+
+	public List<TagInfo> getData() {
+		List<TagInfo> tagInfos = new ArrayList<TagInfo>();
+		for (TagInfo tagInfo : mTagsData) {
+			if (tagInfo.getState() == 1) {
+				tagInfos.add(tagInfo);
+			}
 		}
+
+		return tagInfos;
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -97,10 +234,12 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		TagInfo info = mTagsData.get(position);
+		TagInfo info = mTagsData.get(position - 1);
 		if (info.getState() == 0) {
+			// is checked
 			info.setState(1);
 		} else {
+			// is unchecked
 			info.setState(0);
 		}
 		mAdapter.notifyDataSetChanged();

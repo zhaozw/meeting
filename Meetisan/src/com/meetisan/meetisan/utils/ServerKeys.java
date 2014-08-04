@@ -46,6 +46,8 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_UESR_LIST = SERVER_ADDRESS + API_TUSER + "getlist";
 	/** http://{域名}/api/tmeeting/getlist/?pageindex={页码}&pagesize={每页数量}&ordertype={排序方式，0：按距离升序 1：按开始时间升序 2：按创建时间降序}&lat={当前用户经度}&lon={当前用户经度}&tagIDs={按tag筛选时传入tag id，ID以逗号隔开，否则传空.例：3,4}&title={按meeting名称搜索时传入meeting title字段，否则传空} */
 	public static final String FULL_URL_GET_MEET_LIST = SERVER_ADDRESS + API_TMEET + "getlist";
+	/** http://{域名}/api/tmeeting/add/ */
+	public static final String FULL_URL_MEETING_ADD = SERVER_ADDRESS + API_TMEET + "add/";
 	/** http://{域名}/api/ttag/GetByCategory/{tag分类ID}/?pageindex={页码}&pagesize={每页数量}&name={按tag的名字搜索，否则请传空} */
 	public static final String FULL_URL_GET_TAGS_BY_CATEGORY = SERVER_ADDRESS + API_TTAG + "GetByCategory";
 	/** http://{域名}/api/tmeeting/get/{meeting的ID}/?UserID={当前用户ID，用于判断是否参加了该meeting} */
@@ -110,4 +112,5 @@ public class ServerKeys {
 	public static final String KEY_END_TIME = "DetermineEndTime";
 	public static final String KEY_REPORT_OBJECT_ID = "ReportObjectID";
 	public static final String KEY_TYPE = "Type";
+	public static final String KEY_IS_PRIVATE ="IsPrivate";
 }
