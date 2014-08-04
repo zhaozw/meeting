@@ -36,8 +36,8 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 
 	public static final String LOG_ACTIVITY_SERVICE = "=====MainActivity====";
 
-	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_create, R.id.rb_meet,
-			R.id.rb_tags, R.id.rb_dashboard, R.id.rb_notifications };
+	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_create, R.id.rb_meet, R.id.rb_tags,
+			R.id.rb_dashboard, R.id.rb_notifications };
 
 	private static final String TAB_1 = "create";
 	private static final String TAB_2 = "meet";
@@ -57,6 +57,10 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 
 	private PeopleInfo mUserInfo;
 
+	// is start from Let's Meet action
+	private boolean isMeetPerson = false;
+	private long meetPersonID = -1;
+
 	// private TextView mTitleTxt;
 
 	@Override
@@ -65,9 +69,22 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
+		Bundle bundle = new Bundle();
+		bundle = this.getIntent().getExtras();
+		if (bundle != null) {
+			isMeetPerson = bundle.getBoolean("IsMeetPerson", false);
+			meetPersonID = bundle.getLong("PersonID", -1L);
+		}
+		// if do not get meet PersonID
+		if (isMeetPerson && meetPersonID < 0) {
+			isMeetPerson = false;
+		}
+
 		setup();
 
-		syncUserInfoFromServer();
+		if (!isMeetPerson) {
+			syncUserInfoFromServer();
+		}
 	}
 
 	@Override
@@ -77,12 +94,16 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 
 	private void setup() {
 		mCreateIntent = new Intent(this, CreateActivity.class);
+		if (isMeetPerson && meetPersonID >= 0) {
+			Bundle bundle = new Bundle();
+			bundle.putLong("PersonID", meetPersonID);
+			mCreateIntent.putExtras(bundle);
+		}
 		mMeetIntent = new Intent(this, MeetActivity.class);
 		mTagsIntent = new Intent(this, TagsActivity.class);
 		mDashboardIntent = new Intent(this, DashboardActivity.class);
 		mNotificationsIntent = new Intent(this, NotificationsActivity.class);
-		mIntents = new Intent[] { mCreateIntent, mMeetIntent, mTagsIntent, mDashboardIntent,
-				mNotificationsIntent };
+		mIntents = new Intent[] { mCreateIntent, mMeetIntent, mTagsIntent, mDashboardIntent, mNotificationsIntent };
 		initTab();
 	}
 
@@ -107,9 +128,14 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		}
 
 		mRadioGroup = (RadioGroup) findViewById(R.id.rg_tabgroup);
+		if (!isMeetPerson) {
+			mHost.setCurrentTab(1); // for first visible MeetActivity
+		} else {
+			mRadioGroup.check(RADIO_BTN_IDS[0]);
+		}
+
 		mRadioGroup.setOnCheckedChangeListener(this);
 		// mTitleTxt.setText(TABS_TITLE[mHost.getCurrentTab()]);
-		mHost.setCurrentTab(1);
 	}
 
 	/**

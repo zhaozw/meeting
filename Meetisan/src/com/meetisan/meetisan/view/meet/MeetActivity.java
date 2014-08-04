@@ -77,6 +77,7 @@ public class MeetActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_meet);
+		Log.d(TAG, "On Create");
 
 		mUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
 
