@@ -257,7 +257,7 @@ public class TagsActivity extends Activity {
 						// info.setUserId(json.getLong(ServerKeys.KEY_USER_ID));
 						info.setCategroyId(json.getLong(ServerKeys.KEY_CATEGORY_ID));
 						info.setTitle(json.getString(ServerKeys.KEY_TITLE));
-						info.setLogo(Util.base64ToBitmap(json.getString(ServerKeys.KEY_LOGO)));
+						info.setLogoUri(json.getString(ServerKeys.KEY_LOGO));
 						info.setEndorsed(json.getLong(ServerKeys.KEY_ENDORSEMENTS));
 						info.setPeople(json.getLong(ServerKeys.KEY_PEOPLES));
 						info.setMeetings(json.getLong(ServerKeys.KEY_MEETINGS));

@@ -3,8 +3,6 @@ package com.meetisan.meetisan.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Bitmap;
-
 public class TagInfo {
 
 	/** tag id */
@@ -19,8 +17,9 @@ public class TagInfo {
 	private String title = null;
 	/** tag description */
 	private String description = null;
-	/** tag icon */
-	private Bitmap logo = null;
+	/** tag logo Uri */
+	// private Bitmap logo = null;
+	private String logoUri = null;
 	/** tag create date (such as: 2014-07-07T07:34:01) */
 	private String createDate = null;
 	/** tag state, 0 or 1 */
@@ -95,12 +94,12 @@ public class TagInfo {
 		this.description = description;
 	}
 
-	public Bitmap getLogo() {
-		return logo;
+	public String getLogoUri() {
+		return logoUri;
 	}
 
-	public void setLogo(Bitmap logo) {
-		this.logo = logo;
+	public void setLogoUri(String logoUri) {
+		this.logoUri = logoUri;
 	}
 
 	public String getCreateDate() {

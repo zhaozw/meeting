@@ -176,7 +176,7 @@ public class TagsCategoryActivity extends Activity {
 						JSONObject json = tagArray.getJSONObject(i);
 						info.setId(json.getLong(ServerKeys.KEY_ID));
 						info.setTitle(json.getString(ServerKeys.KEY_TITLE));
-						info.setLogo(Util.base64ToBitmap(json.getString(ServerKeys.KEY_LOGO)));
+						info.setLogoUri(json.getString(ServerKeys.KEY_LOGO));
 						info.setDescription(json.getString(ServerKeys.KEY_DESCRIPTION));
 
 						// info.setEndorsed(json.getLong(ServerKeys.KEY_ENDORSEMENTS));

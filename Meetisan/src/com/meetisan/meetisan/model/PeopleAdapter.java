@@ -10,16 +10,19 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.widget.CircleImageView;
 
 public class PeopleAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
 	private List<PeopleInfo> peopleData;
-
+	private HttpBitmap httpBitmap;
+	
 	public PeopleAdapter(Context mContext, List<PeopleInfo> peopleData) {
 		inflater = LayoutInflater.from(mContext);
 		this.peopleData = peopleData;
+		httpBitmap = new HttpBitmap(mContext);
 	}
 
 	@Override
@@ -43,6 +46,7 @@ public class PeopleAdapter extends BaseAdapter {
 		final ViewHolder holder;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_listview_meet_people, parent, false);
+			// convertView = View.inflate(mContext, R.layout.item_listview_meet_people, null);
 			holder = new ViewHolder();
 			holder.mCircleImage = (CircleImageView) convertView.findViewById(R.id.iv_portrait);
 			holder.mNameTxt = (TextView) convertView.findViewById(R.id.txt_name);
@@ -59,8 +63,10 @@ public class PeopleAdapter extends BaseAdapter {
 
 		PeopleInfo mPeopleInfo = peopleData.get(position);
 
-		if (mPeopleInfo.getAvatar() != null) {
-			holder.mCircleImage.setImageBitmap(mPeopleInfo.getAvatar());
+		// 防止图片错位，先设置为默认图片
+		holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		if (mPeopleInfo.getAvatarUri() != null) {
+			httpBitmap.displayBitmap(holder.mCircleImage, mPeopleInfo.getAvatarUri());
 		}
 		holder.mNameTxt.setText(mPeopleInfo.getName());
 		holder.mCollegeTxt.setText(mPeopleInfo.getUniversity());

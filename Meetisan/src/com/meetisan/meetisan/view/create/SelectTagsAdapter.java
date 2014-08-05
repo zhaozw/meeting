@@ -13,17 +13,20 @@ import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.model.TagInfo;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.widget.CircleImageView;
 
 public class SelectTagsAdapter extends BaseAdapter {
 	private List<TagInfo> mInfos = new ArrayList<TagInfo>();
 	private Context mContext;
 	private LayoutInflater mInflater;
+	private HttpBitmap httpBitmap;
 
 	public SelectTagsAdapter(Context context, List<TagInfo> list) {
 		mInfos = list;
 		mContext = context;
 		mInflater = LayoutInflater.from(mContext);
+		httpBitmap = new HttpBitmap(mContext);
 	}
 
 	@Override
@@ -63,8 +66,9 @@ public class SelectTagsAdapter extends BaseAdapter {
 		} else {
 			holder.checkBox.setChecked(true);
 		}
-		if (info.getLogo() != null) {
-			holder.icon.setImageBitmap(info.getLogo());
+		holder.icon.setImageResource(R.drawable.portrait_default);
+		if (info.getLogoUri() != null) {
+			httpBitmap.displayBitmap(holder.icon, info.getLogoUri());
 		}
 		holder.name.setText(info.getTitle());
 		holder.description.setText(info.getDescription());

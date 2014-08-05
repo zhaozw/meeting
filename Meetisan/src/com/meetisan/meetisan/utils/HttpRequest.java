@@ -7,14 +7,9 @@ import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
-import org.apache.http.Header;
-import org.apache.http.client.methods.HttpHead;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.message.BasicHeader;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.google.android.gms.internal.da;
 
 import android.net.Uri;
 import android.net.Uri.Builder;
@@ -105,10 +100,12 @@ public class HttpRequest {
 					mListener.onSuccess(myUrl, result);
 					// }
 				} else {
-					mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED, json.getString(ServerKeys.KEY_MSG));
+					mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED,
+							json.getString(ServerKeys.KEY_MSG));
 				}
 			} catch (JSONException e) {
-				mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED, "Request data is not correct json object");
+				mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED,
+						"Request data is not correct json object");
 				e.printStackTrace();
 			}
 		}

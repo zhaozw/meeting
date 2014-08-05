@@ -9,7 +9,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,13 +20,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.meetisan.meetisan.MyApplication;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.MeetingInfo;
 import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.model.UpcomingMeetingAdapter;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
@@ -46,7 +45,6 @@ public class DashboardActivity extends Activity implements OnClickListener {
 	private CircleImageView mPortraitView;
 	private TextView mNameTxt, mCountTxt;
 	private PeopleInfo mUserInfo;
-	private Bitmap mUserLogo;
 
 	private PullToRefreshListView mPullMeetingsView;
 	private ListView mMeetingsListView;
@@ -55,6 +53,9 @@ public class DashboardActivity extends Activity implements OnClickListener {
 	private long mUpcomingMeetings = 0, mAllMeetingsCount = 0;
 	private float mLat = 200.3f, mLon = 100.0f;
 
+	private HttpBitmap httpBitmap = new HttpBitmap(this);
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -71,7 +72,6 @@ public class DashboardActivity extends Activity implements OnClickListener {
 
 	private void syncUserInfoFromPerfer() {
 		mUserInfo = UserInfoKeeper.readUserInfo(this);
-		mUserLogo = MyApplication.getmLogoBitmap();
 	}
 
 	private void updateUpcomingMeetingsListView() {
@@ -156,8 +156,8 @@ public class DashboardActivity extends Activity implements OnClickListener {
 			}
 		}
 
-		if (mUserLogo != null) {
-			mPortraitView.setImageBitmap(mUserLogo);
+		if (mUserInfo.getAvatarUri() != null) {
+			httpBitmap.displayBitmap(mPortraitView, mUserInfo.getAvatarUri());
 		} else {
 			mPortraitView.setImageResource(R.drawable.portrait_default);
 		}
@@ -196,21 +196,15 @@ public class DashboardActivity extends Activity implements OnClickListener {
 	/**
 	 * get Meetings from server
 	 * 
-	 * @param pageIndex
-	 *            load page index
-	 * @param orderType
-	 *            get list order by edition
-	 * @param mLat
-	 *            location
-	 * @param mLon
-	 *            location
-	 * @param isRefresh
-	 *            is refresh or load more
-	 * @param isNeedsDialog
-	 *            weather show progress dialog
+	 * @param pageIndex load page index
+	 * @param orderType get list order by edition
+	 * @param mLat location
+	 * @param mLon location
+	 * @param isRefresh is refresh or load more
+	 * @param isNeedsDialog weather show progress dialog
 	 */
-	private void getUpcomingMeetingsFromServer(int pageIndex, float mLat, float mLon, final boolean isRefresh,
-			final boolean isNeedsDialog) {
+	private void getUpcomingMeetingsFromServer(int pageIndex, float mLat, float mLon,
+			final boolean isRefresh, final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -235,7 +229,8 @@ public class DashboardActivity extends Activity implements OnClickListener {
 						mMeetingData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
 					mAllMeetingsCount = dataJson.getLong(ServerKeys.KEY_MEET_COUNT);
 
 					JSONObject meetingsJson = dataJson.getJSONObject(ServerKeys.KEY_UPCOMING_MEET);
@@ -248,13 +243,15 @@ public class DashboardActivity extends Activity implements OnClickListener {
 
 						JSONObject meetingJson = meetJson.getJSONObject(ServerKeys.KEY_MEETING);
 						meetingInfo.setId(meetingJson.getLong(ServerKeys.KEY_ID));
-						meetingInfo.setCreateUserId(meetingJson.getLong(ServerKeys.KEY_CREATE_USER_ID));
+						meetingInfo.setCreateUserId(meetingJson
+								.getLong(ServerKeys.KEY_CREATE_USER_ID));
 						meetingInfo.setStartTime(meetingJson.getString(ServerKeys.KEY_START_TIME));
 						if (!meetingJson.isNull(ServerKeys.KEY_TITLE)) {
 							meetingInfo.setTitle(meetingJson.getString(ServerKeys.KEY_TITLE));
 						}
 						meetingInfo.setDistance(meetingJson.getDouble(ServerKeys.KEY_DISTANCE));
-						meetingInfo.setLogo(Util.base64ToBitmap(meetingJson.getString(ServerKeys.KEY_LOGO)));
+						meetingInfo.setLogo(Util.base64ToBitmap(meetingJson
+								.getString(ServerKeys.KEY_LOGO)));
 
 						JSONArray tagArray = meetJson.getJSONArray(ServerKeys.KEY_TAGS);
 						for (int j = 0; j < tagArray.length(); j++) {
@@ -289,8 +286,9 @@ public class DashboardActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_UPCOMING_MEET + "/" + mUserInfo.getId() + "/?pageindex=" + pageIndex
-				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&lat=" + mLat + "&lon=" + mLon, null);
+		request.get(ServerKeys.FULL_URL_GET_UPCOMING_MEET + "/" + mUserInfo.getId()
+				+ "/?pageindex=" + pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE + "&lat=" + mLat
+				+ "&lon=" + mLon, null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();

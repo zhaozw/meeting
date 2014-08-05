@@ -34,11 +34,10 @@ import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefresh
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
 /**
- * A simple {@link Fragment} subclass. Activities that contain this fragment
- * must implement the {@link CreateStep2Fragment.OnFragmentInteractionListener}
- * interface to handle interaction events. Use the
- * {@link CreateStep2Fragment#newInstance} factory method to create an instance
- * of this fragment.
+ * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
+ * {@link CreateStep2Fragment.OnFragmentInteractionListener} interface to handle interaction events.
+ * Use the {@link CreateStep2Fragment#newInstance} factory method to create an instance of this
+ * fragment.
  * 
  */
 public class CreateStep2Fragment extends Fragment implements OnItemClickListener {
@@ -118,8 +117,7 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 	/**
 	 * get My Tags from server
 	 * 
-	 * @param pageIndex
-	 *            load page index
+	 * @param pageIndex load page index
 	 */
 	private void getMyTagsFromServer(int pageIndex, final boolean isRefresh,
 			final boolean isNeedsDialog) {
@@ -161,7 +159,8 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 						// info.setUserId(json.getLong(ServerKeys.KEY_USER_ID));
 						info.setCategroyId(json.getLong(ServerKeys.KEY_CATEGORY_ID));
 						info.setTitle(json.getString(ServerKeys.KEY_TITLE));
-						info.setLogo(Util.base64ToBitmap(json.getString(ServerKeys.KEY_LOGO)));
+						// info.setLogo(Util.base64ToBitmap(json.getString(ServerKeys.KEY_LOGO)));
+						info.setLogoUri(json.getString(ServerKeys.KEY_LOGO));
 						info.setEndorsed(json.getLong(ServerKeys.KEY_ENDORSEMENTS));
 						info.setPeople(json.getLong(ServerKeys.KEY_PEOPLES));
 						info.setMeetings(json.getLong(ServerKeys.KEY_MEETINGS));

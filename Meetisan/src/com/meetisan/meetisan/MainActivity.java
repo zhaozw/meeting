@@ -23,7 +23,6 @@ import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
-import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.view.create.CreateActivity;
 import com.meetisan.meetisan.view.dashboard.DashboardActivity;
 import com.meetisan.meetisan.view.meet.MeetActivity;
@@ -193,14 +192,10 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 					if (!data.isNull(ServerKeys.KEY_NAME)) {
 						mUserInfo.setName(data.getString(ServerKeys.KEY_NAME));
 					}
-					UserInfoKeeper.writeUserInfo(MainActivity.this, mUserInfo);
-
 					if (!data.isNull(ServerKeys.KEY_AVATAR)) {
-						String base64Data = data.getString(ServerKeys.KEY_AVATAR);
-						if (base64Data != null) {
-							MyApplication.setmLogoBitmap(Util.base64ToBitmap(base64Data));
-						}
+						mUserInfo.setAvatarUri(data.getString(ServerKeys.KEY_AVATAR));
 					}
+					UserInfoKeeper.writeUserInfo(MainActivity.this, mUserInfo);
 				} catch (JSONException e) {
 					e.printStackTrace();
 					ToastHelper.showToast(R.string.app_occurred_exception);

@@ -17,12 +17,11 @@ import com.meetisan.meetisan.MainActivity;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
-import com.meetisan.meetisan.utils.Util;
-import com.meetisan.meetisan.view.create.CreateActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.LabelWithIcon;
@@ -30,8 +29,8 @@ import com.meetisan.meetisan.widget.LabelWithIcon;
 public class PersonProfileActivity extends Activity implements OnClickListener {
 
 	private CircleImageView mPortraitView;
-	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagOneTxt, mTagTwoTxt, mTagThreeTxt, mTagFourTxt,
-			mTagFiveTxt, mTagNoTxt;
+	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagOneTxt, mTagTwoTxt, mTagThreeTxt,
+			mTagFourTxt, mTagFiveTxt, mTagNoTxt;
 	private LabelWithIcon mMoreBtn;
 	private PeopleInfo mUserInfo = new PeopleInfo();
 	private long userId = -1;
@@ -89,8 +88,9 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		if (mUserInfo.getName() != null) {
 			mNameTxt.setText(mUserInfo.getName());
 		}
-		if (mUserInfo.getAvatar() != null) {
-			mPortraitView.setImageBitmap(mUserInfo.getAvatar());
+		if (mUserInfo.getAvatarUri() != null) {
+			HttpBitmap httpBitmap = new HttpBitmap(this);
+			httpBitmap.displayBitmap(mPortraitView, mUserInfo.getAvatarUri());
 		} else {
 			mPortraitView.setImageResource(R.drawable.portrait_default);
 		}
@@ -220,7 +220,12 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		if (!userData.isNull(ServerKeys.KEY_NAME)) {
 			userInfo.setName(userData.getString(ServerKeys.KEY_NAME));
 		}
-		userInfo.setAvatar(Util.base64ToBitmap(userData.getString(ServerKeys.KEY_AVATAR)));
+		if (!userData.isNull(ServerKeys.KEY_AVATAR)) {
+			userInfo.setAvatarUri(userData.getString(ServerKeys.KEY_AVATAR));
+		}
+		if (!userData.isNull(ServerKeys.KEY_BG)) {
+			userInfo.setBgUri(userData.getString(ServerKeys.KEY_BG));
+		}
 		if (!userData.isNull(ServerKeys.KEY_SIGNATURE)) {
 			userInfo.setSignature(userData.getString(ServerKeys.KEY_SIGNATURE));
 		}

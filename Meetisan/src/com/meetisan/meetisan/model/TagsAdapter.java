@@ -11,16 +11,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.widget.CircleImageView;
 
 public class TagsAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
 	private List<TagInfo> tagData;
+	private HttpBitmap httpBitmap;
 
 	public TagsAdapter(Context mContext, List<TagInfo> tagData) {
 		inflater = LayoutInflater.from(mContext);
 		this.tagData = tagData;
+		httpBitmap = new HttpBitmap(mContext);
 	}
 
 	@Override
@@ -57,10 +60,10 @@ public class TagsAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-
 		TagInfo mTagInfo = tagData.get(position);
-		if (mTagInfo.getLogo() != null) {
-			holder.mCircleImage.setImageBitmap(mTagInfo.getLogo());
+		holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		if (mTagInfo.getLogoUri() != null) {
+			httpBitmap.displayBitmap(holder.mCircleImage, mTagInfo.getLogoUri());
 		}
 		holder.mNameTxt.setText(mTagInfo.getTitle());
 		holder.mEndoredTxt.setText(String.valueOf(mTagInfo.getEndorsed()));

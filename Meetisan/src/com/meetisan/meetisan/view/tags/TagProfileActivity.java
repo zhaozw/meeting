@@ -21,11 +21,11 @@ import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.model.TagHost;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.model.TagMoment;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
-import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
@@ -38,6 +38,8 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 
 	private long mTagID = -1, mUserID = -1;
 	private TagInfo mTagInfo = new TagInfo();
+
+	private HttpBitmap httpBitmap = new HttpBitmap(this);
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,8 +91,8 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		if (mTagInfo.getLogo() != null) {
-			mPortraitView.setImageBitmap(mTagInfo.getLogo());
+		if (mTagInfo.getLogoUri() != null) {
+			httpBitmap.displayBitmap(mPortraitView, mTagInfo.getLogoUri());
 		}
 		mNameTxt.setText(mTagInfo.getTitle());
 		mDescriptionTxt.setText("Tag Description:	" + mTagInfo.getDescription());
@@ -105,11 +107,10 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 	}
 
 	private void setMomentView(List<TagMoment> mTagMoments) {
-
-		List<Bitmap> mBitmaps = new ArrayList<Bitmap>();
+		List<String> mBitmaps = new ArrayList<String>();
 		for (TagMoment tagMoment : mTagMoments) {
-			if (tagMoment.getImage() != null) {
-				mBitmaps.add(tagMoment.getImage());
+			if (tagMoment.getImageUri() != null) {
+				mBitmaps.add(tagMoment.getImageUri());
 			}
 		}
 		if (mBitmaps.size() <= 0) {
@@ -118,7 +119,8 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		Bitmap mBitmap = Util.inFrameFoto(mBitmaps, Util.getWindowsSize(this, true) - 20);
+		// Bitmap mBitmap = Util.inFrameFoto(mBitmaps, Util.getWindowsSize(this, true) - 20);
+		Bitmap mBitmap = null;
 		if (mBitmap != null) {
 			mMomentView.setImageBitmap(mBitmap);
 			mNoMomentTxt.setVisibility(View.GONE);
@@ -148,7 +150,8 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 				try {
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
 
 					mTagInfo.setFollow(dataJson.getInt(ServerKeys.KEY_FOLLOW_STATUS));
 
@@ -158,7 +161,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 					mTagInfo.setCategroyId(tagJson.getLong("CategroyID"));
 					mTagInfo.setTitle(tagJson.getString(ServerKeys.KEY_TITLE));
 					mTagInfo.setLink(tagJson.getString(ServerKeys.KEY_LINK));
-					mTagInfo.setLogo(Util.base64ToBitmap(tagJson.getString(ServerKeys.KEY_LOGO)));
+					mTagInfo.setLogoUri(tagJson.getString(ServerKeys.KEY_LOGO));
 					mTagInfo.setDescription(tagJson.getString(ServerKeys.KEY_DESCRIPTION));
 					mTagInfo.setCreateDate(tagJson.getString(ServerKeys.KEY_CREATE_DATE));
 					mTagInfo.setState(tagJson.getInt(ServerKeys.KEY_STATUS));
@@ -180,7 +183,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 						tagMoment.setTagId(momJson.getLong(ServerKeys.KEY_TAG_ID));
 						// tagMoment.setUserId(momJson.getLong(ServerKeys.KEY_USER_ID));
 						tagMoment.setUserId(momJson.getLong("UserId"));
-						tagMoment.setImage(Util.base64ToBitmap(momJson.getString(ServerKeys.KEY_IMAGE)));
+						tagMoment.setImageUri(momJson.getString(ServerKeys.KEY_IMAGE));
 						tagMoment.setTitle(momJson.getString(ServerKeys.KEY_TITLE));
 						tagMoment.setCreateDate(momJson.getString(ServerKeys.KEY_CREATE_DATE));
 						mTagInfo.addTagMoment(tagMoment);

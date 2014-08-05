@@ -15,12 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import cn.jpush.android.api.JPushInterface;
 
 import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.signup.InsertEmailActivity;
-import com.meetisan.meetisan.utils.FormatUtils;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;

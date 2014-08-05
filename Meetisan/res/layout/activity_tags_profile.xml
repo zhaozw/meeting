@@ -286,7 +286,8 @@
                     android:id="@+id/btn_connected"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/people_connected" />
+                    android:text="@string/people_connected"
+                    android:textSize="@dimen/text_size_small" />
 
                 <View
                     android:layout_width="match_parent"

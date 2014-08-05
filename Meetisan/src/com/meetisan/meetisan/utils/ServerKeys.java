@@ -75,6 +75,7 @@ public class ServerKeys {
 	public static final String KEY_NAME = "Name";
 	public static final String KEY_PASSWORD = "Password";
 	public static final String KEY_AVATAR = "Avatar";
+	public static final String KEY_BG = "BackGroundImg";
 	public static final String KEY_UNIVERSITY = "University";
 	public static final String KEY_SIGNATURE = "Signature";
 	public static final String KEY_CITY = "City";

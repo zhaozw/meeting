@@ -195,8 +195,9 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 						// if (!userJson.isNull(ServerKeys.KEY_UNIVERSITY)) {
 						// peopleInfo.setUniversity(userJson.getString(ServerKeys.KEY_UNIVERSITY));
 						// }
-						peopleInfo.setAvatar(Util.base64ToBitmap(userJson
-								.getString(ServerKeys.KEY_AVATAR)));
+						if (!userJson.isNull(ServerKeys.KEY_AVATAR)) {
+							peopleInfo.setAvatarUri(userJson.getString(ServerKeys.KEY_AVATAR));
+						}
 						peopleInfo.setDistance(-1); // for do not show this item
 
 						// JSONArray tagArray =

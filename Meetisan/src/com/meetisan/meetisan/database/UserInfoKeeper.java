@@ -44,6 +44,8 @@ public class UserInfoKeeper {
 	public static final String KEY_USER_CREATE_DATE = "user_create_date";
 	/** user registration ID */
 	public static final String KEY_USER_REG_ID = "user_reg_id";
+	/** user Avatar Uri */
+	public static final String KEY_USER_AVATAR_URI = "user_avatar_uri";
 
 	/**
 	 * write user all base information to SharedPreferences
@@ -111,6 +113,9 @@ public class UserInfoKeeper {
 		if (userInfo.getRegId() != null) {
 			editor.putString(KEY_USER_REG_ID, userInfo.getRegId());
 		}
+		if (userInfo.getAvatarUri() != null) {
+			editor.putString(KEY_USER_AVATAR_URI, userInfo.getAvatarUri());
+		}
 
 		return editor.commit();
 	}
@@ -148,6 +153,7 @@ public class UserInfoKeeper {
 		userInfo.setStatus(perferences.getInt(KEY_USER_STATUS, 0));
 		userInfo.setCreateDate(perferences.getString(KEY_USER_CREATE_DATE, null));
 		userInfo.setRegId(perferences.getString(KEY_USER_REG_ID, null));
+		userInfo.setAvatarUri(perferences.getString(KEY_USER_AVATAR_URI, null));
 
 		return userInfo;
 	}

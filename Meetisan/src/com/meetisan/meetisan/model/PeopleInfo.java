@@ -3,8 +3,6 @@ package com.meetisan.meetisan.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Bitmap;
-
 public class PeopleInfo {
 	/** people id */
 	private long id = 0;
@@ -14,10 +12,13 @@ public class PeopleInfo {
 	private String pwd = null;
 	/** people name */
 	private String name = null;
-	/** people icon */
-	private Bitmap avatar = null;
-	/** people background image */
-	private Bitmap bgImage = null;
+	// /** people icon */
+	// private Bitmap avatar = null;
+	/** people avatar Uri */
+	private String avatarUri = null;
+	/** people background image Uri */
+	private String bgUri = null;
+	// private Bitmap bgImage = null;
 	/** people signature */
 	private String signature = null;
 	/** people college */
@@ -81,20 +82,20 @@ public class PeopleInfo {
 		this.name = name;
 	}
 
-	public Bitmap getAvatar() {
-		return avatar;
+	public String getAvatarUri() {
+		return avatarUri;
 	}
 
-	public void setAvatar(Bitmap avatar) {
-		this.avatar = avatar;
+	public void setAvatarUri(String avatarUri) {
+		this.avatarUri = avatarUri;
 	}
 
-	public Bitmap getBgImage() {
-		return bgImage;
+	public String getBgUri() {
+		return bgUri;
 	}
 
-	public void setBgImage(Bitmap bgImage) {
-		this.bgImage = bgImage;
+	public void setBgUri(String bgUri) {
+		this.bgUri = bgUri;
 	}
 
 	public String getSignature() {
