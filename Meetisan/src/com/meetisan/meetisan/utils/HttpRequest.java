@@ -2,12 +2,20 @@ package com.meetisan.meetisan.utils;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
+import net.tsz.afinal.http.HttpHandler;
 
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.params.BasicHttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,9 +71,38 @@ public class HttpRequest {
 		finalHttp.post(fullUrl, params, new MyAjaxCallBack(fullUrl));
 	}
 
+	private static final ThreadFactory sThreadFactory = new ThreadFactory() {
+		private final AtomicInteger mCount = new AtomicInteger(1);
+
+		public Thread newThread(Runnable r) {
+			Thread tread = new Thread(r, "MyHttp #" + mCount.getAndIncrement());
+			tread.setPriority(Thread.NORM_PRIORITY - 1);
+			return tread;
+		}
+	};
+
+	private static final Executor executor = Executors.newFixedThreadPool(3, sThreadFactory);
+
 	public void delete(String fullUrl) {
+		delete(fullUrl, null);
+	}
+	
+	public void delete(String fullUrl, Map<String, String> data) {
 		Log.d(LOG_CAT, "URL of Delete method:" + fullUrl);
-		finalHttp.delete(fullUrl, new MyAjaxCallBack(fullUrl));
+		if (data == null) {
+			finalHttp.delete(fullUrl, new MyAjaxCallBack(fullUrl));
+		} else {
+			HttpDelete delete = new HttpDelete();
+			BasicHttpParams params = new BasicHttpParams();
+			for (Entry<String, String> entry : data.entrySet()) {
+				params.setParameter(entry.getKey(), entry.getValue());
+			}
+			delete.setParams(params);
+			HttpHandler<String> httpHandler = new HttpHandler<String>(
+					(AbstractHttpClient) finalHttp.getHttpClient(), finalHttp.getHttpContext(),
+					new MyAjaxCallBack(fullUrl), "utf-8");
+			httpHandler.executeOnExecutor(executor, delete);
+		}
 	}
 
 	private class MyAjaxCallBack extends AjaxCallBack<String> {

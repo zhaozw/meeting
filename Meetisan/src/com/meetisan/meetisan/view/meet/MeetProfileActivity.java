@@ -187,7 +187,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		} else if (mMeetInfo.getJoinStatus() == 1) {
 			doAttendMeeting();
 		} else if (mMeetInfo.getJoinStatus() == 0) {
-			// doCancelMeeting();
+			 doCancelMeeting();
 		}
 	}
 
@@ -329,7 +329,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
 		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
 
-		// request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
+		 request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
 		mProgressDialog.show();
 	}
 }
