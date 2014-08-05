@@ -1,5 +1,6 @@
 package com.meetisan.meetisan.view.meet;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -187,7 +188,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		} else if (mMeetInfo.getJoinStatus() == 1) {
 			doAttendMeeting();
 		} else if (mMeetInfo.getJoinStatus() == 0) {
-			 doCancelMeeting();
+			doCancelMeeting();
 		}
 	}
 
@@ -314,7 +315,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			@Override
 			public void onSuccess(String url, String result) {
 				runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
@@ -330,7 +331,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			@Override
 			public void onFailure(String url, int errorNo, String errorMsg) {
 				runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
@@ -340,11 +341,11 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 				});
 			}
 		});
-		Map<String, Object> data = new TreeMap<String, Object>();
-		data.put(ServerKeys.KEY_MEETING_ID, new Long(mMeetingID));
-		data.put(ServerKeys.KEY_USER_ID, new Long(mUserID));
+		Map<String, String> data = new HashMap<String, String>();
+		data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
+		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
 
 		mProgressDialog.show();
-		 request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
+		request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
 	}
 }
