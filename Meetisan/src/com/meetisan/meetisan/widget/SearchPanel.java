@@ -24,50 +24,51 @@ import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.utils.SystemHelper;
 
 /**
- * Initialize search panels and fields
- * For normal work you must have $(tag)_page1 and $(tag)_page2 group view,
- * where 
- * For example:
+ * Initialize search panels and fields For normal work you must have $(tag)_page1 and $(tag)_page2
+ * group view, where For example:
+ * 
  * <pre>
  * {@code
  * <!-- Page 2 -->
  * <ScrollView
- *		android:tag="@string/tag_page1"
- *		android:layout_width="fill_parent"
- *		android:layout_height="fill_parent"/>
+ * 	android:tag="@string/tag_page1"
+ * 	android:layout_width="fill_parent"
+ * 	android:layout_height="fill_parent"/>
  * <!-- Page 2 -->
  * <com.freshdirect.android.widget.SearchListView
- *		android:tag="@string/tag_page2"
- *		android:layout_width="fill_parent"
- *		android:layout_height="fill_parent"/>
+ * 	android:tag="@string/tag_page2"
+ * 	android:layout_width="fill_parent"
+ * 	android:layout_height="fill_parent"/>
  * }
  * </pre>
  * 
  * @author Nikolay Moskvin <moskvin@j2ee.ru>
  * @date 23.10.2010
  * */
-public class SearchPanel extends RelativeLayout implements 
-			EditText.OnTouchListener, TextWatcher,
-			EditText.OnEditorActionListener,  EditText.OnFocusChangeListener, OnScrollListener {
+public class SearchPanel extends RelativeLayout implements EditText.OnTouchListener, TextWatcher,
+		EditText.OnEditorActionListener, EditText.OnFocusChangeListener, OnScrollListener {
 
 	private Context context;
-	
+
 	private EditText searchEditText;
 	private TextView searchEmptyText;
 	private Button buttonCancel;
-	
+
 	private SearchListener searchListener;
 	private boolean enabledSearchPanel = false;
 	private boolean applicationSetText = false;
 
 	public interface SearchListener {
 		void onAutoSuggestion(String query);
+
 		void onClickSearchResult(String query);
+
 		void onClear();
 	}
 
 	/**
 	 * Constructor with style
+	 * 
 	 * @param context is current context of activity
 	 * @param attrs is set of attributes
 	 * @param defStyle is concrete style
@@ -79,6 +80,7 @@ public class SearchPanel extends RelativeLayout implements
 
 	/**
 	 * Constructor with attributes
+	 * 
 	 * @param context is current context of activity
 	 * @param attrs is set of attributes
 	 */
@@ -89,6 +91,7 @@ public class SearchPanel extends RelativeLayout implements
 
 	/**
 	 * Simple constructor
+	 * 
 	 * @param context is current context of activity
 	 */
 	public SearchPanel(Context context) {
@@ -97,13 +100,14 @@ public class SearchPanel extends RelativeLayout implements
 	}
 
 	/**
-	 * Inflate search_panel.xml and 
-	 * configuration all view
-	 * @param context is current context of activity 
+	 * Inflate search_panel.xml and configuration all view
+	 * 
+	 * @param context is current context of activity
 	 */
 	private void init(Context context) {
 		this.context = context;
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(R.layout.search_panel, this, true);
 
 		buttonCancel = (Button) view.findViewById(R.id.search_button_cancel);
@@ -119,11 +123,11 @@ public class SearchPanel extends RelativeLayout implements
 		searchEditText.addTextChangedListener(this);
 		searchEditText.setOnEditorActionListener(this);
 		searchEditText.setOnFocusChangeListener(this);
-		
+
 		searchEditText.setFocusable(false);
 
 	}
-	
+
 	/**
 	 * Activate/disable search panel
 	 */
@@ -131,7 +135,7 @@ public class SearchPanel extends RelativeLayout implements
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			searchEditText.setFocusable(true);
 			searchEditText.requestFocusFromTouch();
-			if ( !enabledSearchPanel ) {
+			if (!enabledSearchPanel) {
 				enableSearchPanel(true);
 			} else {
 			}
@@ -159,8 +163,7 @@ public class SearchPanel extends RelativeLayout implements
 	 * 
 	 */
 	public void afterTextChanged(Editable s) {
-		if(!applicationSetText)
-		{
+		if (!applicationSetText) {
 			String query = s.toString();
 			int amount = query.length();
 			if (amount == 0) {
@@ -170,13 +173,11 @@ public class SearchPanel extends RelativeLayout implements
 			if (searchListener != null) {
 				searchListener.onAutoSuggestion(query);
 			}
-			
-			if ( !enabledSearchPanel ) {
+
+			if (!enabledSearchPanel) {
 				enableSearchPanel(true);
 			}
-		}
-		else
-		{
+		} else {
 			applicationSetText = false;
 		}
 	}
@@ -197,8 +198,8 @@ public class SearchPanel extends RelativeLayout implements
 	 * Enter event occurs on the method call onClickSearchResult
 	 */
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_SEARCH || 
-				actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+		if (actionId == EditorInfo.IME_ACTION_SEARCH
+				|| actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
 
 			String query = v.getText().toString();
 			searchEditText.setText(query);
@@ -219,6 +220,7 @@ public class SearchPanel extends RelativeLayout implements
 
 	/**
 	 * Set visibility in true for search panel (cancel button and etc)
+	 * 
 	 * @param enable if true then the search panel is appear otherwise disappear
 	 */
 	public void enableSearchPanel(boolean enable) {
@@ -265,25 +267,24 @@ public class SearchPanel extends RelativeLayout implements
 	}
 
 	/**
-	 * Sets tag for finding frame1 (normal page) 
-	 * and frame2 (auto suggestion page)
+	 * Sets tag for finding frame1 (normal page) and frame2 (auto suggestion page)
+	 * 
 	 * @param tag is unique string per page
 	 * @throws SearchException if tag not found
 	 */
 	public void setSearchTag(String tag) {
-			searchEditText.setFocusable(false);
-			if (searchEditText.getText().length() != 0 ) {
-				searchEmptyText.setVisibility(View.VISIBLE);
-			} else {
-			}
-			searchEditText.setOnFocusChangeListener(this);
-			searchEditText.clearFocus();
+		searchEditText.setFocusable(false);
+		if (searchEditText.getText().length() != 0) {
+			searchEmptyText.setVisibility(View.VISIBLE);
+		} else {
+		}
+		searchEditText.setOnFocusChangeListener(this);
+		searchEditText.clearFocus();
 	}
 
 	/**
-	 * Sets text query empty and 
-	 * clear search result
-	 *  
+	 * Sets text query empty and clear search result
+	 * 
 	 */
 	public void clear() {
 		// Hide Soft Keyboard
@@ -296,9 +297,8 @@ public class SearchPanel extends RelativeLayout implements
 	}
 
 	/**
-	 * Sets text query empty and 
-	 * clear search result
-	 *  
+	 * Sets text query empty and clear search result
+	 * 
 	 */
 	public void clearWithoutQueryText() {
 		// Hide Soft Keyboard
@@ -307,7 +307,7 @@ public class SearchPanel extends RelativeLayout implements
 
 		searchEditText.setText("");
 		enabledSearchPanel = false;
-		
+
 		searchEmptyText.setVisibility(View.GONE);
 		searchEmptyText.setText("");
 	}
@@ -326,24 +326,26 @@ public class SearchPanel extends RelativeLayout implements
 	}
 
 	public void setTextSearchResult(String text) {
-		if (searchEmptyText == null) return;
+		if (searchEmptyText == null)
+			return;
 		searchEmptyText.setText(text);
 	}
 
 	public void setSearchAdapter(ArrayAdapter<String> searchAdapter) {
 	}
 
-	public void hideKeyboard(){
+	public void hideKeyboard() {
 		SystemHelper.hideKeyboard(context, searchEditText);
 
 	}
-	public void showKeyboard(){
+
+	public void showKeyboard() {
 		SystemHelper.showKeyboard(context, searchEditText);
 	}
 
 	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem,
-			int visibleItemCount, int totalItemCount) {
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+			int totalItemCount) {
 	}
 
 	@Override
