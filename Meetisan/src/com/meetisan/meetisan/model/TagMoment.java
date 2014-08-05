@@ -1,6 +1,5 @@
 package com.meetisan.meetisan.model;
 
-import android.graphics.Bitmap;
 
 public class TagMoment {
 
@@ -9,7 +8,8 @@ public class TagMoment {
 	/** tag id */
 	private long tagId = 0;
 	/** tag moment image */
-	private Bitmap image = null;
+	// private Bitmap image = null;
+	private String imageUri = null;
 	/** tag moment title */
 	private String title = null;
 	/** tag moment create user id */
@@ -21,10 +21,11 @@ public class TagMoment {
 
 	}
 
-	public TagMoment(long id, long tagId, Bitmap image, String title, long userId, String createDate) {
+	public TagMoment(long id, long tagId, String imageUri, String title, long userId,
+			String createDate) {
 		this.id = id;
 		this.tagId = tagId;
-		this.image = image;
+		this.imageUri = imageUri;
 		this.title = title;
 		this.userId = userId;
 		this.createDate = createDate;
@@ -46,12 +47,12 @@ public class TagMoment {
 		this.tagId = tagId;
 	}
 
-	public Bitmap getImage() {
-		return image;
+	public String getImageUri() {
+		return imageUri;
 	}
 
-	public void setImage(Bitmap image) {
-		this.image = image;
+	public void setImageUri(String imageUri) {
+		this.imageUri = imageUri;
 	}
 
 	public String getTitle() {

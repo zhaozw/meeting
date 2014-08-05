@@ -31,7 +31,7 @@ public class HttpRequest {
 		public void onFailure(String url, int errorNo, String errorMsg);
 
 		// public void onSuccess(String url, JSONObject data);
-		public void onSuccess(String url, JSONObject result);
+		public void onSuccess(String url, String result);
 	}
 
 	public void setOnHttpRequestListener(OnHttpRequestListener listener) {
@@ -63,6 +63,11 @@ public class HttpRequest {
 		finalHttp.post(fullUrl, params, new MyAjaxCallBack(fullUrl));
 	}
 
+	public void delete(String fullUrl) {
+		Log.d(LOG_CAT, "URL of Delete method:" + fullUrl);
+		finalHttp.delete(fullUrl, new MyAjaxCallBack(fullUrl));
+	}
+
 	private class MyAjaxCallBack extends AjaxCallBack<String> {
 		private String myUrl;
 
@@ -80,20 +85,20 @@ public class HttpRequest {
 		}
 
 		@Override
-		public void onSuccess(String t) {
-			super.onSuccess(t);
-			Log.d(LOG_CAT, "Request data:" + t);
+		public void onSuccess(String result) {
+			super.onSuccess(result);
+			Log.d(LOG_CAT, "Request data:" + result);
 			if (mListener == null) {
 				return;
 			}
 			try {
-				JSONObject json = new JSONObject(t);
+				JSONObject json = new JSONObject(result);
 				if (json.getInt(ServerKeys.KEY_STATUS_CODE) == ServerKeys.STATUS_SUCCESS) {
-					if (json.isNull(ServerKeys.KEY_DATA)) {
-						mListener.onSuccess(myUrl, null);
-					} else {
-						mListener.onSuccess(myUrl, json.getJSONObject(ServerKeys.KEY_DATA));
-					}
+					// if (json.isNull(ServerKeys.KEY_DATA)) {
+					// mListener.onSuccess(myUrl, null);
+					// } else {
+					mListener.onSuccess(myUrl, result);
+					// }
 				} else {
 					mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED,
 							json.getString(ServerKeys.KEY_MSG));

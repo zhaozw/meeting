@@ -25,7 +25,7 @@
         <RadioGroup
             android:id="@+id/rg_tabgroup"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_gravity="bottom"
             android:background="@color/activity_main_tab_background_color"
             android:gravity="center"
@@ -34,7 +34,6 @@
             <RadioButton
                 android:id="@+id/rb_create"
                 style="@style/MainTabStyle"
-                android:checked="true"
                 android:drawableTop="@drawable/common_create"
                 android:gravity="bottom|center_horizontal"
                 android:text="@string/title_create" />
@@ -42,6 +41,7 @@
             <RadioButton
                 android:id="@+id/rb_meet"
                 style="@style/MainTabStyle"
+                android:checked="true"
                 android:drawableTop="@drawable/common_meet"
                 android:gravity="bottom|center_horizontal"
                 android:text="@string/title_meet" />
@@ -64,7 +64,7 @@
                 android:id="@+id/rb_notifications"
                 style="@style/MainTabStyle"
                 android:drawableTop="@drawable/common_notifications"
-                android:gravity="bottom"
+                android:gravity="bottom|center_horizontal"
                 android:text="@string/title_notification" />
         </RadioGroup>
     </LinearLayout>

@@ -7,36 +7,38 @@
     android:padding="5dp" >
 
     <ImageButton
-        android:id="@+id/btn_title_icon_left"
+        android:id="@+id/btn_title_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_margin="5dp"
+        android:layout_centerVertical="true"
+		android:padding="5dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name"
         android:scaleType="centerInside"
         android:src="@drawable/icon_back"
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/txt_title"
+        android:id="@+id/tv_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:ellipsize="end"
         android:textColor="@android:color/white"
         android:textSize="@dimen/activity_title_text_size"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
-    <!--
-         <Button
+    <Button
         android:id="@+id/btn_title_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
         android:background="@android:color/transparent"
         android:textColor="@drawable/button_title_text_color"
-        android:textSize="@dimen/activity_title_btn_size"
-        android:visibility="gone" />
-    -->
+        android:textSize="16sp"
+        android:visibility="visible" />
 
 </RelativeLayout>

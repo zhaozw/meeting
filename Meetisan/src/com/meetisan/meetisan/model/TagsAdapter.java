@@ -7,19 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.widget.CircleImageView;
 
 public class TagsAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
 	private List<TagInfo> tagData;
+	private HttpBitmap httpBitmap;
 
 	public TagsAdapter(Context mContext, List<TagInfo> tagData) {
 		inflater = LayoutInflater.from(mContext);
 		this.tagData = tagData;
+		httpBitmap = new HttpBitmap(mContext);
 	}
 
 	@Override
@@ -44,6 +48,7 @@ public class TagsAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_listview_tags_tag, parent, false);
 			holder = new ViewHolder();
+			holder.mRightLayout = (RelativeLayout) convertView.findViewById(R.id.item_right);
 			holder.mCircleImage = (CircleImageView) convertView.findViewById(R.id.iv_portrait);
 			holder.mNameTxt = (TextView) convertView.findViewById(R.id.txt_name);
 			holder.mEndoredTxt = (TextView) convertView.findViewById(R.id.txt_endorsed);
@@ -56,14 +61,11 @@ public class TagsAdapter extends BaseAdapter {
 		}
 
 		TagInfo mTagInfo = tagData.get(position);
-
-		// for test
-		if (position % 2 == 0) {
-			holder.mCircleImage.setImageResource(R.drawable.portrait);
-		} else {
-			holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		if (mTagInfo.getLogoUri() != null) {
+			httpBitmap.displayBitmap(holder.mCircleImage, mTagInfo.getLogoUri());
 		}
-		holder.mNameTxt.setText(mTagInfo.getName());
+		holder.mNameTxt.setText(mTagInfo.getTitle());
 		holder.mEndoredTxt.setText(String.valueOf(mTagInfo.getEndorsed()));
 		holder.mPeopleTxt.setText(String.valueOf(mTagInfo.getPeople()));
 		holder.mMeetingsTxt.setText(String.valueOf(mTagInfo.getMeetings()));
@@ -72,6 +74,7 @@ public class TagsAdapter extends BaseAdapter {
 	}
 
 	static class ViewHolder {
+		RelativeLayout mRightLayout;
 		CircleImageView mCircleImage;
 		TextView mNameTxt;
 		TextView mEndoredTxt;

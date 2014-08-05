@@ -15,14 +15,32 @@
     <permission
         android:name="com.meetisan.meetisan.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
+    <!-- Required -->
+    <permission
+        android:name="com.meetisan.meetisan.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <!-- Required -->
+    <uses-permission android:name="com.meetisan.meetisan.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- since 1.6.0 -->
 
     <uses-permission android:name="com.meetisan.meetisan.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--
      The following two permissions are not required to use
-     Google Maps Android API v2, but are recommended.
+     Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -34,17 +52,16 @@
     <uses-permission android:name="com.meetisan.meetisan.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name="com.meetisan.meetisan.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Black.NoTitleBar" >
 
-        <!-- email:dev.meetisan@gmail.com
-        	password:meetisan123 -->
+        <!-- email:dev.meetisan@gmail.com -->
+        <!-- password:meetisan123 -->
         <!-- API key for google maps -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -55,15 +72,15 @@
 
         <uses-library
             android:name="com.google.android.maps"
-            android:required="true" />
+            android:required="false" />
 
         <activity
-            android:name="com.meetisan.meetisan.LauncherActivity"
+            android:name=".LauncherActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateHidden" >
             <intent-filter>
@@ -73,101 +90,205 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.CreateActivity"
+            android:name=".view.create.CreateActivity"
             android:label="@string/title_create"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.meet.MeetActivity"
+            android:name=".view.meet.MeetActivity"
             android:label="@string/title_meet" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.tags.TagsActivity"
+            android:name=".view.meet.MeetProfileActivity"
+            android:label="@string/title_meet" >
+        </activity>
+        <activity
+            android:name=".view.meet.MeetMemberActivity"
+            android:label="@string/title_meet" >
+        </activity>
+        <activity
+            android:name=".view.tags.TagsActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.tags.TagProfileActivity"
+            android:name=".view.tags.TagProfileActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.tags.SwipeListActivity"
+            android:name=".view.tags.TagsCategoryActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.tags.IndexableListActivity"
+            android:name=".view.tags.IndexableListActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.dashboard.DashboardActivity"
+            android:name=".view.dashboard.DashboardActivity"
             android:label="@string/title_dashboard"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.dashboard.PersonProfileActivity"
+            android:name=".view.dashboard.MyMeetingsActivity"
             android:label="@string/title_dashboard"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.dashboard.SettingsActivity"
+            android:name=".view.dashboard.MyConnectionsActivity"
+            android:label="@string/title_dashboard"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.dashboard.PersonProfileActivity"
+            android:label="@string/title_dashboard"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.dashboard.PersonMoreInfoActivity"
+            android:label="@string/title_tags"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.dashboard.SettingsActivity"
             android:label="@string/settings"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.dashboard.SettingsAboutActivity"
+            android:name=".view.dashboard.SettingsAboutActivity"
             android:label="@string/about_meetisan"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.dashboard.SettingsNotifyActivity"
+            android:name=".view.dashboard.SettingsNotifyActivity"
             android:label="@string/notify"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.view.dashboard.SettingsPrivacyActivity"
+            android:name=".view.dashboard.SettingsPrivacyActivity"
             android:label="@string/privacy"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.NotificationsActivity"
+            android:name=".notifications.NotificationsActivity"
             android:label="@string/title_notification"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.LoginActivity"
-            android:label="@string/login"
+            android:name=".LoginActivity"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.signup.InsertEmailActivity"
+            android:name=".signup.InsertEmailActivity"
             android:label="@string/insert_email"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.signup.ActivationActivity"
+            android:name=".signup.ActivationActivity"
             android:label="@string/activation_code"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.signup.SetPasswordActivity"
+            android:name=".signup.SetPasswordActivity"
             android:label="@string/password"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name="com.meetisan.meetisan.GoogleMapActivity"
+            android:name=".GoogleMapActivity"
             android:label="@string/settings"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustNothing|adjustResize|stateHidden" >
         </activity>
 
+        <!--
         <receiver
-            android:name="com.meetisan.meetisan.gcm.GCMBroadcastReceiver"
+            android:name=".gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
+        </receiver>
+        -->
+        <!-- <service android:name="com.meetisan.meetisan.GCMIntentService" /> -->
+
+
+        <!-- JPush -->
+        <!-- Required -->
+        <service
+            android:name="cn.jpush.android.service.PushService"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+            </intent-filter>
+        </service>
+
+        <!-- Required -->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true" >
+
+            <!-- since 1.3.5 start -->
+            <intent-filter android:priority="1000" >
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+
+                <category android:name="com.meetisan.meetisan" />
+            </intent-filter>
+            <!-- since 1.3.5 end -->
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
         </receiver>
 
-        <!-- <service android:name="com.meetisan.meetisan.GCMIntentService" /> -->
+        <!-- Required SDK核心功能 -->
+        <activity
+            android:name="cn.jpush.android.ui.PushActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            <intent-filter>
+                <action android:name="cn.jpush.android.ui.PushActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.meetisan.meetisan" />
+            </intent-filter>
+        </activity>
+        <!-- Required SDK核心功能 -->
+        <service
+            android:name="cn.jpush.android.service.DownloadService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+        <!-- Required SDK核心功能 -->
+        <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
+
+        <!-- Required. For publish channel feature -->
+        <!-- JPUSH_CHANNEL 是为了方便开发者统计APK分发渠道。 -->
+        <!-- 例如: -->
+        <!-- 发到 Google Play 的APK可以设置为 google-play; -->
+        <!-- 发到其他市场的 APK 可以设置为 xxx-market。 -->
+        <!-- 目前这个渠道统计功能的报表还未开放。 -->
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+        <!-- Required. AppKey copied from Portal -->
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="76f6944960b6980d205d72e0" />
+
+        <activity
+            android:name="com.meetisan.meetisan.view.create.SetTimeActivity"
+            android:label="@string/title_activity_set_time" >
+        </activity>
     </application>
 
 </manifest>

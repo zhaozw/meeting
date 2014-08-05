@@ -14,6 +14,7 @@
     <string name="tag_link">Link:</string>
     <string name="associated_tags">Associated Tag</string>
     <string name="tag_moments">Moments</string>
+    <string name="no_tag_moment_image">Don\'t have any Tag Images!</string>
     <string name="view_all_moments">View All Moments</string>
     <string name="tag_history">Your tag history with</string>
     <string name="people_connected">People Connected</string>

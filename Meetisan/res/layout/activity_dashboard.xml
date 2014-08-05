@@ -53,7 +53,6 @@
         android:layout_below="@+id/layout_top"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Gao Yun"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size_middle" />
 
@@ -80,14 +79,13 @@
             android:textSize="@dimen/text_size_small" />
 
         <TextView
-            android:id="@+id/txt_count_meetings"
+            android:id="@+id/txt_meetings_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_toLeftOf="@+id/ic_arrow"
             android:layout_toRightOf="@+id/txt_meetings"
             android:focusable="false"
-            android:text="335"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_small" />
 
@@ -124,6 +122,33 @@
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:background="@color/gap_line_color" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
+                android:id="@+id/list_upcoming_meetings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="@color/gray"
+                android:dividerHeight="0.5dp"
+                android:fadingEdge="none"
+                android:footerDividersEnabled="true"
+                android:headerDividersEnabled="true" />
+
+            <TextView
+                android:id="@+id/txt_empty_meetings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/content_empty_default"
+                android:textColor="@color/content_empty_tips_text_color"
+                android:textSize="@dimen/text_size_small"
+                android:visibility="gone" />
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

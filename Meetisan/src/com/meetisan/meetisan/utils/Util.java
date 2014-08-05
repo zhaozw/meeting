@@ -2,6 +2,8 @@ package com.meetisan.meetisan.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -154,8 +156,14 @@ public class Util {
 	 * @return
 	 */
 	public static Bitmap base64ToBitmap(String base64Data) {
-		byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
-		return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		Bitmap bitmap = null;
+		try {
+			byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
+			bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		return bitmap;
 	}
 
 	/**
@@ -280,5 +288,45 @@ public class Util {
 			return dm.widthPixels;
 		else
 			return dm.heightPixels;
+	}
+
+	/**
+	 * get current Format Date
+	 * 
+	 * @param format
+	 *            Date Format, default is [MM-dd HH:mm:ss]
+	 * @return current Format Date
+	 */
+	public static String getCurFormatDate(String format) {
+		if (format == null) {
+			format = "MM-dd HH:mm:ss";
+		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+		return dateFormat.format(new Date());
+	}
+
+	/**
+	 * get current Format Date
+	 * 
+	 * @return current Date [MM-dd HH:mm:ss]
+	 */
+	public static String getCurFormatDate() {
+		return getCurFormatDate("MM-dd HH:mm:ss");
+	}
+
+	/**
+	 * convert Date[2014-07-18T10:03:41.753] to [2014-07-18 10:03]
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static String convertDateTime(String date) {
+		if (date == null || !date.contains("T")) {
+			return null;
+		}
+		int gapIndex = date.lastIndexOf("T");
+		String day = date.substring(0, gapIndex);
+		String time = date.substring(gapIndex + 1, gapIndex + 1 + 5);
+		return time + " " + day;
 	}
 }

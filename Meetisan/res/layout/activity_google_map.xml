@@ -2,14 +2,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@android:color/white"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@android:color/white" >
 
-    <include 
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/activity_title_height"
+        layout="@layout/title_with_image_btn" />
+
+    <include
         android:id="@+id/googleMap"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_centerInParent="true"
         layout="@layout/fragment_google_map" />
+
+    <RelativeLayout
+        android:id="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_search_and_sort_panel_height"
+        android:layout_below="@+id/include_title"
+        android:padding="5dp"
+        android:visibility="gone" >
+
+        <EditText
+            android:id="@+id/search_edit_text"
+            style="@style/SearchLayout.Edit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:layout_toLeftOf="@+id/btn_search"
+            android:background="@drawable/search_edit_selector" />
+
+        <Button
+            android:id="@+id/btn_search"
+            style="@style/SearchLayout.Button"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/search_hint" />
+    </RelativeLayout>
 
 </RelativeLayout>
