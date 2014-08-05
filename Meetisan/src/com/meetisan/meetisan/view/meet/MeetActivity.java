@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,6 +44,7 @@ import com.meetisan.meetisan.view.dashboard.PersonProfileActivity;
 import com.meetisan.meetisan.widget.CustomizePopupView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.SearchPanel;
+import com.meetisan.meetisan.widget.SearchPanel.SearchListener;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
@@ -73,6 +75,10 @@ public class MeetActivity extends Activity {
 	private int mMeetingOrder = OrderType.SORT_DISTANCE;
 	/** People List order type */
 	private int mPeopleOrder = OrderType.SORT_DISTANCE;
+	/** People List Search Condition */
+	private String mPeopleSearchFilter = "";
+	/** Meet List Search Condition */
+	private String mMeetSearchFilter = "";
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,8 +88,8 @@ public class MeetActivity extends Activity {
 
 		mUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
 
-		getPeoplesFromServer(1, mLat, mLon, true, true);
-		getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, true, true);
+		getPeoplesFromServer(1, mLat, mLon, mPeopleSearchFilter, true, true);
+		getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter, true, true);
 
 		initView();
 	}
@@ -98,9 +104,11 @@ public class MeetActivity extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				if (checkedId == R.id.radio_people) {
+					mSearchPanel.setTextQuery(mPeopleSearchFilter);
 					mPullMeetingsView.setVisibility(View.GONE);
 					mPullPeopleView.setVisibility(View.VISIBLE);
 				} else {
+					mSearchPanel.setTextQuery(mMeetSearchFilter);
 					mPullPeopleView.setVisibility(View.GONE);
 					mPullMeetingsView.setVisibility(View.VISIBLE);
 				}
@@ -108,6 +116,48 @@ public class MeetActivity extends Activity {
 		});
 
 		mSearchPanel = (SearchPanel) findViewById(R.id.search_panel);
+		mSearchPanel.setSearchListener(new SearchListener() {
+
+			@Override
+			public void onClickSearchResult(String query) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onClear() {
+				// TODO Auto-generated method stub
+				if (!TextUtils.isEmpty(mPeopleSearchFilter)) {
+					mPeopleSearchFilter = "";
+					getPeoplesFromServer(1, mLat, mLon, mPeopleSearchFilter, true, false);
+				}
+				if (!TextUtils.isEmpty(mMeetSearchFilter)) {
+					mMeetSearchFilter = "";
+					getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter, true,
+							false);
+				}
+			}
+
+			@Override
+			public void onAutoSuggestion(String query) {
+				// TODO Auto-generated method stub
+				if (query == null) {
+					return;
+				}
+				if (mPullPeopleView.isShown()) {
+					if (!mPeopleSearchFilter.equals(query)) {
+						mPeopleSearchFilter = query;
+						getPeoplesFromServer(1, mLat, mLon, mPeopleSearchFilter, true, false);
+					}
+				} else {
+					if (!mMeetSearchFilter.equals(query)) {
+						mMeetSearchFilter = query;
+						getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter,
+								true, false);
+					}
+				}
+			}
+		});
 		mControlGroup = (RadioGroup) findViewById(R.id.group_control);
 		mControlGroup.setOnCheckedChangeListener(new PopupCheckChangeListener());
 		mFilterBtn = (ImageButton) findViewById(R.id.btn_filter);
@@ -139,7 +189,7 @@ public class MeetActivity extends Activity {
 				// TODO Auto-generated method stub
 				refreshView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(
 						"Last Refresh: " + Util.getCurFormatDate());
-				getPeoplesFromServer(1, mLat, mLon, true, false);
+				getPeoplesFromServer(1, mLat, mLon, mPeopleSearchFilter, true, false);
 			}
 
 			@Override
@@ -153,7 +203,7 @@ public class MeetActivity extends Activity {
 				// count);
 				if (count < mTotalPeople) {
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
-					getPeoplesFromServer(pageIndex, mLat, mLon, false, false);
+					getPeoplesFromServer(pageIndex, mLat, mLon, mPeopleSearchFilter, false, false);
 				} else {
 					ToastHelper.showToast("All the data has been loaded ");
 					updatePeopleListView();
@@ -193,7 +243,7 @@ public class MeetActivity extends Activity {
 				// TODO Auto-generated method stub
 				refreshView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(
 						"Last Refresh: " + Util.getCurFormatDate());
-				getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, true, false);
+				getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter, true, false);
 			}
 
 			@Override
@@ -206,7 +256,8 @@ public class MeetActivity extends Activity {
 																// item
 				if (count < mTotalMeetings) {
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
-					getMeetingsFromServer(pageIndex, mMeetingOrder, mLat, mLon, false, false);
+					getMeetingsFromServer(pageIndex, mMeetingOrder, mLat, mLon, mMeetSearchFilter,
+							false, false);
 				} else {
 					ToastHelper.showToast("All the data has been loaded ");
 					updateMeetingsListView();
@@ -321,7 +372,7 @@ public class MeetActivity extends Activity {
 				Log.d(TAG, "---Meeting Sort Item Click: " + position);
 				mMeetingSortPopupView.dismiss();
 				mMeetingOrder = position; // Item Order equals Server API Order
-				getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, true, true);
+				getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter, true, true);
 			}
 			if (mPeopleSortPopupView.isShowing()) {
 				Log.d(TAG, "---People Sort Item Click: " + position);
@@ -352,7 +403,7 @@ public class MeetActivity extends Activity {
 	 * @param isRefresh is refresh or load more
 	 * @param isNeedsDialog weather show progress dialog
 	 */
-	private void getPeoplesFromServer(int pageIndex, float mLat, float mLon,
+	private void getPeoplesFromServer(int pageIndex, float mLat, float mLon, String mFilter,
 			final boolean isRefresh, final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
@@ -421,7 +472,7 @@ public class MeetActivity extends Activity {
 
 				} catch (JSONException e) {
 					e.printStackTrace();
-					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
+					// ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
 				} finally {
 					updatePeopleListView();
 				}
@@ -439,7 +490,7 @@ public class MeetActivity extends Activity {
 
 		request.get(ServerKeys.FULL_URL_GET_UESR_LIST + "/" + mUserId + "/?pageindex=" + pageIndex
 				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&lat=" + mLat + "&lon=" + mLon
-				+ "&tagIDs=" + "&name=", null);
+				+ "&tagIDs=" + "&name=" + mFilter, null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();
@@ -457,7 +508,7 @@ public class MeetActivity extends Activity {
 	 * @param isNeedsDialog weather show progress dialog
 	 */
 	private void getMeetingsFromServer(int pageIndex, int orderType, float mLat, float mLon,
-			final boolean isRefresh, final boolean isNeedsDialog) {
+			String title, final boolean isRefresh, final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -517,7 +568,7 @@ public class MeetActivity extends Activity {
 
 				} catch (JSONException e) {
 					e.printStackTrace();
-					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
+					// ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
 				} finally {
 					updateMeetingsListView();
 				}
@@ -535,7 +586,7 @@ public class MeetActivity extends Activity {
 
 		request.get(ServerKeys.FULL_URL_GET_MEET_LIST + "/?pageindex=" + pageIndex + "&pagesize="
 				+ ServerKeys.PAGE_SIZE + "&ordertype=" + orderType + "&lat=" + mLat + "&lon="
-				+ mLon + "&tagIDs=" + "&title=", null);
+				+ mLon + "&tagIDs=" + "&title=" + title, null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();
