@@ -313,23 +313,38 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onSuccess(String url, String result) {
-				mProgressDialog.dismiss();
-				mMeetInfo.setJoinStatus(1);
-				updateMeetProfileUI();
-				ToastHelper.showToast(R.string.cancel_attend_meeting_success, Toast.LENGTH_LONG);
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+
+						mProgressDialog.dismiss();
+						mMeetInfo.setJoinStatus(1);
+						updateMeetProfileUI();
+						ToastHelper.showToast(R.string.cancel_attend_meeting_success, Toast.LENGTH_LONG);
+					}
+				});
 			}
 
 			@Override
 			public void onFailure(String url, int errorNo, String errorMsg) {
-				mProgressDialog.dismiss();
-				ToastHelper.showToast(R.string.cancel_attend_meeting_failure, Toast.LENGTH_LONG);
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						mProgressDialog.dismiss();
+						ToastHelper.showToast(R.string.cancel_attend_meeting_failure, Toast.LENGTH_LONG);
+					}
+				});
 			}
 		});
-		Map<String, String> data = new TreeMap<String, String>();
-		data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
-		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
+		Map<String, Object> data = new TreeMap<String, Object>();
+		data.put(ServerKeys.KEY_MEETING_ID, new Long(mMeetingID));
+		data.put(ServerKeys.KEY_USER_ID, new Long(mUserID));
 
-		 request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
 		mProgressDialog.show();
+		 request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
 	}
 }

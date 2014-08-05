@@ -1,20 +1,20 @@
 package com.meetisan.meetisan.utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
-import net.tsz.afinal.http.HttpHandler;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,39 +70,75 @@ public class HttpRequest {
 		Log.d(LOG_CAT, "Post Url:" + fullUrl + ", params:" + params.toString());
 		finalHttp.post(fullUrl, params, new MyAjaxCallBack(fullUrl));
 	}
-
-	private static final ThreadFactory sThreadFactory = new ThreadFactory() {
-		private final AtomicInteger mCount = new AtomicInteger(1);
-
-		public Thread newThread(Runnable r) {
-			Thread tread = new Thread(r, "MyHttp #" + mCount.getAndIncrement());
-			tread.setPriority(Thread.NORM_PRIORITY - 1);
-			return tread;
-		}
-	};
-
-	private static final Executor executor = Executors.newFixedThreadPool(3, sThreadFactory);
-
+	
 	public void delete(String fullUrl) {
 		delete(fullUrl, null);
 	}
-	
-	public void delete(String fullUrl, Map<String, String> data) {
-		Log.d(LOG_CAT, "URL of Delete method:" + fullUrl);
+
+	public void delete(final String fullUrl, Map<String, Object> data) {
 		if (data == null) {
 			finalHttp.delete(fullUrl, new MyAjaxCallBack(fullUrl));
 		} else {
-			HttpDelete delete = new HttpDelete();
+			final HttpDelete delete = new HttpDelete(fullUrl);
 			BasicHttpParams params = new BasicHttpParams();
-			for (Entry<String, String> entry : data.entrySet()) {
+			for (Entry<String, Object> entry : data.entrySet()) {
 				params.setParameter(entry.getKey(), entry.getValue());
 			}
 			delete.setParams(params);
-			HttpHandler<String> httpHandler = new HttpHandler<String>(
-					(AbstractHttpClient) finalHttp.getHttpClient(), finalHttp.getHttpContext(),
-					new MyAjaxCallBack(fullUrl), "utf-8");
-			httpHandler.executeOnExecutor(executor, delete);
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					MyAjaxCallBack ajaxCallBack = new MyAjaxCallBack(fullUrl);
+					try {
+						HttpResponse response = new DefaultHttpClient().execute(delete);
+						if (response.getStatusLine().getStatusCode() == 200) {
+							InputStream stream = response.getEntity().getContent();
+							ajaxCallBack.onSuccess(changeInputStream(stream, "utf-8"));
+						} else {
+							ajaxCallBack.onFailure(null, response.getStatusLine().getStatusCode(),
+									response.getStatusLine().getReasonPhrase());
+						}
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}).start();
+			Log.d(LOG_CAT, "URL of Delete method:" + fullUrl + ", params:" + data.toString());
 		}
+	}
+
+	/**
+	 * 把Web站点返回的响应流转换为字符串格式
+	 * 
+	 * @param inputStream
+	 *            响应流
+	 * @param encode
+	 *            编码格式
+	 * @return 转换后的字符串
+	 */
+	private String changeInputStream(InputStream inputStream, String encode) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		byte[] data = new byte[1024];
+		int len = 0;
+		String result = "";
+		if (inputStream != null) {
+			try {
+				while ((len = inputStream.read(data)) != -1) {
+					outputStream.write(data, 0, len);
+				}
+				result = new String(outputStream.toByteArray(), encode);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
 	}
 
 	private class MyAjaxCallBack extends AjaxCallBack<String> {

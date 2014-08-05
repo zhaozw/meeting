@@ -15,7 +15,6 @@ import android.widget.EditText;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.widget.LabelWithSwitchButton;
-import com.meetisan.meetisan.widget.SwitchButton;
 
 /**
  * A fragment with a Google +1 button. Activities that contain this fragment
