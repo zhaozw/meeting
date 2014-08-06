@@ -23,4 +23,15 @@
 	<string name="please_input_meeting_title">Please input meeting title</string>
 	<string name="please_select_some_tags">Please select some tags</string>
 	<string name="set">Set</string>
+	<string name="select_logo_for_your_meeting">Select logo for your meeting</string>
+	<string name="please_input_a_description_for_your_meeting">Please input a description for your meeting</string>
+	<string name="meeting_time">Meeting Time</string>
+	<string name="meeting_location">Meeting Location</string>
+	<string name="invite_people">Invite People</string>
+	<string name="invite">invite</string>
+	
+    <string name="profile_picture">Profile picture</string>
+    <string name="select_picture">Select picture</string>
+    <string name="take_picture">Take a picture</string>
+    <string name="can_not_find_sd_card">Can\'t find sd card, save photo failed.</string>
 </resources>

@@ -46,6 +46,7 @@ public class MyConnectionsActivity extends Activity {
 
 	private long mTotalPeople = 0;
 	private long mUserId = -1;
+	private boolean mIsInvitePeople = false;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,7 +54,7 @@ public class MyConnectionsActivity extends Activity {
 		setContentView(R.layout.activity_dashboard_connections);
 
 		mUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
-
+		mIsInvitePeople = getIntent().getBooleanExtra("isInvitePeople", false);
 		getPeoplesFromServer(1, true, true);
 
 		initView();
@@ -68,6 +69,7 @@ public class MyConnectionsActivity extends Activity {
 		mBackBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				setResult(RESULT_CANCELED);
 				MyConnectionsActivity.this.finish();
 			}
 		});
@@ -115,6 +117,14 @@ public class MyConnectionsActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				// TODO Auto-generated method stub
+				if (mIsInvitePeople) {
+					Intent inviteIntent = new Intent();
+					inviteIntent.putExtra("inviteName", mPeopleData.get(arg2 - 1).getName());
+					inviteIntent.putExtra("inviteID", mPeopleData.get(arg2 - 1).getId());
+					setResult(RESULT_OK, inviteIntent);
+					finish();
+					return;
+				}
 				Intent intent = new Intent();
 				Bundle bundle = new Bundle();
 				bundle.putLong("UserID", mPeopleData.get(arg2 - 1).getId());

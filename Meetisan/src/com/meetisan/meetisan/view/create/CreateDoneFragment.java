@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
@@ -31,6 +33,9 @@ import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.Tools;
+import com.meetisan.meetisan.view.dashboard.MyConnectionsActivity;
+import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 /**
@@ -46,6 +51,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
 	private static final String ARG_PARAM2 = "param2";
+	public static final int REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE = 5;
 
 	// TODO: Rename and change types of parameters
 	private String mParam1;
@@ -57,10 +63,14 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 	private TextView mStartTimeTextView;
 	private TextView mEndTimeTextView;
 	private Button mCreateDoneButton;
+	private CircleImageView mLogoImageView;
+	private RelativeLayout mInvitePeopleLayout;
+	private TextView mInviteTextView;
+	private long mInvitePeopleID = -1;
 
 	Map<String, Object> data = new TreeMap<String, Object>();
 	List<TagInfo> tagInfos = new ArrayList<TagInfo>();
-	
+
 	/**
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
@@ -104,24 +114,34 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		mEndTimeTextView = (TextView) view.findViewById(R.id.tv_create_done_end_time);
 		mCreateDoneButton = (Button) view.findViewById(R.id.btn_create_done);
 		mCreateDoneButton.setOnClickListener(this);
-		
+		mLogoImageView = (CircleImageView) view.findViewById(R.id.iv_portrait);
+		mInvitePeopleLayout = (RelativeLayout) view.findViewById(R.id.rl_create_invite_people);
+		mInvitePeopleLayout.setOnClickListener(this);
+		mInviteTextView = (TextView) view.findViewById(R.id.tv_create_done_invite);
+
 		FragmentActivity activity = getActivity();
-		
+
 		if (activity instanceof CreateActivity) {
 			CreateActivity createActivity = (CreateActivity) activity;
 			data = createActivity.getData();
 			tagInfos = createActivity.getTagInfos();
-			mTitleTextView.setText((String)data.get(ServerKeys.KEY_TITLE));
-			mLocationTextView.setText((String)data.get("Address"));
-			
+			mTitleTextView.setText((String) data.get(ServerKeys.KEY_TITLE));
+			if (data.get("Address") != null) {
+				mLocationTextView.setText((String) data.get("Address"));
+			}
+
 			Calendar calendar = Calendar.getInstance();
-			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault());
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm",
+					Locale.getDefault());
 			long startTime = (Long) data.get("StartTime");
 			calendar.setTimeInMillis(startTime);
 			mStartTimeTextView.setText(formatter.format(calendar.getTime()));
 			long endTime = (Long) data.get("EndTime");
 			calendar.setTimeInMillis(endTime);
 			mEndTimeTextView.setText(formatter.format(calendar.getTime()));
+			if (data.get("Logo") != null) {
+				mLogoImageView.setImageBitmap(Tools.base64ToBitmap((String) data.get("Logo")));
+			}
 		}
 
 		return view;
@@ -163,19 +183,37 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		case R.id.btn_create_done:
 			doneRequest(data, tagInfos);
 			break;
-
+		case R.id.rl_create_invite_people:
+			Intent intent = new Intent(getActivity().getApplicationContext(), MyConnectionsActivity.class);
+			intent.putExtra("isInvitePeople", true);
+			startActivityForResult(intent, REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE);
+			break;
 		default:
 			break;
 		}
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE) {
+				mInviteTextView.setText(data.getStringExtra("inviteName"));
+				mInviteTextView.setVisibility(View.VISIBLE);
+				mInvitePeopleID = data.getLongExtra("inviteID", -1);
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
 	private CustomizedProgressDialog mProgressDialog = null;
 	private boolean isNeedsDialog = true;
+
 	private void doneRequest(Map<String, Object> map, List<TagInfo> tagInfos) {
 		HttpRequest request = new HttpRequest();
 		if (isNeedsDialog) {
 			if (mProgressDialog == null) {
-				mProgressDialog = new CustomizedProgressDialog(getActivity(), R.string.please_waiting);
+				mProgressDialog = new CustomizedProgressDialog(getActivity(),
+						R.string.please_waiting);
 			} else {
 				if (mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
@@ -193,7 +231,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 				ToastHelper.showToast("Create Meeting Success");
 
 				FragmentActivity activity = getActivity();
-				
+
 				if (activity instanceof CreateActivity) {
 					CreateActivity createActivity = (CreateActivity) activity;
 					createActivity.showFirstFragment();
@@ -219,10 +257,11 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		if (isNeedsDialog) {
 			mProgressDialog.show();
 		}
-		
+
 	}
 
-	private Map<String, String> convert(Map<String, Object> map, List<TagInfo> tagInfos) throws JSONException {
+	private Map<String, String> convert(Map<String, Object> map, List<TagInfo> tagInfos)
+			throws JSONException {
 		Map<String, String> data = new TreeMap<String, String>();
 		JSONObject meeting = new JSONObject(map);
 		meeting.put("Description", "A Party");
@@ -231,7 +270,8 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		meeting.put("Status", 0);
 
 		Calendar calendar = Calendar.getInstance();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss",
+				Locale.getDefault());
 		meeting.put("CreateDate", formatter.format(calendar.getTime()).replace(" ", "T"));
 		meeting.remove("StartTime");
 		meeting.remove("EndTime");
@@ -241,8 +281,12 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 			tags.put(tagInfo.getId());
 		}
 		data.put("Tags", tags.toString());
-		data.put("Invited", new JSONArray().toString());
-		
+		JSONArray invitedArray = new JSONArray();
+		if (mInvitePeopleID != -1) {
+			invitedArray.put(mInvitePeopleID);
+		}
+		data.put("Invited", invitedArray.toString());
+
 		return data;
 	}
 }
