@@ -10,16 +10,19 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.widget.CircleImageView;
 
 public class MeetingAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
 	private List<MeetingInfo> meetingData;
+	private HttpBitmap httpBitmap;
 
 	public MeetingAdapter(Context mContext, List<MeetingInfo> meetingData) {
 		inflater = LayoutInflater.from(mContext);
 		this.meetingData = meetingData;
+		httpBitmap = new HttpBitmap(mContext);
 	}
 
 	@Override
@@ -58,8 +61,9 @@ public class MeetingAdapter extends BaseAdapter {
 
 		MeetingInfo mMeetingInfo = meetingData.get(position);
 
-		if (mMeetingInfo.getLogo() != null) {
-			holder.mCircleImage.setImageBitmap(mMeetingInfo.getLogo());
+		holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		if (mMeetingInfo.getLogoUri() != null) {
+			httpBitmap.displayBitmap(holder.mCircleImage, mMeetingInfo.getLogoUri());
 		}
 		holder.mNameTxt.setText(mMeetingInfo.getTitle());
 		holder.mDistanceTxt.setText(String.format("%.2f", mMeetingInfo.getDistance()) + "km");

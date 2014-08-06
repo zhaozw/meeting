@@ -549,8 +549,7 @@ public class MeetActivity extends Activity {
 							meetingInfo.setTitle(meetingJson.getString(ServerKeys.KEY_TITLE));
 						}
 						meetingInfo.setDistance(meetingJson.getDouble(ServerKeys.KEY_DISTANCE));
-						meetingInfo.setLogo(Util.base64ToBitmap(meetingJson
-								.getString(ServerKeys.KEY_LOGO)));
+						meetingInfo.setLogoUri(meetingJson.getString(ServerKeys.KEY_LOGO));
 
 						JSONArray tagArray = meetJson.getJSONArray(ServerKeys.KEY_TAGS);
 						for (int j = 0; j < tagArray.length(); j++) {

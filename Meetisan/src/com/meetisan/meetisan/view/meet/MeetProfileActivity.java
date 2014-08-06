@@ -28,6 +28,7 @@ import com.meetisan.meetisan.model.MeetingInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
@@ -42,12 +43,14 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	private CircleImageView mLogoView;
 	private LabelWithIcon mLocationBtn;
 	private Button mMeetOrCancelBtn;
-	private TextView mTitleTxt, mDescriptionTxt, mStartTimeTxt, mEndTimeTxt, mFirstTagTxt, mSecondTagTxt, mThirdTagTxt,
-			mNoTagTxt;
+	private TextView mTitleTxt, mDescriptionTxt, mStartTimeTxt, mEndTimeTxt, mFirstTagTxt,
+			mSecondTagTxt, mThirdTagTxt, mNoTagTxt;
 
 	private long mMeetingID = -1, mUserID = -1;
 	private String mUserName = null;
 	private MeetingInfo mMeetInfo = new MeetingInfo();
+
+	private HttpBitmap httpBitmap;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,6 +69,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			this.finish();
 		}
 		mUserName = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_NAME, "");
+
+		httpBitmap = new HttpBitmap(this);
 
 		initView();
 
@@ -108,8 +113,9 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			mapBundle.putDouble("Longitude", mMeetInfo.getLongitude());
 			mapBundle.putString("MeetTitle", mMeetInfo.getTitle());
 			Log.d(TAG,
-					"Location: " + false + "; Latitude: " + mMeetInfo.getLatitude() + "; Longitude: "
-							+ mMeetInfo.getLongitude() + "; Title: " + mMeetInfo.getTitle());
+					"Location: " + false + "; Latitude: " + mMeetInfo.getLatitude()
+							+ "; Longitude: " + mMeetInfo.getLongitude() + "; Title: "
+							+ mMeetInfo.getTitle());
 			mapIntent.setClass(this, GoogleMapActivity.class);
 			mapIntent.putExtras(mapBundle);
 			startActivity(mapIntent);
@@ -135,8 +141,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		if (mMeetInfo.getLogo() != null) {
-			mLogoView.setImageBitmap(mMeetInfo.getLogo());
+		if (mMeetInfo.getLogoUri() != null) {
+			httpBitmap.displayBitmap(mLogoView, mMeetInfo.getLogoUri());
 		}
 		if (mMeetInfo.getTitle() != null) {
 			mTitleTxt.setText(mMeetInfo.getTitle());
@@ -211,7 +217,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 				try {
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
 
 					mMeetInfo.setJoinStatus(dataJson.getInt(ServerKeys.KEY_JOIN_STATUS));
 
@@ -231,7 +238,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					mMeetInfo.setStartTime(meetJson.getString(ServerKeys.KEY_START_TIME));
 					mMeetInfo.setEndTime(meetJson.getString(ServerKeys.KEY_END_TIME));
 					mMeetInfo.setCreateDate(meetJson.getString(ServerKeys.KEY_CREATE_DATE));
-					mMeetInfo.setLogo(Util.base64ToBitmap(meetJson.getString(ServerKeys.KEY_LOGO)));
+					mMeetInfo.setLogoUri(meetJson.getString(ServerKeys.KEY_LOGO));
 					mMeetInfo.setCreateUserId(meetJson.getLong(ServerKeys.KEY_CREATE_USER_ID));
 					mMeetInfo.setCreateDate(meetJson.getString(ServerKeys.KEY_CREATE_DATE));
 					mMeetInfo.setStatus(meetJson.getInt(ServerKeys.KEY_STATUS));
@@ -259,7 +266,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_MEET_INFO + "/" + mMeetingID + "/?UserID=" + mUserID, null);
+		request.get(ServerKeys.FULL_URL_GET_MEET_INFO + "/" + mMeetingID + "/?UserID=" + mUserID,
+				null);
 		mProgressDialog.show();
 	}
 
@@ -323,7 +331,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 						mProgressDialog.dismiss();
 						mMeetInfo.setJoinStatus(1);
 						updateMeetProfileUI();
-						ToastHelper.showToast(R.string.cancel_attend_meeting_success, Toast.LENGTH_LONG);
+						ToastHelper.showToast(R.string.cancel_attend_meeting_success,
+								Toast.LENGTH_LONG);
 					}
 				});
 			}
@@ -336,7 +345,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					public void run() {
 						// TODO Auto-generated method stub
 						mProgressDialog.dismiss();
-						ToastHelper.showToast(R.string.cancel_attend_meeting_failure, Toast.LENGTH_LONG);
+						ToastHelper.showToast(R.string.cancel_attend_meeting_failure,
+								Toast.LENGTH_LONG);
 					}
 				});
 			}

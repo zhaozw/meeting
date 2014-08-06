@@ -3,8 +3,6 @@ package com.meetisan.meetisan.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Bitmap;
-
 public class MeetingInfo {
 	/** meet id */
 	private long id = 0;
@@ -16,8 +14,9 @@ public class MeetingInfo {
 	private String description = null;
 	/** meet address */
 	private String address = null;
-	/** meet icon */
-	private Bitmap logo = null;
+	/** meet logo Uri */
+	// private Bitmap logo = null;
+	private String logoUri = null;
 	/** people longitude */
 	private double longitude = 0.0f;
 	/** people latitude */
@@ -133,12 +132,12 @@ public class MeetingInfo {
 		this.status = status;
 	}
 
-	public Bitmap getLogo() {
-		return logo;
+	public String getLogoUri() {
+		return logoUri;
 	}
 
-	public void setLogo(Bitmap logo) {
-		this.logo = logo;
+	public void setLogoUri(String logoUri) {
+		this.logoUri = logoUri;
 	}
 
 	public double getDistance() {

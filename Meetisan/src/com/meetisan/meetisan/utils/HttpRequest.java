@@ -1,8 +1,6 @@
 package com.meetisan.meetisan.utils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,17 +17,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -99,7 +91,7 @@ public class HttpRequest {
 		}
 	}
 
-	public class HttpDeleteAsyncTask extends AsyncTask<Integer, Integer, String[]> {
+	private class HttpDeleteAsyncTask extends AsyncTask<Integer, Integer, String[]> {
 
 		private String url;
 		private Map<String, String> data = new HashMap<String, String>();
@@ -162,7 +154,7 @@ public class HttpRequest {
 			}
 		}
 
-		public class MyHttpDelete extends HttpEntityEnclosingRequestBase {
+		private class MyHttpDelete extends HttpEntityEnclosingRequestBase {
 
 			public static final String METHOD_NAME = "DELETE";
 

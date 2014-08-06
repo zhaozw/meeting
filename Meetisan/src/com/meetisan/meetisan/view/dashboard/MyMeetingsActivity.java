@@ -139,21 +139,15 @@ public class MyMeetingsActivity extends Activity {
 	/**
 	 * get Meetings from server
 	 * 
-	 * @param pageIndex
-	 *            load page index
-	 * @param orderType
-	 *            get list order by edition
-	 * @param mLat
-	 *            location
-	 * @param mLon
-	 *            location
-	 * @param isRefresh
-	 *            is refresh or load more
-	 * @param isNeedsDialog
-	 *            weather show progress dialog
+	 * @param pageIndex load page index
+	 * @param orderType get list order by edition
+	 * @param mLat location
+	 * @param mLon location
+	 * @param isRefresh is refresh or load more
+	 * @param isNeedsDialog weather show progress dialog
 	 */
-	private void getMeetingsFromServer(int pageIndex, int orderType, float mLat, float mLon, final boolean isRefresh,
-			final boolean isNeedsDialog) {
+	private void getMeetingsFromServer(int pageIndex, int orderType, float mLat, float mLon,
+			final boolean isRefresh, final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -178,7 +172,8 @@ public class MyMeetingsActivity extends Activity {
 						mMeetingData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result))
+							.getJSONObject(ServerKeys.KEY_DATA);
 					dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 
 					JSONArray peopleArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
@@ -193,7 +188,9 @@ public class MyMeetingsActivity extends Activity {
 							meetingInfo.setTitle(meetingJson.getString(ServerKeys.KEY_TITLE));
 						}
 						meetingInfo.setDistance(meetingJson.getDouble(ServerKeys.KEY_DISTANCE));
-						meetingInfo.setLogo(Util.base64ToBitmap(meetingJson.getString(ServerKeys.KEY_LOGO)));
+						if (!meetingJson.isNull(ServerKeys.KEY_LOGO)) {
+							meetingInfo.setLogoUri(meetingJson.getString(ServerKeys.KEY_LOGO));
+						}
 
 						JSONArray tagArray = meetJson.getJSONArray(ServerKeys.KEY_TAGS);
 						for (int j = 0; j < tagArray.length(); j++) {
@@ -228,8 +225,9 @@ public class MyMeetingsActivity extends Activity {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_USER_MEET_LIST + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
-				+ ServerKeys.PAGE_SIZE + "&ordertype=" + orderType + "&lat=" + mLat + "&lon=" + mLon, null);
+		request.get(ServerKeys.FULL_URL_GET_USER_MEET_LIST + "/" + mUserId + "/?pageindex="
+				+ pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE + "&ordertype=" + orderType
+				+ "&lat=" + mLat + "&lon=" + mLon, null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();

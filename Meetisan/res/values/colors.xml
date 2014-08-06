@@ -37,7 +37,7 @@
 	<color name="popup_menu_bg">#77000000</color>
 	
 	<!-- Create activity colors -->
-	<color name="activity_create_dividing_line_color">#F6F6F6</color>
+	<color name="activity_create_dividing_line_color">#DDDDDD</color>
 	<color name="activity_create_button_done">#54EBB4</color>	
 	<color name="activity_create_text_done_pressed">#77FFFFFF</color>
 	
