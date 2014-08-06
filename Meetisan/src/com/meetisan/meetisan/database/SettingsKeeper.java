@@ -18,6 +18,10 @@ public class SettingsKeeper {
 	public static final String KEY_PRIVACY_MEETINGS_CREATED = "settings_privacy_meetings_create";
 	/** settings of privacy, allow others to see meetings I have attend */
 	public static final String KEY_PRIVACY_MEETINGS_ATTENDED = "settings_privacy_meetings_attend";
+	/** settings of push notification, when someone joins my meetings */
+	public static final String KEY_PUSH_MEETINGS_JOINS = "settings_push_meetings_joins";
+	/** settings of push notification, when I receive an invitation to a meeting */
+	public static final String KEY_PUSH_MEETINGS_INVITATION = "settings_push_meetings_invitation";
 
 	/**
 	 * write settings to preferences

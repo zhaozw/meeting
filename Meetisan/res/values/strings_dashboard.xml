@@ -4,6 +4,8 @@
     <string name="all_meetings">All Meetings</string>
     <string name="upcoming_meetings">Upcoming Meetings</string>
     <string name="settings">Settings</string>
+    <string name="logout">LogOut</string>
+    <string name="logout_tips">Are you sure to logout Meetisan?</string>
 
     <!-- settings of notify me when -->
     <string name="notify">Notify</string>
@@ -18,6 +20,12 @@
     <string name="public_meetings_create">Allow others to see meetings I\'ve created</string>
     <string name="public_meetings_attend">Allow others to see meetings I\'ve attended</string>
     <string name="blocked_people">People I\'ve blocked</string>
+    
+    <!-- settings of push notifications -->
+    <string name="meeting_reminders_1">Meeting reminders 1</string>
+    <string name="meeting_reminders_2">Meeting reminders 2</string>
+    <string name="push_someone_joins_meeting">When someone joins my meeting</string>
+    <string name="push_receive_invitation_meeting">When I receive an invitation to a meeting</string>
 
     <!-- settings of about meetisan -->
     <string name="about_meetisan">About Meetisan</string>
@@ -25,7 +33,7 @@
     <string name="link_us_on_facebook">Link us on Facebook</string>
     <string name="follow_us_on_linkedin">Follow us on Linkedin</string>
     <string name="feedback">Feedback</string>
-    <string name="logout">LogOut</string>
+    <string name="failed_get_version">Failed to get app version</string>
 
     <!-- Dashboard Person Profile -->
     <string name="person_profile">Person Profile</string>
@@ -51,5 +59,5 @@
     <!-- Dashboard My Meetings Activity -->
     <string name="my_meetings">My Meetings</string>
     <string name="my_connections">My Connections</string>
-    
+
 </resources>
