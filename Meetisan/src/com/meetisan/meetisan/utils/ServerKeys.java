@@ -30,7 +30,10 @@ public class ServerKeys {
 	private static final String API_TTAG_CATEGORY = "/api/tTagCategory/";
 
 	// URL
+	/** http://{域名}/api/tuser/Login/ */
 	public static final String FULL_URL_LOGIN = SERVER_ADDRESS + API_TUSER + "Login";
+	/** http://{域名}/api/tuser/LoginOut/{用户ID} */	
+	public static final String FULL_URL_LOGOUT = SERVER_ADDRESS + API_TUSER + "LoginOut";
 	public static final String FULL_URL_SEND_CODE = SERVER_ADDRESS + API_TUSER + "SendActivationCode";
 	public static final String FULL_URL_CHECK_CODE = SERVER_ADDRESS + API_TUSER + "CheckActivationCode";
 	public static final String FULL_URL_REGISTER = SERVER_ADDRESS + API_TUSER + "Register";
