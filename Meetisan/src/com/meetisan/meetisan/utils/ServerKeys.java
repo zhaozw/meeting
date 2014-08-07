@@ -37,6 +37,8 @@ public class ServerKeys {
 	public static final String FULL_URL_SEND_CODE = SERVER_ADDRESS + API_TUSER + "SendActivationCode";
 	public static final String FULL_URL_CHECK_CODE = SERVER_ADDRESS + API_TUSER + "CheckActivationCode";
 	public static final String FULL_URL_REGISTER = SERVER_ADDRESS + API_TUSER + "Register";
+	/** http://{域名}/api/tuser/updatelocation/{用户ID}/?lat={当前用户经度}&lon={当前用户经度} */
+	public static final String FULL_URL_UPDATE_LOCATION = SERVER_ADDRESS + API_TUSER + "updatelocation";
 	/** http://{域名}/api/tuser/Get/{用户ID} */
 	public static final String FULL_URL_GET_USER_INFO = SERVER_ADDRESS + API_TUSER + "Get";
 	/**	http://{域名}/api/ttag/GetUserTag/{userId}/?pageindex={页码}&pagesize={每页数量}&name={按tag的名字搜索，否则请传空} */
@@ -71,6 +73,7 @@ public class ServerKeys {
 	public static final String FULL_URL_DEL_TAG = SERVER_ADDRESS + API_TTAG + "DeleteUserTag";
 	/**http://{域名}/api/tNotification/getlist/{当前用户ID}/?pageindex={页码}&pagesize={每页数量}*/
 	public static final String FULL_URL_GET_NOTIFICATION = SERVER_ADDRESS + API_TNOTIFICATION + "getlist";
+	
 	
 	// Keys
 	public static final String KEY_ID = "ID";

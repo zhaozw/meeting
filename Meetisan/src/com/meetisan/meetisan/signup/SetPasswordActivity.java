@@ -3,6 +3,9 @@ package com.meetisan.meetisan.signup;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,10 +16,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.jpush.android.api.JPushInterface;
 
 import com.meetisan.meetisan.MainActivity;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
@@ -86,7 +91,7 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 
 	private CustomizedProgressDialog mProgressDialog = null;
 
-	private void doSetPassword(String email, String pwd) {
+	private void doSetPassword(final String email, final String pwd) {
 		if (email == null || TextUtils.isEmpty(email)) {
 			return;
 		}
@@ -107,9 +112,7 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 
-				Intent intent = new Intent(SetPasswordActivity.this, MainActivity.class);
-				startActivity(intent);
-				finish();
+				doLogin(email, pwd);
 			}
 
 			@Override
@@ -123,6 +126,70 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 		data.put(ServerKeys.KEY_EMAIL, email);
 		data.put(ServerKeys.KEY_PASSWORD, pwd);
 		request.post(ServerKeys.FULL_URL_REGISTER, data);
+		mProgressDialog.show();
+	}
+
+	private String registrationID = null;
+
+	private void doLogin(final String email, final String pwd) {
+		HttpRequest request = new HttpRequest();
+
+		if (mProgressDialog == null) {
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+		} else {
+			if (mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+			}
+		}
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+
+				JSONObject json;
+				try {
+					PeopleInfo mUserInfo = new PeopleInfo();
+					json = new JSONObject(result);
+					JSONObject data = json.getJSONObject(ServerKeys.KEY_DATA);
+					mUserInfo.setId(data.getLong(ServerKeys.KEY_ID));
+					if (!data.isNull(ServerKeys.KEY_NAME)) {
+						mUserInfo.setName(data.getString(ServerKeys.KEY_NAME));
+					}
+					if (!data.isNull(ServerKeys.KEY_AVATAR)) {
+						mUserInfo.setAvatarUri(data.getString(ServerKeys.KEY_AVATAR));
+					}
+					mUserInfo.setEmail(email);
+					mUserInfo.setPwd(pwd);
+					mUserInfo.setRegId(registrationID);
+
+					if (UserInfoKeeper.writeUserInfo(SetPasswordActivity.this, mUserInfo)) {
+						Intent intent = new Intent(SetPasswordActivity.this, MainActivity.class);
+						startActivity(intent);
+						finish();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+					ToastHelper.showToast(R.string.app_occurred_exception);
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+			}
+		});
+
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put(ServerKeys.KEY_EMAIL, email);
+		data.put(ServerKeys.KEY_PASSWORD, pwd);
+		registrationID = JPushInterface.getRegistrationID(getApplicationContext());
+		if (registrationID != null) {
+			data.put(ServerKeys.KEY_REG_ID, registrationID);
+		}
+		request.post(ServerKeys.FULL_URL_LOGIN, data);
 		mProgressDialog.show();
 	}
 

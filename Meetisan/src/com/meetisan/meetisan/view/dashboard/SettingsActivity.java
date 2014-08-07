@@ -128,6 +128,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 				mProgressDialog.dismiss();
 				if (UserInfoKeeper.clearUserInfo(SettingsActivity.this)) {
 					Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 					startActivity(intent);
 					SettingsActivity.this.finish();
 				}
