@@ -29,6 +29,8 @@
 	<string name="meeting_location">Meeting Location</string>
 	<string name="invite_people">Invite People</string>
 	<string name="invite">invite</string>
+	<string name="has_been_invited_to_your_meeting">Has been invited to your meeting.</string>
+	<string name="slide_to_left_to_delete_the_people_your_invite">The people your invite.</string>
 	
     <string name="profile_picture">Profile picture</string>
     <string name="select_picture">Select picture</string>

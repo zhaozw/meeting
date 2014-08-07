@@ -94,8 +94,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	private void setup() {
 		mCreateIntent = new Intent(this, CreateActivity.class);
 		if (isMeetPerson && meetPersonID >= 0) {
-			Bundle bundle = new Bundle();
-			bundle.putLong("PersonID", meetPersonID);
+			Bundle bundle = this.getIntent().getExtras();
 			mCreateIntent.putExtras(bundle);
 		}
 		mMeetIntent = new Intent(this, MeetActivity.class);

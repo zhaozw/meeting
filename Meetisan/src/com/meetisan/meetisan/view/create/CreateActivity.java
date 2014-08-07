@@ -39,6 +39,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	private CreateDoneFragment mCreateDoneFragment;
 
 	private long meetPersonID = -1;
+	private Bundle mMeetPersonBundle = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +50,9 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		Bundle bundle = new Bundle();
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
+			mMeetPersonBundle = bundle;
 			meetPersonID = bundle.getLong("PersonID", -1L);
-			Log.d("CreateActivity", "Meet Person ID: " + meetPersonID);
+			Log.d("CreateActivity", "Meet Person Bundle: " + mMeetPersonBundle);
 		}
 
 		initTitle();
@@ -83,6 +85,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		mRightButton.setOnClickListener(this);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		mCreateStep1Fragment = new CreateStep1Fragment();
+		mCreateStep1Fragment.setArguments(mMeetPersonBundle);
 		if (findViewById(R.id.fl_fragment_container) != null) {
 			transaction.add(R.id.fl_fragment_container, mCreateStep1Fragment);
 		}
@@ -223,6 +226,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		case 5:
 			if (mCreateDoneFragment == null) {
 				mCreateDoneFragment = new CreateDoneFragment();
+				mCreateDoneFragment.setArguments(mMeetPersonBundle);
 				transaction.add(R.id.fl_fragment_container, mCreateDoneFragment);
 			} else {
 				transaction.show(mCreateDoneFragment);

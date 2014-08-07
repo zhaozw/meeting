@@ -67,6 +67,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 	private RelativeLayout mInvitePeopleLayout;
 	private TextView mInviteTextView;
 	private long mInvitePeopleID = -1;
+	private String mInvitePeopleName = null;
 
 	Map<String, Object> data = new TreeMap<String, Object>();
 	List<TagInfo> tagInfos = new ArrayList<TagInfo>();
@@ -92,7 +93,11 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 	}
 
 	public CreateDoneFragment() {
-		// Required empty public constructor
+		Bundle bundle = getArguments();
+		if (bundle.getBoolean("IsMeetPerson")) {
+			mInvitePeopleID = bundle.getLong("PersonID");
+			mInvitePeopleName = bundle.getString("PersonName");
+		}
 	}
 
 	@Override
@@ -118,7 +123,10 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		mInvitePeopleLayout = (RelativeLayout) view.findViewById(R.id.rl_create_invite_people);
 		mInvitePeopleLayout.setOnClickListener(this);
 		mInviteTextView = (TextView) view.findViewById(R.id.tv_create_done_invite);
-
+		if (mInvitePeopleName != null) {
+			mInviteTextView.setText(mInvitePeopleName);
+			mInviteTextView.setVisibility(View.VISIBLE);
+		}
 		FragmentActivity activity = getActivity();
 
 		if (activity instanceof CreateActivity) {
