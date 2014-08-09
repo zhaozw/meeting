@@ -84,18 +84,18 @@
                     android:textSize="@dimen/text_size_middle" />
 
                 <ImageButton
-                    android:id="@+id/btn_connections"
+                    android:id="@+id/im_btn_connection"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@+id/btn_meeting"
+                    android:layout_toLeftOf="@+id/im_btn_meeting"
                     android:background="@android:color/transparent"
                     android:scaleType="centerInside"
                     android:src="@drawable/btn_people" />
 
                 <ImageButton
-                    android:id="@+id/btn_meeting"
+                    android:id="@+id/im_btn_meeting"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_alignParentRight="true"
@@ -292,7 +292,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.6dp"
-                    android:layout_marginTop="5dp"
                     android:background="@color/gap_line_color" />
 
                 <com.meetisan.meetisan.widget.LabelWithIcon
@@ -305,7 +304,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.6dp"
-                    android:layout_marginTop="5dp"
                     android:background="@color/gap_line_color" />
             </LinearLayout>
         </LinearLayout>

@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.LabelWithIcon;
 
 public class TagProfileActivity extends Activity implements OnClickListener {
 	private static final String TAG = TagProfileActivity.class.getSimpleName();
@@ -65,6 +67,8 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 
 	private void initView() {
 		((ImageButton) findViewById(R.id.btn_title_icon_left)).setOnClickListener(this);
+		((ImageButton) findViewById(R.id.im_btn_connection)).setOnClickListener(this);
+		((ImageButton) findViewById(R.id.im_btn_meeting)).setOnClickListener(this);
 
 		mMomentView = (ImageView) findViewById(R.id.iv_moments);
 		mNoMomentTxt = (TextView) findViewById(R.id.txt_no_moments);
@@ -73,16 +77,51 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		mDescriptionTxt = (TextView) findViewById(R.id.txt_tag_description);
 		mHostTxt = (TextView) findViewById(R.id.txt_tag_host);
 		mLinkTxt = (TextView) findViewById(R.id.txt_tag_link);
+
+		LabelWithIcon mConnectedLabel = (LabelWithIcon) findViewById(R.id.btn_connected);
+		mConnectedLabel.setOnClickListener(this);
+		LabelWithIcon mAttendedLabel = (LabelWithIcon) findViewById(R.id.btn_attended);
+		mAttendedLabel.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
+		Intent intent = null;
+		Bundle bundle = null;
 		switch (v.getId()) {
 		case R.id.btn_title_icon_left:
 			finish();
 			break;
+		case R.id.im_btn_connection:
+			intent = new Intent(this, TagConnectedPeopleActivity.class);
+			bundle = new Bundle();
+			bundle.putLong("TagID", mTagID);
+			intent.putExtras(bundle);
+			break;
+		case R.id.btn_connected:
+			intent = new Intent(this, TagConnectedPeopleActivity.class);
+			bundle = new Bundle();
+			bundle.putLong("TagID", mTagID);
+			intent.putExtras(bundle);
+			break;
+		case R.id.im_btn_meeting:
+			intent = new Intent(this, TagAttendedMeetingsActivity.class);
+			bundle = new Bundle();
+			bundle.putLong("TagID", mTagID);
+			intent.putExtras(bundle);
+			break;
+		case R.id.btn_attended:
+			intent = new Intent(this, TagAttendedMeetingsActivity.class);
+			bundle = new Bundle();
+			bundle.putLong("TagID", mTagID);
+			intent.putExtras(bundle);
+			break;
 		default:
 			break;
+		}
+
+		if (intent != null) {
+			startActivity(intent);
 		}
 	}
 
@@ -119,7 +158,8 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		// Bitmap mBitmap = Util.inFrameFoto(mBitmaps, Util.getWindowsSize(this, true) - 20);
+		// Bitmap mBitmap = Util.inFrameFoto(mBitmaps, Util.getWindowsSize(this,
+		// true) - 20);
 		Bitmap mBitmap = null;
 		if (mBitmap != null) {
 			mMomentView.setImageBitmap(mBitmap);
@@ -150,8 +190,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 				try {
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 
 					mTagInfo.setFollow(dataJson.getInt(ServerKeys.KEY_FOLLOW_STATUS));
 

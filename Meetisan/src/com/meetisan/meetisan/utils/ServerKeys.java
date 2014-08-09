@@ -73,7 +73,10 @@ public class ServerKeys {
 	public static final String FULL_URL_DEL_TAG = SERVER_ADDRESS + API_TTAG + "DeleteUserTag";
 	/**http://{域名}/api/tNotification/getlist/{当前用户ID}/?pageindex={页码}&pagesize={每页数量}*/
 	public static final String FULL_URL_GET_NOTIFICATION = SERVER_ADDRESS + API_TNOTIFICATION + "getlist";
-	
+	/** http://{域名}/api/tuser/getlist/{当前用户ID}/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户纬度}&tagIDs={当前TagID} */
+	public static final String FULL_URL_GET_CONNECTTED_PEOPLE = SERVER_ADDRESS + API_TUSER + "getlist";
+	/** http://{域名}/api/tmeeting/GetUserMeetingList/{用户ID}/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户经度}&tagIDs={当前TagID}*/
+	public static final String FULL_URL_GET_ATTENDED_MEET = SERVER_ADDRESS + API_TMEET + "GetUserMeetingList";
 	
 	// Keys
 	public static final String KEY_ID = "ID";
