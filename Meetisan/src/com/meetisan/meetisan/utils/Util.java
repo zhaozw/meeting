@@ -329,4 +329,14 @@ public class Util {
 		String time = date.substring(gapIndex + 1, gapIndex + 1 + 5);
 		return time + " " + day;
 	}
+	
+	public static boolean isEmpty(String s) {
+		if (null == s)
+			return true;
+		if (s.length() == 0)
+			return true;
+		if (s.trim().length() == 0)
+			return true;
+		return false;
+	}
 }
