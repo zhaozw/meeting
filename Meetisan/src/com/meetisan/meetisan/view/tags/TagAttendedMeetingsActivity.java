@@ -1,4 +1,4 @@
-package com.meetisan.meetisan.view.dashboard;
+package com.meetisan.meetisan.view.tags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +37,8 @@ import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
-public class MyMeetingsActivity extends Activity {
-	private static final String TAG = MyMeetingsActivity.class.getSimpleName();
+public class TagAttendedMeetingsActivity extends Activity {
+	private static final String TAG = TagAttendedMeetingsActivity.class.getSimpleName();
 
 	private PullToRefreshListView mPullMeetingsView;
 	private ListView mMeetingsListView;
@@ -47,8 +47,10 @@ public class MyMeetingsActivity extends Activity {
 	private MeetingAdapter mMeetingAdapter;
 
 	private long mTotalMeetings = 0;
+	private long mTagId = -1;
 	private long mUserId = -1;
 	private float mLat = 200.3f, mLon = 100.0f;
+	private PeopleInfo mUserInfo;
 	private int mOrderType = 0;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,10 +58,20 @@ public class MyMeetingsActivity extends Activity {
 
 		setContentView(R.layout.activity_dashboard_meetings);
 
-		PeopleInfo mUserInfo = UserInfoKeeper.readUserInfo(this);
+		mUserInfo = UserInfoKeeper.readUserInfo(this);
 		mUserId = mUserInfo.getId();
 		mLat = mUserInfo.getLatitude();
 		mLon = mUserInfo.getLongitude();
+
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			mTagId = bundle.getLong("TagID");
+		}
+
+		if (mTagId < 0 || mUserId < 0) {
+			ToastHelper.showToast(R.string.app_occurred_exception);
+			this.finish();
+		}
 
 		getMeetingsFromServer(1, mOrderType, mLat, mLon, true, true);
 
@@ -69,13 +81,13 @@ public class MyMeetingsActivity extends Activity {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
 		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
-		mTitleTxt.setText(R.string.my_meetings);
+		mTitleTxt.setText(R.string.meetings_attended);
 		mTitleTxt.setVisibility(View.VISIBLE);
 		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
 		mBackBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MyMeetingsActivity.this.finish();
+				TagAttendedMeetingsActivity.this.finish();
 			}
 		});
 		mBackBtn.setVisibility(View.VISIBLE);
@@ -125,7 +137,7 @@ public class MyMeetingsActivity extends Activity {
 				Bundle bundle = new Bundle();
 				bundle.putLong("MeetingID", mMeetingData.get(arg2 - 1).getId());
 				bundle.putLong("UserID", mUserId);
-				intent.setClass(MyMeetingsActivity.this, MeetProfileActivity.class);
+				intent.setClass(TagAttendedMeetingsActivity.this, MeetProfileActivity.class);
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}
@@ -234,8 +246,8 @@ public class MyMeetingsActivity extends Activity {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_USER_MEET_LIST + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
-				+ ServerKeys.PAGE_SIZE + "&ordertype=" + orderType + "&lat=" + mLat + "&lon=" + mLon, null);
+		request.get(ServerKeys.FULL_URL_GET_ATTENDED_MEET + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
+				+ ServerKeys.PAGE_SIZE + "&lat=" + mLat + "&lon=" + mLon + "&TagIDs=" + mTagId, null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();
