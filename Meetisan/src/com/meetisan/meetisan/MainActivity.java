@@ -139,6 +139,9 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		String bestProvider = manager.getBestProvider(criteria, true);
 		if (bestProvider != null) {
 			Location location = manager.getLastKnownLocation(bestProvider);
+			if (location == null) {
+				return;
+			}
 			double latitude = location.getLatitude();
 			double longitude = location.getLongitude();
 			HttpRequest request = new HttpRequest();
