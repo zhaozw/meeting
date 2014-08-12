@@ -150,23 +150,27 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 				"MaxPerson",
 				mMaximumNumber.getCheckedRadioButtonId() == R.id.rb_create_maximum_number_single ? 1
 						: 2);
-		data.put("Lon", mLongitude);
-		data.put("Lat", mLatitude);
+		data.put("Lon", String.valueOf(mLongitude));
+		data.put("Lat", String.valueOf(mLatitude));
 		data.put("Address", address);
 		data.put("TimeSetType",
 				mSetTime.getCheckedRadioButtonId() == R.id.rb_create_set_time_by_me ? 1 : 2);
 
 		Calendar calendar = Calendar.getInstance();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss",
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm",
 				Locale.getDefault());
 		calendar.setTimeInMillis(startTime);
-		String start = formatter.format(calendar.getTime()).replace(" ", "T");
+		String start = formatter.format(calendar.getTime());
 		calendar.setTimeInMillis(endTime);
-		String end = formatter.format(calendar.getTime()).replace(" ", "T");
+		String end = formatter.format(calendar.getTime());
 		data.put("DetermineStartTime", start);
 		data.put("DetermineEndTime", end);
 		data.put("StartTime1", start);
 		data.put("EndTime1", end);
+		data.put("StartTime2", start);
+		data.put("EndTime2", end);
+		data.put("StartTime3", start);
+		data.put("EndTime3", end);
 		data.put("StartTime", startTime);
 		data.put("EndTime", endTime);
 		return data;

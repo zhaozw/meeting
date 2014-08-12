@@ -94,7 +94,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 
 	public CreateDoneFragment() {
 		Bundle bundle = getArguments();
-		if (bundle.getBoolean("IsMeetPerson")) {
+		if (bundle != null && bundle.getBoolean("IsMeetPerson")) {
 			mInvitePeopleID = bundle.getLong("PersonID");
 			mInvitePeopleName = bundle.getString("PersonName");
 		}
@@ -242,7 +242,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 
 				if (activity instanceof CreateActivity) {
 					CreateActivity createActivity = (CreateActivity) activity;
-					createActivity.showFirstFragment();
+					createActivity.hideLastShowFirstFragment();
 				}
 			}
 
@@ -256,7 +256,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		});
 
 		try {
-			request.post(ServerKeys.FULL_URL_MEETING_ADD, convert(map, tagInfos));
+			request.postJsonString(ServerKeys.FULL_URL_MEETING_ADD, convert(map, tagInfos));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -268,33 +268,33 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 
 	}
 
-	private Map<String, String> convert(Map<String, Object> map, List<TagInfo> tagInfos)
+	private String convert(Map<String, Object> map, List<TagInfo> tagInfos)
 			throws JSONException {
-		Map<String, String> data = new TreeMap<String, String>();
+		JSONObject data = new JSONObject();
 		JSONObject meeting = new JSONObject(map);
 		meeting.put("Description", "A Party");
 		long mUserId = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_ID, -1L);
 		meeting.put("CreateUserID", mUserId);
-		meeting.put("Status", 0);
+//		meeting.put("Status", 0);
 
 		Calendar calendar = Calendar.getInstance();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss",
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm",
 				Locale.getDefault());
-		meeting.put("CreateDate", formatter.format(calendar.getTime()).replace(" ", "T"));
+		meeting.put("CreateDate", formatter.format(calendar.getTime()));
 		meeting.remove("StartTime");
 		meeting.remove("EndTime");
-		data.put("Meeting", meeting.toString());
+		data.put("Meeting", meeting);
 		JSONArray tags = new JSONArray();
 		for (TagInfo tagInfo : tagInfos) {
 			tags.put(tagInfo.getId());
 		}
-		data.put("Tags", tags.toString());
+		data.put("Tags", tags);
 		JSONArray invitedArray = new JSONArray();
 		if (mInvitePeopleID != -1) {
 			invitedArray.put(mInvitePeopleID);
 		}
-		data.put("Invited", invitedArray.toString());
+		data.put("Invited", invitedArray);
 
-		return data;
+		return data.toString();
 	}
 }

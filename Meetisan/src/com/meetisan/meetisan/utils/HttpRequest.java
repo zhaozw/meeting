@@ -1,6 +1,7 @@
 package com.meetisan.meetisan.utils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -76,6 +78,17 @@ public class HttpRequest {
 		}
 		Log.d(LOG_CAT, "Post Url:" + fullUrl + ", params:" + params.toString());
 		finalHttp.post(fullUrl, params, new MyAjaxCallBack(fullUrl));
+	}
+
+	public void postJsonString(String fullUrl, String jsonString) {
+		Log.d(LOG_CAT, "Post Url:" + fullUrl + ", json string:" + jsonString);
+		try {
+			finalHttp.post(fullUrl, new StringEntity(jsonString), "application/json",
+					new MyAjaxCallBack(fullUrl));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void delete(String fullUrl) {
@@ -203,10 +216,12 @@ public class HttpRequest {
 					mListener.onSuccess(myUrl, result);
 					// }
 				} else {
-					mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED, json.getString(ServerKeys.KEY_MSG));
+					mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED,
+							json.getString(ServerKeys.KEY_MSG));
 				}
 			} catch (JSONException e) {
-				mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED, "Request data is not correct json object");
+				mListener.onFailure(myUrl, ServerKeys.STATUS_FAILED,
+						"Request data is not correct json object");
 				e.printStackTrace();
 			}
 		}
