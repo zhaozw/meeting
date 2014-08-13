@@ -7,8 +7,11 @@
 	
 	<color name="gap_line_color">#DDDDDD</color>
 
-    <color name="meetisan_btn_bg_normal">#FF66FFFF</color>
-    <color name="meetisan_btn_bg_press">#FF66CCFF</color>
+    <color name="meetisan_btn_bg_normal">#FF4AEAA4</color>
+    <color name="meetisan_btn_bg_press">#BB4AEAA4</color>
+
+    <color name="meetisan_btn_logout_bg_normal">#FFF47C7C</color>
+    <color name="meetisan_btn_logout_bg_press">#BBF47C7C</color>
 
 	<color name="label_with_icon_preesed">#FFDDDDDD</color>
 	<color name="listview_bg_preesed">#FFDDDDDD</color>

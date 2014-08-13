@@ -43,6 +43,8 @@ public class SettingsAboutActivity extends Activity implements OnClickListener {
 
 		LabelWithIcon labelBtn = (LabelWithIcon) findViewById(R.id.btn_score);
 		labelBtn.setOnClickListener(this);
+		labelBtn = (LabelWithIcon) findViewById(R.id.btn_feedbak);
+		labelBtn.setOnClickListener(this);
 	}
 
 	private void showAppVersion() {
@@ -75,6 +77,15 @@ public class SettingsAboutActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
+			break;
+		case R.id.btn_feedbak:
+			Uri emailUri = Uri.parse("mailto:info@meetisan.com");
+			String emailSubject = "Feedback to Meetisan";
+			String emailBody = "Enter your feedback content...";
+			Intent emailIntent = new Intent(Intent.ACTION_SENDTO, emailUri);
+			emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubject); // 主题
+			emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody); // 正文
+			startActivity(Intent.createChooser(emailIntent, "Please select an App to send Email"));
 			break;
 		default:
 			break;

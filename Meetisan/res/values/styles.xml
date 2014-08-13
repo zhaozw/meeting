@@ -64,6 +64,18 @@
         <item name="android:textSize">@dimen/text_size_middle</item>
         <item name="android:singleLine">true</item>
     </style>
+    
+    <style name="RedButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_button_red_style</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">@dimen/text_size_middle</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    
     <!-- Search bar layout -->
     <style name="SearchLayout">
         <item name="android:layout_width">fill_parent</item>
