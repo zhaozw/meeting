@@ -37,6 +37,8 @@ public class ServerKeys {
 	public static final String FULL_URL_SEND_CODE = SERVER_ADDRESS + API_TUSER + "SendActivationCode";
 	public static final String FULL_URL_CHECK_CODE = SERVER_ADDRESS + API_TUSER + "CheckActivationCode";
 	public static final String FULL_URL_REGISTER = SERVER_ADDRESS + API_TUSER + "Register";
+	/** http://{域名}/api/tuser/Update/ */
+	public static final String FULL_URL_UPDATE_USER_INFO = SERVER_ADDRESS + API_TUSER + "Update";
 	/** http://{域名}/api/tuser/updatelocation/{用户ID}/?lat={当前用户经度}&lon={当前用户经度} */
 	public static final String FULL_URL_UPDATE_LOCATION = SERVER_ADDRESS + API_TUSER + "updatelocation";
 	/** http://{域名}/api/tuser/Get/{用户ID} */

@@ -26,7 +26,7 @@ public class PeopleInfo {
 	/** people city */
 	private String city = null;
 	/** people age */
-	private int age = 0;
+	private String birthday = null;
 	/** people gender */
 	private int gender = 0;
 	/** people experience */
@@ -122,12 +122,12 @@ public class PeopleInfo {
 		this.city = city;
 	}
 
-	public int getAge() {
-		return age;
+	public String getBirthday() {
+		return birthday;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 
 	public int getGender() {

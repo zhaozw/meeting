@@ -6,6 +6,7 @@
     <string name="loading">Loading&#8230;</string>
     <string name="loading_complete">Loading Complete</string>
     <string name="please_waiting">Please waiting&#8230;</string>
+    <string name="update_user_info">Update information&#8230;</string>
     <string name="deleting">Deleting&#8230;</string>
     <string name="loading_userinfo">Loading user information&#8230;</string>
     <string name="failed_sync_location">Failed to synchonized current location to server&#8230;</string>

@@ -38,6 +38,19 @@
         <!-- <item name="android:textCursorDrawable">@null</item> -->
         <item name="android:singleLine">true</item>
     </style>
+    
+    
+    <style name="ProfileEditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 
     <style name="TagLabelStyle">
         <item name="android:layout_width">50dp</item>
