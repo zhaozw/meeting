@@ -108,7 +108,7 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 			if (userId == curUserId) {
 				syncUserInfoToServer();
 			} else {
-				finish();
+				PersonMoreInfoActivity.this.finish();
 			}
 			break;
 		default:
@@ -219,9 +219,6 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 	}
 
 	private void syncUserInfoToServer() {
-		if (userId < 0) {
-			return;
-		}
 		HttpRequest request = new HttpRequest();
 
 		String mName = mNameTxt.getText().toString();
@@ -260,6 +257,7 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		}
 
 		if (data.size() <= 2) {
+			this.finish();
 			return;
 		}
 

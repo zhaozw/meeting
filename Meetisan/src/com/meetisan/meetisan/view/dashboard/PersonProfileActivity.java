@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.meetisan.meetisan.MainActivity;
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpBitmap;
@@ -29,11 +31,13 @@ import com.meetisan.meetisan.widget.LabelWithIcon;
 public class PersonProfileActivity extends Activity implements OnClickListener {
 
 	private CircleImageView mPortraitView;
-	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagOneTxt, mTagTwoTxt, mTagThreeTxt,
-			mTagFourTxt, mTagFiveTxt, mTagNoTxt;
+	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagOneTxt, mTagTwoTxt, mTagThreeTxt, mTagFourTxt,
+			mTagFiveTxt, mTagNoTxt;
 	private LabelWithIcon mMoreBtn;
+	private LinearLayout mMeetLayout;
 	private PeopleInfo mUserInfo = new PeopleInfo();
 	private long userId = -1;
+	private long curUserId = -1;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,7 +50,8 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 			userId = bundle.getLong("UserID");
 		}
 
-		if (userId < 0) {
+		curUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
+		if (userId < 0 || curUserId < 0) {
 			ToastHelper.showToast(R.string.app_occurred_exception);
 			this.finish();
 		}
@@ -68,6 +73,11 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);
+
+		mMeetLayout = (LinearLayout) findViewById(R.id.layout_meet);
+		if (userId == curUserId) {
+			mMeetLayout.setVisibility(View.GONE);
+		}
 
 		findViewById(R.id.btn_meet).setOnClickListener(this);
 		mMoreBtn = (LabelWithIcon) findViewById(R.id.btn_more);
