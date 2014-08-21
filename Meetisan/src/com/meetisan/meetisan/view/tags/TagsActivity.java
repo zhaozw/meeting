@@ -202,6 +202,11 @@ public class TagsActivity extends Activity {
 	private void updateMyTagsListView() {
 		mTagsAdapter.notifyDataSetChanged();
 		mPullTagsListView.onRefreshComplete();
+		if (mTagsData.size() >= mMaxMyTags) {
+			mPullTagsListView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullTagsListView.setMode(Mode.BOTH);
+		}
 	}
 
 	private void updateAllTagsListView() {

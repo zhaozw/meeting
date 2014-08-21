@@ -110,6 +110,11 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 	private void updateMyTagsListView() {
 		mAdapter.notifyDataSetChanged();
 		mPullTagsListView.onRefreshComplete();
+		if (mTagsData.size() >= mMaxMyTags) {
+			mPullTagsListView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullTagsListView.setMode(Mode.BOTH);
+		}
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;

@@ -80,6 +80,11 @@ public class DashboardActivity extends Activity implements OnClickListener {
 		}
 		mMeetingAdapter.notifyDataSetChanged();
 		mPullMeetingsView.onRefreshComplete();
+		if (mMeetingData.size() >= mUpcomingMeetings) {
+			mPullMeetingsView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullMeetingsView.setMode(Mode.BOTH);
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

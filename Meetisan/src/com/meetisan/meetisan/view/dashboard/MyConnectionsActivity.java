@@ -139,6 +139,11 @@ public class MyConnectionsActivity extends Activity {
 	private void updatePeopleListView() {
 		mPeopleAdapter.notifyDataSetChanged();
 		mPullPeopleView.onRefreshComplete();
+		if (mPeopleData.size() >= mTotalPeople) {
+			mPullPeopleView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullPeopleView.setMode(Mode.BOTH);
+		}
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;

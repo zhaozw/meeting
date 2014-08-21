@@ -148,6 +148,11 @@ public class TagAssociatedMeetingsActivity extends Activity {
 	private void updateMeetingsListView() {
 		mMeetingAdapter.notifyDataSetChanged();
 		mPullMeetingsView.onRefreshComplete();
+		if (mMeetingData.size() >= mTotalMeetings) {
+			mPullMeetingsView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullMeetingsView.setMode(Mode.BOTH);
+		}
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;
