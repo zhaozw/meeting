@@ -37,6 +37,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 	private ImageView mMomentView;
 	private CircleImageView mPortraitView;
 	private TextView mNameTxt, mDescriptionTxt, mHostTxt, mLinkTxt, mNoMomentTxt;
+	private TextView mFirstTagTxt, mSecondTagTxt, mThirdTagTxt, mNoTagTxt;
 
 	private long mTagID = -1, mUserID = -1;
 	private TagInfo mTagInfo = new TagInfo();
@@ -78,6 +79,11 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		mHostTxt = (TextView) findViewById(R.id.txt_tag_host);
 		mLinkTxt = (TextView) findViewById(R.id.txt_tag_link);
 
+		mFirstTagTxt = (TextView) findViewById(R.id.txt_tag_one);
+		mSecondTagTxt = (TextView) findViewById(R.id.txt_tag_two);
+		mThirdTagTxt = (TextView) findViewById(R.id.txt_tag_three);
+		mNoTagTxt = (TextView) findViewById(R.id.txt_no_tags);
+
 		LabelWithIcon mConnectedLabel = (LabelWithIcon) findViewById(R.id.btn_connected);
 		mConnectedLabel.setOnClickListener(this);
 		LabelWithIcon mAttendedLabel = (LabelWithIcon) findViewById(R.id.btn_attended);
@@ -93,7 +99,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.im_btn_connection:
-			intent = new Intent(this, TagConnectedPeopleActivity.class);
+			intent = new Intent(this, TagAssociatedPeopleActivity.class);
 			bundle = new Bundle();
 			bundle.putLong("TagID", mTagID);
 			intent.putExtras(bundle);
@@ -105,7 +111,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			intent.putExtras(bundle);
 			break;
 		case R.id.im_btn_meeting:
-			intent = new Intent(this, TagAttendedMeetingsActivity.class);
+			intent = new Intent(this, TagAssociatedMeetingsActivity.class);
 			bundle = new Bundle();
 			bundle.putLong("TagID", mTagID);
 			intent.putExtras(bundle);
@@ -142,7 +148,30 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			hostNames += "  " + host.getHostName();
 		}
 		mHostTxt.setText("Tag Hosts:	" + hostNames);
+
 		setMomentView(mTagInfo.getTagMoments());
+	}
+
+	private void setAssociateTag(List<TagInfo> tagsList) {
+		if (tagsList == null) {
+			mNoTagTxt.setVisibility(View.VISIBLE);
+		}
+		int tagsCount = tagsList.size();
+		if (tagsCount <= 0) {
+			mNoTagTxt.setVisibility(View.VISIBLE);
+		}
+		if (tagsCount >= 1) {
+			mFirstTagTxt.setText(tagsList.get(0).getTitle());
+			mFirstTagTxt.setVisibility(View.VISIBLE);
+		}
+		if (tagsCount >= 2) {
+			mSecondTagTxt.setText(tagsList.get(1).getTitle());
+			mSecondTagTxt.setVisibility(View.VISIBLE);
+		}
+		if (tagsCount >= 3) {
+			mThirdTagTxt.setText(tagsList.get(2).getTitle());
+			mThirdTagTxt.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void setMomentView(List<TagMoment> mTagMoments) {
@@ -205,11 +234,10 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 					mTagInfo.setCreateDate(tagJson.getString(ServerKeys.KEY_CREATE_DATE));
 					mTagInfo.setState(tagJson.getInt(ServerKeys.KEY_STATUS));
 
-					JSONArray hostArray = dataJson.getJSONArray(ServerKeys.KEY_TAG_HOST);
-					for (int i = 0; i < hostArray.length(); i++) {
-						JSONObject hostJson = hostArray.getJSONObject(i);
+					JSONObject hostJson = dataJson.getJSONObject(ServerKeys.KEY_TAG_HOST);
+					if (hostJson != null) {
 						TagHost tagHost = new TagHost();
-						tagHost.setHostId(hostJson.getLong(ServerKeys.KEY_USER_ID));
+						tagHost.setHostId(hostJson.getLong(ServerKeys.KEY_ID));
 						tagHost.setHostName(hostJson.getString(ServerKeys.KEY_NAME));
 						mTagInfo.addTagHost(tagHost);
 					}

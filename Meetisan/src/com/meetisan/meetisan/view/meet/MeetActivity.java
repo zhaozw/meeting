@@ -320,11 +320,21 @@ public class MeetActivity extends Activity {
 	private void updatePeopleListView() {
 		mPeopleAdapter.notifyDataSetChanged();
 		mPullPeopleView.onRefreshComplete();
+		if (mPeopleData.size() >= mTotalPeople) {
+			mPullPeopleView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullPeopleView.setMode(Mode.BOTH);
+		}
 	}
 
 	private void updateMeetingsListView() {
 		mMeetingAdapter.notifyDataSetChanged();
 		mPullMeetingsView.onRefreshComplete();
+		if (mMeetingData.size() >= mTotalMeetings) {
+			mPullMeetingsView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullMeetingsView.setMode(Mode.BOTH);
+		}
 	}
 
 	private class PopupCheckChangeListener implements OnCheckedChangeListener {

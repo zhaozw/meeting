@@ -79,6 +79,9 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_CONNECTTED_PEOPLE = SERVER_ADDRESS + API_TUSER + "getlist";
 	/** http://{域名}/api/tmeeting/GetUserMeetingList/{用户ID}/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户经度}&tagIDs={当前TagID}*/
 	public static final String FULL_URL_GET_ATTENDED_MEET = SERVER_ADDRESS + API_TMEET + "GetUserMeetingList";
+	/** http://{域名}/api/tmeeting/GetTagMeeting/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户经度}&tagIDs={当前TagID} */
+	public static final String FULL_URL_GET_ASSOCIATE_MEET = SERVER_ADDRESS + API_TMEET + "GetTagMeeting";
+	
 	
 	// Keys
 	public static final String KEY_ID = "ID";

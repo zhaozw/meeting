@@ -122,7 +122,17 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
+            android:name=".view.tags.TagAssociatedPeopleActivity"
+            android:label="@string/title_tags"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
             android:name=".view.tags.TagAttendedMeetingsActivity"
+            android:label="@string/title_tags"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.tags.TagAssociatedMeetingsActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>

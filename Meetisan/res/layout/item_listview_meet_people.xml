@@ -85,7 +85,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:textColor="@color/segment_group_text_check"
-        android:textSize="@dimen/text_size_small" />
+        android:textSize="@dimen/text_size_min" />
 
     <ImageView
         android:id="@+id/btn_right_arrow"
