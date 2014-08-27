@@ -24,6 +24,7 @@ public class ActivationActivity extends Activity implements OnClickListener {
 	private Button mSubmitBtn;
 	private EditText mCodeTxt;
 	private String mActivationCode = null;
+	private boolean isRegistion = false;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,6 +35,7 @@ public class ActivationActivity extends Activity implements OnClickListener {
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
 			mActivationCode = bundle.getString("ActivationCode");
+			isRegistion = bundle.getBoolean("isRegistion");
 		}
 
 		if (mActivationCode == null) {
@@ -73,6 +75,14 @@ public class ActivationActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	private void jumpToUpdatePassword(String mEnterCode) {
+		Intent intent = new Intent(ActivationActivity.this, SetPasswordActivity.class);
+		intent.putExtra("ActivationCode", mActivationCode);
+		intent.putExtra("InputCode", mEnterCode);
+		startActivity(intent);
+		ActivationActivity.this.finish();
+	}
+
 	private void resendActivationCode() {
 		// TODO Auto-generated method stub
 
@@ -86,7 +96,11 @@ public class ActivationActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		doCheckActivationCode(code);
+		if (isRegistion) {
+			doCheckActivationCode(code);
+		} else {
+			jumpToUpdatePassword(code);
+		}
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;

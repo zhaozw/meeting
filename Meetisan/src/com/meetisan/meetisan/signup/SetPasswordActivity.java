@@ -33,6 +33,7 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 	private Button mSetPwdBtn;
 	private EditText mPwdTxt, mConfirmPwdTxt;
 	private String email = null;
+	private String mActivationCode = null, mInputCode = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,8 +41,19 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_set_password);
 
 		initView();
+		
+		Bundle bundle = new Bundle();
+		bundle = this.getIntent().getExtras();
+		if (bundle != null) {
+			mActivationCode = bundle.getString("ActivationCode");
+			mInputCode = bundle.getString("InputCode");
+		}
 
-		syncUserInfoFromPerferences();
+		if (mActivationCode == null) {
+			syncUserInfoFromPerferences();
+		} else {
+//			getUserIDFromServer();
+		}
 	}
 
 	private void initView() {
@@ -192,5 +204,67 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 		request.post(ServerKeys.FULL_URL_LOGIN, data);
 		mProgressDialog.show();
 	}
+	
+//	private void getUserIDFromServer(final String email, final String pwd) {
+//		HttpRequest request = new HttpRequest();
+//
+//		if (mProgressDialog == null) {
+//			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+//		} else {
+//			if (mProgressDialog.isShowing()) {
+//				mProgressDialog.dismiss();
+//			}
+//		}
+//
+//		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+//
+//			@Override
+//			public void onSuccess(String url, String result) {
+//				mProgressDialog.dismiss();
+//
+//				JSONObject json;
+//				try {
+//					PeopleInfo mUserInfo = new PeopleInfo();
+//					json = new JSONObject(result);
+//					JSONObject data = json.getJSONObject(ServerKeys.KEY_DATA);
+//					mUserInfo.setId(data.getLong(ServerKeys.KEY_ID));
+//					if (!data.isNull(ServerKeys.KEY_NAME)) {
+//						mUserInfo.setName(data.getString(ServerKeys.KEY_NAME));
+//					}
+//					if (!data.isNull(ServerKeys.KEY_AVATAR)) {
+//						mUserInfo.setAvatarUri(data.getString(ServerKeys.KEY_AVATAR));
+//					}
+//					mUserInfo.setEmail(email);
+//					mUserInfo.setPwd(pwd);
+//					mUserInfo.setRegId(registrationID);
+//
+//					if (UserInfoKeeper.writeUserInfo(SetPasswordActivity.this, mUserInfo)) {
+//						Intent intent = new Intent(SetPasswordActivity.this, MainActivity.class);
+//						startActivity(intent);
+//						finish();
+//					}
+//				} catch (JSONException e) {
+//					e.printStackTrace();
+//					ToastHelper.showToast(R.string.app_occurred_exception);
+//				}
+//			}
+//
+//			@Override
+//			public void onFailure(String url, int errorNo, String errorMsg) {
+//				mProgressDialog.dismiss();
+//				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+//			}
+//		});
+//
+//		Map<String, String> data = new TreeMap<String, String>();
+//		data.put(ServerKeys.KEY_EMAIL, email);
+//		data.put(ServerKeys.KEY_PASSWORD, pwd);
+//		registrationID = JPushInterface.getRegistrationID(getApplicationContext());
+//		if (registrationID != null) {
+//			data.put(ServerKeys.KEY_REG_ID, registrationID);
+//		}
+//		request.post(ServerKeys.FULL_URL_LOGIN, data);
+//		mProgressDialog.show();
+//	}
 
 }

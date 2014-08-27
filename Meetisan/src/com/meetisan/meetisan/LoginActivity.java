@@ -76,10 +76,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.txt_forget_pwd:
 			Intent intent1 = new Intent(this, InsertEmailActivity.class);
+			intent1.putExtra("isRegistion", false);
 			startActivity(intent1);
 			break;
 		case R.id.txt_sign_up:
 			Intent intent2 = new Intent(this, InsertEmailActivity.class);
+			intent2.putExtra("isRegistion", true);
 			startActivity(intent2);
 			break;
 		case R.id.btn_login:
