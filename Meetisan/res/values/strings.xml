@@ -26,6 +26,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="can_not_use_google_map">Can\'t user Google Map</string>
     <string name="content_empty_default">content is empty</string>
+    <string name="tips_no_upcoming_meeting">No upcoming meeting, you can attend some meeting you have insterest in, or tap to refresh view.</string>
     <string name="title_activity_set_time">SetTimeActivity</string>
     <string name="hello_world">Hello world!</string>
 

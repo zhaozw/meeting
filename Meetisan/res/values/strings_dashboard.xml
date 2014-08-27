@@ -37,6 +37,7 @@
 
     <!-- Dashboard Person Profile -->
     <string name="person_profile">Person Profile</string>
+    <string name="my_info">My Info</string>
     <string name="top_tags">Top Tags</string>
     <string name="university">University</string>
     <string name="more_information">More Information</string>
