@@ -1,5 +1,6 @@
 package com.meetisan.meetisan.view.meet;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,6 +28,7 @@ import com.meetisan.meetisan.model.MeetingInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
@@ -48,6 +50,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	private String mUserName = null;
 	private MeetingInfo mMeetInfo = new MeetingInfo();
 
+	private HttpBitmap httpBitmap;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -65,6 +69,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			this.finish();
 		}
 		mUserName = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_NAME, "");
+
+		httpBitmap = new HttpBitmap(this);
 
 		initView();
 
@@ -134,8 +140,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		if (mMeetInfo.getLogo() != null) {
-			mLogoView.setImageBitmap(mMeetInfo.getLogo());
+		if (mMeetInfo.getLogoUri() != null) {
+			httpBitmap.displayBitmap(mLogoView, mMeetInfo.getLogoUri());
 		}
 		if (mMeetInfo.getTitle() != null) {
 			mTitleTxt.setText(mMeetInfo.getTitle());
@@ -146,7 +152,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		mStartTimeTxt.setText(Util.convertDateTime(mMeetInfo.getStartTime()));
 		mEndTimeTxt.setText(Util.convertDateTime(mMeetInfo.getEndTime()));
 		if (mMeetInfo.getAddress() != null) {
-			mLocationBtn.setText("Location   " + mMeetInfo.getAddress());
+			mLocationBtn.setText(mMeetInfo.getAddress());
 		}
 		if (mMeetInfo.getJoinStatus() == 2) {
 			// Current User is the Meeting Host
@@ -187,7 +193,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		} else if (mMeetInfo.getJoinStatus() == 1) {
 			doAttendMeeting();
 		} else if (mMeetInfo.getJoinStatus() == 0) {
-			// doCancelMeeting();
+			doCancelMeeting();
 		}
 	}
 
@@ -230,7 +236,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					mMeetInfo.setStartTime(meetJson.getString(ServerKeys.KEY_START_TIME));
 					mMeetInfo.setEndTime(meetJson.getString(ServerKeys.KEY_END_TIME));
 					mMeetInfo.setCreateDate(meetJson.getString(ServerKeys.KEY_CREATE_DATE));
-					mMeetInfo.setLogo(Util.base64ToBitmap(meetJson.getString(ServerKeys.KEY_LOGO)));
+					mMeetInfo.setLogoUri(meetJson.getString(ServerKeys.KEY_LOGO));
 					mMeetInfo.setCreateUserId(meetJson.getLong(ServerKeys.KEY_CREATE_USER_ID));
 					mMeetInfo.setCreateDate(meetJson.getString(ServerKeys.KEY_CREATE_DATE));
 					mMeetInfo.setStatus(meetJson.getInt(ServerKeys.KEY_STATUS));
@@ -313,23 +319,38 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onSuccess(String url, String result) {
-				mProgressDialog.dismiss();
-				mMeetInfo.setJoinStatus(1);
-				updateMeetProfileUI();
-				ToastHelper.showToast(R.string.cancel_attend_meeting_success, Toast.LENGTH_LONG);
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+
+						mProgressDialog.dismiss();
+						mMeetInfo.setJoinStatus(1);
+						updateMeetProfileUI();
+						ToastHelper.showToast(R.string.cancel_attend_meeting_success, Toast.LENGTH_LONG);
+					}
+				});
 			}
 
 			@Override
 			public void onFailure(String url, int errorNo, String errorMsg) {
-				mProgressDialog.dismiss();
-				ToastHelper.showToast(R.string.cancel_attend_meeting_failure, Toast.LENGTH_LONG);
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						mProgressDialog.dismiss();
+						ToastHelper.showToast(R.string.cancel_attend_meeting_failure, Toast.LENGTH_LONG);
+					}
+				});
 			}
 		});
-		Map<String, String> data = new TreeMap<String, String>();
+		Map<String, String> data = new HashMap<String, String>();
 		data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
 		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
 
-		// request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
 		mProgressDialog.show();
+		request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
 	}
 }

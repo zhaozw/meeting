@@ -7,6 +7,7 @@
     </declare-styleable>
     <declare-styleable name="LabelWithIcon">
         <attr name="android:text" />
+        <attr name="android:content" />
         <attr name="android:textColor" />
         <attr name="android:textSize" />
         <attr name="android:src" />

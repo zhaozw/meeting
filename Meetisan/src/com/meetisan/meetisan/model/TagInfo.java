@@ -37,12 +37,11 @@ public class TagInfo {
 	private String link = null;
 
 	/** tag host */
-	private List<TagHost> tagHosts;
+	private TagHost tagHost;
 	/** tag moment */
 	private List<TagMoment> tagMoments;
 
 	public TagInfo() {
-		tagHosts = new ArrayList<TagHost>();
 		tagMoments = new ArrayList<TagMoment>();
 	}
 
@@ -158,16 +157,12 @@ public class TagInfo {
 		this.link = link;
 	}
 
-	public List<TagHost> getTagHosts() {
-		return tagHosts;
+	public TagHost getTagHost() {
+		return tagHost;
 	}
 
-	public void setTagHosts(List<TagHost> tagHosts) {
-		this.tagHosts = tagHosts;
-	}
-
-	public boolean addTagHost(TagHost tagHost) {
-		return this.tagHosts.add(tagHost);
+	public void setTagHost(TagHost tagHost) {
+		this.tagHost = tagHost;
 	}
 
 	public List<TagMoment> getTagMoments() {

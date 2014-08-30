@@ -23,6 +23,7 @@ import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.MeetingAdapter;
 import com.meetisan.meetisan.model.MeetingInfo;
+import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
@@ -55,7 +56,10 @@ public class MyMeetingsActivity extends Activity {
 
 		setContentView(R.layout.activity_dashboard_meetings);
 
-		mUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
+		PeopleInfo mUserInfo = UserInfoKeeper.readUserInfo(this);
+		mUserId = mUserInfo.getId();
+		mLat = mUserInfo.getLatitude();
+		mLon = mUserInfo.getLongitude();
 
 		getMeetingsFromServer(1, mOrderType, mLat, mLon, true, true);
 
@@ -132,6 +136,11 @@ public class MyMeetingsActivity extends Activity {
 	private void updateMeetingsListView() {
 		mMeetingAdapter.notifyDataSetChanged();
 		mPullMeetingsView.onRefreshComplete();
+		if (mMeetingData.size() >= mTotalMeetings) {
+			mPullMeetingsView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullMeetingsView.setMode(Mode.BOTH);
+		}
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;
@@ -193,7 +202,9 @@ public class MyMeetingsActivity extends Activity {
 							meetingInfo.setTitle(meetingJson.getString(ServerKeys.KEY_TITLE));
 						}
 						meetingInfo.setDistance(meetingJson.getDouble(ServerKeys.KEY_DISTANCE));
-						meetingInfo.setLogo(Util.base64ToBitmap(meetingJson.getString(ServerKeys.KEY_LOGO)));
+						if (!meetingJson.isNull(ServerKeys.KEY_LOGO)) {
+							meetingInfo.setLogoUri(meetingJson.getString(ServerKeys.KEY_LOGO));
+						}
 
 						JSONArray tagArray = meetJson.getJSONArray(ServerKeys.KEY_TAGS);
 						for (int j = 0; j < tagArray.length(); j++) {

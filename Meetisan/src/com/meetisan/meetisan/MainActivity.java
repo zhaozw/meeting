@@ -1,33 +1,29 @@
 package com.meetisan.meetisan;
 
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.TabActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
-import android.widget.Toast;
-import cn.jpush.android.api.JPushInterface;
 
 import com.meetisan.meetisan.database.UserInfoKeeper;
-import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.notifications.NotificationsActivity;
 import com.meetisan.meetisan.utils.HttpRequest;
-import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.view.create.CreateActivity;
 import com.meetisan.meetisan.view.dashboard.DashboardActivity;
 import com.meetisan.meetisan.view.meet.MeetActivity;
 import com.meetisan.meetisan.view.tags.TagsActivity;
-import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity implements OnCheckedChangeListener {
@@ -35,8 +31,8 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 
 	public static final String LOG_ACTIVITY_SERVICE = "=====MainActivity====";
 
-	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_create, R.id.rb_meet, R.id.rb_tags,
-			R.id.rb_dashboard, R.id.rb_notifications };
+	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_create, R.id.rb_meet,
+			R.id.rb_tags, R.id.rb_dashboard, R.id.rb_notifications };
 
 	private static final String TAB_1 = "create";
 	private static final String TAB_2 = "meet";
@@ -54,13 +50,13 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	private TabHost mHost;
 	private RadioGroup mRadioGroup;
 
-	private PeopleInfo mUserInfo;
-
 	// is start from Let's Meet action
 	private boolean isMeetPerson = false;
 	private long meetPersonID = -1;
 
 	// private TextView mTitleTxt;
+
+	public static boolean isForeground = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +75,21 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 			isMeetPerson = false;
 		}
 
-		setup();
+		syncUserLocationToServer();
 
-		if (!isMeetPerson) {
-			syncUserInfoFromServer();
-		}
+		setup();
+	}
+
+	@Override
+	protected void onResume() {
+		isForeground = true;
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		isForeground = false;
+		super.onPause();
 	}
 
 	@Override
@@ -94,27 +100,16 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	private void setup() {
 		mCreateIntent = new Intent(this, CreateActivity.class);
 		if (isMeetPerson && meetPersonID >= 0) {
-			Bundle bundle = new Bundle();
-			bundle.putLong("PersonID", meetPersonID);
+			Bundle bundle = this.getIntent().getExtras();
 			mCreateIntent.putExtras(bundle);
 		}
 		mMeetIntent = new Intent(this, MeetActivity.class);
 		mTagsIntent = new Intent(this, TagsActivity.class);
 		mDashboardIntent = new Intent(this, DashboardActivity.class);
 		mNotificationsIntent = new Intent(this, NotificationsActivity.class);
-		mIntents = new Intent[] { mCreateIntent, mMeetIntent, mTagsIntent, mDashboardIntent, mNotificationsIntent };
+		mIntents = new Intent[] { mCreateIntent, mMeetIntent, mTagsIntent, mDashboardIntent,
+				mNotificationsIntent };
 		initTab();
-	}
-
-	private void syncUserInfoFromServer() {
-		mUserInfo = UserInfoKeeper.readUserInfo(this);
-		String email = mUserInfo.getEmail();
-		String pwd = mUserInfo.getPwd();
-		if (email == null || pwd == null) {
-			reLogin();
-			return;
-		}
-		getUserInfoFromServer(email, pwd);
 	}
 
 	private void initTab() {
@@ -137,16 +132,6 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		// mTitleTxt.setText(TABS_TITLE[mHost.getCurrentTab()]);
 	}
 
-	/**
-	 * re login if needs
-	 */
-	private void reLogin() {
-		ToastHelper.showToast(R.string.login_expired, Toast.LENGTH_LONG);
-		Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-		startActivity(intent);
-		MainActivity.this.finish();
-	}
-
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		for (int i = 0; i < RADIO_BTN_IDS.length; i++) {
@@ -164,60 +149,77 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		System.exit(0);
 	}
 
-	private CustomizedProgressDialog mProgressDialog = null;
+	private void syncUserLocationToServer() {
+		LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Criteria criteria = new Criteria();
+		criteria.setCostAllowed(false);
+		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+		String bestProvider = manager.getBestProvider(criteria, true);
+		if (bestProvider != null) {
+			Location location = manager.getLastKnownLocation(bestProvider);
+			if (location == null) {
+				return;
+			}
+			double latitude = location.getLatitude();
+			double longitude = location.getLongitude();
+			HttpRequest request = new HttpRequest();
+			// request.setOnHttpRequestListener(new OnHttpRequestListener() {
+			//
+			// @Override
+			// public void onSuccess(String url, String result) {
+			// // TODO Auto-generated method stub
+			// Log.d("--------", result);
+			// }
+			//
+			// @Override
+			// public void onFailure(String url, int errorNo, String errorMsg) {
+			// // TODO Auto-generated method stub
+			// Log.e("--------", errorMsg);
+			// }
+			// });
+			// Save current location information to SharedPreferences for use
+			UserInfoKeeper.writeUserInfo(MainActivity.this, UserInfoKeeper.KEY_USER_LAT,
+					(float) latitude);
+			UserInfoKeeper.writeUserInfo(MainActivity.this, UserInfoKeeper.KEY_USER_LON,
+					(float) longitude);
 
-	private void getUserInfoFromServer(String email, String pwd) {
-		HttpRequest request = new HttpRequest();
-
-		if (mProgressDialog == null) {
-			mProgressDialog = new CustomizedProgressDialog(this, R.string.loading_userinfo);
+			long mUserID = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
+			request.post(ServerKeys.FULL_URL_UPDATE_LOCATION + "/" + mUserID + "/?lat=" + latitude
+					+ "&lon=" + longitude, null);
 		} else {
-			if (mProgressDialog.isShowing()) {
-				mProgressDialog.dismiss();
-			}
+			ToastHelper.showToast(R.string.failed_get_location);
 		}
+	}
 
-		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+	// for receive customer msg from jpush server
+	private MessageReceiver mMessageReceiver;
+	public static final String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
+	public static final String KEY_TITLE = "title";
+	public static final String KEY_MESSAGE = "message";
+	public static final String KEY_EXTRAS = "extras";
 
-			@Override
-			public void onSuccess(String url, String result) {
-				mProgressDialog.dismiss();
-				JSONObject json;
-				try {
-					json = new JSONObject(result);
-					JSONObject data = json.getJSONObject(ServerKeys.KEY_DATA);
-					mUserInfo.setId(data.getLong(ServerKeys.KEY_ID));
-					mUserInfo.setEmail(data.getString(ServerKeys.KEY_EMAIL));
-					mUserInfo.setPwd(data.getString(ServerKeys.KEY_PASSWORD));
-					if (!data.isNull(ServerKeys.KEY_NAME)) {
-						mUserInfo.setName(data.getString(ServerKeys.KEY_NAME));
-					}
-					if (!data.isNull(ServerKeys.KEY_AVATAR)) {
-						mUserInfo.setAvatarUri(data.getString(ServerKeys.KEY_AVATAR));
-					}
-					UserInfoKeeper.writeUserInfo(MainActivity.this, mUserInfo);
-				} catch (JSONException e) {
-					e.printStackTrace();
-					ToastHelper.showToast(R.string.app_occurred_exception);
+	public void registerMessageReceiver() {
+		mMessageReceiver = new MessageReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+		filter.addAction(MESSAGE_RECEIVED_ACTION);
+		registerReceiver(mMessageReceiver, filter);
+	}
+
+	public class MessageReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
+				String messge = intent.getStringExtra(KEY_MESSAGE);
+				String extras = intent.getStringExtra(KEY_EXTRAS);
+				StringBuilder showMsg = new StringBuilder();
+				showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
+				if (!Util.isEmpty(extras)) {
+					showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
 				}
+				
 			}
-
-			@Override
-			public void onFailure(String url, int errorNo, String errorMsg) {
-				mProgressDialog.dismiss();
-				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
-				reLogin();
-			}
-		});
-
-		Map<String, String> data = new TreeMap<String, String>();
-		data.put(ServerKeys.KEY_EMAIL, email);
-		data.put(ServerKeys.KEY_PASSWORD, pwd);
-		String registrationID = JPushInterface.getRegistrationID(getApplicationContext());
-		if (registrationID != null) {
-			data.put(ServerKeys.KEY_REG_ID, registrationID);
 		}
-		request.post(ServerKeys.FULL_URL_LOGIN, data);
-		mProgressDialog.show();
 	}
 }

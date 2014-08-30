@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CircleImageView;
 
@@ -18,11 +19,13 @@ public class UpcomingMeetingAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<MeetingInfo> meetingData;
 	private long mUserId = 0;
+	private HttpBitmap httpBitmap;
 
 	public UpcomingMeetingAdapter(Context mContext, List<MeetingInfo> meetingData, long mUserId) {
 		inflater = LayoutInflater.from(mContext);
 		this.meetingData = meetingData;
 		this.mUserId = mUserId;
+		httpBitmap = new HttpBitmap(mContext);
 	}
 
 	@Override
@@ -63,13 +66,16 @@ public class UpcomingMeetingAdapter extends BaseAdapter {
 
 		MeetingInfo mMeetingInfo = meetingData.get(position);
 
-		if (mMeetingInfo.getLogo() != null) {
-			holder.mLogoImage.setImageBitmap(mMeetingInfo.getLogo());
+		holder.mLogoImage.setImageResource(R.drawable.portrait_meet_default);
+		if (mMeetingInfo.getLogoUri() != null) {
+			httpBitmap.displayBitmap(holder.mLogoImage, mMeetingInfo.getLogoUri());
 		}
+
 		holder.mTitleTxt.setText(mMeetingInfo.getTitle());
 		holder.mTimeTxt.setText(Util.convertDateTime(mMeetingInfo.getStartTime()));
 		holder.mDistanceTxt.setText((int) mMeetingInfo.getDistance() + "km");
-		holder.mStatusTxt.setText(mMeetingInfo.getCreateUserId() == mUserId ? "Created" : "Attended");
+		holder.mStatusTxt.setText(mMeetingInfo.getCreateUserId() == mUserId ? "Created"
+				: "Attended");
 
 		List<TagInfo> tagsList = mMeetingInfo.getTags();
 		int tagsCount = tagsList.size();

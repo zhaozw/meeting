@@ -30,13 +30,24 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/activity_edittxt_height</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:textColorHint">@color/gray</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/border_square</item>
         <item name="android:padding">10dp</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <!-- <item name="android:textCursorDrawable">@null</item> -->
         <item name="android:singleLine">true</item>
+    </style>
+    
+    
+    <style name="ProfileEditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
     <style name="TagLabelStyle">
@@ -64,6 +75,18 @@
         <item name="android:textSize">@dimen/text_size_middle</item>
         <item name="android:singleLine">true</item>
     </style>
+    
+    <style name="RedButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_button_red_style</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">@dimen/text_size_middle</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    
     <!-- Search bar layout -->
     <style name="SearchLayout">
         <item name="android:layout_width">fill_parent</item>
@@ -112,7 +135,7 @@
     <!-- Create Activity styles -->
     <style name="CreateActivityDividingLine">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/activity_create_dividing_line_color</item>
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>

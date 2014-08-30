@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_margin="5dp"
-    android:background="@color/activity_title_bg_color"
+        android:background="@android:color/transparent"
         android:scaleType="centerInside"
         android:src="@drawable/icon_back"
         android:visibility="gone" />

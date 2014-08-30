@@ -3,6 +3,9 @@ package com.meetisan.meetisan;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
 
 import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.signup.InsertEmailActivity;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
@@ -32,7 +36,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private TextView mForgotPwdTxt, mSignUpTxt;
 	private Button mLoginBtn;
 
-	private String email, pwd;
+	private String email, pwd, registrationID;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,9 +47,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	private void initView() {
-		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
-		mTitleTxt.setText(R.string.login);
-		mTitleTxt.setVisibility(View.VISIBLE);
+		// TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
+		// mTitleTxt.setText(R.string.login);
+		// mTitleTxt.setVisibility(View.VISIBLE);
 
 		mEmailTxt = (EditText) findViewById(R.id.email);
 		mPwdTxt = (EditText) findViewById(R.id.password);
@@ -72,10 +76,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.txt_forget_pwd:
 			Intent intent1 = new Intent(this, InsertEmailActivity.class);
+			intent1.putExtra("isRegistion", false);
 			startActivity(intent1);
 			break;
 		case R.id.txt_sign_up:
 			Intent intent2 = new Intent(this, InsertEmailActivity.class);
+			intent2.putExtra("isRegistion", true);
 			startActivity(intent2);
 			break;
 		case R.id.btn_login:
@@ -126,12 +132,32 @@ public class LoginActivity extends Activity implements OnClickListener {
 			@Override
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
-				UserInfoKeeper.writeUserInfo(LoginActivity.this, UserInfoKeeper.KEY_USER_EMAIL, email);
-				UserInfoKeeper.writeUserInfo(LoginActivity.this, UserInfoKeeper.KEY_USER_PWD, pwd);
 
-				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-				startActivity(intent);
-				finish();
+				JSONObject json;
+				try {
+					PeopleInfo mUserInfo = new PeopleInfo();
+					json = new JSONObject(result);
+					JSONObject data = json.getJSONObject(ServerKeys.KEY_DATA);
+					mUserInfo.setId(data.getLong(ServerKeys.KEY_ID));
+					if (!data.isNull(ServerKeys.KEY_NAME)) {
+						mUserInfo.setName(data.getString(ServerKeys.KEY_NAME));
+					}
+					if (!data.isNull(ServerKeys.KEY_AVATAR)) {
+						mUserInfo.setAvatarUri(data.getString(ServerKeys.KEY_AVATAR));
+					}
+					mUserInfo.setEmail(email);
+					mUserInfo.setPwd(pwd);
+					mUserInfo.setRegId(registrationID);
+
+					if (UserInfoKeeper.writeUserInfo(LoginActivity.this, mUserInfo)) {
+						Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+						startActivity(intent);
+						finish();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+					ToastHelper.showToast(R.string.app_occurred_exception);
+				}
 			}
 
 			@Override
@@ -144,20 +170,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 		Map<String, String> data = new TreeMap<String, String>();
 		data.put(ServerKeys.KEY_EMAIL, email);
 		data.put(ServerKeys.KEY_PASSWORD, pwd);
-		String registrationID = JPushInterface.getRegistrationID(getApplicationContext());
+		registrationID = JPushInterface.getRegistrationID(getApplicationContext());
 		if (registrationID != null) {
 			data.put(ServerKeys.KEY_REG_ID, registrationID);
 		}
 		request.post(ServerKeys.FULL_URL_LOGIN, data);
 		mProgressDialog.show();
-		// boolean loginResult = true;
-		// if (loginResult) {
-		// Intent intent = new Intent(this, MainActivity.class);
-		// startActivity(intent);
-		// this.finish();
-		// } else {
-		// ToastHelper.showToast(R.string.error_incorrect_email_or_pwd);
-		// }
 	}
 
 }

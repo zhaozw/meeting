@@ -80,6 +80,11 @@ public class DashboardActivity extends Activity implements OnClickListener {
 		}
 		mMeetingAdapter.notifyDataSetChanged();
 		mPullMeetingsView.onRefreshComplete();
+		if (mMeetingData.size() >= mUpcomingMeetings) {
+			mPullMeetingsView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullMeetingsView.setMode(Mode.BOTH);
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -159,7 +164,7 @@ public class DashboardActivity extends Activity implements OnClickListener {
 		if (mUserInfo.getAvatarUri() != null) {
 			httpBitmap.displayBitmap(mPortraitView, mUserInfo.getAvatarUri());
 		} else {
-			mPortraitView.setImageResource(R.drawable.portrait_default);
+			mPortraitView.setImageResource(R.drawable.portrait_person_default);
 		}
 	}
 
@@ -250,8 +255,9 @@ public class DashboardActivity extends Activity implements OnClickListener {
 							meetingInfo.setTitle(meetingJson.getString(ServerKeys.KEY_TITLE));
 						}
 						meetingInfo.setDistance(meetingJson.getDouble(ServerKeys.KEY_DISTANCE));
-						meetingInfo.setLogo(Util.base64ToBitmap(meetingJson
-								.getString(ServerKeys.KEY_LOGO)));
+						if (!meetingJson.isNull(ServerKeys.KEY_LOGO)) {
+							meetingInfo.setLogoUri(meetingJson.getString(ServerKeys.KEY_LOGO));
+						}
 
 						JSONArray tagArray = meetJson.getJSONArray(ServerKeys.KEY_TAGS);
 						for (int j = 0; j < tagArray.length(); j++) {

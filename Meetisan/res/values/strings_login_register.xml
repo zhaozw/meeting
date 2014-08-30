@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="prompt_email">Login E-Mail</string>
+    <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="login">Login</string>
+    <string name="login">Log In</string>
     <string name="sign_up">Sign up</string>
-    <string name="forget_password">Forget the password</string>
+    <string name="forget_password">Forget Password?</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="empty_email_tips">Please enter your E-Mail</string>

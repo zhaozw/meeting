@@ -29,12 +29,16 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 	private ImageButton mBackBtn;
 	private Button mSendBtn;
 	private EditText mEmailTxt;
+	
+	private boolean isRegistion = false;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_inset_email);
 
+		isRegistion = getIntent().getBooleanExtra("isRegistion", false);
+		
 		initView();
 	}
 
@@ -108,6 +112,7 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 					Intent intent = new Intent();
 					Bundle bundle = new Bundle();
 					bundle.putString("ActivationCode", code);
+					bundle.putBoolean("isRegistion", isRegistion);
 					intent.setClass(InsertEmailActivity.this, ActivationActivity.class);
 					intent.putExtras(bundle);
 					startActivity(intent);

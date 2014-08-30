@@ -132,6 +132,11 @@ public class TagsCategoryActivity extends Activity {
 	private void updateTagsListView() {
 		mTagsAdapter.notifyDataSetChanged();
 		mPullTagsView.onRefreshComplete();
+		if (mTagsData.size() >= mMaxTags) {
+			mPullTagsView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullTagsView.setMode(Mode.BOTH);
+		}
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;

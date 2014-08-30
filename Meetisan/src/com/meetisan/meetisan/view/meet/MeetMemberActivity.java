@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.model.PeopleAdapter;
 import com.meetisan.meetisan.model.PeopleInfo;
+import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
@@ -140,6 +141,11 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 	private void updatePeopleListView() {
 		mPeopleAdapter.notifyDataSetChanged();
 		mPullPeopleView.onRefreshComplete();
+		if (mPeopleData.size() >= mTotalPeople) {
+			mPullPeopleView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullPeopleView.setMode(Mode.BOTH);
+		}
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;
@@ -147,12 +153,14 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 	/**
 	 * get Peoples from server
 	 * 
-	 * @param pageIndex load page index
-	 * @param isRefresh is refresh or load more
-	 * @param isNeedsDialog weather show progress dialog
+	 * @param pageIndex
+	 *            load page index
+	 * @param isRefresh
+	 *            is refresh or load more
+	 * @param isNeedsDialog
+	 *            weather show progress dialog
 	 */
-	private void getPeoplesFromServer(int pageIndex, final boolean isRefresh,
-			final boolean isNeedsDialog) {
+	private void getPeoplesFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -177,8 +185,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 						mPeopleData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 					mTotalPeople = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 					Log.d(TAG, "Total People Count: " + mTotalPeople);
 
@@ -200,26 +207,27 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 						}
 						peopleInfo.setDistance(-1); // for do not show this item
 
-						// JSONArray tagArray =
-						// peopleJson.getJSONArray(ServerKeys.KEY_TAGS);
-						// for (int j = 0; j < tagArray.length(); j++) {
-						// TagInfo tagInfo = new TagInfo();
-						// JSONObject tagJson = tagArray.getJSONObject(j);
-						// tagInfo.setId(tagJson.getLong(ServerKeys.KEY_ID));
-						// if (!tagJson.isNull(ServerKeys.KEY_TITLE)) {
-						// tagInfo.setTitle(tagJson.getString(ServerKeys.KEY_TITLE));
-						// }
-						// peopleInfo.addTopTag(tagInfo);
-						// }
+						JSONArray tagArray = userJson.getJSONArray(ServerKeys.KEY_TAGS);
+						for (int j = 0; j < tagArray.length(); j++) {
+							TagInfo tagInfo = new TagInfo();
+							JSONObject tagJson = tagArray.getJSONObject(j);
+							tagInfo.setId(tagJson.getLong(ServerKeys.KEY_ID));
+							if (!tagJson.isNull(ServerKeys.KEY_TITLE)) {
+								tagInfo.setTitle(tagJson.getString(ServerKeys.KEY_TITLE));
+							}
+							peopleInfo.addTopTag(tagInfo);
+						}
 
 						mPeopleData.add(peopleInfo);
 					}
 
 				} catch (JSONException e) {
 					e.printStackTrace();
-					// TODO.. server response exception, if Data is null, return is JSONArray not
+					// TODO.. server response exception, if Data is null, return
+					// is JSONArray not
 					// JSONObject
-					// ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
+					// ToastHelper.showToast(R.string.server_response_exception,
+					// Toast.LENGTH_LONG);
 				} finally {
 					updatePeopleListView();
 				}
@@ -235,8 +243,8 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_MEET_MEMBER + "/" + mMeetingID + "/?pageindex="
-				+ pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE, null);
+		request.get(ServerKeys.FULL_URL_GET_MEET_MEMBER + "/" + mMeetingID + "/?pageindex=" + pageIndex + "&pagesize="
+				+ ServerKeys.PAGE_SIZE, null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();

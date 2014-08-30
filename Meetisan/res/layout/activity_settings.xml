@@ -85,7 +85,7 @@
 
             <Button
                 android:id="@+id/btn_logout"
-                style="@style/ButtonStyle"
+                style="@style/RedButtonStyle"
                 android:layout_marginTop="20dp"
                 android:text="@string/logout" />
         </LinearLayout>

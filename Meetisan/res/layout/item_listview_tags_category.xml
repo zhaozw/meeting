@@ -4,6 +4,17 @@
     android:layout_height="70dp"
     android:background="@drawable/selector_listview_bg" >
 
+    <com.meetisan.meetisan.widget.CircleImageView
+        xmlns:customized="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/iv_portrait"
+        android:layout_width="55dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/portrait_tag_default"
+        customized:border_color="@android:color/white"
+        customized:border_width="0dp" />
+
     <RelativeLayout
         android:id="@+id/item_left"
         android:layout_width="match_parent"
@@ -61,7 +72,8 @@
         android:scaleType="centerInside"
         android:src="@drawable/icon_right_arrow" />
 
-<!--     <RelativeLayout
+    <!--
+         <RelativeLayout
         android:id="@+id/item_right"
         android:layout_width="65dp"
         android:layout_height="match_parent"
@@ -81,6 +93,7 @@
             android:gravity="center"
             android:scaleType="centerInside"
             android:src="@drawable/icon_delete" />
-    </RelativeLayout> -->
+    </RelativeLayout>
+    -->
 
 </RelativeLayout>

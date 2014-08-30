@@ -64,7 +64,7 @@ public class PeopleAdapter extends BaseAdapter {
 		PeopleInfo mPeopleInfo = peopleData.get(position);
 
 		// 防止图片错位，先设置为默认图片
-		holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		holder.mCircleImage.setImageResource(R.drawable.portrait_person_default);
 		if (mPeopleInfo.getAvatarUri() != null) {
 			httpBitmap.displayBitmap(holder.mCircleImage, mPeopleInfo.getAvatarUri());
 		}

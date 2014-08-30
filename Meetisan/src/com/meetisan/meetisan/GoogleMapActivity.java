@@ -122,16 +122,20 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		mBackBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (mSetLatLng == null) {
-					ToastHelper.showToast(R.string.error_set_meeting_location_empty);
+				if (isSetLocation) {
+					if (mSetLatLng == null) {
+						ToastHelper.showToast(R.string.error_set_meeting_location_empty);
+					} else {
+						Intent data = new Intent();
+						data.putExtra("Latitude", mSetLatLng.latitude);
+						data.putExtra("Longitude", mSetLatLng.longitude);
+						data.putExtra("Address", mAddressName);
+						Log.d(TAG, "Return Info: Latitude=" + mSetLatLng.latitude + "; Longitude="
+								+ mSetLatLng.longitude + "; Address=" + mAddressName);
+						setResult(RESULT_OK, data);
+						GoogleMapActivity.this.finish();
+					}
 				} else {
-					Intent data = new Intent();
-					data.putExtra("Latitude", mSetLatLng.latitude);
-					data.putExtra("Longitude", mSetLatLng.longitude);
-					data.putExtra("Address", mAddressName);
-					Log.d(TAG, "Return Info: Latitude=" + mSetLatLng.latitude + "; Longitude=" + mSetLatLng.longitude
-							+ "; Address=" + mAddressName);
-					setResult(RESULT_OK, data);
 					GoogleMapActivity.this.finish();
 				}
 			}

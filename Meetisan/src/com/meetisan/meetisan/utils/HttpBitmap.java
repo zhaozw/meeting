@@ -12,7 +12,7 @@ public class HttpBitmap {
 	public HttpBitmap(Context context) {
 		if (finalBitmap == null) {
 			finalBitmap = FinalBitmap.create(context);
-			finalBitmap.configLoadingImage(R.drawable.portrait_default);
+			// finalBitmap.configLoadingImage(R.drawable.portrait_person_default);
 			finalBitmap.configBitmapLoadThreadSize(3);
 		}
 	}

@@ -1,9 +1,6 @@
 package com.meetisan.meetisan;
 
-import java.io.IOException;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,30 +9,18 @@ import android.view.Window;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.meetisan.meetisan.gcm.GCMKeeper;
+import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
 
 public class LauncherActivity extends Activity {
 	private static final String TAG = LauncherActivity.class.getSimpleName();
+
 	/**
 	 * LauncherActivity shortest display time
 	 */
 	private static final int SHORTEST_DISPLAY_TIME = 800;
-	/**
-	 * GCM Sender ID, obtained from the Google APIs Console
-	 * (https://code.google.com/apis/console)
-	 * 
-	 * @category Account: dev.meetisan@gmail.com
-	 * 
-	 *           Password: meetisan123
-	 * 
-	 */
-	public static final String SENDER_ID = "647678123306";
-
-	private GoogleCloudMessaging mGCM;
-	private RegisterGCMTask mGcmTask;
+	private long mStartTime = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,9 +30,10 @@ public class LauncherActivity extends Activity {
 
 		setContentView(R.layout.activity_splash);
 
-		if (checkGooglePlayServices()) {
-			registerGCMDevice(SENDER_ID);
-		}
+		mStartTime = System.currentTimeMillis();
+
+		checkLoginState();
+
 	}
 
 	@Override
@@ -55,101 +41,116 @@ public class LauncherActivity extends Activity {
 		super.onResume();
 	}
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		if (mGCM != null) {
-			mGCM.close();
-		}
+	private void checkLoginState() {
+		SplashTimeTask timerTask = new SplashTimeTask();
+		timerTask.execute();
 	}
 
-	private void registerGCMDevice(String senderId) {
-		mGcmTask = new RegisterGCMTask(this, senderId);
-		mGcmTask.execute();
-	}
-
-	// shouldn't call it from the UI thread !!
-	// private void unRegisterGCMDevice() {
-	// GoogleCloudMessaging mGCM = GoogleCloudMessaging.getInstance(this);
-	// try {
-	// mGCM.unregister();
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
-
-	private GoogleCloudMessaging getGCMInstance() {
-		if (mGCM == null) {
-			mGCM = GoogleCloudMessaging.getInstance(this);
-		}
-
-		return mGCM;
-	}
-
-	public class RegisterGCMTask extends AsyncTask<Void, Integer, String> {
-
-		private Context context;
-		private String senderId;
-		private String regId;
-		private long starTime = 0, curTime = 0;
-
-		public RegisterGCMTask(Context context, String senderId) {
-			this.context = context;
-			this.senderId = senderId;
-		}
-
+	public class SplashTimeTask extends AsyncTask<Void, Integer, String> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			starTime = System.currentTimeMillis();
-			regId = GCMKeeper.readGCMRegistrationId(context, null);
 		}
 
 		@Override
 		protected String doInBackground(Void... arg0) {
-			// if regId is exist in SharedPreference
-			if (regId == null) {
-				try {
-					Log.d(TAG, "The device has not registered, register now ...");
-					regId = getGCMInstance().register(senderId);
-				} catch (IOException e) {
-					e.printStackTrace();
+			long mCurTime = System.currentTimeMillis();
+			try {
+				while (mCurTime - mStartTime < SHORTEST_DISPLAY_TIME) {
+					Thread.sleep(100);
+					mCurTime = System.currentTimeMillis();
 				}
-			} else {
-				Log.d(TAG, "The device has registered");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 
-			do {
-				curTime = System.currentTimeMillis();
-				Log.d(TAG, "time = " + (curTime - starTime));
-			} while (curTime - starTime < SHORTEST_DISPLAY_TIME);
-
-			return regId;
+			return null;
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			Log.d(TAG, "Register device over , RegId = " + regId);
-			if (regId != null) {
-				GCMKeeper.writeGCMRegistrationId(context, regId);
-				Intent intent = new Intent(LauncherActivity.this, LoginActivity.class);
-				startActivity(intent);
-				LauncherActivity.this.finish();
+			long mUserID = UserInfoKeeper.readUserInfo(LauncherActivity.this, UserInfoKeeper.KEY_USER_ID, -1L);
+			Intent intent = null;
+			if (mUserID < 0) {
+				intent = new Intent(LauncherActivity.this, LoginActivity.class);
 			} else {
-				DialogUtils.showDialog(LauncherActivity.this, R.string.register_device_to_gcm_failed,
-						DialogUtils.RESOURCE_ID_NONE, R.string.exit, new OnDialogClickListener() {
-
-							@Override
-							public void onClick(boolean isPositiveBtn) {
-								// TODO Auto-generated method stub
-								LauncherActivity.this.finish();
-							}
-						});
+				intent = new Intent(LauncherActivity.this, MainActivity.class);
 			}
+			startActivity(intent);
+			finish();
 		}
 
 	}
+
+	// private void syncUserInfoFromServer() {
+	// String email = mUserInfo.getEmail();
+	// String pwd = mUserInfo.getPwd();
+	// if (email == null || pwd == null) {
+	// gotoLoginActivity();
+	// return;
+	// }
+	// getUserInfoFromServer(email, pwd);
+	// }
+	//
+
+	//
+	// private void getUserInfoFromServer(String email, String pwd) {
+	// HttpRequest request = new HttpRequest();
+	//
+	// if (mProgressDialog == null) {
+	// mProgressDialog = new CustomizedProgressDialog(this,
+	// R.string.loading_userinfo);
+	// } else {
+	// if (mProgressDialog.isShowing()) {
+	// mProgressDialog.dismiss();
+	// }
+	// }
+	//
+	// request.setOnHttpRequestListener(new OnHttpRequestListener() {
+	//
+	// @Override
+	// public void onSuccess(String url, String result) {
+	// mProgressDialog.dismiss();
+	// JSONObject json;
+	// try {
+	// json = new JSONObject(result);
+	// JSONObject data = json.getJSONObject(ServerKeys.KEY_DATA);
+	// mUserInfo.setId(data.getLong(ServerKeys.KEY_ID));
+	// mUserInfo.setEmail(data.getString(ServerKeys.KEY_EMAIL));
+	// mUserInfo.setPwd(data.getString(ServerKeys.KEY_PASSWORD));
+	// if (!data.isNull(ServerKeys.KEY_NAME)) {
+	// mUserInfo.setName(data.getString(ServerKeys.KEY_NAME));
+	// }
+	// if (!data.isNull(ServerKeys.KEY_AVATAR)) {
+	// mUserInfo.setAvatarUri(data.getString(ServerKeys.KEY_AVATAR));
+	// }
+	// UserInfoKeeper.writeUserInfo(MainActivity.this, mUserInfo);
+	// } catch (JSONException e) {
+	// e.printStackTrace();
+	// ToastHelper.showToast(R.string.app_occurred_exception);
+	// }
+	// }
+	//
+	// @Override
+	// public void onFailure(String url, int errorNo, String errorMsg) {
+	// mProgressDialog.dismiss();
+	// ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+	// reLogin();
+	// }
+	// });
+	//
+	// Map<String, String> data = new TreeMap<String, String>();
+	// data.put(ServerKeys.KEY_EMAIL, email);
+	// data.put(ServerKeys.KEY_PASSWORD, pwd);
+	// String registrationID =
+	// JPushInterface.getRegistrationID(getApplicationContext());
+	// if (registrationID != null) {
+	// data.put(ServerKeys.KEY_REG_ID, registrationID);
+	// }
+	// request.post(ServerKeys.FULL_URL_LOGIN, data);
+	// mProgressDialog.show();
+	// }
 
 	/**
 	 * Check the device to make sure it has the Google Play Services APK. If it

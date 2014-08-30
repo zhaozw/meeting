@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -24,7 +26,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	private ImageButton mLeftButton;
 	private TextView mTitleTextView;
 	private Button mRightButton;
-	private final int totoalSteps = 3;
+	private final int totoalSteps = 4;
 	/**
 	 * step index start from 1
 	 */
@@ -33,25 +35,39 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	private CreateStep1Fragment mCreateStep1Fragment;
 	private CreateStep2Fragment mCreateStep2Fragment;
 	private CreateStep3Fragment mCreateStep3Fragment;
+	private CreateStep4Fragment mCreateStep4Fragment;
+	private CreateDoneFragment mCreateDoneFragment;
 
-	private CreateDoneFragment	mCreateDoneFragment;
-	
 	private long meetPersonID = -1;
+	private Bundle mMeetPersonBundle = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create);
 		Log.d("CreateActivity", "On Create");
-		
+
 		Bundle bundle = new Bundle();
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
+			mMeetPersonBundle = bundle;
 			meetPersonID = bundle.getLong("PersonID", -1L);
-			Log.d("CreateActivity", "Meet Person ID: " + meetPersonID);
+			Log.d("CreateActivity", "Meet Person Bundle: " + mMeetPersonBundle);
 		}
-		
+
 		initTitle();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == CreateDoneFragment.REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE) {
+				if (mCreateDoneFragment != null) {
+					mCreateDoneFragment.onActivityResult(requestCode, resultCode, data);
+				}
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void initTitle() {
@@ -69,6 +85,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		mRightButton.setOnClickListener(this);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		mCreateStep1Fragment = new CreateStep1Fragment();
+		mCreateStep1Fragment.setArguments(mMeetPersonBundle);
 		if (findViewById(R.id.fl_fragment_container) != null) {
 			transaction.add(R.id.fl_fragment_container, mCreateStep1Fragment);
 		}
@@ -76,29 +93,30 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	}
 
 	private void setTitleViews(int stepIndex) {
+		String indexString = String.format(getString(R.string.format_step_index), stepIndex,
+				totoalSteps);
 		switch (stepIndex) {
 		case 1:
 			mLeftButton.setVisibility(View.GONE);
-			String indexString = String.format(getString(R.string.format_step_index), stepIndex,
-					totoalSteps);
 			mTitleTextView.setText(mStepsTitleText[stepIndex - 1] + indexString);
+			mRightButton.setVisibility(View.VISIBLE);
 			mRightButton.setText(R.string.next);
 			break;
 		case 2:
 			mLeftButton.setVisibility(View.VISIBLE);
-			String string = String.format(getString(R.string.format_step_index), stepIndex,
-					totoalSteps);
-			mTitleTextView.setText(mStepsTitleText[stepIndex - 1] + string);
+			mTitleTextView.setText(mStepsTitleText[stepIndex - 1] + indexString);
 			mRightButton.setText(R.string.next);
 			break;
 		case 3:
-			String string2 = String.format(getString(R.string.format_step_index), stepIndex,
-					totoalSteps);
-			mTitleTextView.setText(mStepsTitleText[stepIndex - 1] + string2);
+			mTitleTextView.setText(mStepsTitleText[stepIndex - 1] + indexString);
 			mRightButton.setVisibility(View.VISIBLE);
-			mRightButton.setText(R.string.create);
+			mRightButton.setText(R.string.next);
 			break;
 		case 4:
+			mTitleTextView.setText(mStepsTitleText[stepIndex - 1] + indexString);
+			mRightButton.setText(R.string.create);
+			break;
+		case 5:
 			String string3 = getString(R.string.create_successful);
 			mTitleTextView.setText(string3);
 			mRightButton.setVisibility(View.GONE);
@@ -123,9 +141,14 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		}
 	}
 
-	public void showFirstFragment() {
-		mCurrentStepIndex = 1;
+	public void hideLastShowFirstFragment() {
+
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+		if (mCreateDoneFragment != null) {
+			transaction.hide(mCreateDoneFragment);
+		}
+		mCurrentStepIndex = 1;
 		if (mCreateStep1Fragment == null) {
 			mCreateStep1Fragment = new CreateStep1Fragment();
 			transaction.add(R.id.fl_fragment_container, mCreateStep1Fragment);
@@ -135,7 +158,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		transaction.commit();
 		setTitleViews(mCurrentStepIndex);
 	}
-	
+
 	private void changeFragment(int id) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		switch (mCurrentStepIndex) {
@@ -149,6 +172,9 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 			transaction.hide(mCreateStep3Fragment);
 			break;
 		case 4:
+			transaction.hide(mCreateStep4Fragment);
+			break;
+		case 5:
 			transaction.hide(mCreateDoneFragment);
 			break;
 		default:
@@ -195,8 +221,17 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 			}
 			break;
 		case 4:
+			if (mCreateStep4Fragment == null) {
+				mCreateStep4Fragment = new CreateStep4Fragment();
+				transaction.add(R.id.fl_fragment_container, mCreateStep4Fragment);
+			} else {
+				transaction.show(mCreateStep4Fragment);
+			}
+			break;
+		case 5:
 			if (mCreateDoneFragment == null) {
 				mCreateDoneFragment = new CreateDoneFragment();
+				mCreateDoneFragment.setArguments(mMeetPersonBundle);
 				transaction.add(R.id.fl_fragment_container, mCreateDoneFragment);
 			} else {
 				transaction.show(mCreateDoneFragment);
@@ -216,7 +251,9 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		case 2:
 			return mCreateStep2Fragment.checkUserInput();
 		case 3:
-
+			break;
+		case 4:
+			return mCreateStep4Fragment.checkUserInput();
 		default:
 			break;
 		}
@@ -233,13 +270,17 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		if (mCreateStep1Fragment != null) {
 			data.putAll(mCreateStep1Fragment.getData());
 		}
-		
+
 		if (mCreateStep3Fragment != null) {
 			data.putAll(mCreateStep3Fragment.getData());
 		}
+
+		if (mCreateStep4Fragment != null) {
+			data.putAll(mCreateStep4Fragment.getData());
+		}
 		return data;
 	}
-	
+
 	public List<TagInfo> getTagInfos() {
 		return mCreateStep2Fragment.getData();
 	}

@@ -20,6 +20,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:padding="10dp" >
 
@@ -53,12 +55,9 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <TextView
+                <EditText
                     android:id="@+id/txt_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/text_size_small" />
+                    style="@style/ProfileEditTextStyle" />
             </LinearLayout>
 
             <LinearLayout
@@ -75,12 +74,9 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <TextView
+                <EditText
                     android:id="@+id/txt_school"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/text_size_small" />
+                    style="@style/ProfileEditTextStyle" />
             </LinearLayout>
 
             <LinearLayout
@@ -97,12 +93,9 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <TextView
+                <EditText
                     android:id="@+id/txt_city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/text_size_small" />
+                    style="@style/ProfileEditTextStyle" />
             </LinearLayout>
 
             <LinearLayout
@@ -115,16 +108,13 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_age"
+                    android:text="@string/profile_birthday"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <TextView
+                <EditText
                     android:id="@+id/txt_age"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/text_size_small" />
+                    style="@style/ProfileEditTextStyle" />
             </LinearLayout>
 
             <LinearLayout
@@ -141,12 +131,9 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <TextView
+                <EditText
                     android:id="@+id/txt_gender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/text_size_small" />
+                    style="@style/ProfileEditTextStyle" />
             </LinearLayout>
 
             <TextView
@@ -175,16 +162,13 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_name"
+                    android:text="@string/profile_experience"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <TextView
+                <EditText
                     android:id="@+id/txt_experience"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/text_size_small" />
+                    style="@style/ProfileEditTextStyle" />
             </LinearLayout>
 
             <LinearLayout
@@ -201,12 +185,9 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <TextView
+                <EditText
                     android:id="@+id/txt_education"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/text_size_small" />
+                    style="@style/ProfileEditTextStyle" />
             </LinearLayout>
 
             <LinearLayout
@@ -224,12 +205,9 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <TextView
+                <EditText
                     android:id="@+id/txt_skills"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/text_size_small" />
+                    style="@style/ProfileEditTextStyle" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

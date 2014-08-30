@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:src="@drawable/portrait_default"
+        android:src="@drawable/portrait_person_default"
         customized:border_color="@android:color/white"
         customized:border_width="0dp" />
 
@@ -85,7 +85,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:textColor="@color/segment_group_text_check"
-        android:textSize="@dimen/text_size_small" />
+        android:textSize="@dimen/text_size_min" />
 
     <ImageView
         android:id="@+id/btn_right_arrow"

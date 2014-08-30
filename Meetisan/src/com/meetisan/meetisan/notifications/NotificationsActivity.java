@@ -186,6 +186,11 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 	private void updateListView() {
 		mAdapter.notifyDataSetChanged();
 		mPullView.onRefreshComplete();
+		if (mData.size() >= mTotal) {
+			mPullView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullView.setMode(Mode.BOTH);
+		}
 	}
 
 	@Override

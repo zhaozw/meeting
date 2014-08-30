@@ -11,17 +11,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.utils.HttpBitmap;
+import com.meetisan.meetisan.widget.CircleImageView;
 
 public class TagCategoryAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
 	private List<TagCategory> categoryData;
+	private HttpBitmap httpBitmap;
 
 	// private onRightItemClickListener mListener = null;
 
 	public TagCategoryAdapter(Context mContext, List<TagCategory> categoryData) {
 		inflater = LayoutInflater.from(mContext);
 		this.categoryData = categoryData;
+		httpBitmap = new HttpBitmap(mContext);
 	}
 
 	@Override
@@ -48,6 +52,7 @@ public class TagCategoryAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.mLeftItem = (RelativeLayout) convertView.findViewById(R.id.item_left);
 			holder.mRightItem = (RelativeLayout) convertView.findViewById(R.id.item_right);
+			holder.mPortraitView = (CircleImageView) convertView.findViewById(R.id.iv_portrait);
 			holder.mNameTxt = (TextView) convertView.findViewById(R.id.txt_name);
 			holder.mOneTxt = (TextView) convertView.findViewById(R.id.txt_tag_one);
 			holder.mTwoTxt = (TextView) convertView.findViewById(R.id.txt_tag_two);
@@ -61,6 +66,10 @@ public class TagCategoryAdapter extends BaseAdapter {
 		TagCategory mTagCategory = categoryData.get(position);
 
 		holder.mNameTxt.setText(mTagCategory.getTitle());
+		holder.mPortraitView.setImageResource(R.drawable.portrait_tag_default);
+		if (mTagCategory.getLogoUri() != null) {
+			httpBitmap.displayBitmap(holder.mPortraitView, mTagCategory.getLogoUri());
+		}
 
 		List<TagInfo> tagsList = mTagCategory.getTags();
 		int tagsCount = tagsList.size();
@@ -93,6 +102,7 @@ public class TagCategoryAdapter extends BaseAdapter {
 	static class ViewHolder {
 		RelativeLayout mLeftItem;
 		RelativeLayout mRightItem;
+		CircleImageView mPortraitView;
 		TextView mNameTxt;
 		TextView mOneTxt;
 		TextView mTwoTxt;

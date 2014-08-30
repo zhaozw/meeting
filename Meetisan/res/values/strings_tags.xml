@@ -19,5 +19,7 @@
     <string name="tag_history">Your tag history with</string>
     <string name="people_connected">People Connected</string>
     <string name="meetings_attended">Meetings Attended</string>
+    <string name="people_associated">People Associated</string>
+    <string name="meetings_associated">Meetings Associated</string>
     
 </resources>

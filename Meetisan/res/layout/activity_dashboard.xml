@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.0"
             android:clickable="true"
-            android:src="@drawable/portrait_default"
+            android:src="@drawable/portrait_person_default"
             customized:border_color="@android:color/white"
             customized:border_width="2dp" />
 
@@ -143,8 +143,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/content_empty_default"
+                android:padding="15dp"
+                android:text="@string/tips_no_upcoming_meeting"
                 android:textColor="@color/content_empty_tips_text_color"
                 android:textSize="@dimen/text_size_small"
                 android:visibility="gone" />

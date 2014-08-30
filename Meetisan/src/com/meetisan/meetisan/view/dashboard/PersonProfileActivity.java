@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.meetisan.meetisan.MainActivity;
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpBitmap;
@@ -22,18 +25,24 @@ import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.view.tags.PersonTagsActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.LabelWithIcon;
+import com.meetisan.meetisan.widget.TagLabelLayout;
 
 public class PersonProfileActivity extends Activity implements OnClickListener {
 
 	private CircleImageView mPortraitView;
-	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagOneTxt, mTagTwoTxt, mTagThreeTxt,
-			mTagFourTxt, mTagFiveTxt, mTagNoTxt;
+	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagNoTxt, mTagTitleTxt;
+	private TagLabelLayout mTagOneTxt, mTagTwoTxt, mTagThreeTxt, mTagFourTxt, mTagFiveTxt;
+	private RelativeLayout mTagsLayout;
+
 	private LabelWithIcon mMoreBtn;
+	private LinearLayout mMeetLayout;
 	private PeopleInfo mUserInfo = new PeopleInfo();
 	private long userId = -1;
+	private long curUserId = -1;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,7 +55,8 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 			userId = bundle.getLong("UserID");
 		}
 
-		if (userId < 0) {
+		curUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
+		if (userId < 0 || curUserId < 0) {
 			ToastHelper.showToast(R.string.app_occurred_exception);
 			this.finish();
 		}
@@ -63,11 +73,18 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 
 	private void initView() {
 		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
-		mTitleTxt.setText(R.string.person_profile);
 		mTitleTxt.setVisibility(View.VISIBLE);
 		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);
+
+		mMeetLayout = (LinearLayout) findViewById(R.id.layout_meet);
+		if (userId == curUserId) {
+			mTitleTxt.setText(R.string.my_info);
+			mMeetLayout.setVisibility(View.GONE);
+		} else {
+			mTitleTxt.setText(R.string.person_profile);
+		}
 
 		findViewById(R.id.btn_meet).setOnClickListener(this);
 		mMoreBtn = (LabelWithIcon) findViewById(R.id.btn_more);
@@ -76,56 +93,57 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		mPortraitView = (CircleImageView) findViewById(R.id.iv_portrait);
 		mSignatureTxt = (TextView) findViewById(R.id.txt_signature);
 		mUniversityTxt = (TextView) findViewById(R.id.txt_university);
-		mTagOneTxt = (TextView) findViewById(R.id.txt_tag_one);
-		mTagTwoTxt = (TextView) findViewById(R.id.txt_tag_two);
-		mTagThreeTxt = (TextView) findViewById(R.id.txt_tag_three);
-		mTagFourTxt = (TextView) findViewById(R.id.txt_tag_four);
-		mTagFiveTxt = (TextView) findViewById(R.id.txt_tag_five);
+		mTagOneTxt = (TagLabelLayout) findViewById(R.id.txt_tag_one);
+		mTagTwoTxt = (TagLabelLayout) findViewById(R.id.txt_tag_two);
+		mTagThreeTxt = (TagLabelLayout) findViewById(R.id.txt_tag_three);
+		mTagFourTxt = (TagLabelLayout) findViewById(R.id.txt_tag_four);
+		mTagFiveTxt = (TagLabelLayout) findViewById(R.id.txt_tag_five);
 		mTagNoTxt = (TextView) findViewById(R.id.txt_no_tags);
+		mTagTitleTxt = (TextView) findViewById(R.id.txt_profile_tag_title);
+
+		mTagsLayout = (RelativeLayout) findViewById(R.id.layout_top_tags);
+		mTagsLayout.setOnClickListener(this);
 	}
 
 	private void updateUIData() {
 		if (mUserInfo.getName() != null) {
 			mNameTxt.setText(mUserInfo.getName());
+			mTagTitleTxt.setText(mUserInfo.getName() + " \'s Tags");
 		}
 		if (mUserInfo.getAvatarUri() != null) {
 			HttpBitmap httpBitmap = new HttpBitmap(this);
 			httpBitmap.displayBitmap(mPortraitView, mUserInfo.getAvatarUri());
 		} else {
-			mPortraitView.setImageResource(R.drawable.portrait_default);
+			mPortraitView.setImageResource(R.drawable.portrait_person_default);
 		}
 		mSignatureTxt.setText(mUserInfo.getSignature());
 		mUniversityTxt.setText(mUserInfo.getUniversity());
 		int tagsCount = mUserInfo.getTopTags().size();
 		if (tagsCount <= 0) {
-			mTagNoTxt.setText("You do not have Tag!");
 			mTagNoTxt.setVisibility(View.VISIBLE);
-			mTagOneTxt.setVisibility(View.GONE);
-			mTagTwoTxt.setVisibility(View.GONE);
-			mTagThreeTxt.setVisibility(View.GONE);
-			mTagFourTxt.setVisibility(View.GONE);
-			mTagFiveTxt.setVisibility(View.GONE);
+			mTagNoTxt.setText("Without Tag");
 		} else {
 			mTagNoTxt.setVisibility(View.GONE);
+			TagInfo tagInfo = null;
 			if (tagsCount >= 1) {
-				mTagOneTxt.setText(mUserInfo.getTopTags().get(0).getTitle());
-				mTagOneTxt.setVisibility(View.VISIBLE);
+				tagInfo = mUserInfo.getTopTags().get(0);
+				mTagOneTxt.setTagText(tagInfo.getEndorsed(), tagInfo.getTitle());
 			}
 			if (tagsCount >= 2) {
-				mTagTwoTxt.setText(mUserInfo.getTopTags().get(1).getTitle());
-				mTagTwoTxt.setVisibility(View.VISIBLE);
+				tagInfo = mUserInfo.getTopTags().get(1);
+				mTagTwoTxt.setTagText(tagInfo.getEndorsed(), tagInfo.getTitle());
 			}
 			if (tagsCount >= 3) {
-				mTagThreeTxt.setText(mUserInfo.getTopTags().get(2).getTitle());
-				mTagThreeTxt.setVisibility(View.VISIBLE);
+				tagInfo = mUserInfo.getTopTags().get(2);
+				mTagThreeTxt.setTagText(tagInfo.getEndorsed(), tagInfo.getTitle());
 			}
 			if (tagsCount >= 4) {
-				mTagFourTxt.setText(mUserInfo.getTopTags().get(3).getTitle());
-				mTagFourTxt.setVisibility(View.VISIBLE);
+				tagInfo = mUserInfo.getTopTags().get(3);
+				mTagFourTxt.setTagText(tagInfo.getEndorsed(), tagInfo.getTitle());
 			}
 			if (tagsCount >= 5) {
-				mTagFiveTxt.setText(mUserInfo.getTopTags().get(4).getTitle());
-				mTagFiveTxt.setVisibility(View.VISIBLE);
+				tagInfo = mUserInfo.getTopTags().get(4);
+				mTagFiveTxt.setTagText(tagInfo.getEndorsed(), tagInfo.getTitle());
 			}
 		}
 	}
@@ -149,11 +167,22 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 			Bundle meetBundle = new Bundle();
 			meetBundle.putBoolean("IsMeetPerson", true);
 			meetBundle.putLong("PersonID", userId);
+			meetBundle.putString("PersonName", mUserInfo.getName());
+			meetBundle.putString("AvatarUri", mUserInfo.getAvatarUri());
 			meetIntent.setClass(PersonProfileActivity.this, MainActivity.class);
 			meetIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);// 设置不要刷新将要跳到的界面
 			meetIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// 它可以关掉所要到的界面中间的activity
 			meetIntent.putExtras(meetBundle);
 			startActivity(meetIntent);
+			break;
+		case R.id.layout_top_tags:
+			Intent tagIntent = new Intent();
+			Bundle tagBundle = new Bundle();
+			tagBundle.putLong("UserID", userId);
+			tagBundle.putString("PersonName", mUserInfo.getName());
+			tagIntent.setClass(this, PersonTagsActivity.class);
+			tagIntent.putExtras(tagBundle);
+			startActivity(tagIntent);
 			break;
 		default:
 			break;

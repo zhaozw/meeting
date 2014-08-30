@@ -24,11 +24,10 @@ import com.meetisan.meetisan.GoogleMapActivity;
 import com.meetisan.meetisan.R;
 
 /**
- * A fragment with a Google +1 button. Activities that contain this fragment
- * must implement the {@link CreateStep1Fragment.OnFragmentInteractionListener}
- * interface to handle interaction events. Use the
- * {@link CreateStep3Fragment#newInstance} factory method to create an instance
- * of this fragment.
+ * A fragment with a Google +1 button. Activities that contain this fragment must implement the
+ * {@link CreateStep1Fragment.OnFragmentInteractionListener} interface to handle interaction events.
+ * Use the {@link CreateStep3Fragment#newInstance} factory method to create an instance of this
+ * fragment.
  * 
  */
 public class CreateStep3Fragment extends Fragment implements OnClickListener {
@@ -59,13 +58,11 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 	private String address;
 
 	/**
-	 * Use this factory method to create a new instance of this fragment using
-	 * the provided parameters.
+	 * Use this factory method to create a new instance of this fragment using the provided
+	 * parameters.
 	 * 
-	 * @param param1
-	 *            Parameter 1.
-	 * @param param2
-	 *            Parameter 2.
+	 * @param param1 Parameter 1.
+	 * @param param2 Parameter 2.
 	 * @return A new instance of fragment CreateStep1Fragment.
 	 */
 	// TODO: Rename and change types and number of parameters
@@ -149,22 +146,31 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 
 	public Map<String, Object> getData() {
 		Map<String, Object> data = new TreeMap<String, Object>();
-		data.put("MaxPerson", mMaximumNumber.getCheckedRadioButtonId() == R.id.rb_create_maximum_number_single ? 1 : 2);
-		data.put("Lon", mLongitude);
-		data.put("Lat", mLatitude);
+		data.put(
+				"MaxPerson",
+				mMaximumNumber.getCheckedRadioButtonId() == R.id.rb_create_maximum_number_single ? 1
+						: 2);
+		data.put("Lon", String.valueOf(mLongitude));
+		data.put("Lat", String.valueOf(mLatitude));
 		data.put("Address", address);
-		data.put("TimeSetType", mSetTime.getCheckedRadioButtonId() == R.id.rb_create_set_time_by_me ? 1 : 2);
+		data.put("TimeSetType",
+				mSetTime.getCheckedRadioButtonId() == R.id.rb_create_set_time_by_me ? 1 : 2);
 
 		Calendar calendar = Calendar.getInstance();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm",
+				Locale.getDefault());
 		calendar.setTimeInMillis(startTime);
-		String start = formatter.format(calendar.getTime()).replace(" ", "T");
+		String start = formatter.format(calendar.getTime());
 		calendar.setTimeInMillis(endTime);
-		String end = formatter.format(calendar.getTime()).replace(" ", "T");
+		String end = formatter.format(calendar.getTime());
 		data.put("DetermineStartTime", start);
 		data.put("DetermineEndTime", end);
 		data.put("StartTime1", start);
 		data.put("EndTime1", end);
+		data.put("StartTime2", start);
+		data.put("EndTime2", end);
+		data.put("StartTime3", start);
+		data.put("EndTime3", end);
 		data.put("StartTime", startTime);
 		data.put("EndTime", endTime);
 		return data;
@@ -176,7 +182,8 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 		switch (id) {
 		case R.id.rl_create_location:
 			Intent intent = new Intent(getActivity(), GoogleMapActivity.class);
-			intent.putExtra("MeetTitle", "Location");
+			// intent.putExtra("MeetTitle", "Location");
+			intent.putExtra("IsSetLocation", true);
 			startActivityForResult(intent, 3);
 			break;
 		case R.id.ll_set_start_time:

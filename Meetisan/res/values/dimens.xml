@@ -1,5 +1,5 @@
 <resources>
 
-    <dimen name="activity_create_item_height">70dp</dimen>
+    <dimen name="activity_create_item_height">60dp</dimen>
 
 </resources>

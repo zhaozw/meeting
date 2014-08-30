@@ -18,7 +18,7 @@ public class LabelWithIcon extends RelativeLayout {
 	private static int DEFAULT_TEXT_SIZE = R.dimen.text_size_middle;
 
 	private ImageButton mImageView;
-	private TextView mTextView;
+	private TextView mTextView, mContentTxt;
 
 	public LabelWithIcon(Context context) {
 		super(context);
@@ -26,22 +26,28 @@ public class LabelWithIcon extends RelativeLayout {
 
 	public LabelWithIcon(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		View view = LayoutInflater.from(context).inflate(R.layout.layout_label_with_icon, this,
-				true);
+		View view = LayoutInflater.from(context).inflate(R.layout.layout_label_with_icon, this, true);
 		mTextView = (TextView) view.findViewById(R.id.txt_label);
+		mContentTxt = (TextView) view.findViewById(R.id.txt_content);
 		mImageView = (ImageButton) view.findViewById(R.id.iv_icon);
 
 		TypedArray type = context.obtainStyledAttributes(attrs, R.styleable.LabelWithIcon);
-		int textColor = type.getColor(R.styleable.LabelWithIcon_android_textColor, getResources()
-				.getColor(DEFAULT_TEXT_COLOR));
-		int textSize = type.getDimensionPixelSize(R.styleable.LabelWithIcon_android_textSize,
-				getResources().getDimensionPixelSize(DEFAULT_TEXT_SIZE));
+		int textColor = type.getColor(R.styleable.LabelWithIcon_android_textColor,
+				getResources().getColor(DEFAULT_TEXT_COLOR));
+		int textSize = type.getDimensionPixelSize(R.styleable.LabelWithIcon_android_textSize, getResources()
+				.getDimensionPixelSize(DEFAULT_TEXT_SIZE));
 		CharSequence text = type.getText(R.styleable.LabelWithIcon_android_text);
+		CharSequence hint = type.getText(R.styleable.LabelWithIcon_android_content);
 
 		mTextView.setTextColor(textColor);
 		mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+		mContentTxt.setTextColor(textColor);
+		mContentTxt.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
 		if (text != null) {
 			mTextView.setText(text);
+		}
+		if (hint != null) {
+			mContentTxt.setText(hint);
 		}
 
 		int resId = type.getResourceId(R.styleable.LabelWithIcon_android_src, -1);
@@ -59,4 +65,7 @@ public class LabelWithIcon extends RelativeLayout {
 		mTextView.setText(text);
 	}
 
+	public void setContentText(String content) {
+		mContentTxt.setText(content);
+	}
 }

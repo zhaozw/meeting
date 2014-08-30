@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -26,17 +27,21 @@ import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.view.dashboard.PersonProfileActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.LabelWithIcon;
 
 public class TagProfileActivity extends Activity implements OnClickListener {
 	private static final String TAG = TagProfileActivity.class.getSimpleName();
 
 	private ImageView mMomentView;
 	private CircleImageView mPortraitView;
-	private TextView mNameTxt, mDescriptionTxt, mHostTxt, mLinkTxt, mNoMomentTxt;
+	private LabelWithIcon mHostLabel;
+	private TextView mNameTxt, mDescriptionTxt, mLinkTxt, mNoMomentTxt;
+	private TextView mFirstTagTxt, mSecondTagTxt, mThirdTagTxt, mNoTagTxt;
 
-	private long mTagID = -1, mUserID = -1;
+	private long mTagID = -1, mUserID = -1, mHostID = -1;
 	private TagInfo mTagInfo = new TagInfo();
 
 	private HttpBitmap httpBitmap = new HttpBitmap(this);
@@ -65,24 +70,75 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 
 	private void initView() {
 		((ImageButton) findViewById(R.id.btn_title_icon_left)).setOnClickListener(this);
+		((ImageButton) findViewById(R.id.im_btn_connection)).setOnClickListener(this);
+		((ImageButton) findViewById(R.id.im_btn_meeting)).setOnClickListener(this);
 
 		mMomentView = (ImageView) findViewById(R.id.iv_moments);
 		mNoMomentTxt = (TextView) findViewById(R.id.txt_no_moments);
 		mPortraitView = (CircleImageView) findViewById(R.id.iv_portrait);
 		mNameTxt = (TextView) findViewById(R.id.txt_name);
 		mDescriptionTxt = (TextView) findViewById(R.id.txt_tag_description);
-		mHostTxt = (TextView) findViewById(R.id.txt_tag_host);
+		mHostLabel = (LabelWithIcon) findViewById(R.id.label_tag_host);
+		mHostLabel.setOnClickListener(this);
 		mLinkTxt = (TextView) findViewById(R.id.txt_tag_link);
+
+		mFirstTagTxt = (TextView) findViewById(R.id.txt_tag_one);
+		mSecondTagTxt = (TextView) findViewById(R.id.txt_tag_two);
+		mThirdTagTxt = (TextView) findViewById(R.id.txt_tag_three);
+		mNoTagTxt = (TextView) findViewById(R.id.txt_no_tags);
+
+		LabelWithIcon mConnectedLabel = (LabelWithIcon) findViewById(R.id.btn_connected);
+		mConnectedLabel.setOnClickListener(this);
+		LabelWithIcon mAttendedLabel = (LabelWithIcon) findViewById(R.id.btn_attended);
+		mAttendedLabel.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
+		Intent intent = null;
+		Bundle bundle = null;
 		switch (v.getId()) {
 		case R.id.btn_title_icon_left:
 			finish();
 			break;
+		case R.id.im_btn_connection:
+			intent = new Intent(this, TagAssociatedPeopleActivity.class);
+			bundle = new Bundle();
+			bundle.putLong("TagID", mTagID);
+			intent.putExtras(bundle);
+			break;
+		case R.id.btn_connected:
+			intent = new Intent(this, TagConnectedPeopleActivity.class);
+			bundle = new Bundle();
+			bundle.putLong("TagID", mTagID);
+			intent.putExtras(bundle);
+			break;
+		case R.id.im_btn_meeting:
+			intent = new Intent(this, TagAssociatedMeetingsActivity.class);
+			bundle = new Bundle();
+			bundle.putLong("TagID", mTagID);
+			intent.putExtras(bundle);
+			break;
+		case R.id.btn_attended:
+			intent = new Intent(this, TagAttendedMeetingsActivity.class);
+			bundle = new Bundle();
+			bundle.putLong("TagID", mTagID);
+			intent.putExtras(bundle);
+			break;
+		case R.id.label_tag_host:
+			if (mHostID >= 0) {
+				intent = new Intent(this, PersonProfileActivity.class);
+				bundle = new Bundle();
+				bundle.putLong("UserID", mHostID);
+				intent.putExtras(bundle);
+			}
+			break;
 		default:
 			break;
+		}
+
+		if (intent != null) {
+			startActivity(intent);
 		}
 	}
 
@@ -98,12 +154,36 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		mDescriptionTxt.setText("Tag Description:	" + mTagInfo.getDescription());
 		mLinkTxt.setText("Link:		" + mTagInfo.getLink());
 
-		String hostNames = "";
-		for (TagHost host : mTagInfo.getTagHosts()) {
-			hostNames += "  " + host.getHostName();
+		TagHost host = mTagInfo.getTagHost();
+		if (host != null) {
+			String hostNames = host.getHostName();
+			mHostLabel.setContentText(hostNames);
+			mHostID = host.getHostId();
 		}
-		mHostTxt.setText("Tag Hosts:	" + hostNames);
+
 		setMomentView(mTagInfo.getTagMoments());
+	}
+
+	private void setAssociateTag(List<TagInfo> tagsList) {
+		if (tagsList == null) {
+			mNoTagTxt.setVisibility(View.VISIBLE);
+		}
+		int tagsCount = tagsList.size();
+		if (tagsCount <= 0) {
+			mNoTagTxt.setVisibility(View.VISIBLE);
+		}
+		if (tagsCount >= 1) {
+			mFirstTagTxt.setText(tagsList.get(0).getTitle());
+			mFirstTagTxt.setVisibility(View.VISIBLE);
+		}
+		if (tagsCount >= 2) {
+			mSecondTagTxt.setText(tagsList.get(1).getTitle());
+			mSecondTagTxt.setVisibility(View.VISIBLE);
+		}
+		if (tagsCount >= 3) {
+			mThirdTagTxt.setText(tagsList.get(2).getTitle());
+			mThirdTagTxt.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void setMomentView(List<TagMoment> mTagMoments) {
@@ -119,7 +199,8 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			return;
 		}
 
-		// Bitmap mBitmap = Util.inFrameFoto(mBitmaps, Util.getWindowsSize(this, true) - 20);
+		// Bitmap mBitmap = Util.inFrameFoto(mBitmaps, Util.getWindowsSize(this,
+		// true) - 20);
 		Bitmap mBitmap = null;
 		if (mBitmap != null) {
 			mMomentView.setImageBitmap(mBitmap);
@@ -150,8 +231,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 				try {
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 
 					mTagInfo.setFollow(dataJson.getInt(ServerKeys.KEY_FOLLOW_STATUS));
 
@@ -166,13 +246,12 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 					mTagInfo.setCreateDate(tagJson.getString(ServerKeys.KEY_CREATE_DATE));
 					mTagInfo.setState(tagJson.getInt(ServerKeys.KEY_STATUS));
 
-					JSONArray hostArray = dataJson.getJSONArray(ServerKeys.KEY_TAG_HOST);
-					for (int i = 0; i < hostArray.length(); i++) {
-						JSONObject hostJson = hostArray.getJSONObject(i);
+					JSONObject hostJson = dataJson.getJSONObject(ServerKeys.KEY_TAG_HOST);
+					if (hostJson != null) {
 						TagHost tagHost = new TagHost();
-						tagHost.setHostId(hostJson.getLong(ServerKeys.KEY_USER_ID));
+						tagHost.setHostId(hostJson.getLong(ServerKeys.KEY_ID));
 						tagHost.setHostName(hostJson.getString(ServerKeys.KEY_NAME));
-						mTagInfo.addTagHost(tagHost);
+						mTagInfo.setTagHost(tagHost);
 					}
 
 					JSONArray momentsArray = dataJson.getJSONArray(ServerKeys.KEY_TAG_MOMENTS);

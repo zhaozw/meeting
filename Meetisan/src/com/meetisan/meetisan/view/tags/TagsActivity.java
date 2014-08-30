@@ -62,9 +62,9 @@ public class TagsActivity extends Activity {
 
 		mUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
 
+		initView();
 		getMyTagsFromServer(1, true, true);
 		getAllTagsFromServer(1, true, true);
-		initView();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -202,11 +202,21 @@ public class TagsActivity extends Activity {
 	private void updateMyTagsListView() {
 		mTagsAdapter.notifyDataSetChanged();
 		mPullTagsListView.onRefreshComplete();
+		if (mTagsData.size() >= mMaxMyTags) {
+			mPullTagsListView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullTagsListView.setMode(Mode.BOTH);
+		}
 	}
 
 	private void updateAllTagsListView() {
 		mCategoryAdapter.notifyDataSetChanged();
 		mPullCategoryListView.onRefreshComplete();
+		if (mCategoryData.size() >= mMaxAllTags) {
+			mPullCategoryListView.setMode(Mode.PULL_FROM_START);
+		} else {
+			mPullCategoryListView.setMode(Mode.BOTH);
+		}
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;
@@ -283,7 +293,6 @@ public class TagsActivity extends Activity {
 			}
 		});
 
-		mUserId = 5;
 		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
 				+ ServerKeys.PAGE_SIZE + "&name=", null);
 		if (isNeedsDialog) {
@@ -332,7 +341,7 @@ public class TagsActivity extends Activity {
 						JSONObject json = categoryArray.getJSONObject(i);
 						tagCategory.setId(json.getLong(ServerKeys.KEY_ID));
 						tagCategory.setTitle(json.getString(ServerKeys.KEY_TITLE));
-						tagCategory.setLogo(Util.base64ToBitmap(json.getString(ServerKeys.KEY_LOGO)));
+						tagCategory.setLogoUri(json.getString(ServerKeys.KEY_LOGO));
 
 						JSONArray tagsArray = json.getJSONArray(ServerKeys.KEY_TAGS);
 						for (int j = 0; j < tagsArray.length(); j++) {

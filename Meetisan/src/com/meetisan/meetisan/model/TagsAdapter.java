@@ -61,7 +61,7 @@ public class TagsAdapter extends BaseAdapter {
 		}
 
 		TagInfo mTagInfo = tagData.get(position);
-		holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		holder.mCircleImage.setImageResource(R.drawable.portrait_tag_default);
 		if (mTagInfo.getLogoUri() != null) {
 			httpBitmap.displayBitmap(holder.mCircleImage, mTagInfo.getLogoUri());
 		}

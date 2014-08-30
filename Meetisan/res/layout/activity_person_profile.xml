@@ -11,6 +11,62 @@
         android:layout_height="@dimen/activity_title_height"
         layout="@layout/title_with_image_btn" />
 
+    <RelativeLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/pic_background"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:paddingLeft="100dp"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_big" />
+
+            <TextView
+                android:id="@+id/txt_signature"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@android:color/white"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingLeft="100dp"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_min" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+
+            <com.meetisan.meetisan.widget.CircleImageView
+                xmlns:customized="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/iv_portrait"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="20dp"
+                android:clickable="true"
+                android:src="@drawable/portrait_person_default"
+                customized:border_color="@android:color/white"
+                customized:border_width="2dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -22,72 +78,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <RelativeLayout
-                android:id="@+id/layout_top"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="@drawable/pic_background"
-                android:orientation="horizontal" >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/txt_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="100dp"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_big" />
-
-                    <TextView
-                        android:id="@+id/txt_signature"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:background="@android:color/white"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:maxLines="2"
-                        android:paddingLeft="100dp"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="@dimen/text_size_min" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="vertical" >
-
-                    <com.meetisan.meetisan.widget.CircleImageView
-                        xmlns:customized="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/iv_portrait"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="20dp"
-                        android:clickable="true"
-                        android:src="@drawable/portrait_default"
-                        customized:border_color="@android:color/white"
-                        customized:border_width="2dp" />
-                </LinearLayout>
-            </RelativeLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:orientation="vertical"
                 android:padding="10dp" >
 
                 <TextView
+                    android:id="@+id/txt_profile_tag_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="@string/top_tags"
                     android:textColor="@android:color/black"
@@ -99,43 +101,65 @@
                     android:layout_marginTop="10dp"
                     android:background="@color/gap_line_color" />
 
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/layout_top_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:background="@drawable/selector_label_icon_bg"
                     android:padding="5dp" >
 
-                    <TextView
-                        android:id="@+id/txt_tag_one"
-                        style="@style/TagLabelStyle" />
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/iv_right_arrow"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical" >
 
-                    <TextView
-                        android:id="@+id/txt_tag_two"
-                        style="@style/TagLabelStyle" />
+                        <com.meetisan.meetisan.widget.TagLabelLayout
+                            android:id="@+id/txt_tag_one"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:id="@+id/txt_tag_three"
-                        style="@style/TagLabelStyle" />
+                        <com.meetisan.meetisan.widget.TagLabelLayout
+                            android:id="@+id/txt_tag_two"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:id="@+id/txt_tag_four"
-                        style="@style/TagLabelStyle" />
+                        <com.meetisan.meetisan.widget.TagLabelLayout
+                            android:id="@+id/txt_tag_three"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:id="@+id/txt_tag_five"
-                        style="@style/TagLabelStyle" />
+                        <com.meetisan.meetisan.widget.TagLabelLayout
+                            android:id="@+id/txt_tag_four"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:id="@+id/txt_no_tags"
-                        android:layout_width="match_parent"
+                        <com.meetisan.meetisan.widget.TagLabelLayout
+                            android:id="@+id/txt_tag_five"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/txt_no_tags"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/text_size_small"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_right_arrow"
+                        android:layout_width="12dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/text_size_small"
-                        android:visibility="gone" />
-                </LinearLayout>
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/icon_right_arrow" />
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -146,12 +170,13 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.6dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:background="@color/gap_line_color" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal" >
@@ -159,6 +184,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
                         android:gravity="center"
                         android:text="@string/university"
                         android:textColor="@android:color/black"
@@ -166,11 +192,11 @@
 
                     <TextView
                         android:id="@+id/txt_university"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
                         android:ellipsize="end"
-                        android:gravity="center"
+                        android:gravity="center|right"
                         android:singleLine="true"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/text_size_small" />
@@ -179,6 +205,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.6dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/gap_line_color" />
 
@@ -186,6 +213,7 @@
                     android:id="@+id/btn_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="@string/more_information"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_small" />
@@ -195,21 +223,30 @@
                     android:layout_height="0.6dp"
                     android:background="@color/gap_line_color" />
 
-                <Button
-                    android:id="@+id/btn_meet"
-                    style="@style/ButtonStyle"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/let_us_meet" />
-
-                <TextView
-                    android:id="@+id/txt_report"
+                <LinearLayout
+                    android:id="@+id/layout_meet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/report"
-                    android:textColor="@android:color/black" />
+                    android:orientation="vertical" >
+
+                    <Button
+                        android:id="@+id/btn_meet"
+                        style="@style/ButtonStyle"
+                        android:layout_margin="10dp"
+                        android:text="@string/let_us_meet" />
+
+                    <TextView
+                        android:id="@+id/txt_report"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/report"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

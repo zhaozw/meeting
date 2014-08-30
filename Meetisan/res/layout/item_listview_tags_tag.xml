@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:src="@drawable/portrait_default"
+        android:src="@drawable/portrait_tag_default"
         customized:border_color="@android:color/white"
         customized:border_width="0dp" />
 

@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.meetisan.meetisan.R;
@@ -46,7 +47,7 @@ public class CircleImageView extends ImageView {
 	private float mDrawableRadius;
 	private float mBorderRadius;
 
-	private boolean mReady;
+	private boolean mReady = true;
 	private boolean mSetupPending;
 
 	public CircleImageView(Context context) {
@@ -189,6 +190,7 @@ public class CircleImageView extends ImageView {
 	private void setup() {
 		if (!mReady) {
 			mSetupPending = true;
+			Log.e(VIEW_LOG_TAG, "Circle Image: not Ready, Ready: " + mReady);
 			return;
 		}
 

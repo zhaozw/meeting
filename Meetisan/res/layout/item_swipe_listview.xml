@@ -16,7 +16,7 @@
             android:id="@+id/iv_portrait"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:src="@drawable/portrait_default"
+            android:src="@drawable/portrait_person_default"
             customized:border_color="@android:color/white"
             customized:border_width="2dp" />
 
