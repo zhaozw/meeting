@@ -10,21 +10,17 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.segmented.SegmentedGroup;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.database.UserInfoKeeper;
-import com.meetisan.meetisan.model.TagCategory;
-import com.meetisan.meetisan.model.TagCategoryAdapter;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.model.TagsAdapter;
 import com.meetisan.meetisan.utils.HttpRequest;
@@ -40,50 +36,59 @@ import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
-public class TagsActivity extends Activity {
+public class PersonTagsActivity extends Activity implements OnClickListener {
 
-	// private DropDownListView mTagsListView;
-	private PullToRefreshListView mPullTagsListView, mPullCategoryListView;
+	private PullToRefreshListView mPullTagsListView;
 	private ListView mTagsListView;
-	private ListView mCategoryListView;
 	private List<TagInfo> mTagsData = new ArrayList<TagInfo>();
-	private List<TagCategory> mCategoryData = new ArrayList<TagCategory>();
 
-	private long mUserId = -1;
-	private long mMaxMyTags = 0, mMaxAllTags = 0;
+	private long mMaxMyTags = 0;
 	private TagsAdapter mTagsAdapter;
 	private DeleteTouchListener mTagsTouchListener;
-	private TagCategoryAdapter mCategoryAdapter;
+	private long userId = -1;
+	private long curUserId = -1;
+	private String userName = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_tags);
+		setContentView(R.layout.activity_person_tags);
 
-		mUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
+		curUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
+
+		Bundle bundle = new Bundle();
+		bundle = this.getIntent().getExtras();
+		if (bundle != null) {
+			userId = bundle.getLong("UserID");
+			userName = bundle.getString("PersonName");
+		}
+
+		if (userId < 0 || curUserId < 0) {
+			ToastHelper.showToast(R.string.app_occurred_exception);
+			this.finish();
+		}
 
 		initView();
 		getMyTagsFromServer(1, true, true);
-		getAllTagsFromServer(1, true, true);
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_title_left:
+			this.finish();
+			break;
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
-		SegmentedGroup mTagsGroup = (SegmentedGroup) findViewById(R.id.group_tags);
-		mTagsGroup.setTintColor(getResources().getColor(R.color.segment_group_bg_check),
-				getResources().getColor(R.color.segment_group_text_check));
-		mTagsGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				if (checkedId == R.id.radio_my_tags) {
-					mPullCategoryListView.setVisibility(View.GONE);
-					mPullTagsListView.setVisibility(View.VISIBLE);
-				} else {
-					mPullTagsListView.setVisibility(View.GONE);
-					mPullCategoryListView.setVisibility(View.VISIBLE);
-				}
-			}
-		});
+		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
+		mTitleTxt.setText(userName + "\'s Tags");
+		mTitleTxt.setVisibility(View.VISIBLE);
+		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
+		mBackBtn.setOnClickListener(this);
+		mBackBtn.setVisibility(View.VISIBLE);
 
 		mPullTagsListView = (PullToRefreshListView) findViewById(R.id.list_my_tags);
 		mPullTagsListView.setMode(Mode.BOTH);
@@ -118,78 +123,34 @@ public class TagsActivity extends Activity {
 		registerForContextMenu(mTagsListView);
 		mTagsAdapter = new TagsAdapter(this, mTagsData);
 		mTagsListView.setAdapter(mTagsAdapter);
-		mTagsTouchListener = new DeleteTouchListener(mTagsListView, new OnDeleteCallback() {
+		if (userId == curUserId) {
+			mTagsTouchListener = new DeleteTouchListener(mTagsListView, new OnDeleteCallback() {
 
-			@Override
-			public void onDelete(ListView listView, int position) {
-				position = position - 1; // ListView Header
-				if (position < mTagsListView.getCount()) {
-					deleteUserTagFromServer(mTagsData.get(position).getUserTagId(), position, true);
+				@Override
+				public void onDelete(ListView listView, int position) {
+					position = position - 1; // ListView Header
+					if (position < mTagsListView.getCount()) {
+						deleteUserTagFromServer(mTagsData.get(position).getUserTagId(), position, true);
+					}
 				}
-			}
-		});
-		mTagsListView.setOnTouchListener(mTagsTouchListener);
-		mTagsListView.setOnScrollListener(mTagsTouchListener.makeScrollListener());
+			});
+			mTagsListView.setOnTouchListener(mTagsTouchListener);
+			mTagsListView.setOnScrollListener(mTagsTouchListener.makeScrollListener());
+		}
+
 		mTagsListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				Intent intent = new Intent();
 				Bundle bundle = new Bundle();
 				bundle.putLong("TagID", mTagsData.get(arg2 - 1).getId());
-				bundle.putLong("UserID", mUserId);
-				intent.setClass(TagsActivity.this, TagProfileActivity.class);
+				bundle.putLong("UserID", userId);
+				intent.setClass(PersonTagsActivity.this, TagProfileActivity.class);
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}
 		});
 		mPullTagsListView.setVisibility(View.VISIBLE);
-
-		mPullCategoryListView = (PullToRefreshListView) findViewById(R.id.list_tags_category);
-		TextView mEmptyCategoryView = (TextView) findViewById(R.id.txt_empty_category);
-		mPullCategoryListView.setEmptyView(mEmptyCategoryView);
-		mPullCategoryListView.setMode(Mode.BOTH);
-		mPullCategoryListView.setOnRefreshListener(new OnRefreshListener2() {
-
-			@Override
-			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-				// TODO Auto-generated method stub
-				refreshView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(
-						"Last Refresh: " + Util.getCurFormatDate());
-				getAllTagsFromServer(1, true, false);
-			}
-
-			@Override
-			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-				// TODO Auto-generated method stub
-				refreshView.getLoadingLayoutProxy(false, true).setLastUpdatedLabel(
-						"Last Loading: " + Util.getCurFormatDate());
-				int count = mCategoryListView.getCount() - 2;
-				if (count < mMaxAllTags) {
-					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
-					getAllTagsFromServer(pageIndex, false, false);
-				} else {
-					ToastHelper.showToast("All the data has been loaded ");
-					updateAllTagsListView();
-				}
-			}
-		});
-		mCategoryListView = mPullCategoryListView.getRefreshableView();
-		registerForContextMenu(mTagsListView);
-		mCategoryAdapter = new TagCategoryAdapter(this, mCategoryData);
-		mCategoryListView.setAdapter(mCategoryAdapter);
-		mCategoryListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Intent intent = new Intent();
-				Bundle bundle = new Bundle();
-				bundle.putLong("TagCategoryID", mCategoryData.get(arg2 - 1).getId());
-				bundle.putString("TagCategoryName", mCategoryData.get(arg2 - 1).getTitle());
-				intent.setClass(TagsActivity.this, TagsCategoryActivity.class);
-				intent.putExtras(bundle);
-				startActivity(intent);
-			}
-		});
-		mPullCategoryListView.setVisibility(View.GONE);
 	}
 
 	private void updateDeleteResult(boolean result, int position) {
@@ -206,16 +167,6 @@ public class TagsActivity extends Activity {
 			mPullTagsListView.setMode(Mode.PULL_FROM_START);
 		} else {
 			mPullTagsListView.setMode(Mode.BOTH);
-		}
-	}
-
-	private void updateAllTagsListView() {
-		mCategoryAdapter.notifyDataSetChanged();
-		mPullCategoryListView.onRefreshComplete();
-		if (mCategoryData.size() >= mMaxAllTags) {
-			mPullCategoryListView.setMode(Mode.PULL_FROM_START);
-		} else {
-			mPullCategoryListView.setMode(Mode.BOTH);
 		}
 	}
 
@@ -293,89 +244,8 @@ public class TagsActivity extends Activity {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
+		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + userId + "/?pageindex=" + pageIndex + "&pagesize="
 				+ ServerKeys.PAGE_SIZE + "&name=", null);
-		if (isNeedsDialog) {
-			mProgressDialog.show();
-		}
-	}
-
-	/**
-	 * get All Tags from server
-	 * 
-	 * @param pageIndex
-	 *            load page index
-	 */
-	private void getAllTagsFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
-		HttpRequest request = new HttpRequest();
-
-		if (isNeedsDialog) {
-			if (mProgressDialog == null) {
-				mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
-			} else {
-				if (mProgressDialog.isShowing()) {
-					mProgressDialog.dismiss();
-				}
-			}
-		}
-
-		request.setOnHttpRequestListener(new OnHttpRequestListener() {
-
-			@Override
-			public void onSuccess(String url, String result) {
-				if (isNeedsDialog) {
-					mProgressDialog.dismiss();
-				}
-				try {
-					if (isRefresh) {
-						mCategoryData.clear();
-					}
-
-					Log.d("TagsActivity", "All Tags: " + result);
-					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
-					mMaxAllTags = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
-
-					JSONArray categoryArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
-					for (int i = 0; i < categoryArray.length(); i++) {
-						TagCategory tagCategory = new TagCategory();
-						JSONObject json = categoryArray.getJSONObject(i);
-						tagCategory.setId(json.getLong(ServerKeys.KEY_ID));
-						tagCategory.setTitle(json.getString(ServerKeys.KEY_TITLE));
-						tagCategory.setLogoUri(json.getString(ServerKeys.KEY_LOGO));
-
-						JSONArray tagsArray = json.getJSONArray(ServerKeys.KEY_TAGS);
-						for (int j = 0; j < tagsArray.length(); j++) {
-							TagInfo tagInfo = new TagInfo();
-							JSONObject tagJson = tagsArray.getJSONObject(j);
-							tagInfo.setId(tagJson.getLong(ServerKeys.KEY_ID));
-							tagInfo.setTitle(tagJson.getString(ServerKeys.KEY_TITLE));
-							tagCategory.addTags(tagInfo);
-						}
-
-						mCategoryData.add(tagCategory);
-					}
-
-				} catch (JSONException e) {
-					e.printStackTrace();
-					ToastHelper.showToast(R.string.server_response_exception, Toast.LENGTH_LONG);
-				} finally {
-					updateAllTagsListView();
-				}
-			}
-
-			@Override
-			public void onFailure(String url, int errorNo, String errorMsg) {
-				if (isNeedsDialog) {
-					mProgressDialog.dismiss();
-				}
-				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
-				updateAllTagsListView();
-			}
-		});
-
-		request.get(
-				ServerKeys.FULL_URL_GET_TAG_LIST + "/?pageindex=" + pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE,
-				null);
 		if (isNeedsDialog) {
 			mProgressDialog.show();
 		}

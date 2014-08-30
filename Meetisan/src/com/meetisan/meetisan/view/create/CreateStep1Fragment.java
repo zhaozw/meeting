@@ -76,7 +76,7 @@ public class CreateStep1Fragment extends Fragment {
 					HttpBitmap httpBitmap = new HttpBitmap(getActivity());
 					httpBitmap.displayBitmap(mMeetPersonCircleImageView, avatarUri);
 				} else {
-					mMeetPersonCircleImageView.setImageResource(R.drawable.portrait_default);
+					mMeetPersonCircleImageView.setImageResource(R.drawable.portrait_person_default);
 				}
 //				mMeetPersonItemLayout.setOnTouchListener(new DeleteTouchListener(null, new OnDeleteCallback() {
 //

@@ -27,6 +27,7 @@ import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.view.dashboard.PersonProfileActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.LabelWithIcon;
@@ -36,10 +37,11 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 
 	private ImageView mMomentView;
 	private CircleImageView mPortraitView;
-	private TextView mNameTxt, mDescriptionTxt, mHostTxt, mLinkTxt, mNoMomentTxt;
+	private LabelWithIcon mHostLabel;
+	private TextView mNameTxt, mDescriptionTxt, mLinkTxt, mNoMomentTxt;
 	private TextView mFirstTagTxt, mSecondTagTxt, mThirdTagTxt, mNoTagTxt;
 
-	private long mTagID = -1, mUserID = -1;
+	private long mTagID = -1, mUserID = -1, mHostID = -1;
 	private TagInfo mTagInfo = new TagInfo();
 
 	private HttpBitmap httpBitmap = new HttpBitmap(this);
@@ -76,7 +78,8 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		mPortraitView = (CircleImageView) findViewById(R.id.iv_portrait);
 		mNameTxt = (TextView) findViewById(R.id.txt_name);
 		mDescriptionTxt = (TextView) findViewById(R.id.txt_tag_description);
-		mHostTxt = (TextView) findViewById(R.id.txt_tag_host);
+		mHostLabel = (LabelWithIcon) findViewById(R.id.label_tag_host);
+		mHostLabel.setOnClickListener(this);
 		mLinkTxt = (TextView) findViewById(R.id.txt_tag_link);
 
 		mFirstTagTxt = (TextView) findViewById(R.id.txt_tag_one);
@@ -122,6 +125,14 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			bundle.putLong("TagID", mTagID);
 			intent.putExtras(bundle);
 			break;
+		case R.id.label_tag_host:
+			if (mHostID >= 0) {
+				intent = new Intent(this, PersonProfileActivity.class);
+				bundle = new Bundle();
+				bundle.putLong("UserID", mHostID);
+				intent.putExtras(bundle);
+			}
+			break;
 		default:
 			break;
 		}
@@ -143,11 +154,12 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		mDescriptionTxt.setText("Tag Description:	" + mTagInfo.getDescription());
 		mLinkTxt.setText("Link:		" + mTagInfo.getLink());
 
-		String hostNames = "";
-		for (TagHost host : mTagInfo.getTagHosts()) {
-			hostNames += "  " + host.getHostName();
+		TagHost host = mTagInfo.getTagHost();
+		if (host != null) {
+			String hostNames = host.getHostName();
+			mHostLabel.setContentText(hostNames);
+			mHostID = host.getHostId();
 		}
-		mHostTxt.setText("Tag Hosts:	" + hostNames);
 
 		setMomentView(mTagInfo.getTagMoments());
 	}
@@ -239,7 +251,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 						TagHost tagHost = new TagHost();
 						tagHost.setHostId(hostJson.getLong(ServerKeys.KEY_ID));
 						tagHost.setHostName(hostJson.getString(ServerKeys.KEY_NAME));
-						mTagInfo.addTagHost(tagHost);
+						mTagInfo.setTagHost(tagHost);
 					}
 
 					JSONArray momentsArray = dataJson.getJSONArray(ServerKeys.KEY_TAG_MOMENTS);

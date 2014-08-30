@@ -66,7 +66,7 @@ public class SelectTagsAdapter extends BaseAdapter {
 		} else {
 			holder.checkBox.setChecked(true);
 		}
-		holder.icon.setImageResource(R.drawable.portrait_default);
+		holder.icon.setImageResource(R.drawable.portrait_person_default);
 		if (info.getLogoUri() != null) {
 			httpBitmap.displayBitmap(holder.icon, info.getLogoUri());
 		}

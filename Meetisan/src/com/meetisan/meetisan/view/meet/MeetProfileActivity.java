@@ -43,8 +43,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	private CircleImageView mLogoView;
 	private LabelWithIcon mLocationBtn;
 	private Button mMeetOrCancelBtn;
-	private TextView mTitleTxt, mDescriptionTxt, mStartTimeTxt, mEndTimeTxt, mFirstTagTxt,
-			mSecondTagTxt, mThirdTagTxt, mNoTagTxt;
+	private TextView mTitleTxt, mDescriptionTxt, mStartTimeTxt, mEndTimeTxt, mFirstTagTxt, mSecondTagTxt, mThirdTagTxt,
+			mNoTagTxt;
 
 	private long mMeetingID = -1, mUserID = -1;
 	private String mUserName = null;
@@ -113,9 +113,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			mapBundle.putDouble("Longitude", mMeetInfo.getLongitude());
 			mapBundle.putString("MeetTitle", mMeetInfo.getTitle());
 			Log.d(TAG,
-					"Location: " + false + "; Latitude: " + mMeetInfo.getLatitude()
-							+ "; Longitude: " + mMeetInfo.getLongitude() + "; Title: "
-							+ mMeetInfo.getTitle());
+					"Location: " + false + "; Latitude: " + mMeetInfo.getLatitude() + "; Longitude: "
+							+ mMeetInfo.getLongitude() + "; Title: " + mMeetInfo.getTitle());
 			mapIntent.setClass(this, GoogleMapActivity.class);
 			mapIntent.putExtras(mapBundle);
 			startActivity(mapIntent);
@@ -153,7 +152,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		mStartTimeTxt.setText(Util.convertDateTime(mMeetInfo.getStartTime()));
 		mEndTimeTxt.setText(Util.convertDateTime(mMeetInfo.getEndTime()));
 		if (mMeetInfo.getAddress() != null) {
-			mLocationBtn.setText("Location   " + mMeetInfo.getAddress());
+			mLocationBtn.setText(mMeetInfo.getAddress());
 		}
 		if (mMeetInfo.getJoinStatus() == 2) {
 			// Current User is the Meeting Host
@@ -217,8 +216,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 				try {
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 
 					mMeetInfo.setJoinStatus(dataJson.getInt(ServerKeys.KEY_JOIN_STATUS));
 
@@ -266,8 +264,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_MEET_INFO + "/" + mMeetingID + "/?UserID=" + mUserID,
-				null);
+		request.get(ServerKeys.FULL_URL_GET_MEET_INFO + "/" + mMeetingID + "/?UserID=" + mUserID, null);
 		mProgressDialog.show();
 	}
 
@@ -331,8 +328,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 						mProgressDialog.dismiss();
 						mMeetInfo.setJoinStatus(1);
 						updateMeetProfileUI();
-						ToastHelper.showToast(R.string.cancel_attend_meeting_success,
-								Toast.LENGTH_LONG);
+						ToastHelper.showToast(R.string.cancel_attend_meeting_success, Toast.LENGTH_LONG);
 					}
 				});
 			}
@@ -345,8 +341,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					public void run() {
 						// TODO Auto-generated method stub
 						mProgressDialog.dismiss();
-						ToastHelper.showToast(R.string.cancel_attend_meeting_failure,
-								Toast.LENGTH_LONG);
+						ToastHelper.showToast(R.string.cancel_attend_meeting_failure, Toast.LENGTH_LONG);
 					}
 				});
 			}

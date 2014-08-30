@@ -29,6 +29,7 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 
 	private EditText mNameTxt, mSchoolTxt, mCityTxt, mBirthdayTxt, mGenderTxt, mExperienceTxt, mEducationTxt,
 			mSkillsTxt;
+	private TextView mSaveTxt;
 	private PeopleInfo mUserInfo = new PeopleInfo();
 	private long userId = -1;
 	private long curUserId = -1;
@@ -87,6 +88,11 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 			mExperienceTxt.setEnabled(false);
 			mEducationTxt.setEnabled(false);
 			mSkillsTxt.setEnabled(false);
+		} else {
+			mSaveTxt = (TextView) findViewById(R.id.txt_title_right);
+			mSaveTxt.setText(R.string.save);
+			mSaveTxt.setOnClickListener(this);
+			mSaveTxt.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -105,6 +111,9 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_title_left:
+			PersonMoreInfoActivity.this.finish();
+			break;
+		case R.id.txt_title_right:
 			if (userId == curUserId) {
 				syncUserInfoToServer();
 			} else {

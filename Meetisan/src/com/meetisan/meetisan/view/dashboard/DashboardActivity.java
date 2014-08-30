@@ -164,7 +164,7 @@ public class DashboardActivity extends Activity implements OnClickListener {
 		if (mUserInfo.getAvatarUri() != null) {
 			httpBitmap.displayBitmap(mPortraitView, mUserInfo.getAvatarUri());
 		} else {
-			mPortraitView.setImageResource(R.drawable.portrait_default);
+			mPortraitView.setImageResource(R.drawable.portrait_person_default);
 		}
 	}
 

@@ -90,11 +90,11 @@ public class MeetActivity extends Activity {
 		mLat = mUserInfo.getLatitude();
 		mLon = mUserInfo.getLongitude();
 		Log.d(TAG, "Current Location: lat = " + mLat + "; lon = " + mLon);
+		
+		initView();
 
 		getPeoplesFromServer(1, mLat, mLon, mPeopleSearchFilter, true, true);
 		getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter, true, true);
-
-		initView();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

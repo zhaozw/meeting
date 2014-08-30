@@ -61,7 +61,7 @@ public class MeetingAdapter extends BaseAdapter {
 
 		MeetingInfo mMeetingInfo = meetingData.get(position);
 
-		holder.mCircleImage.setImageResource(R.drawable.portrait_default);
+		holder.mCircleImage.setImageResource(R.drawable.portrait_meet_default);
 		if (mMeetingInfo.getLogoUri() != null) {
 			httpBitmap.displayBitmap(holder.mCircleImage, mMeetingInfo.getLogoUri());
 		}

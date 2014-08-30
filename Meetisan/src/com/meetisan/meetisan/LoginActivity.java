@@ -47,9 +47,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	private void initView() {
-		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
-		mTitleTxt.setText(R.string.login);
-		mTitleTxt.setVisibility(View.VISIBLE);
+		// TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
+		// mTitleTxt.setText(R.string.login);
+		// mTitleTxt.setVisibility(View.VISIBLE);
 
 		mEmailTxt = (EditText) findViewById(R.id.email);
 		mPwdTxt = (EditText) findViewById(R.id.password);

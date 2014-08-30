@@ -30,7 +30,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/activity_edittxt_height</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:textColorHint">@color/gray</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/border_square</item>
         <item name="android:padding">10dp</item>

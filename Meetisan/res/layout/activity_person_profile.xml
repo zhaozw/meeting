@@ -11,6 +11,62 @@
         android:layout_height="@dimen/activity_title_height"
         layout="@layout/title_with_image_btn" />
 
+    <RelativeLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/pic_background"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:paddingLeft="100dp"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_big" />
+
+            <TextView
+                android:id="@+id/txt_signature"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@android:color/white"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingLeft="100dp"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_min" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+
+            <com.meetisan.meetisan.widget.CircleImageView
+                xmlns:customized="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/iv_portrait"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="20dp"
+                android:clickable="true"
+                android:src="@drawable/portrait_person_default"
+                customized:border_color="@android:color/white"
+                customized:border_width="2dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -22,66 +78,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <RelativeLayout
-                android:id="@+id/layout_top"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="@drawable/pic_background"
-                android:orientation="horizontal" >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/txt_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="100dp"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_big" />
-
-                    <TextView
-                        android:id="@+id/txt_signature"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:background="@android:color/white"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:maxLines="2"
-                        android:paddingLeft="100dp"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="@dimen/text_size_min" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="vertical" >
-
-                    <com.meetisan.meetisan.widget.CircleImageView
-                        xmlns:customized="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/iv_portrait"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="20dp"
-                        android:clickable="true"
-                        android:src="@drawable/portrait_default"
-                        customized:border_color="@android:color/white"
-                        customized:border_width="2dp" />
-                </LinearLayout>
-            </RelativeLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:orientation="vertical"
                 android:padding="10dp" >
 
@@ -106,6 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/selector_label_icon_bg"
                     android:padding="5dp" >
 
                     <LinearLayout
@@ -169,12 +170,13 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.6dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:background="@color/gap_line_color" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal" >
@@ -182,6 +184,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
                         android:gravity="center"
                         android:text="@string/university"
                         android:textColor="@android:color/black"
@@ -202,6 +205,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.6dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/gap_line_color" />
 
@@ -209,6 +213,7 @@
                     android:id="@+id/btn_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="@string/more_information"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_small" />
@@ -222,7 +227,6 @@
                     android:id="@+id/layout_meet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:orientation="vertical" >
@@ -230,6 +234,7 @@
                     <Button
                         android:id="@+id/btn_meet"
                         style="@style/ButtonStyle"
+                        android:layout_margin="10dp"
                         android:text="@string/let_us_meet" />
 
                     <TextView

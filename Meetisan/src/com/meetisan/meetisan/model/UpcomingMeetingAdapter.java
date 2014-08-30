@@ -66,7 +66,7 @@ public class UpcomingMeetingAdapter extends BaseAdapter {
 
 		MeetingInfo mMeetingInfo = meetingData.get(position);
 
-		holder.mLogoImage.setImageResource(R.drawable.portrait_default);
+		holder.mLogoImage.setImageResource(R.drawable.portrait_meet_default);
 		if (mMeetingInfo.getLogoUri() != null) {
 			httpBitmap.displayBitmap(holder.mLogoImage, mMeetingInfo.getLogoUri());
 		}

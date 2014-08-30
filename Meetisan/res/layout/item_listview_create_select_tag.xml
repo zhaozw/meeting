@@ -23,7 +23,7 @@
         android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/cb_create_selected_tag"
-        android:src="@drawable/portrait_default"
+        android:src="@drawable/portrait_person_default"
         customized:border_color="@android:color/white"
         customized:border_width="0dp" />
 

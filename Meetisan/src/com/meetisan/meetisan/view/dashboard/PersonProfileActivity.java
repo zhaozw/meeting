@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.view.tags.PersonTagsActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.LabelWithIcon;
@@ -34,6 +36,7 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 	private CircleImageView mPortraitView;
 	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagNoTxt, mTagTitleTxt;
 	private TagLabelLayout mTagOneTxt, mTagTwoTxt, mTagThreeTxt, mTagFourTxt, mTagFiveTxt;
+	private RelativeLayout mTagsLayout;
 
 	private LabelWithIcon mMoreBtn;
 	private LinearLayout mMeetLayout;
@@ -97,6 +100,9 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		mTagFiveTxt = (TagLabelLayout) findViewById(R.id.txt_tag_five);
 		mTagNoTxt = (TextView) findViewById(R.id.txt_no_tags);
 		mTagTitleTxt = (TextView) findViewById(R.id.txt_profile_tag_title);
+
+		mTagsLayout = (RelativeLayout) findViewById(R.id.layout_top_tags);
+		mTagsLayout.setOnClickListener(this);
 	}
 
 	private void updateUIData() {
@@ -108,7 +114,7 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 			HttpBitmap httpBitmap = new HttpBitmap(this);
 			httpBitmap.displayBitmap(mPortraitView, mUserInfo.getAvatarUri());
 		} else {
-			mPortraitView.setImageResource(R.drawable.portrait_default);
+			mPortraitView.setImageResource(R.drawable.portrait_person_default);
 		}
 		mSignatureTxt.setText(mUserInfo.getSignature());
 		mUniversityTxt.setText(mUserInfo.getUniversity());
@@ -168,6 +174,15 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 			meetIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// 它可以关掉所要到的界面中间的activity
 			meetIntent.putExtras(meetBundle);
 			startActivity(meetIntent);
+			break;
+		case R.id.layout_top_tags:
+			Intent tagIntent = new Intent();
+			Bundle tagBundle = new Bundle();
+			tagBundle.putLong("UserID", userId);
+			tagBundle.putString("PersonName", mUserInfo.getName());
+			tagIntent.setClass(this, PersonTagsActivity.class);
+			tagIntent.putExtras(tagBundle);
+			startActivity(tagIntent);
 			break;
 		default:
 			break;

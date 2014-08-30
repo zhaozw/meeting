@@ -10,8 +10,10 @@ public class TagCategory {
 	private long id = 0;
 	/** tag category name */
 	private String title = null;
-	/** tag category logo */
-	private Bitmap logo = null;
+	// /** tag category logo */
+	// private Bitmap logo = null;
+	/** tag category logo Uri */
+	private String logoUri = null;
 	/** tags in this category */
 	private List<TagInfo> tags = new ArrayList<TagInfo>();
 
@@ -31,12 +33,12 @@ public class TagCategory {
 		this.title = title;
 	}
 
-	public Bitmap getLogo() {
-		return logo;
+	public String getLogoUri() {
+		return logoUri;
 	}
 
-	public void setLogo(Bitmap logo) {
-		this.logo = logo;
+	public void setLogoUri(String logoUri) {
+		this.logoUri = logoUri;
 	}
 
 	public List<TagInfo> getTags() {

@@ -4,8 +4,9 @@
     <string name="all_meetings">All Meetings</string>
     <string name="upcoming_meetings">Upcoming Meetings</string>
     <string name="settings">Settings</string>
-    <string name="logout">LogOut</string>
+    <string name="logout">Log Out</string>
     <string name="logout_tips">Are you sure to logout Meetisan?</string>
+    <string name="save">Save</string>
 
     <!-- settings of notify me when -->
     <string name="notify">Notify</string>
@@ -20,7 +21,7 @@
     <string name="public_meetings_create">Allow others to see meetings I\'ve created</string>
     <string name="public_meetings_attend">Allow others to see meetings I\'ve attended</string>
     <string name="blocked_people">People I\'ve blocked</string>
-    
+
     <!-- settings of push notifications -->
     <string name="meeting_reminders_1">Meeting reminders 1</string>
     <string name="meeting_reminders_2">Meeting reminders 2</string>
