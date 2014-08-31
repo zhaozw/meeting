@@ -23,16 +23,30 @@ public class MeetingInfo {
 	private double latitude = 0.0f;
 	/** meet distance */
 	private double distance = 0.0;
-	/** meet start time */
-	private String startTime = null;
-	/** meet end time */
-	private String endTime = null;
+	/** meet determin start time */
+	private String determinStartTime = null;
+	/** meet determin end time */
+	private String determinEndTime = null;
+	/** meet start time 1 */
+	private String startTime1 = null;
+	/** meet end time 1 */
+	private String endTime1 = null;
+	/** meet start time 2 */
+	private String startTime2 = null;
+	/** meet end time 2 */
+	private String endTime2 = null;
+	/** meet start time 3 */
+	private String startTime3 = null;
+	/** meet end time 3 */
+	private String endTime3 = null;
 	/** meet create date */
 	private String createDate = null;
 	/** meet join status, 0:已参加; 1：未参加; 2：当前用户为meeting创建人 */
 	private int joinStatus = 0;
 	/** meet status */
 	private int status = 0;
+	/** meet join */
+	private boolean canJoin = false;
 	/** meet tags */
 	private List<TagInfo> tags = new ArrayList<TagInfo>();
 
@@ -84,20 +98,68 @@ public class MeetingInfo {
 		this.latitude = latitude;
 	}
 
-	public String getStartTime() {
-		return startTime;
+	public String getDeterminStartTime() {
+		return determinStartTime;
 	}
 
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+	public void setDeterminStartTime(String determinStartTime) {
+		this.determinStartTime = determinStartTime;
 	}
 
-	public String getEndTime() {
-		return endTime;
+	public String getDeterminEndTime() {
+		return determinEndTime;
 	}
 
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+	public void setDeterminEndTime(String determinEndTime) {
+		this.determinEndTime = determinEndTime;
+	}
+
+	public String getStartTime1() {
+		return startTime1;
+	}
+
+	public void setStartTime1(String startTime1) {
+		this.startTime1 = startTime1;
+	}
+
+	public String getEndTime1() {
+		return endTime1;
+	}
+
+	public void setEndTime1(String endTime1) {
+		this.endTime1 = endTime1;
+	}
+
+	public String getStartTime2() {
+		return startTime2;
+	}
+
+	public void setStartTime2(String startTime2) {
+		this.startTime2 = startTime2;
+	}
+
+	public String getEndTime2() {
+		return endTime2;
+	}
+
+	public void setEndTime2(String endTime2) {
+		this.endTime2 = endTime2;
+	}
+
+	public String getStartTime3() {
+		return startTime3;
+	}
+
+	public void setStartTime3(String startTime3) {
+		this.startTime3 = startTime3;
+	}
+
+	public String getEndTime3() {
+		return endTime3;
+	}
+
+	public void setEndTime3(String endTime3) {
+		this.endTime3 = endTime3;
 	}
 
 	public String getCreateDate() {
@@ -130,6 +192,14 @@ public class MeetingInfo {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public boolean isCanJoin() {
+		return canJoin;
+	}
+
+	public void setCanJoin(boolean canJoin) {
+		this.canJoin = canJoin;
 	}
 
 	public String getLogoUri() {

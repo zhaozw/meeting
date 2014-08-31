@@ -123,9 +123,16 @@ public class ServerKeys {
 	public static final String KEY_DISTANCE = "Distance";
 	public static final String KEY_ADDRESS = "Address";
 	public static final String KEY_CREATE_USER_ID = "CreateUserID";
-	public static final String KEY_START_TIME = "DetermineStartTime";
-	public static final String KEY_END_TIME = "DetermineEndTime";
+	public static final String KEY_DETERMIN_START_TIME = "DetermineStartTime";
+	public static final String KEY_DETERMIN_END_TIME = "DetermineEndTime";
+	public static final String KEY_START_TIME1 = "StartTime1";
+	public static final String KEY_END_TIME1 = "EndTime1";
+	public static final String KEY_START_TIME2 = "StartTime2";
+	public static final String KEY_END_TIME2 = "EndTime2";
+	public static final String KEY_START_TIME3 = "StartTime3";
+	public static final String KEY_END_TIME3 = "EndTime3";
 	public static final String KEY_REPORT_OBJECT_ID = "ReportObjectID";
 	public static final String KEY_TYPE = "Type";
 	public static final String KEY_IS_PRIVATE ="IsPrivate";
+	public static final String KEY_CAN_JOIN ="CanJoin";
 }

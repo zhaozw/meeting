@@ -201,15 +201,21 @@ public class DashboardActivity extends Activity implements OnClickListener {
 	/**
 	 * get Meetings from server
 	 * 
-	 * @param pageIndex load page index
-	 * @param orderType get list order by edition
-	 * @param mLat location
-	 * @param mLon location
-	 * @param isRefresh is refresh or load more
-	 * @param isNeedsDialog weather show progress dialog
+	 * @param pageIndex
+	 *            load page index
+	 * @param orderType
+	 *            get list order by edition
+	 * @param mLat
+	 *            location
+	 * @param mLon
+	 *            location
+	 * @param isRefresh
+	 *            is refresh or load more
+	 * @param isNeedsDialog
+	 *            weather show progress dialog
 	 */
-	private void getUpcomingMeetingsFromServer(int pageIndex, float mLat, float mLon,
-			final boolean isRefresh, final boolean isNeedsDialog) {
+	private void getUpcomingMeetingsFromServer(int pageIndex, float mLat, float mLon, final boolean isRefresh,
+			final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -234,8 +240,7 @@ public class DashboardActivity extends Activity implements OnClickListener {
 						mMeetingData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 					mAllMeetingsCount = dataJson.getLong(ServerKeys.KEY_MEET_COUNT);
 
 					JSONObject meetingsJson = dataJson.getJSONObject(ServerKeys.KEY_UPCOMING_MEET);
@@ -248,9 +253,8 @@ public class DashboardActivity extends Activity implements OnClickListener {
 
 						JSONObject meetingJson = meetJson.getJSONObject(ServerKeys.KEY_MEETING);
 						meetingInfo.setId(meetingJson.getLong(ServerKeys.KEY_ID));
-						meetingInfo.setCreateUserId(meetingJson
-								.getLong(ServerKeys.KEY_CREATE_USER_ID));
-						meetingInfo.setStartTime(meetingJson.getString(ServerKeys.KEY_START_TIME));
+						meetingInfo.setCreateUserId(meetingJson.getLong(ServerKeys.KEY_CREATE_USER_ID));
+						// meetingInfo.setStartTime(meetingJson.getString(ServerKeys.KEY_START_TIME));
 						if (!meetingJson.isNull(ServerKeys.KEY_TITLE)) {
 							meetingInfo.setTitle(meetingJson.getString(ServerKeys.KEY_TITLE));
 						}
@@ -292,9 +296,8 @@ public class DashboardActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_UPCOMING_MEET + "/" + mUserInfo.getId()
-				+ "/?pageindex=" + pageIndex + "&pagesize=" + ServerKeys.PAGE_SIZE + "&lat=" + mLat
-				+ "&lon=" + mLon, null);
+		request.get(ServerKeys.FULL_URL_GET_UPCOMING_MEET + "/" + mUserInfo.getId() + "/?pageindex=" + pageIndex
+				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&lat=" + mLat + "&lon=" + mLon, null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();
