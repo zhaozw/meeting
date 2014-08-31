@@ -43,8 +43,9 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	private CircleImageView mLogoView;
 	private LabelWithIcon mLocationBtn;
 	private Button mMeetOrCancelBtn;
-	private TextView mTitleTxt, mDescriptionTxt, mStartTimeTxt, mEndTimeTxt, mFirstTagTxt, mSecondTagTxt, mThirdTagTxt,
-			mNoTagTxt;
+	private TextView mTitleTxt, mDescriptionTxt, mFirstTagTxt, mSecondTagTxt, mThirdTagTxt, mNoTagTxt, mCannotJoinTxt;
+	private TextView mTime1Txt, mTime2Txt, mTime3Txt;
+	private LinearLayout mMeetLayout;
 
 	private long mMeetingID = -1, mUserID = -1;
 	private String mUserName = null;
@@ -80,16 +81,19 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	private void initView() {
 		((ImageButton) findViewById(R.id.btn_title_icon_left)).setOnClickListener(this);
 
+		mMeetLayout = (LinearLayout) findViewById(R.id.layout_meet_and_report);
 		mMeetOrCancelBtn = (Button) findViewById(R.id.btn_meet);
 		mMeetOrCancelBtn.setOnClickListener(this);
+		mCannotJoinTxt = (TextView) findViewById(R.id.txt_cannot_join);
 
 		mConnectionView = (ImageButton) findViewById(R.id.btn_connections);
 		mConnectionView.setOnClickListener(this);
 		mLogoView = (CircleImageView) findViewById(R.id.iv_logo);
 		mTitleTxt = (TextView) findViewById(R.id.txt_meet_title);
 		mDescriptionTxt = (TextView) findViewById(R.id.txt_meet_description);
-		mStartTimeTxt = (TextView) findViewById(R.id.txt_time_start);
-		mEndTimeTxt = (TextView) findViewById(R.id.txt_time_end);
+		mTime1Txt = (TextView) findViewById(R.id.txt_time1);
+		mTime2Txt = (TextView) findViewById(R.id.txt_time2);
+		mTime3Txt = (TextView) findViewById(R.id.txt_time3);
 		mLocationBtn = (LabelWithIcon) findViewById(R.id.btn_location);
 		mLocationBtn.setOnClickListener(this);
 
@@ -149,19 +153,21 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		if (mMeetInfo.getDescription() != null) {
 			mDescriptionTxt.setText(mMeetInfo.getDescription());
 		}
-		mStartTimeTxt.setText(Util.convertDateTime(mMeetInfo.getStartTime()));
-		mEndTimeTxt.setText(Util.convertDateTime(mMeetInfo.getEndTime()));
+		mTime1Txt.setText(Util.convertTime2FormatMeetTime(mMeetInfo.getStartTime1(), mMeetInfo.getEndTime1()));
+		mTime2Txt.setText(Util.convertTime2FormatMeetTime(mMeetInfo.getStartTime2(), mMeetInfo.getEndTime2()));
+		mTime3Txt.setText(Util.convertTime2FormatMeetTime(mMeetInfo.getStartTime3(), mMeetInfo.getEndTime3()));
 		if (mMeetInfo.getAddress() != null) {
 			mLocationBtn.setText(mMeetInfo.getAddress());
 		}
-		if (mMeetInfo.getJoinStatus() == 2) {
-			// Current User is the Meeting Host
-			// TODO ..
-			((LinearLayout) findViewById(R.id.layout_meet_and_report)).setVisibility(View.GONE);
-		} else if (mMeetInfo.getJoinStatus() == 1) {
-			mMeetOrCancelBtn.setText(R.string.meet);
-		} else if (mMeetInfo.getJoinStatus() == 0) {
-			mMeetOrCancelBtn.setText(R.string.cancel);
+		if (mMeetInfo.isCanJoin()) {
+			if (mMeetInfo.getJoinStatus() == 1) {
+				mMeetOrCancelBtn.setText(R.string.meet);
+			} else if (mMeetInfo.getJoinStatus() == 0 || mMeetInfo.getJoinStatus() == 2) {
+				mMeetOrCancelBtn.setText(R.string.cancel);
+			}
+		} else {
+			mMeetLayout.setVisibility(View.GONE);
+			mCannotJoinTxt.setVisibility(View.VISIBLE);
 		}
 
 		List<TagInfo> tagsList = mMeetInfo.getTags();
@@ -188,11 +194,9 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	}
 
 	private void attendOrCancelMeet() {
-		if (mMeetInfo.getJoinStatus() == 2) {
-			// TODO.. nothing
-		} else if (mMeetInfo.getJoinStatus() == 1) {
+		if (mMeetInfo.getJoinStatus() == 1) {
 			doAttendMeeting();
-		} else if (mMeetInfo.getJoinStatus() == 0) {
+		} else if (mMeetInfo.getJoinStatus() == 0 || mMeetInfo.getJoinStatus() == 2) {
 			doCancelMeeting();
 		}
 	}
@@ -219,6 +223,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 
 					mMeetInfo.setJoinStatus(dataJson.getInt(ServerKeys.KEY_JOIN_STATUS));
+					mMeetInfo.setCanJoin(dataJson.getBoolean(ServerKeys.KEY_CAN_JOIN));
 
 					JSONObject meetJson = dataJson.getJSONObject(ServerKeys.KEY_MEETING);
 					mMeetInfo.setId(meetJson.getLong(ServerKeys.KEY_ID));
@@ -233,8 +238,14 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					if (!meetJson.isNull(ServerKeys.KEY_ADDRESS)) {
 						mMeetInfo.setAddress(meetJson.getString(ServerKeys.KEY_ADDRESS));
 					}
-					mMeetInfo.setStartTime(meetJson.getString(ServerKeys.KEY_START_TIME));
-					mMeetInfo.setEndTime(meetJson.getString(ServerKeys.KEY_END_TIME));
+					mMeetInfo.setDeterminStartTime(meetJson.getString(ServerKeys.KEY_DETERMIN_START_TIME));
+					mMeetInfo.setDeterminEndTime(meetJson.getString(ServerKeys.KEY_DETERMIN_END_TIME));
+					mMeetInfo.setStartTime1(meetJson.getString(ServerKeys.KEY_START_TIME1));
+					mMeetInfo.setEndTime1(meetJson.getString(ServerKeys.KEY_END_TIME1));
+					mMeetInfo.setStartTime2(meetJson.getString(ServerKeys.KEY_START_TIME2));
+					mMeetInfo.setEndTime2(meetJson.getString(ServerKeys.KEY_END_TIME2));
+					mMeetInfo.setStartTime3(meetJson.getString(ServerKeys.KEY_START_TIME3));
+					mMeetInfo.setEndTime3(meetJson.getString(ServerKeys.KEY_END_TIME3));
 					mMeetInfo.setCreateDate(meetJson.getString(ServerKeys.KEY_CREATE_DATE));
 					mMeetInfo.setLogoUri(meetJson.getString(ServerKeys.KEY_LOGO));
 					mMeetInfo.setCreateUserId(meetJson.getLong(ServerKeys.KEY_CREATE_USER_ID));

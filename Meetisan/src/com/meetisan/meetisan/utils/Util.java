@@ -2,7 +2,9 @@ package com.meetisan.meetisan.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,9 @@ import android.util.Log;
 public class Util {
 	private static final String SHARE_PREFERENCES_NAME = "tle.preferences";
 	public static final long SECONDS_OF_ONE_DAY = 24 * 3600;
+	public static final String[] MONTH_ABBREVIATION = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
+			"Oct", "Nov", "Dec" };
+	public static final String[] WEEK_ABBREVIATION = { "Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat" };
 
 	/**
 	 * @param level
@@ -329,7 +334,73 @@ public class Util {
 		String time = date.substring(gapIndex + 1, gapIndex + 1 + 5);
 		return time + " " + day;
 	}
-	
+
+	private static boolean isSameDay(String startTime, String endTime) {
+		if (startTime == null || !startTime.contains("T") || endTime == null || !endTime.contains("T")) {
+			return false;
+		}
+		String start = startTime.substring(0, startTime.lastIndexOf("T"));
+		String end = endTime.substring(0, endTime.lastIndexOf("T"));
+
+		return start.equals(end);
+	}
+
+	/**
+	 * convert [2012-01-12T10:03:41.753] to [12 Jan, 2012]
+	 * 
+	 * @param dateTime
+	 * @return
+	 * @throws ParseException
+	 */
+	public static String convertDateToMeetTime(String dateTime) throws ParseException {
+		dateTime = dateTime.replaceAll("T", " ");
+		int index = dateTime.lastIndexOf(".");
+		if (index > 0) {
+			dateTime = dateTime.substring(index, dateTime.length());
+		}
+		long time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime).getTime();
+		Date date = new Date(time);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		int week = calendar.get(Calendar.DAY_OF_WEEK);
+
+		return WEEK_ABBREVIATION[week] + ", " + day + " " + MONTH_ABBREVIATION[month] + ", " + year;
+	}
+
+	public static String convertTime2FormatMeetTime(String startTime, String endTime) {
+		boolean isSameDay = isSameDay(startTime, endTime);
+
+		String meetTime = null;
+		try {
+			if (isSameDay) {
+				String date = convertDateToMeetTime(startTime);
+				int gap = startTime.lastIndexOf("T");
+				String sTime = startTime.substring(gap + 1, gap + 6);
+				String eTime = endTime.substring(gap + 1, gap + 6);
+
+				meetTime = date + "  " + sTime + " - " + eTime;
+			} else {
+				String sDate = convertDateToMeetTime(startTime);
+				String eDate = convertDateToMeetTime(endTime);
+				int gap = startTime.lastIndexOf("T");
+				String sTime = startTime.substring(gap + 1, gap + 6);
+				String eTime = endTime.substring(gap + 1, gap + 6);
+
+				meetTime = sDate + "  " + sTime + " -\n" + eDate + "  " + eTime;
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			meetTime = "";
+		}
+
+		return meetTime;
+	}
+
 	public static boolean isEmpty(String s) {
 		if (null == s)
 			return true;

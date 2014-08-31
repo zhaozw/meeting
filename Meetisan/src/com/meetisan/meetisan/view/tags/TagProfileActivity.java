@@ -27,15 +27,17 @@ import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.view.dashboard.PersonProfileActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.LabelWithIcon;
+import com.meetisan.meetisan.widget.TagInFrameFoto;
 
 public class TagProfileActivity extends Activity implements OnClickListener {
 	private static final String TAG = TagProfileActivity.class.getSimpleName();
 
-	private ImageView mMomentView;
+	private TagInFrameFoto mMomentView;
 	private CircleImageView mPortraitView;
 	private LabelWithIcon mHostLabel;
 	private TextView mNameTxt, mDescriptionTxt, mLinkTxt, mNoMomentTxt;
@@ -73,7 +75,9 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		((ImageButton) findViewById(R.id.im_btn_connection)).setOnClickListener(this);
 		((ImageButton) findViewById(R.id.im_btn_meeting)).setOnClickListener(this);
 
-		mMomentView = (ImageView) findViewById(R.id.iv_moments);
+		mMomentView = (TagInFrameFoto) findViewById(R.id.iv_moments);
+		mMomentView.setLayoutSize(Util.getWindowsSize(this, true) - 20);
+		mMomentView.setOnInFrameClickListener(this);
 		mNoMomentTxt = (TextView) findViewById(R.id.txt_no_moments);
 		mPortraitView = (CircleImageView) findViewById(R.id.iv_portrait);
 		mNameTxt = (TextView) findViewById(R.id.txt_name);
@@ -133,6 +137,14 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 				intent.putExtras(bundle);
 			}
 			break;
+		case R.id.iv_moments:
+			if (mTagID > 0) {
+				intent = new Intent(this, TagMomentsActivity.class);
+				bundle = new Bundle();
+				bundle.putLong("TagID", mTagID);
+				intent.putExtras(bundle);
+			}
+			break;
 		default:
 			break;
 		}
@@ -187,28 +199,17 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 	}
 
 	private void setMomentView(List<TagMoment> mTagMoments) {
-		List<String> mBitmaps = new ArrayList<String>();
+		List<String> mUriList = new ArrayList<String>();
 		for (TagMoment tagMoment : mTagMoments) {
 			if (tagMoment.getImageUri() != null) {
-				mBitmaps.add(tagMoment.getImageUri());
+				mUriList.add(tagMoment.getImageUri());
 			}
 		}
-		if (mBitmaps.size() <= 0) {
-			mMomentView.setVisibility(View.GONE);
+		if (mUriList.size() <= 0) {
 			mNoMomentTxt.setVisibility(View.VISIBLE);
-			return;
-		}
-
-		// Bitmap mBitmap = Util.inFrameFoto(mBitmaps, Util.getWindowsSize(this,
-		// true) - 20);
-		Bitmap mBitmap = null;
-		if (mBitmap != null) {
-			mMomentView.setImageBitmap(mBitmap);
-			mNoMomentTxt.setVisibility(View.GONE);
-			mMomentView.setVisibility(View.VISIBLE);
 		} else {
-			mMomentView.setVisibility(View.GONE);
-			mNoMomentTxt.setVisibility(View.VISIBLE);
+			mNoMomentTxt.setVisibility(View.GONE);
+			mMomentView.setInframeForos(mUriList);
 		}
 	}
 

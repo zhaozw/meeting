@@ -29,7 +29,7 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 	private ImageButton mBackBtn;
 	private Button mSendBtn;
 	private EditText mEmailTxt;
-	
+
 	private boolean isRegistion = false;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_inset_email);
 
 		isRegistion = getIntent().getBooleanExtra("isRegistion", false);
-		
+
 		initView();
 	}
 
@@ -106,8 +106,7 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 					JSONObject json = new JSONObject(result);
 					code = json.getString(ServerKeys.KEY_DATA);
 
-					UserInfoKeeper.writeUserInfo(InsertEmailActivity.this,
-							UserInfoKeeper.KEY_USER_EMAIL, email);
+					UserInfoKeeper.writeUserInfo(InsertEmailActivity.this, UserInfoKeeper.KEY_USER_EMAIL, email);
 
 					Intent intent = new Intent();
 					Bundle bundle = new Bundle();
@@ -130,7 +129,11 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_SEND_CODE + "/" + email, null);
+		if (isRegistion) {
+			request.get(ServerKeys.FULL_URL_SEND_CODE + "/" + email, null);
+		} else {
+			request.get(ServerKeys.FULL_URL_SEND_CODE + "/" + email + "?isRegister=false", null);
+		}
 		mProgressDialog.show();
 	}
 
