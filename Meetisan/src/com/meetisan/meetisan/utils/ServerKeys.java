@@ -28,6 +28,7 @@ public class ServerKeys {
 	private static final String API_TNOTIFICATION = "/api/tnotification/";
 	private static final String API_TMEET_MEMBER = "/api/tmeetingmember/";
 	private static final String API_TTAG_CATEGORY = "/api/tTagCategory/";
+	private static final String API_TAG_MOMENT = "/api/ttagmoment/";
 
 	// URL
 	/** http://{域名}/api/tuser/Login/ */
@@ -37,6 +38,8 @@ public class ServerKeys {
 	public static final String FULL_URL_SEND_CODE = SERVER_ADDRESS + API_TUSER + "SendActivationCode";
 	public static final String FULL_URL_CHECK_CODE = SERVER_ADDRESS + API_TUSER + "CheckActivationCode";
 	public static final String FULL_URL_REGISTER = SERVER_ADDRESS + API_TUSER + "Register";
+	/** http://{域名}/api/tUser/UpdatePassword/ */
+	public static final String FULL_URL_UPDATE_USER_PWD = SERVER_ADDRESS + API_TUSER + "UpdatePassword";
 	/** http://{域名}/api/tuser/Update/ */
 	public static final String FULL_URL_UPDATE_USER_INFO = SERVER_ADDRESS + API_TUSER + "Update";
 	/** http://{域名}/api/tuser/updatelocation/{用户ID}/?lat={当前用户经度}&lon={当前用户经度} */
@@ -81,13 +84,16 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_ATTENDED_MEET = SERVER_ADDRESS + API_TMEET + "GetUserMeetingList";
 	/** http://{域名}/api/tmeeting/GetTagMeeting/?pageindex={页码}&pagesize={每页数量}&lat={当前用户经度}&lon={当前用户经度}&tagIDs={当前TagID} */
 	public static final String FULL_URL_GET_ASSOCIATE_MEET = SERVER_ADDRESS + API_TMEET + "GetTagMeeting";
-	
+	/** http://{域名}/api/ttagmoment/getlist/{Tag的ID}/?pageindex={页码}&pagesize={每页数量} */
+	public static final String FULL_URL_GET_TAG_MOMENT_LIST = SERVER_ADDRESS + API_TAG_MOMENT + "getlist";
 	
 	// Keys
 	public static final String KEY_ID = "ID";
 	public static final String KEY_EMAIL = "Email";
 	public static final String KEY_NAME = "Name";
 	public static final String KEY_PASSWORD = "Password";
+	public static final String KEY_CODE_ID = "CodeID";
+	public static final String KEY_CODE = "Code";
 	public static final String KEY_AVATAR = "Avatar";
 	public static final String KEY_BG = "BackGroundImg";
 	public static final String KEY_UNIVERSITY = "University";

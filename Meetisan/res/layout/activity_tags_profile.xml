@@ -250,18 +250,16 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp" >
 
-                <ImageView
+                <com.meetisan.meetisan.widget.TagInFrameFoto
                     android:id="@+id/iv_moments"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:scaleType="center"
-                    android:src="@drawable/portrait_person_default"
-                    android:visibility="gone" />
+                    android:gravity="center" />
 
                 <TextView
                     android:id="@+id/txt_no_moments"
