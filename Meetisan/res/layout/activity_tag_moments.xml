@@ -22,7 +22,20 @@
         android:listSelector="@android:color/transparent"
         android:numColumns="3"
         android:padding="10dp"
+        android:scrollbars="none"
         android:stretchMode="columnWidth"
         android:verticalSpacing="20dp" />
+
+    <TextView
+        android:id="@+id/txt_no_moments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/include_title"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/empty_tag_moment_tips"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/text_size_middle"
+        android:visibility="gone" />
 
 </RelativeLayout>

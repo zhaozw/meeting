@@ -9,12 +9,10 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,6 +77,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		mMomentView.setLayoutSize(Util.getWindowsSize(this, true) - 20);
 		mMomentView.setOnInFrameClickListener(this);
 		mNoMomentTxt = (TextView) findViewById(R.id.txt_no_moments);
+		mNoMomentTxt.setOnClickListener(this);
 		mPortraitView = (CircleImageView) findViewById(R.id.iv_portrait);
 		mNameTxt = (TextView) findViewById(R.id.txt_name);
 		mDescriptionTxt = (TextView) findViewById(R.id.txt_tag_description);
@@ -137,11 +136,20 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 				intent.putExtras(bundle);
 			}
 			break;
+		case R.id.txt_no_moments:
+			if (mTagID > 0) {
+				intent = new Intent(this, TagMomentsActivity.class);
+				bundle = new Bundle();
+				bundle.putLong("TagID", mTagID);
+				bundle.putInt("FollowState", mTagInfo.getFollow());
+				intent.putExtras(bundle);
+			}
 		case R.id.iv_moments:
 			if (mTagID > 0) {
 				intent = new Intent(this, TagMomentsActivity.class);
 				bundle = new Bundle();
 				bundle.putLong("TagID", mTagID);
+				bundle.putInt("FollowState", mTagInfo.getFollow());
 				intent.putExtras(bundle);
 			}
 			break;
