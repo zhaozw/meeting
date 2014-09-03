@@ -152,6 +152,11 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
+            android:name=".view.tags.SearchTagsActivity"
+            android:label="@string/title_tags"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
             android:name=".view.tags.PersonTagsActivity"
             android:label="@string/title_tags"
             android:windowSoftInputMode="adjustResize|stateHidden" >

@@ -24,6 +24,7 @@ public class ServerKeys {
 	public static final int STATUS_FAILED = 1;
 	private static final String API_TUSER = "/api/tuser/";
 	private static final String API_TTAG = "/api/ttag/";
+	private static final String API_TUSER_TAG = "/api/tUserTag/";
 	private static final String API_TMEET = "/api/tmeeting/";
 	private static final String API_TNOTIFICATION = "/api/tnotification/";
 	private static final String API_TMEET_MEMBER = "/api/tmeetingmember/";
@@ -136,6 +137,11 @@ public class ServerKeys {
 	public static final String FULL_URL_ADD_TAG_MOMENT = SERVER_ADDRESS + API_TAG_MOMENT + "add";
 	/** http://{域名}/api/tTagCreateApply/Add/ */
 	public static final String FULL_URL_CREATE_TAG = SERVER_ADDRESS + API_TAG_CREATE_APPLY + "Add";
+	/** http://{域名}/api/ttag/searchtag/?name={要搜索的关键字}&pageindex={页码}&pagesize={每页数量} */
+	public static final String FULL_URL_SEARCH_TAG = SERVER_ADDRESS + API_TTAG + "searchtag";
+	/** http://meetisanapp.azurewebsites.net/api/tUserTag/Add/  (UserID ：对应用户ID  TagID：对应要加入的tag) */
+	public static final String FULL_URL_USER_ADD_TAG = SERVER_ADDRESS + API_TUSER_TAG + "Add";
+	
 
 	// Keys
 	public static final String KEY_ID = "ID";

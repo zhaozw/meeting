@@ -35,5 +35,6 @@
     <string name="add_tag_tips">Tip\nYou can upload picture only in case you have followed this rag</string>
     <string name="give_up_add_tag_tips">Give up the editor?</string>
     <string name="add_this_tag">Add Tag</string>
+    <string name="success_add_tag">Success to add this Tag</string>
     
 </resources>

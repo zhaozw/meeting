@@ -2,6 +2,8 @@ package com.meetisan.meetisan.view.tags;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,16 +30,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.TagMoment;
+import com.meetisan.meetisan.utils.DialogUtils;
+import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
 import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.HttpRequest;
-import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
-import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
-import com.meetisan.meetisan.view.dashboard.SettingsActivity;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class TagMomentsActivity extends Activity implements OnClickListener {
@@ -45,7 +47,7 @@ public class TagMomentsActivity extends Activity implements OnClickListener {
 	private GridView mGridView;
 	private List<TagMoment> mMomentData = new ArrayList<TagMoment>();
 
-	private long mTagID = -1;
+	private long mTagID = -1, mUserID = -1;
 	private int mFollowState = 0;
 	private long mMaxCount = 0;
 	private TagMomentAdapter mAdapter;
@@ -55,6 +57,8 @@ public class TagMomentsActivity extends Activity implements OnClickListener {
 
 		setContentView(R.layout.activity_tag_moments);
 
+		mUserID = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
+
 		Bundle bundle = new Bundle();
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
@@ -62,7 +66,7 @@ public class TagMomentsActivity extends Activity implements OnClickListener {
 			mFollowState = bundle.getInt("FollowState");
 		}
 
-		if (mTagID < 0) {
+		if (mTagID < 0 || mUserID < 0) {
 			ToastHelper.showToast(R.string.app_occurred_exception);
 			this.finish();
 		}
@@ -86,7 +90,7 @@ public class TagMomentsActivity extends Activity implements OnClickListener {
 		mUploadBtn.setImageResource(R.drawable.common_add);
 		mUploadBtn.setVisibility(View.VISIBLE);
 		mUploadBtn.setOnClickListener(this);
-		
+
 		TextView mEmptyView = (TextView) findViewById(R.id.txt_no_moments);
 		mEmptyView.setOnClickListener(this);
 		mGridView = (GridView) findViewById(R.id.gridview);
@@ -108,8 +112,6 @@ public class TagMomentsActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		Intent intent = null;
-		Bundle bundle = null;
 		switch (v.getId()) {
 		case R.id.btn_title_left:
 			finish();
@@ -117,10 +119,7 @@ public class TagMomentsActivity extends Activity implements OnClickListener {
 		case R.id.txt_no_moments:
 		case R.id.im_btn_title_right:
 			if (mFollowState == 1) {
-				intent = new Intent(this, AddTagMomentsActivity.class);
-				bundle = new Bundle();
-				bundle.putLong("TagID", mTagID);
-				intent.putExtras(bundle);
+				gotoAddTagMomentActivity();
 			} else {
 				addTagOrCancelDialog();
 			}
@@ -128,10 +127,16 @@ public class TagMomentsActivity extends Activity implements OnClickListener {
 		default:
 			break;
 		}
+	}
 
-		if (intent != null) {
-			startActivity(intent);
-		}
+	private void gotoAddTagMomentActivity() {
+		Intent intent = null;
+		Bundle bundle = null;
+		intent = new Intent(this, AddTagMomentsActivity.class);
+		bundle = new Bundle();
+		bundle.putLong("TagID", mTagID);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	private void addTagOrCancelDialog() {
@@ -236,7 +241,38 @@ public class TagMomentsActivity extends Activity implements OnClickListener {
 	}
 
 	private void addTagToUser() {
-		
+		HttpRequest request = new HttpRequest();
+
+		if (mProgressDialog == null) {
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+		} else {
+			if (mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+			}
+		}
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+				mFollowState = 1;
+				ToastHelper.showToast(R.string.success_add_tag, Toast.LENGTH_LONG);
+				gotoAddTagMomentActivity();
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+			}
+		});
+
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put(ServerKeys.KEY_TAG_ID, String.valueOf(mTagID));
+		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
+		request.post(ServerKeys.FULL_URL_USER_ADD_TAG, data);
+		mProgressDialog.show();
 	}
 
 	public class TagMomentAdapter extends BaseAdapter {

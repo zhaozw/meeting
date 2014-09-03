@@ -12,8 +12,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -69,6 +71,17 @@ public class TagsActivity extends Activity {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
+		ImageButton mSeachBtn = (ImageButton)findViewById(R.id.btn_search);
+		mSeachBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(TagsActivity.this, SearchTagsActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 		SegmentedGroup mTagsGroup = (SegmentedGroup) findViewById(R.id.group_tags);
 		mTagsGroup.setTintColor(getResources().getColor(R.color.segment_group_bg_check),
 				getResources().getColor(R.color.segment_group_text_check));

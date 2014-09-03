@@ -2,6 +2,8 @@ package com.meetisan.meetisan.view.tags;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +40,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 	private TagInFrameFoto mMomentView;
 	private CircleImageView mPortraitView;
 	private LabelWithIcon mHostLabel;
+	private ImageButton mAddBtn;
 	private TextView mNameTxt, mDescriptionTxt, mLinkTxt, mNoMomentTxt;
 	private TextView mFirstTagTxt, mSecondTagTxt, mThirdTagTxt, mNoTagTxt;
 
@@ -89,6 +92,9 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		mSecondTagTxt = (TextView) findViewById(R.id.txt_tag_two);
 		mThirdTagTxt = (TextView) findViewById(R.id.txt_tag_three);
 		mNoTagTxt = (TextView) findViewById(R.id.txt_no_tags);
+
+		mAddBtn = (ImageButton) findViewById(R.id.btn_title_icon_right);
+		mAddBtn.setOnClickListener(this);
 
 		LabelWithIcon mConnectedLabel = (LabelWithIcon) findViewById(R.id.btn_connected);
 		mConnectedLabel.setOnClickListener(this);
@@ -153,6 +159,9 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 				intent.putExtras(bundle);
 			}
 			break;
+		case R.id.btn_title_icon_right:
+			addTagToUser();
+			break;
 		default:
 			break;
 		}
@@ -179,6 +188,12 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 			String hostNames = host.getHostName();
 			mHostLabel.setContentText(hostNames);
 			mHostID = host.getHostId();
+		}
+
+		if (mTagInfo.getFollow() == 0) {
+			mAddBtn.setVisibility(View.VISIBLE);
+		} else {
+			mAddBtn.setVisibility(View.GONE);
 		}
 
 		setMomentView(mTagInfo.getTagMoments());
@@ -292,6 +307,41 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		});
 
 		request.get(ServerKeys.FULL_URL_GET_TAG_INFO + "/" + mTagID + "/?UserID=" + mUserID, null);
+		mProgressDialog.show();
+	}
+
+	private void addTagToUser() {
+		HttpRequest request = new HttpRequest();
+
+		if (mProgressDialog == null) {
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+		} else {
+			if (mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+			}
+		}
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+				mTagInfo.setFollow(1);
+				mAddBtn.setVisibility(View.GONE);
+				ToastHelper.showToast(R.string.success_add_tag, Toast.LENGTH_LONG);
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+			}
+		});
+
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put(ServerKeys.KEY_TAG_ID, String.valueOf(mTagID));
+		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
+		request.post(ServerKeys.FULL_URL_USER_ADD_TAG, data);
 		mProgressDialog.show();
 	}
 
