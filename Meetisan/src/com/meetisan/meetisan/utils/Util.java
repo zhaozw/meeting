@@ -410,4 +410,15 @@ public class Util {
 			return true;
 		return false;
 	}
+
+	/**
+	 * To format the output string
+	 * 
+	 * @param src
+	 *            src string
+	 * @return format string
+	 */
+	public static String formatOutput(String src) {
+		return ((src == null) || (src.equals(""))) ? "-" : src;
+	}
 }

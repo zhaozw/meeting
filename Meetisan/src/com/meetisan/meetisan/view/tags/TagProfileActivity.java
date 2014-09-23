@@ -181,7 +181,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		}
 		mNameTxt.setText(mTagInfo.getTitle());
 		mDescriptionTxt.setText("Tag Description:	" + mTagInfo.getDescription());
-		mLinkTxt.setText("Link:		" + mTagInfo.getLink());
+		mLinkTxt.setText("Website:		" + mTagInfo.getLink());
 
 		TagHost host = mTagInfo.getTagHost();
 		if (host != null) {
@@ -310,14 +310,16 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		mProgressDialog.show();
 	}
 
+	private CustomizedProgressDialog mAddTagDialog = null;
+
 	private void addTagToUser() {
 		HttpRequest request = new HttpRequest();
 
-		if (mProgressDialog == null) {
-			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+		if (mAddTagDialog == null) {
+			mAddTagDialog = new CustomizedProgressDialog(this, R.string.adding_tag);
 		} else {
-			if (mProgressDialog.isShowing()) {
-				mProgressDialog.dismiss();
+			if (mAddTagDialog.isShowing()) {
+				mAddTagDialog.dismiss();
 			}
 		}
 
@@ -325,7 +327,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onSuccess(String url, String result) {
-				mProgressDialog.dismiss();
+				mAddTagDialog.dismiss();
 				mTagInfo.setFollow(1);
 				mAddBtn.setVisibility(View.GONE);
 				ToastHelper.showToast(R.string.success_add_tag, Toast.LENGTH_LONG);
@@ -333,7 +335,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onFailure(String url, int errorNo, String errorMsg) {
-				mProgressDialog.dismiss();
+				mAddTagDialog.dismiss();
 				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
 			}
 		});
@@ -342,7 +344,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		data.put(ServerKeys.KEY_TAG_ID, String.valueOf(mTagID));
 		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
 		request.post(ServerKeys.FULL_URL_USER_ADD_TAG, data);
-		mProgressDialog.show();
+		mAddTagDialog.show();
 	}
 
 }

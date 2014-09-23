@@ -28,7 +28,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="10dp"
-        android:text="@string/content_empty_default"
+        android:text="@string/no_meetings_attended_with_tag_tips"
         android:textColor="@color/content_empty_tips_text_color"
         android:textSize="@dimen/text_size_small"
         android:visibility="gone" />

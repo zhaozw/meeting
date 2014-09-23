@@ -87,7 +87,7 @@ public class TagMomentsActivity extends Activity implements OnClickListener {
 		imageButton.setVisibility(View.VISIBLE);
 		((TextView) findViewById(R.id.tv_title_text)).setText(R.string.tag_moments);
 		ImageButton mUploadBtn = (ImageButton) findViewById(R.id.im_btn_title_right);
-		mUploadBtn.setImageResource(R.drawable.common_add);
+		mUploadBtn.setImageResource(R.drawable.icon_photo);
 		mUploadBtn.setVisibility(View.VISIBLE);
 		mUploadBtn.setOnClickListener(this);
 
@@ -140,7 +140,7 @@ public class TagMomentsActivity extends Activity implements OnClickListener {
 	}
 
 	private void addTagOrCancelDialog() {
-		DialogUtils.showDialog(this, R.string.add_tag_tips, R.string.add_this_tag, R.string.cancel,
+		DialogUtils.showDialog(this, -1, R.string.add_tag_tips, R.string.add_this_tag, R.string.cancel,
 				new OnDialogClickListener() {
 
 					@Override

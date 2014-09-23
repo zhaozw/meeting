@@ -33,6 +33,8 @@ public class TagLabelLayout extends RelativeLayout {
 		if (title != null) {
 			mTitleText.setText(title);
 			setVisibility(View.VISIBLE);
+		} else {
+			setVisibility(View.GONE);
 		}
 	}
 

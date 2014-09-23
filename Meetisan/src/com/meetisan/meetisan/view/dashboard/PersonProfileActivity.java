@@ -22,6 +22,7 @@ import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
@@ -63,12 +64,12 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 
 		initView();
 
-		syncUserInfoFromServer(userId);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+		syncUserInfoFromServer(userId);
 	}
 
 	private void initView() {
@@ -80,7 +81,7 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 
 		mMeetLayout = (LinearLayout) findViewById(R.id.layout_meet);
 		if (userId == curUserId) {
-			mTitleTxt.setText(R.string.my_info);
+			mTitleTxt.setText(R.string.profile_summary);
 			mMeetLayout.setVisibility(View.GONE);
 		} else {
 			mTitleTxt.setText(R.string.person_profile);
@@ -106,22 +107,27 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 	}
 
 	private void updateUIData() {
-		if (mUserInfo.getName() != null) {
-			mNameTxt.setText(mUserInfo.getName());
-			mTagTitleTxt.setText(mUserInfo.getName() + " \'s Tags");
-		}
+		String formatName = Util.formatOutput(mUserInfo.getName());
+		mNameTxt.setText(formatName);
+		mTagTitleTxt.setText(formatName + " \'s Tags");
+
 		if (mUserInfo.getAvatarUri() != null) {
 			HttpBitmap httpBitmap = new HttpBitmap(this);
 			httpBitmap.displayBitmap(mPortraitView, mUserInfo.getAvatarUri());
 		} else {
 			mPortraitView.setImageResource(R.drawable.portrait_person_default);
 		}
-		mSignatureTxt.setText(mUserInfo.getSignature());
-		mUniversityTxt.setText(mUserInfo.getUniversity());
+		mSignatureTxt.setText(Util.formatOutput(mUserInfo.getSignature()));
+		mUniversityTxt.setText(Util.formatOutput(mUserInfo.getUniversity()));
 		int tagsCount = mUserInfo.getTopTags().size();
+		mTagOneTxt.setTitleText(null);
+		mTagTwoTxt.setTitleText(null);
+		mTagThreeTxt.setTitleText(null);
+		mTagFourTxt.setTitleText(null);
+		mTagFiveTxt.setTitleText(null);
 		if (tagsCount <= 0) {
 			mTagNoTxt.setVisibility(View.VISIBLE);
-			mTagNoTxt.setText("Without Tag");
+			mTagNoTxt.setText("-");
 		} else {
 			mTagNoTxt.setVisibility(View.GONE);
 			TagInfo tagInfo = null;
@@ -296,6 +302,7 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 			userInfo.setRegId(userData.getString(ServerKeys.KEY_REG_ID));
 		}
 
+		userInfo.clearTopTags();
 		JSONArray tagArray = data.getJSONArray(ServerKeys.KEY_TOP_TAGS);
 		for (int j = 0; j < tagArray.length(); j++) {
 			TagInfo tagInfo = new TagInfo();

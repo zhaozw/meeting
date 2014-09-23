@@ -10,11 +10,34 @@
         android:layout_height="@dimen/activity_title_height"
         layout="@layout/title_with_image_btn" />
 
+    <LinearLayout
+        android:id="@+id/layout_delete_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_title"
+        android:visibility="gone"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:padding="10dp"
+            android:text="@string/slide_to_delete_tag_tips"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/text_size_small" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@color/gap_line_color" />
+    </LinearLayout>
+
     <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
         android:id="@+id/list_my_tags"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/include_title"
+        android:layout_below="@+id/layout_delete_tips"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/gray"
         android:dividerHeight="0.5dp"
@@ -28,7 +51,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="10dp"
-        android:text="@string/content_empty_default"
+        android:text="@string/tips_no_tags"
         android:textColor="@color/content_empty_tips_text_color"
         android:textSize="@dimen/text_size_small"
         android:visibility="gone" />

@@ -53,6 +53,8 @@ public class CustomizePopupView {
 		}
 
 		mPopupMenu.setBackgroundDrawable(new BitmapDrawable(context.getResources(), (Bitmap) null));
+		mPopupMenu.setOutsideTouchable(true);
+		mPopupMenu.setFocusable(true);
 	}
 
 	// public void showPopupTop(View parent) {

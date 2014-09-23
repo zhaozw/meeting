@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,10 +25,13 @@ import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.model.TagsAdapter;
 import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.view.dashboard.SettingsActivity;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.DeleteTouchListener;
 import com.meetisan.meetisan.widget.DeleteTouchListener.OnDeleteCallback;
@@ -41,6 +45,7 @@ public class PersonTagsActivity extends Activity implements OnClickListener {
 	private PullToRefreshListView mPullTagsListView;
 	private ListView mTagsListView;
 	private List<TagInfo> mTagsData = new ArrayList<TagInfo>();
+	private LinearLayout mDeleteTipsLayout;
 
 	private long mMaxMyTags = 0;
 	private TagsAdapter mTagsAdapter;
@@ -90,6 +95,7 @@ public class PersonTagsActivity extends Activity implements OnClickListener {
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);
 
+		mDeleteTipsLayout = (LinearLayout) findViewById(R.id.layout_delete_tips);
 		mPullTagsListView = (PullToRefreshListView) findViewById(R.id.list_my_tags);
 		mPullTagsListView.setMode(Mode.BOTH);
 		TextView mEmptyTagsView = (TextView) findViewById(R.id.txt_empty_tags);
@@ -130,7 +136,7 @@ public class PersonTagsActivity extends Activity implements OnClickListener {
 				public void onDelete(ListView listView, int position) {
 					position = position - 1; // ListView Header
 					if (position < mTagsListView.getCount()) {
-						deleteUserTagFromServer(mTagsData.get(position).getUserTagId(), position, true);
+						confirmDeleteTagDialog(position);
 					}
 				}
 			});
@@ -153,6 +159,19 @@ public class PersonTagsActivity extends Activity implements OnClickListener {
 		mPullTagsListView.setVisibility(View.VISIBLE);
 	}
 
+	public void confirmDeleteTagDialog(final int position) {
+		DialogUtils.showDialog(PersonTagsActivity.this, R.string.warning, R.string.delete_tag_warnig_tips, R.string.delete,
+				R.string.cancel, new OnDialogClickListener() {
+
+					@Override
+					public void onClick(boolean isPositiveBtn) {
+						if (isPositiveBtn) {
+							deleteUserTagFromServer(mTagsData.get(position).getUserTagId(), position, true);
+						}
+					}
+				});
+	}
+
 	private void updateDeleteResult(boolean result, int position) {
 		if (result && mTagsData.size() > position) {
 			mTagsData.remove(position);
@@ -161,6 +180,11 @@ public class PersonTagsActivity extends Activity implements OnClickListener {
 	}
 
 	private void updateMyTagsListView() {
+		if (userId == curUserId && mTagsData.size() > 0) {
+			mDeleteTipsLayout.setVisibility(View.VISIBLE);
+		} else {
+			mDeleteTipsLayout.setVisibility(View.GONE);
+		}
 		mTagsAdapter.notifyDataSetChanged();
 		mPullTagsListView.onRefreshComplete();
 		if (mTagsData.size() >= mMaxMyTags) {

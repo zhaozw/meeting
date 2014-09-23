@@ -23,12 +23,12 @@ import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class PersonMoreInfoActivity extends Activity implements OnClickListener {
 
-	private EditText mNameTxt, mSchoolTxt, mCityTxt, mBirthdayTxt, mGenderTxt, mExperienceTxt, mEducationTxt,
-			mSkillsTxt;
+	private EditText mSchoolTxt, mCityTxt, mBirthdayTxt, mGenderTxt, mExperienceTxt, mEducationTxt, mSkillsTxt;
 	private TextView mSaveTxt;
 	private PeopleInfo mUserInfo = new PeopleInfo();
 	private long userId = -1;
@@ -63,13 +63,13 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 
 	private void initView() {
 		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
-		mTitleTxt.setText(R.string.information);
+		mTitleTxt.setText(R.string.more_information);
 		mTitleTxt.setVisibility(View.VISIBLE);
 		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);
 
-		mNameTxt = (EditText) findViewById(R.id.txt_name);
+		// mNameTxt = (EditText) findViewById(R.id.txt_name);
 		mSchoolTxt = (EditText) findViewById(R.id.txt_school);
 		mCityTxt = (EditText) findViewById(R.id.txt_city);
 		mBirthdayTxt = (EditText) findViewById(R.id.txt_age);
@@ -80,7 +80,7 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 
 		Log.e("-------", "Profile User ID: " + userId + "; Cur User ID: " + curUserId);
 		if (userId != curUserId) {
-			mNameTxt.setEnabled(false);
+			// mNameTxt.setEnabled(false);
 			mSchoolTxt.setEnabled(false);
 			mCityTxt.setEnabled(false);
 			mBirthdayTxt.setEnabled(false);
@@ -97,14 +97,14 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 	}
 
 	private void updateUIData() {
-		mNameTxt.setText(mUserInfo.getName());
-		mSchoolTxt.setText(mUserInfo.getUniversity());
-		mCityTxt.setText(mUserInfo.getCity());
-		mBirthdayTxt.setText(mUserInfo.getBirthday());
+		// mNameTxt.setText(mUserInfo.getName());
+		mSchoolTxt.setText(Util.formatOutput(mUserInfo.getUniversity()));
+		mCityTxt.setText(Util.formatOutput(mUserInfo.getCity()));
+		mBirthdayTxt.setText(Util.formatOutput(mUserInfo.getBirthday()));
 		mGenderTxt.setText(mUserInfo.getGender() == 0 ? "Male" : "Female");
-		mExperienceTxt.setText(mUserInfo.getExperience());
-		mEducationTxt.setText(mUserInfo.getEducation());
-		mSkillsTxt.setText(mUserInfo.getSkills());
+		mExperienceTxt.setText(Util.formatOutput(mUserInfo.getExperience()));
+		mEducationTxt.setText(Util.formatOutput(mUserInfo.getEducation()));
+		mSkillsTxt.setText(Util.formatOutput(mUserInfo.getSkills()));
 	}
 
 	@Override
@@ -180,7 +180,7 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		if (!userData.isNull(ServerKeys.KEY_NAME)) {
 			userInfo.setName(userData.getString(ServerKeys.KEY_NAME));
 		} else {
-			userInfo.setName("");
+			userInfo.setName("-");
 		}
 		// userInfo.setAvatar(Util.base64ToBitmap(userData.getString(ServerKeys.KEY_AVATAR)));
 		// if (!userData.isNull(ServerKeys.KEY_SIGNATURE)) {
@@ -189,29 +189,29 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		if (!userData.isNull(ServerKeys.KEY_UNIVERSITY)) {
 			userInfo.setUniversity(userData.getString(ServerKeys.KEY_UNIVERSITY));
 		} else {
-			userInfo.setUniversity("");
+			userInfo.setUniversity("-");
 		}
 		if (!userData.isNull(ServerKeys.KEY_CITY)) {
 			userInfo.setCity(userData.getString(ServerKeys.KEY_CITY));
 		} else {
-			userInfo.setCity("");
+			userInfo.setCity("-");
 		}
 		userInfo.setBirthday(userData.getString(ServerKeys.KEY_AGE));
 		userInfo.setGender(userData.getInt(ServerKeys.KEY_GENDER));
 		if (!userData.isNull(ServerKeys.KEY_EXPERIENCE)) {
 			userInfo.setExperience(userData.getString(ServerKeys.KEY_EXPERIENCE));
 		} else {
-			userInfo.setExperience("");
+			userInfo.setExperience("-");
 		}
 		if (!userData.isNull(ServerKeys.KEY_EDUCATION)) {
 			userInfo.setEducation(userData.getString(ServerKeys.KEY_EDUCATION));
 		} else {
-			userInfo.setEducation("");
+			userInfo.setEducation("-");
 		}
 		if (!userData.isNull(ServerKeys.KEY_SKILLS)) {
 			userInfo.setSkills(userData.getString(ServerKeys.KEY_SKILLS));
 		} else {
-			userInfo.setSkills("");
+			userInfo.setSkills("-");
 		}
 		// userInfo.setLongitude((float)
 		// userData.getDouble(ServerKeys.KEY_LON));
@@ -220,7 +220,7 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		if (!userData.isNull(ServerKeys.KEY_CREATE_DATE)) {
 			userInfo.setCreateDate(userData.getString(ServerKeys.KEY_CREATE_DATE));
 		} else {
-			userInfo.setCreateDate("");
+			userInfo.setCreateDate("-");
 		}
 		if (!userData.isNull(ServerKeys.KEY_REG_ID)) {
 			userInfo.setRegId(userData.getString(ServerKeys.KEY_REG_ID));
@@ -230,7 +230,7 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 	private void syncUserInfoToServer() {
 		HttpRequest request = new HttpRequest();
 
-		String mName = mNameTxt.getText().toString();
+		// String mName = mNameTxt.getText().toString();
 		String mSchool = mSchoolTxt.getText().toString();
 		String mCity = mCityTxt.getText().toString();
 		String mBirthday = mBirthdayTxt.getText().toString();
@@ -243,9 +243,9 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		data.put(ServerKeys.KEY_ID, String.valueOf(curUserId));
 		data.put(ServerKeys.KEY_PASSWORD, UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_PWD, ""));
 
-		if (!mUserInfo.getName().equals(mName)) {
-			data.put(ServerKeys.KEY_NAME, mName);
-		}
+		// if (!mUserInfo.getName().equals(mName)) {
+		// data.put(ServerKeys.KEY_NAME, mName);
+		// }
 		if (!mUserInfo.getUniversity().equals(mSchool)) {
 			data.put(ServerKeys.KEY_UNIVERSITY, mSchool);
 		}

@@ -21,19 +21,25 @@ public class DialogUtils {
 	/**
 	 * Show customized dialog, parameter determines the dialog UI
 	 * 
-	 * @param activity current Activity, it is necessary
-	 * @param contentId dialog content text resource id
-	 * @param positiveId positive button text resource id
-	 * @param negativeId negative button text resource id
-	 * @param mListener dialog button click listener
+	 * @param activity
+	 *            current Activity, it is necessary
+	 * @param contentId
+	 *            dialog content text resource id
+	 * @param positiveId
+	 *            positive button text resource id
+	 * @param negativeId
+	 *            negative button text resource id
+	 * @param mListener
+	 *            dialog button click listener
 	 */
-	public static void showDialog(Activity activity, int contentId, int positiveId, int negativeId,
+	public static void showDialog(Activity activity, int titleId, int contentId, int positiveId, int negativeId,
 			final OnDialogClickListener mListener) {
 		try {
+			String title = titleId > 0 ? activity.getResources().getString(titleId) : null;
 			String content = contentId > 0 ? activity.getResources().getString(contentId) : null;
 			String positive = positiveId > 0 ? activity.getResources().getString(positiveId) : null;
 			String negative = negativeId > 0 ? activity.getResources().getString(negativeId) : null;
-			showDialog(activity, content, positive, negative, mListener);
+			showDialog(activity, title, content, positive, negative, mListener);
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 		}
@@ -42,13 +48,18 @@ public class DialogUtils {
 	/**
 	 * Show customized dialog, parameter determines the dialog UI
 	 * 
-	 * @param activity current Activity, it is necessary
-	 * @param contentTxt dialog content text
-	 * @param positiveTxt positive button text
-	 * @param negativeTxt negative button text
-	 * @param mListener dialog button click listener
+	 * @param activity
+	 *            current Activity, it is necessary
+	 * @param contentTxt
+	 *            dialog content text
+	 * @param positiveTxt
+	 *            positive button text
+	 * @param negativeTxt
+	 *            negative button text
+	 * @param mListener
+	 *            dialog button click listener
 	 */
-	public static void showDialog(Activity activity, String contentTxt, String positiveTxt,
+	public static void showDialog(Activity activity, String titleTxt, String contentTxt, String positiveTxt,
 			String negativeTxt, final OnDialogClickListener mListener) {
 		if (activity == null || contentTxt == null) {
 			Log.e(TAG, "activity or dialog content is null");
@@ -63,6 +74,12 @@ public class DialogUtils {
 		LayoutInflater inflater = activity.getLayoutInflater();
 		View dialogView = inflater.inflate(R.layout.dialog_confirm, null);
 		final Dialog mDialog = new Dialog(activity, R.style.DialogTheme);
+
+		if (titleTxt != null) {
+			TextView titleTextView = (TextView) dialogView.findViewById(R.id.layout_title);
+			titleTextView.setText(titleTxt);
+			titleTextView.setVisibility(View.VISIBLE);
+		}
 
 		if (contentTxt != null) {
 			TextView contentTextView = (TextView) dialogView.findViewById(R.id.layout_content);
@@ -117,7 +134,9 @@ public class DialogUtils {
 		/**
 		 * On dialog button click
 		 * 
-		 * @param isPositiveBtn if true is positive button clicked, else is negative button clicked
+		 * @param isPositiveBtn
+		 *            if true is positive button clicked, else is negative
+		 *            button clicked
 		 */
 		void onClick(boolean isPositiveBtn);
 	}

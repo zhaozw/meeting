@@ -161,7 +161,7 @@ public class LauncherActivity extends Activity {
 		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 		if (resultCode != ConnectionResult.SUCCESS) {
 			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				DialogUtils.showDialog(LauncherActivity.this, R.string.google_play_services_missing,
+				DialogUtils.showDialog(LauncherActivity.this, -1, R.string.google_play_services_missing,
 						DialogUtils.RESOURCE_ID_NONE, R.string.exit, new OnDialogClickListener() {
 
 							@Override
@@ -172,7 +172,7 @@ public class LauncherActivity extends Activity {
 						});
 			} else {
 				Log.e(TAG, "This device is not supported.");
-				DialogUtils.showDialog(LauncherActivity.this, R.string.device_not_support_google_play_services,
+				DialogUtils.showDialog(LauncherActivity.this, -1,  R.string.device_not_support_google_play_services,
 						DialogUtils.RESOURCE_ID_NONE, R.string.exit, new OnDialogClickListener() {
 
 							@Override

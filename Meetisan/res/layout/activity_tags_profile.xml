@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@+id/btn_connections"
+            android:layout_toLeftOf="@+id/im_btn_connection"
             android:layout_toRightOf="@+id/iv_portrait"
             android:ellipsize="end"
             android:gravity="center_vertical"
@@ -105,24 +105,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
-            android:orientation="vertical"
-            android:padding="5dp" >
+            android:orientation="vertical" >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="@string/general_details"
+                android:background="@color/profile_title_bg"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="@string/general_details_upcase"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_small" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
 
             <TextView
                 android:id="@+id/txt_tag_description"
@@ -140,12 +133,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.6dp"
                 android:layout_marginTop="15dp"
-                android:background="@android:color/darker_gray" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="40dp"
                 android:background="@android:color/darker_gray" />
 
             <com.meetisan.meetisan.widget.LabelWithIcon
@@ -169,6 +156,7 @@
                 android:id="@+id/txt_tag_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
@@ -177,75 +165,42 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_small" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
-
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="40dp"
-                android:gravity="center"
-                android:text="@string/associated_tags"
+                android:background="@color/profile_title_bg"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="@string/associated_tags_upcase"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_small" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="5dp" >
+                android:padding="15dp" >
 
                 <TextView
-                    android:id="@+id/txt_tag_one"
-                    style="@style/TagLabelStyle" />
-
-                <TextView
-                    android:id="@+id/txt_tag_two"
-                    style="@style/TagLabelStyle" />
-
-                <TextView
-                    android:id="@+id/txt_tag_three"
-                    style="@style/TagLabelStyle" />
-
-                <TextView
-                    android:id="@+id/txt_no_tags"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:text="Feature comming soon"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="@dimen/text_size_middle"
-                    android:visibility="gone" />
+                    android:textSize="@dimen/text_size_middle" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/txt_tag_moments"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="40dp"
-                android:gravity="center"
-                android:text="@string/tag_moments"
+                android:background="@color/profile_title_bg"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="@string/tag_moments_upcase"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_small" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -274,20 +229,14 @@
 
             <TextView
                 android:id="@+id/txt_tag_history"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="40dp"
-                android:gravity="center"
-                android:text="@string/tag_history"
+                android:background="@color/profile_title_bg"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:text="@string/tag_history_upcase"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_small" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
 
             <com.meetisan.meetisan.widget.LabelWithIcon
                 android:id="@+id/btn_connected"
@@ -308,16 +257,11 @@
                 android:id="@+id/btn_attended"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:text="@string/meetings_attended"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_small" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginBottom="30dp"
-                android:background="@android:color/darker_gray" />
         </LinearLayout>
     </ScrollView>
 

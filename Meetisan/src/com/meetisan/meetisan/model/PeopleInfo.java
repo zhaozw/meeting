@@ -221,5 +221,9 @@ public class PeopleInfo {
 	public boolean addTopTag(TagInfo tagInfo) {
 		return this.topTags.add(tagInfo);
 	}
+	
+	public void clearTopTags() {
+		this.topTags.clear();
+	}
 
 }

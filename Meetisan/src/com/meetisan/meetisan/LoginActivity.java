@@ -23,6 +23,7 @@ import cn.jpush.android.api.JPushInterface;
 import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.signup.InsertEmailActivity;
+import com.meetisan.meetisan.utils.DebugUtils;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
@@ -95,6 +96,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private void attemptLogin() {
 		email = mEmailTxt.getText().toString();
 		pwd = mPwdTxt.getText().toString();
+
+		// TODO.. for test
+		if (DebugUtils.IS_DEBUG) {
+			email = "719236409@qq.com";
+			pwd = "1234567";
+		}
 
 		if (TextUtils.isEmpty(email)) {
 			ToastHelper.showToast(R.string.empty_email_tips);

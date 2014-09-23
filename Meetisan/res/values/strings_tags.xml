@@ -9,25 +9,32 @@
     <!-- Tag Profile -->
     <string name="tag_profile">Tag Profile</string>
     <string name="general_details">General Details</string>
+    <string name="general_details_upcase">GENERAL DETAILS</string>
     <string name="tag_description">Tag Description:</string>
     <string name="tag_host">Tag Host:</string>
-    <string name="tag_link">Link:</string>
-    <string name="associated_tags">Associated Tag</string>
+    <string name="tag_link">Website:</string>
+    <string name="associated_tags">Associated Tags</string>
+    <string name="associated_tags_upcase">ASSOCIATED TAGS</string>
+    <string name="tag_moments_upcase">MOMENTS</string>
     <string name="tag_moments">Tag Moments</string>
     <string name="no_tag_moment_image">Don\'t have any Tag Moment!</string>
     <string name="empty_tag_moment_tips">Without Tag Moment, you can tap to send&#8230;</string>
     <string name="view_all_moments">View All Moments</string>
     <string name="tag_history">Your tag history with</string>
+    <string name="tag_history_upcase">YOUR TAG HISTORY</string>
     <string name="people_connected">People Connected</string>
+    <string name="people_have_meet">People you\'ve meet</string>
     <string name="meetings_attended">Meetings Attended</string>
-    <string name="people_associated">People Associated</string>
-    <string name="meetings_associated">Meetings Associated</string>
+    <string name="no_meetings_attended_with_tag_tips">You haven’t attended any meetings with this Tag.</string>
+    <string name="no_people_meet_with_tag_tips">You haven’t meet anyone with this Tag.</string>
+    <string name="people_associated">People with this Tag</string>
+    <string name="meetings_associated">Meetings with this Tag</string>
     
     <string name="send">Send</string>
     <string name="uploading_image">Uploading Image&#8230;</string>
     <string name="add_tag_moments">Add Tag Moments</string>
-    <string name="tap_upload_tips">Tap to change image to upload.</string>
-    <string name="input_tag_moment_title_hint">Please input your Tag Moment Title</string>
+    <string name="tap_upload_tips">Tap to change image.</string>
+    <string name="input_tag_moment_title_hint">Enter a description for this Moment&#8230;</string>
     <string name="failed_open_pic">Can\'t found an APP for open the picture</string>
     <string name="error_empty_moment_title">Please input title first</string>
     <string name="error_empty_moment_pic">Please select a picture first</string>
@@ -35,6 +42,7 @@
     <string name="add_tag_tips">Tip\nYou can upload picture only in case you have followed this rag</string>
     <string name="give_up_add_tag_tips">Give up the editor?</string>
     <string name="add_this_tag">Add Tag</string>
+    <string name="adding_tag">Adding Tag&#8230;</string>
     <string name="success_add_tag">Success to add this Tag</string>
     
 </resources>

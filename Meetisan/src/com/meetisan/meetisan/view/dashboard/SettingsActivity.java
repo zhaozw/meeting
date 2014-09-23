@@ -95,8 +95,8 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	}
 
 	private void logoutMeetisan() {
-		DialogUtils.showDialog(SettingsActivity.this, R.string.logout_tips, R.string.positive, R.string.cancel,
-				new OnDialogClickListener() {
+		DialogUtils.showDialog(SettingsActivity.this, R.string.logout, R.string.logout_tips, R.string.positive,
+				R.string.cancel, new OnDialogClickListener() {
 
 					@Override
 					public void onClick(boolean isPositiveBtn) {

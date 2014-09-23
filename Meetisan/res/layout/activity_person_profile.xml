@@ -14,7 +14,7 @@
     <RelativeLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:background="@drawable/pic_background"
         android:orientation="horizontal" >
 
@@ -42,10 +42,10 @@
                 android:background="@android:color/white"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:paddingLeft="100dp"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/text_size_min" />
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
 
         <LinearLayout
@@ -145,7 +145,8 @@
                             android:id="@+id/txt_no_tags"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center"
+                            android:gravity="center|left"
+                            android:paddingLeft="10dp"
                             android:textColor="@color/gray"
                             android:textSize="@dimen/text_size_small"
                             android:visibility="gone" />

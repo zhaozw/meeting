@@ -156,9 +156,9 @@ public class DashboardActivity extends Activity implements OnClickListener {
 
 	private void updateUserInfoUI() {
 		if (mUserInfo != null) {
-			if (mUserInfo.getName() != null) {
-				mNameTxt.setText(mUserInfo.getName());
-			}
+			// if (mUserInfo.getName() != null) {
+			mNameTxt.setText(Util.formatOutput(mUserInfo.getName()));
+			// }
 		}
 
 		if (mUserInfo.getAvatarUri() != null) {

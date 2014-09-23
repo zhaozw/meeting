@@ -76,12 +76,11 @@ public class TagConnectedPeopleActivity extends Activity implements OnClickListe
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
 		((ImageButton) findViewById(R.id.btn_title_icon_left)).setOnClickListener(this);
-		((TextView) findViewById(R.id.txt_title)).setText(R.string.people_connected);
+		((TextView) findViewById(R.id.txt_title)).setText(R.string.people_have_meet);
 
 		/** -----------Init People ListView-------------- */
 		mPullPeopleView = (PullToRefreshListView) findViewById(R.id.list_people);
 		TextView mEmptyView = (TextView) findViewById(R.id.txt_empty_meetings);
-		mEmptyView.setText("Don\'t connect any People !");
 		mPullPeopleView.setEmptyView(mEmptyView);
 		mPullPeopleView.setMode(Mode.BOTH);
 		mPullPeopleView.setOnRefreshListener(new OnRefreshListener2() {

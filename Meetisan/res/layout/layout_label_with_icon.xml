@@ -29,7 +29,7 @@
         android:layout_toLeftOf="@+id/iv_icon"
         android:layout_toRightOf="@+id/txt_label"
         android:ellipsize="end"
-        android:gravity="right"
+        android:gravity="left"
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size_middle" />

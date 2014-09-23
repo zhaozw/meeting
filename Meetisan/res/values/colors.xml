@@ -18,10 +18,10 @@
 	<color name="label_with_icon_preesed">#FFDDDDDD</color>
 	<color name="listview_bg_preesed">#FFDDDDDD</color>
 	
-    <color name="tag_label_left_bg_color">#FF4AEAA4</color>
-    <color name="tag_label_right_bg_color">#AA4AEAA4</color>
+    <color name="tag_label_left_bg_color">#9ABCCB</color>
+    <color name="tag_label_right_bg_color">#8CC3CF</color>
 	
-	<color name="content_empty_tips_text_color">#FFC0C0C0</color>
+	<color name="content_empty_tips_text_color">#FF969696</color>
 
 	<!-- for search panel -->
     <color name="search_list_divider_color">#EBEBEB</color>
@@ -49,6 +49,7 @@
 	<color name="activity_create_button_done">#54EBB4</color>	
 	<color name="activity_create_text_done_pressed">#77FFFFFF</color>
 	
-    <color name="tag_label_bg">#66CC66</color>
+    <color name="tag_label_bg">#7BB7C4</color>
     
+    <color name="profile_title_bg">#F7F4F4</color>
 </resources>

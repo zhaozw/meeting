@@ -82,7 +82,7 @@ public class AddTagMomentsActivity extends Activity implements OnClickListener {
 		mRightBtn.setVisibility(View.VISIBLE);
 		mRightBtn.setOnClickListener(this);
 
-		((TextView) findViewById(R.id.tv_title_text)).setText(R.string.add_tag_moments);
+		((TextView) findViewById(R.id.tv_title_text)).setText(R.string.tag_moments);
 		mTitleTxt = (TextView) findViewById(R.id.txt_tag_title);
 		mMomentView = (ImageView) findViewById(R.id.iv_moment_add);
 		mBottomLayout = (RelativeLayout) findViewById(R.id.layout_bottom);
@@ -276,7 +276,7 @@ public class AddTagMomentsActivity extends Activity implements OnClickListener {
 	}
 
 	private void confirmExitDialog() {
-		DialogUtils.showDialog(this, R.string.give_up_add_tag_tips, R.string.sure, R.string.cancel,
+		DialogUtils.showDialog(this, R.string.give_up_add_tag_tips, R.string.warning, R.string.sure, R.string.cancel,
 				new OnDialogClickListener() {
 
 					@Override
