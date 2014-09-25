@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.utils.HttpBitmap;
+import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CircleImageView;
 
 public class MeetingAdapter extends BaseAdapter {
@@ -65,8 +66,8 @@ public class MeetingAdapter extends BaseAdapter {
 		if (mMeetingInfo.getLogoUri() != null) {
 			httpBitmap.displayBitmap(holder.mCircleImage, mMeetingInfo.getLogoUri());
 		}
-		holder.mNameTxt.setText(mMeetingInfo.getTitle());
-		holder.mDistanceTxt.setText(String.format("%.2f", mMeetingInfo.getDistance()) + "km");
+		holder.mNameTxt.setText(Util.formatOutput(mMeetingInfo.getTitle()));
+		holder.mDistanceTxt.setText((int) mMeetingInfo.getDistance() + "km");
 		List<TagInfo> tagsList = mMeetingInfo.getTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {

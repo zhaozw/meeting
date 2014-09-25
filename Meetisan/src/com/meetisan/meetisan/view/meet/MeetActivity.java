@@ -189,7 +189,8 @@ public class MeetActivity extends Activity {
 			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
 				// TODO Auto-generated method stub
 				refreshView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(
-						"Last Refresh: " + Util.getCurFormatDate());
+						getResources().getString(R.string.pull_to_refresh_last_update_head_label)
+								+ Util.getCurFormatDate());
 				getPeoplesFromServer(1, mLat, mLon, mPeopleSearchFilter, true, false);
 			}
 
@@ -197,7 +198,8 @@ public class MeetActivity extends Activity {
 			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
 				// TODO Auto-generated method stub
 				refreshView.getLoadingLayoutProxy(false, true).setLastUpdatedLabel(
-						"Last Loading: " + Util.getCurFormatDate());
+						getResources().getString(R.string.pull_to_refresh_last_update_head_label)
+								+ Util.getCurFormatDate());
 				int count = mPeopleListView.getCount() - 2; // reduce header and
 															// footer item
 				// Log.d(TAG, "-------total = " + mTotalPeople + "; count = " +
@@ -243,7 +245,8 @@ public class MeetActivity extends Activity {
 			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
 				// TODO Auto-generated method stub
 				refreshView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(
-						"Last Refresh: " + Util.getCurFormatDate());
+						getResources().getString(R.string.pull_to_refresh_last_update_head_label)
+								+ Util.getCurFormatDate());
 				getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter, true, false);
 			}
 
@@ -251,7 +254,8 @@ public class MeetActivity extends Activity {
 			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
 				// TODO Auto-generated method stub
 				refreshView.getLoadingLayoutProxy(false, true).setLastUpdatedLabel(
-						"Last Loading: " + Util.getCurFormatDate());
+						getResources().getString(R.string.pull_to_refresh_from_bottom_last_update_head_label)
+								+ Util.getCurFormatDate());
 				int count = mMeetingsListView.getCount() - 2; // reduce header
 																// and footer
 																// item

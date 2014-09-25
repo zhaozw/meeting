@@ -367,8 +367,11 @@ public class Util {
 		int month = calendar.get(Calendar.MONTH);
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		int week = calendar.get(Calendar.DAY_OF_WEEK);
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		int min = calendar.get(Calendar.MINUTE);
 
-		return WEEK_ABBREVIATION[week] + ", " + day + " " + MONTH_ABBREVIATION[month] + ", " + year;
+		return hour + ":" + min + "    " + WEEK_ABBREVIATION[week - 1] + ", " + day + " " + MONTH_ABBREVIATION[month]
+				+ ", " + year;
 	}
 
 	public static String convertTime2FormatMeetTime(String startTime, String endTime) {

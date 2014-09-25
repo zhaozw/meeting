@@ -15,7 +15,7 @@
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="@drawable/pic_background"
+        android:background="@drawable/bg_profile_head"
         android:orientation="horizontal" >
 
         <LinearLayout
@@ -246,7 +246,8 @@
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="@string/report"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@drawable/selector_text_red_gray"
+                        android:textSize="@dimen/text_size_small" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

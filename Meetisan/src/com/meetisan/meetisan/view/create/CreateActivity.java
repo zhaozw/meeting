@@ -38,7 +38,6 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	private CreateStep4Fragment mCreateStep4Fragment;
 	private CreateDoneFragment mCreateDoneFragment;
 
-	private long meetPersonID = -1;
 	private Bundle mMeetPersonBundle = null;
 
 	@Override
@@ -51,7 +50,6 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
 			mMeetPersonBundle = bundle;
-			meetPersonID = bundle.getLong("PersonID", -1L);
 			Log.d("CreateActivity", "Meet Person Bundle: " + mMeetPersonBundle);
 		}
 

@@ -3,11 +3,13 @@
 
     <string name="pull_to_refresh_pull_label">Pull down to refresh&#8230;</string>
     <string name="pull_to_refresh_release_label">Release to refresh&#8230;</string>
-    <string name="pull_to_refresh_refreshing_label">Refresh&#8230;</string>
+    <string name="pull_to_refresh_refreshing_label">Meetisan refreshing data&#8230;</string>
+    <string name="pull_to_refresh_last_update_head_label">Last updated: </string>
 
     <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
-    <string name="pull_to_refresh_from_bottom_pull_label">Pull up to load&#8230;</string>
-    <string name="pull_to_refresh_from_bottom_release_label">Release to load&#8230;</string>
-    <string name="pull_to_refresh_from_bottom_refreshing_label">Loading&#8230;</string>
+    <string name="pull_to_refresh_from_bottom_pull_label">Pull up to get more&#8230;</string>
+    <string name="pull_to_refresh_from_bottom_release_label">Release to get more&#8230;</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">Meetisan loading data&#8230;</string>
+    <string name="pull_to_refresh_from_bottom_last_update_head_label">Last loaded: </string>
 
 </resources>

@@ -31,6 +31,7 @@ public class ServerKeys {
 	private static final String API_TTAG_CATEGORY = "/api/tTagCategory/";
 	private static final String API_TAG_MOMENT = "/api/ttagmoment/";
 	private static final String API_TAG_CREATE_APPLY = "/api/tTagCreateApply/";
+	private static final String API_TREPORT = "/api/treport/";
 
 	// URL
 	/** http://{域名}/api/tuser/Login/ */
@@ -141,7 +142,8 @@ public class ServerKeys {
 	public static final String FULL_URL_SEARCH_TAG = SERVER_ADDRESS + API_TTAG + "searchtag";
 	/** http://meetisanapp.azurewebsites.net/api/tUserTag/Add/  (UserID ：对应用户ID  TagID：对应要加入的tag) */
 	public static final String FULL_URL_USER_ADD_TAG = SERVER_ADDRESS + API_TUSER_TAG + "Add";
-	
+	/** http://{域名}/api/treport/add */	
+	public static final String FULL_URL_SEND_REPORT = SERVER_ADDRESS + API_TREPORT + "add";
 
 	// Keys
 	public static final String KEY_ID = "ID";
@@ -197,4 +199,6 @@ public class ServerKeys {
 	public static final String KEY_TYPE = "Type";
 	public static final String KEY_IS_PRIVATE = "IsPrivate";
 	public static final String KEY_CAN_JOIN = "CanJoin";
+	public static final String KEY_REPORT_ID = "ReportObjectID";
+	public static final String KEY_REPORT_TYPE = "Type";
 }

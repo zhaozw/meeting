@@ -2,8 +2,8 @@
 <resources>
 
 	<string name="meeting_title">Meeting Title</string>
-	<string name="insert_a_meeting_title_tip">Insert a Meeting Title</string>
-	<string name="private_meeting_tip">Private meeting</string>
+	<string name="insert_a_meeting_title_tip">INSERT A MEETING TITLE</string>
+	<string name="private_meeting_tip">Private Meeting</string>
 	<string name="format_step_index">(%1$d/%2$d)</string>
 	<string name="maximum_number">Maximum number of people for your meeting</string>
 	<string name="single_meeting">Single Meeting</string>
@@ -19,9 +19,10 @@
 	<string name="start">Start</string>
 	<string name="end">End</string>
 	<string name="create">Create</string>
-	<string name="create_successful">Create Successful</string>
+	<string name="create_successful">Create (Summary)</string>
 	<string name="please_input_meeting_title">Please input meeting title</string>
-	<string name="please_select_some_tags">Please select some tags</string>
+	<string name="please_select_some_tags">Please select up to 3 tags</string>
+	<string name="please_select_less_tags">You can only select up to 3 tags</string>
 	<string name="set">Set</string>
 	<string name="select_logo_for_your_meeting">Select logo for your meeting</string>
 	<string name="please_input_a_description_for_your_meeting">Please input a description for your meeting</string>
@@ -30,7 +31,7 @@
 	<string name="invite_people">Invite People</string>
 	<string name="invite">invite</string>
 	<string name="has_been_invited_to_your_meeting">Has been invited to your meeting.</string>
-	<string name="slide_to_left_to_delete_the_people_your_invite">The people your invite.</string>
+	<string name="slide_to_delete_people_invited">Slide to left to delete the people your invite.</string>
 	
     <string name="profile_picture">Profile picture</string>
     <string name="select_picture">Select picture</string>

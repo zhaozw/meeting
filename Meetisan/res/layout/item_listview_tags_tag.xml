@@ -32,10 +32,11 @@
 
             <TextView
                 android:id="@+id/txt_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/iv_star"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@android:color/black"
@@ -47,31 +48,18 @@
                 android:layout_height="15dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/txt_name"
-                android:scaleType="centerInside"
+                android:layout_toLeftOf="@+id/txt_endorsed"
                 android:src="@drawable/icon_star_small" />
 
             <TextView
                 android:id="@+id/txt_endorsed"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="3dp"
-                android:layout_toRightOf="@+id/iv_star"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/text_size_min" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/txt_endorsed"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="@string/endorsed_you"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_min" />
         </RelativeLayout>
@@ -85,14 +73,13 @@
             android:padding="0dp" >
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:scaleType="centerInside"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:src="@drawable/icon_people_small" />
 
             <TextView
                 android:id="@+id/txt_people"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:ellipsize="end"
@@ -101,15 +88,13 @@
                 android:textSize="@dimen/text_size_min" />
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="15dp"
-                android:scaleType="centerInside"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:src="@drawable/icon_meetings_small" />
 
             <TextView
                 android:id="@+id/txt_meetings"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:ellipsize="end"

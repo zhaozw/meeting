@@ -100,11 +100,18 @@
         </activity>
         <activity
             android:name=".view.meet.MeetProfileActivity"
-            android:label="@string/title_meet" >
+            android:label="@string/title_meet"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name=".view.meet.MeetMemberActivity"
-            android:label="@string/title_meet" >
+            android:label="@string/title_meet"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.meet.ReportActivity"
+            android:label="@string/report"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name=".view.tags.TagsActivity"

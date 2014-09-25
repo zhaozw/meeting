@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,28 +23,25 @@ import android.widget.Toast;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.TagInfo;
+import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.view.create.SelectTagsAdapter.OnTagDetailsClickListener;
+import com.meetisan.meetisan.view.tags.TagProfileActivity;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
-/**
- * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
- * {@link CreateStep2Fragment.OnFragmentInteractionListener} interface to handle interaction events.
- * Use the {@link CreateStep2Fragment#newInstance} factory method to create an instance of this
- * fragment.
- * 
- */
-public class CreateStep2Fragment extends Fragment implements OnItemClickListener {
+public class CreateStep2Fragment extends Fragment implements OnItemClickListener, OnTagDetailsClickListener {
 	private OnFragmentInteractionListener mListener;
 	private PullToRefreshListView mPullTagsListView;
 	private ListView mTagsListView;
+	private Activity mParentActivity;
 
 	private SelectTagsAdapter mAdapter;
 	private List<TagInfo> mTagsData = new ArrayList<TagInfo>();
@@ -66,8 +64,9 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_create_step2, container, false);
-		mPullTagsListView = (PullToRefreshListView) view
-				.findViewById(R.id.list_create_select_tags_list);
+		mParentActivity = getActivity();
+
+		mPullTagsListView = (PullToRefreshListView) view.findViewById(R.id.list_create_select_tags_list);
 		mPullTagsListView.setOnItemClickListener(this);
 		mPullTagsListView.setMode(Mode.BOTH);
 		TextView mEmptyTagsView = (TextView) view.findViewById(R.id.txt_empty_tags);
@@ -100,6 +99,7 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 		mTagsListView = mPullTagsListView.getRefreshableView();
 		registerForContextMenu(mTagsListView);
 		mAdapter = new SelectTagsAdapter(getActivity(), mTagsData);
+		mAdapter.setOnDetailsBtnClickListener(this);
 		mTagsListView.setAdapter(mAdapter);
 
 		mPullTagsListView.setVisibility(View.VISIBLE);
@@ -122,17 +122,16 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 	/**
 	 * get My Tags from server
 	 * 
-	 * @param pageIndex load page index
+	 * @param pageIndex
+	 *            load page index
 	 */
-	private void getMyTagsFromServer(int pageIndex, final boolean isRefresh,
-			final boolean isNeedsDialog) {
+	private void getMyTagsFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
 
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
 			if (mProgressDialog == null) {
-				mProgressDialog = new CustomizedProgressDialog(getActivity(),
-						R.string.please_waiting);
+				mProgressDialog = new CustomizedProgressDialog(getActivity(), R.string.please_waiting);
 			} else {
 				if (mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
@@ -152,8 +151,7 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 						mTagsData.clear();
 					}
 
-					JSONObject dataJson = (new JSONObject(result))
-							.getJSONObject(ServerKeys.KEY_DATA);
+					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
 					mMaxMyTags = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
 					JSONArray tagArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
 					for (int i = 0; i < tagArray.length(); i++) {
@@ -191,21 +189,35 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex
-				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&name=", null);
+		request.get(ServerKeys.FULL_URL_GET_USER_TAG + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
+				+ ServerKeys.PAGE_SIZE + "&name=", null);
 		if (isNeedsDialog) {
 			mProgressDialog.show();
 		}
 	}
 
+	private void showErrorDialog(int count) {
+		if (count <= 0) {
+			DialogUtils.showDialog(mParentActivity, R.string.wait, R.string.please_select_some_tags, R.string.ok, -1,
+					null);
+		} else if (count > 3) {
+			DialogUtils.showDialog(mParentActivity, R.string.sorry, R.string.please_select_less_tags, R.string.ok, -1,
+					null);
+		}
+	}
+
 	public boolean checkUserInput() {
+		int selectCount = 0;
 		for (TagInfo tagInfo : mTagsData) {
 			if (tagInfo.getState() == 1) {
-				return true;
+				selectCount++;
 			}
 		}
-		ToastHelper.showToast(R.string.please_select_some_tags);
-		return false;
+		if (selectCount <= 0 || selectCount > 3) {
+			showErrorDialog(selectCount);
+			return false;
+		}
+		return true;
 	}
 
 	public List<TagInfo> getData() {
@@ -225,8 +237,7 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 		try {
 			mListener = (OnFragmentInteractionListener) activity;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
+			throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
 		}
 	}
 
@@ -247,5 +258,17 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 			info.setState(0);
 		}
 		mAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onClick(TagInfo info) {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent();
+		Bundle bundle = new Bundle();
+		bundle.putLong("TagID", info.getId());
+		bundle.putLong("UserID", mUserId);
+		intent.setClass(mParentActivity, TagProfileActivity.class);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 }

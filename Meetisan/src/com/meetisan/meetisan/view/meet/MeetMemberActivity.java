@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
+		
 		((ImageButton) findViewById(R.id.btn_title_icon_left)).setOnClickListener(this);
 
 		/** -----------Init People ListView-------------- */
@@ -109,7 +111,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 		});
 		mPeopleListView = mPullPeopleView.getRefreshableView();
 		registerForContextMenu(mPeopleListView);
-		mPeopleAdapter = new PeopleAdapter(this, mPeopleData);
+		mPeopleAdapter = new PeopleAdapter(this, mPeopleData, true);
 		mPeopleListView.setAdapter(mPeopleAdapter);
 		mPeopleAdapter.notifyDataSetChanged();
 		mPullPeopleView.setVisibility(View.VISIBLE);
@@ -125,6 +127,9 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 				startActivity(intent);
 			}
 		});
+
+		LinearLayout mInvitationLayout = (LinearLayout)findViewById(R.id.layout_bottom);
+		mInvitationLayout.setVisibility(View.VISIBLE);
 	}
 
 	@Override

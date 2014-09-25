@@ -14,7 +14,8 @@
         android:dividerHeight="0.5dp"
         android:fadingEdge="none"
         android:footerDividersEnabled="true"
-        android:headerDividersEnabled="true" />
+        android:headerDividersEnabled="true"
+        android:scrollbars="none" />
 
     <TextView
         android:id="@+id/txt_empty_tags"
@@ -22,8 +23,9 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="10dp"
-        android:text="@string/content_empty_default"
+        android:text="@string/tips_no_tags"
         android:textColor="@color/content_empty_tips_text_color"
         android:textSize="@dimen/text_size_small"
         android:visibility="gone" />
+
 </RelativeLayout>

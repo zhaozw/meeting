@@ -42,7 +42,7 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 	private LabelWithIcon mHostLabel;
 	private ImageButton mAddBtn;
 	private TextView mNameTxt, mDescriptionTxt, mLinkTxt, mNoMomentTxt;
-	private TextView mFirstTagTxt, mSecondTagTxt, mThirdTagTxt, mNoTagTxt;
+	// private TextView mFirstTagTxt, mSecondTagTxt, mThirdTagTxt, mNoTagTxt;
 
 	private long mTagID = -1, mUserID = -1, mHostID = -1;
 	private TagInfo mTagInfo = new TagInfo();
@@ -88,10 +88,10 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		mHostLabel.setOnClickListener(this);
 		mLinkTxt = (TextView) findViewById(R.id.txt_tag_link);
 
-		mFirstTagTxt = (TextView) findViewById(R.id.txt_tag_one);
-		mSecondTagTxt = (TextView) findViewById(R.id.txt_tag_two);
-		mThirdTagTxt = (TextView) findViewById(R.id.txt_tag_three);
-		mNoTagTxt = (TextView) findViewById(R.id.txt_no_tags);
+		// mFirstTagTxt = (TextView) findViewById(R.id.txt_tag_one);
+		// mSecondTagTxt = (TextView) findViewById(R.id.txt_tag_two);
+		// mThirdTagTxt = (TextView) findViewById(R.id.txt_tag_three);
+		// mNoTagTxt = (TextView) findViewById(R.id.txt_no_tags);
 
 		mAddBtn = (ImageButton) findViewById(R.id.btn_title_icon_right);
 		mAddBtn.setOnClickListener(this);
@@ -199,27 +199,27 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 		setMomentView(mTagInfo.getTagMoments());
 	}
 
-	private void setAssociateTag(List<TagInfo> tagsList) {
-		if (tagsList == null) {
-			mNoTagTxt.setVisibility(View.VISIBLE);
-		}
-		int tagsCount = tagsList.size();
-		if (tagsCount <= 0) {
-			mNoTagTxt.setVisibility(View.VISIBLE);
-		}
-		if (tagsCount >= 1) {
-			mFirstTagTxt.setText(tagsList.get(0).getTitle());
-			mFirstTagTxt.setVisibility(View.VISIBLE);
-		}
-		if (tagsCount >= 2) {
-			mSecondTagTxt.setText(tagsList.get(1).getTitle());
-			mSecondTagTxt.setVisibility(View.VISIBLE);
-		}
-		if (tagsCount >= 3) {
-			mThirdTagTxt.setText(tagsList.get(2).getTitle());
-			mThirdTagTxt.setVisibility(View.VISIBLE);
-		}
-	}
+	// private void setAssociateTag(List<TagInfo> tagsList) {
+	// if (tagsList == null) {
+	// mNoTagTxt.setVisibility(View.VISIBLE);
+	// }
+	// int tagsCount = tagsList.size();
+	// if (tagsCount <= 0) {
+	// mNoTagTxt.setVisibility(View.VISIBLE);
+	// }
+	// if (tagsCount >= 1) {
+	// mFirstTagTxt.setText(tagsList.get(0).getTitle());
+	// mFirstTagTxt.setVisibility(View.VISIBLE);
+	// }
+	// if (tagsCount >= 2) {
+	// mSecondTagTxt.setText(tagsList.get(1).getTitle());
+	// mSecondTagTxt.setVisibility(View.VISIBLE);
+	// }
+	// if (tagsCount >= 3) {
+	// mThirdTagTxt.setText(tagsList.get(2).getTitle());
+	// mThirdTagTxt.setVisibility(View.VISIBLE);
+	// }
+	// }
 
 	private void setMomentView(List<TagMoment> mTagMoments) {
 		List<String> mUriList = new ArrayList<String>();

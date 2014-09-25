@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="people">People</string>
     <string name="meetings">Meetings</string>
-    
-    
     <string name="meeting_details">Meeting Details</string>
     <string name="meeting_tags">Meeting Tags</string>
+    <string name="tags_upcase">TAGS</string>
     <string name="meeting_description">Meeting Description</string>
-    <string name="meeting_time">Meeting Time</string>
+    <string name="description_upcase">DESCRIPTION</string>
+    <string name="meeting_time_upcase">MEETING TIME</string>
     <string name="start">Start</string>
     <string name="end">End</string>
-    <string name="location">Location</string>
+    <string name="location_upcase">LOCATION</string>
     <string name="meet">Meet</string>
     <string name="cancel">Cancel</string>
     <string name="attend_meeting_success">Success To Attend This Meeting</string>
     <string name="attend_meeting_failure">Failed To Attend This Meeting</string>
     <string name="cancel_attend_meeting_success">Success To Cancel Attend This Meeting</string>
     <string name="cancel_attend_meeting_failure">Failed To Cancel Attend This Meeting</string>
-    
-    <string name="meet_member">People In This Meeting</string>
-    
+    <string name="meet_member">Guest List</string>
     <string name="meeting_location">Meeting Location</string>
     <string name="set_meeting_location">Set Meeting Location</string>
-    
     <string name="error_set_meeting_location_empty">Please Set Meeting Location</string>
+    <string name="no_meetings_around">There are no meetings around you.</string>
+    <string name="report_tips">Please provide evidence to support your report</string>
+    <string name="report_success">Report Submitted Successfully</string>
+    <string name="report_failed">Report Submitted Failure</string>
+    <string name="hint_enter_report_tips">Please include the Person\'s Name, the Meeting\'s Name, Time and Date, and nature of the misdemeanour.</string>
+
 </resources>

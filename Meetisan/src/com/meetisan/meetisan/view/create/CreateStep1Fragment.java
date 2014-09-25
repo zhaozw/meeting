@@ -12,27 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.internal.v;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.widget.CircleImageView;
-import com.meetisan.meetisan.widget.DeleteTouchListener;
 import com.meetisan.meetisan.widget.LabelWithSwitchButton;
-import com.meetisan.meetisan.widget.DeleteTouchListener.OnDeleteCallback;
 
-/**
- * A fragment with a Google +1 button. Activities that contain this fragment
- * must implement the {@link com.meetisan.meetisan.view.create.OnFragmentInteractionListener}
- * interface to handle interaction events. Use the
- * {@link CreateStep1Fragment#newInstance} factory method to create an instance
- * of this fragment.
- * 
- */
 public class CreateStep1Fragment extends Fragment {
 	private OnFragmentInteractionListener mListener;
 	private EditText mMeetingTitle;

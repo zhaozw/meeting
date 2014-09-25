@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/activity_title_height"
+        android:layout_alignParentTop="true"
+        layout="@layout/title_with_image_btn" />
+
+    <TextView
+        android:id="@+id/txt_report_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_title"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        android:padding="10dp"
+        android:text="@string/report_tips"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_small" />
+
+    <View
+        android:id="@+id/view_line_up"
+        android:layout_width="match_parent"
+        android:layout_height="1.0dp"
+        android:layout_below="@+id/txt_report_tips"
+        android:background="@android:color/darker_gray" />
+
+    <EditText
+        android:id="@+id/txt_evidence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_line_up"
+        android:background="@android:color/transparent"
+        android:gravity="top|left"
+        android:hint="@string/hint_enter_report_tips"
+        android:minHeight="200dp"
+        android:padding="10dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/gray"
+        android:textSize="@dimen/text_size_small" />
+
+    <View
+        android:id="@+id/view_line_down"
+        android:layout_width="match_parent"
+        android:layout_height="1.0dp"
+        android:layout_below="@+id/txt_evidence"
+        android:background="@android:color/darker_gray" />
+
+</RelativeLayout>

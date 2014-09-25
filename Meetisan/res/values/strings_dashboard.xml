@@ -8,6 +8,8 @@
     <string name="logout_tips">Are you sure to logout Meetisan?</string>
     <string name="save">Save</string>
     <string name="warning">Warning</string>
+    <string name="sorry">Sorry</string>
+    <string name="wait">Wait</string>
     <string name="delete">Delete</string>
 
     <!-- settings of notify me when -->
@@ -40,20 +42,21 @@
 
     <!-- Dashboard Person Profile -->
     <string name="person_profile">Person Profile</string>
+    <string name="profile">Profile</string>
     <string name="my_info">My Info</string>
     <string name="profile_summary">Profile Summary</string>
     <string name="top_tags">Top Tags</string>
     <string name="university">University</string>
     <string name="more_information">More Information</string>
     <string name="let_us_meet">Let\'s Meet!</string>
-    <string name="can_not_join">This meeting is full or has already taken place.</string>
+    <string name="can_not_join">This meeting is no longer available.</string>
     <string name="report">Report</string>
 
     <!-- Dashboard Person Profile More Information -->
     <string name="information">Information</string>
     <string name="profile_university">University Profile</string>
     <string name="profile_name">Name:</string>
-    <string name="profile_school">School:</string>
+    <string name="profile_school">University:</string>
     <string name="profile_city">City:</string>
     <string name="profile_age">Age:</string>
     <string name="profile_birthday">Birthday:</string>

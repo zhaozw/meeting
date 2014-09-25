@@ -36,7 +36,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="@drawable/pic_background"
+        android:background="@drawable/bg_profile_head"
         android:padding="15dp" >
 
         <com.meetisan.meetisan.widget.CircleImageView
@@ -84,114 +84,87 @@
             android:layout_marginBottom="20dp"
             android:background="@android:color/white"
             android:orientation="vertical"
-            android:padding="10dp" >
+            android:padding="0dp" >
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="@string/meeting_tags"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/text_size_small" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
+                style="@style/ProfileTitleLabelStyle"
+                android:text="@string/tags_upcase" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="5dp" >
+                android:padding="10dp" >
 
                 <TextView
                     android:id="@+id/txt_meet_one"
-                    style="@style/TagLabelStyle" />
+                    style="@style/TagLabelStyle"
+                    android:layout_margin="5dp" />
 
                 <TextView
                     android:id="@+id/txt_meet_two"
-                    style="@style/TagLabelStyle" />
+                    style="@style/TagLabelStyle"
+                    android:layout_margin="5dp" />
 
                 <TextView
                     android:id="@+id/txt_meet_three"
-                    style="@style/TagLabelStyle" />
+                    style="@style/TagLabelStyle"
+                    android:layout_margin="5dp" />
 
                 <TextView
                     android:id="@+id/txt_no_tags"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:gravity="center"
+                    android:text="-"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/text_size_middle"
                     android:visibility="gone" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
-                android:gravity="center"
-                android:text="@string/meeting_description"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/text_size_small" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
+                style="@style/ProfileTitleLabelStyle"
+                android:text="@string/description_upcase" />
 
             <TextView
                 android:id="@+id/txt_meet_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:padding="5dp"
+                android:gravity="center|left"
+                android:padding="10dp"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_small" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
-                android:gravity="center"
-                android:text="@string/meeting_time"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/text_size_small" />
+                style="@style/ProfileTitleLabelStyle"
+                android:text="@string/meeting_time_upcase" />
 
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
-
-            <TextView
-                android:id="@+id/txt_time1"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_small" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/start"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
+
+                <TextView
+                    android:id="@+id/txt_time1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center|right"
+                    android:padding="5dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -200,65 +173,43 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/gap_line_color" />
 
-            <TextView
-                android:id="@+id/txt_time2"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_small" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp" >
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/gap_line_color" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/end"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
 
-            <TextView
-                android:id="@+id/txt_time3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_small" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
+                <TextView
+                    android:id="@+id/txt_time2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center|right"
+                    android:padding="5dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
+            </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
-                android:gravity="center"
-                android:text="@string/location"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/text_size_small" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
+                style="@style/ProfileTitleLabelStyle"
+                android:text="@string/location_upcase" />
 
             <com.meetisan.meetisan.widget.LabelWithIcon
                 android:id="@+id/btn_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="@string/location"
                 android:textColor="@android:color/black" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:background="@android:color/darker_gray" />
 
             <LinearLayout
                 android:id="@+id/layout_meet_and_report"
@@ -270,18 +221,20 @@
 
                 <Button
                     android:id="@+id/btn_meet"
-                    style="@style/ButtonStyle" />
+                    style="@style/ButtonStyle"
+                    android:layout_margin="10dp" />
 
                 <TextView
                     android:id="@+id/txt_report"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:clickable="true"
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="@string/report"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@drawable/selector_text_red_gray"
+                    android:textSize="@dimen/text_size_small" />
             </LinearLayout>
 
             <TextView

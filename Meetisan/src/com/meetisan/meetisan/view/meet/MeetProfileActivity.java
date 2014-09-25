@@ -1,5 +1,6 @@
 package com.meetisan.meetisan.view.meet;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	private LabelWithIcon mLocationBtn;
 	private Button mMeetOrCancelBtn;
 	private TextView mTitleTxt, mDescriptionTxt, mFirstTagTxt, mSecondTagTxt, mThirdTagTxt, mNoTagTxt, mCannotJoinTxt;
-	private TextView mTime1Txt, mTime2Txt, mTime3Txt;
+	private TextView mStartTimeTxt, mEndTimeTxt, mReportTxt;
 	private LinearLayout mMeetLayout;
 
 	private long mMeetingID = -1, mUserID = -1;
@@ -91,9 +92,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		mLogoView = (CircleImageView) findViewById(R.id.iv_logo);
 		mTitleTxt = (TextView) findViewById(R.id.txt_meet_title);
 		mDescriptionTxt = (TextView) findViewById(R.id.txt_meet_description);
-		mTime1Txt = (TextView) findViewById(R.id.txt_time1);
-		mTime2Txt = (TextView) findViewById(R.id.txt_time2);
-		mTime3Txt = (TextView) findViewById(R.id.txt_time3);
+		mStartTimeTxt = (TextView) findViewById(R.id.txt_time1);
+		mEndTimeTxt = (TextView) findViewById(R.id.txt_time2);
 		mLocationBtn = (LabelWithIcon) findViewById(R.id.btn_location);
 		mLocationBtn.setOnClickListener(this);
 
@@ -101,6 +101,9 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		mSecondTagTxt = (TextView) findViewById(R.id.txt_meet_two);
 		mThirdTagTxt = (TextView) findViewById(R.id.txt_meet_three);
 		mNoTagTxt = (TextView) findViewById(R.id.txt_no_tags);
+
+		mReportTxt = (TextView) findViewById(R.id.txt_report);
+		mReportTxt.setOnClickListener(this);
 	}
 
 	@Override
@@ -134,6 +137,15 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		case R.id.btn_meet:
 			attendOrCancelMeet();
 			break;
+		case R.id.txt_report:
+			Intent reportIntent = new Intent();
+			Bundle reportBundle = new Bundle();
+			reportBundle.putLong("ReportID", mMeetingID);
+			reportBundle.putBoolean("IsReportUser", false);
+			reportIntent.setClass(this, ReportActivity.class);
+			reportIntent.putExtras(reportBundle);
+			startActivity(reportIntent);
+			break;
 		default:
 			break;
 		}
@@ -153,9 +165,16 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		if (mMeetInfo.getDescription() != null) {
 			mDescriptionTxt.setText(mMeetInfo.getDescription());
 		}
-		mTime1Txt.setText(Util.convertTime2FormatMeetTime(mMeetInfo.getStartTime1(), mMeetInfo.getEndTime1()));
-		mTime2Txt.setText(Util.convertTime2FormatMeetTime(mMeetInfo.getStartTime2(), mMeetInfo.getEndTime2()));
-		mTime3Txt.setText(Util.convertTime2FormatMeetTime(mMeetInfo.getStartTime3(), mMeetInfo.getEndTime3()));
+		try {
+			mStartTimeTxt.setText(Util.convertDateToMeetTime(mMeetInfo.getDeterminStartTime()));
+			mEndTimeTxt.setText(Util.convertDateToMeetTime(mMeetInfo.getDeterminEndTime()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+			mStartTimeTxt.setText("-");
+			mEndTimeTxt.setText("-");
+		}
+		// mTime3Txt.setText(Util.convertTime2FormatMeetTime(mMeetInfo.getStartTime3(),
+		// mMeetInfo.getEndTime3()));
 		if (mMeetInfo.getAddress() != null) {
 			mLocationBtn.setText(mMeetInfo.getAddress());
 		}

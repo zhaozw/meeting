@@ -22,10 +22,11 @@ import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.HttpRequest;
-import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.view.meet.ReportActivity;
 import com.meetisan.meetisan.view.tags.PersonTagsActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
@@ -35,7 +36,7 @@ import com.meetisan.meetisan.widget.TagLabelLayout;
 public class PersonProfileActivity extends Activity implements OnClickListener {
 
 	private CircleImageView mPortraitView;
-	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagNoTxt, mTagTitleTxt;
+	private TextView mNameTxt, mSignatureTxt, mUniversityTxt, mTagNoTxt, mTagTitleTxt, mReportTxt;
 	private TagLabelLayout mTagOneTxt, mTagTwoTxt, mTagThreeTxt, mTagFourTxt, mTagFiveTxt;
 	private RelativeLayout mTagsLayout;
 
@@ -84,7 +85,7 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 			mTitleTxt.setText(R.string.profile_summary);
 			mMeetLayout.setVisibility(View.GONE);
 		} else {
-			mTitleTxt.setText(R.string.person_profile);
+			mTitleTxt.setText(R.string.profile);
 		}
 
 		findViewById(R.id.btn_meet).setOnClickListener(this);
@@ -101,6 +102,9 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		mTagFiveTxt = (TagLabelLayout) findViewById(R.id.txt_tag_five);
 		mTagNoTxt = (TextView) findViewById(R.id.txt_no_tags);
 		mTagTitleTxt = (TextView) findViewById(R.id.txt_profile_tag_title);
+
+		mReportTxt = (TextView) findViewById(R.id.txt_report);
+		mReportTxt.setOnClickListener(this);
 
 		mTagsLayout = (RelativeLayout) findViewById(R.id.layout_top_tags);
 		mTagsLayout.setOnClickListener(this);
@@ -189,6 +193,15 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 			tagIntent.setClass(this, PersonTagsActivity.class);
 			tagIntent.putExtras(tagBundle);
 			startActivity(tagIntent);
+			break;
+		case R.id.txt_report:
+			Intent reportIntent = new Intent();
+			Bundle reportBundle = new Bundle();
+			reportBundle.putLong("ReportID", userId);
+			reportBundle.putBoolean("IsReportUser", true);
+			reportIntent.setClass(this, ReportActivity.class);
+			reportIntent.putExtras(reportBundle);
+			startActivity(reportIntent);
 			break;
 		default:
 			break;

@@ -7,22 +7,13 @@
     tools:context=".CreateStep1Fragment" >
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/insert_a_meeting_title_tip"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_size_small" />
+        style="@style/ProfileTitleLabelStyle"
+        android:text="@string/insert_a_meeting_title_tip" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/activity_create_item_height"
         android:orientation="vertical" >
-
-        <View style="@style/CreateActivityDividingLine" />
 
         <EditText
             android:id="@+id/et_create_meeting_title"
@@ -30,8 +21,12 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:background="@null"
+            android:imeOptions="actionDone"
             android:inputType="text"
-            android:padding="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
             android:singleLine="true" />
 
         <View
@@ -51,7 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/private_meeting_tip" />
+            android:text="@string/private_meeting_tip"
+            android:textColor="@android:color/black" />
 
         <View
             style="@style/CreateActivityDividingLine"
@@ -62,20 +58,14 @@
         android:id="@+id/ll_the_people_your_invite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:clickable="true"
-        android:visibility="gone"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:paddingTop="10dp"
-            android:text="@string/slide_to_left_to_delete_the_people_your_invite"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="@dimen/text_size_middle" />
-
-        <View style="@style/CreateActivityDividingLine" />
+            style="@style/ProfileTitleLabelStyle"
+            android:text="@string/slide_to_delete_people_invited" />
 
         <RelativeLayout
             android:id="@+id/rl_create_let_us_meeting_invite_people"
@@ -89,7 +79,7 @@
                 android:layout_width="55dp"
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:src="@drawable/portrait_person_default"
                 customized:border_color="@android:color/white"
                 customized:border_width="0dp" />
@@ -115,9 +105,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
+                    android:singleLine="true"
                     android:text="@string/has_been_invited_to_your_meeting"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="@dimen/text_size_middle" />
+                    android:textSize="@dimen/text_size_small" />
             </LinearLayout>
         </RelativeLayout>
 

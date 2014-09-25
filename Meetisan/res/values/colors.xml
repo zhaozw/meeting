@@ -3,13 +3,13 @@
 	<color name="gray">#FFC0C0C0</color>
 	<color name="blue">#3399FF</color>
 	
-    <color name="activity_title_bg_color">#8CC3CF</color>
+    <color name="activity_title_bg_color">#8BD4C9</color>
     <color name="activity_main_tab_check_color">#F47C7C</color>
-	<color name="activity_main_tab_background_color">#8CC3CF</color>
+	<color name="activity_main_tab_background_color">#8BD4C9</color>
 	
 	<color name="gap_line_color">#DDDDDD</color>
 
-    <color name="meetisan_btn_bg_normal">#FF4AEAA4</color>
+    <color name="meetisan_btn_bg_normal">#8BD4C9</color>
     <color name="meetisan_btn_bg_press">#BB4AEAA4</color>
 
     <color name="meetisan_btn_logout_bg_normal">#FFF47C7C</color>
@@ -19,7 +19,7 @@
 	<color name="listview_bg_preesed">#FFDDDDDD</color>
 	
     <color name="tag_label_left_bg_color">#9ABCCB</color>
-    <color name="tag_label_right_bg_color">#8CC3CF</color>
+    <color name="tag_label_right_bg_color">#8BD4C9</color>
 	
 	<color name="content_empty_tips_text_color">#FF969696</color>
 
@@ -33,11 +33,11 @@
 	
 	<!-- for swipe listview -->
 	<color name="swipe_list_del_btn_bg_normal">#F47C7C</color>
-	<color name="swipe_list_del_btn_bg_pressed">#8CC3CF</color>
+	<color name="swipe_list_del_btn_bg_pressed">#8BD4C9</color>
 	
 	<!-- for segment group -->
 	<color name="segment_group_bg_check">@android:color/white</color>
-	<color name="segment_group_text_check">#8CC3CF</color>
+	<color name="segment_group_text_check">#8BD4C9</color>
 	
 	<!-- Custom prgress dialog -->
 	<color name="border_square_color_gray">#55000000</color>
@@ -52,4 +52,9 @@
     <color name="tag_label_bg">#7BB7C4</color>
     
     <color name="profile_title_bg">#F7F4F4</color>
+    <color name="report_normal_text_color">#E4787B</color>
+    <color name="btn_pressed_text_color">#A1DDD3</color>
+    <color name="btn_normal_text_color">@android:color/white</color>
+    
+    <color name="bg_create_tag_select_color">#E1E1E1</color>
 </resources>

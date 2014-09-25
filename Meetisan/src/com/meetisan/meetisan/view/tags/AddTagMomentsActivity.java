@@ -276,7 +276,7 @@ public class AddTagMomentsActivity extends Activity implements OnClickListener {
 	}
 
 	private void confirmExitDialog() {
-		DialogUtils.showDialog(this, R.string.give_up_add_tag_tips, R.string.warning, R.string.sure, R.string.cancel,
+		DialogUtils.showDialog(this, R.string.warning, R.string.give_up_add_tag_tips, R.string.sure, R.string.cancel,
 				new OnDialogClickListener() {
 
 					@Override

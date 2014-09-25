@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="ActivityCreateTitles">
-        <item>Meeting Title</item>
-        <item>Select tags</item>
-        <item>Meeting Info</item>
-        <item>Select Logo</item>
+        <item>Create</item>
+        <item>Create</item>
+        <item>Create</item>
+        <item>Create</item>
     </string-array>
 </resources>

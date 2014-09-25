@@ -17,7 +17,7 @@
     <string name="associated_tags_upcase">ASSOCIATED TAGS</string>
     <string name="tag_moments_upcase">MOMENTS</string>
     <string name="tag_moments">Tag Moments</string>
-    <string name="no_tag_moment_image">Don\'t have any Tag Moment!</string>
+    <string name="no_tag_moment_image">-</string>
     <string name="empty_tag_moment_tips">Without Tag Moment, you can tap to send&#8230;</string>
     <string name="view_all_moments">View All Moments</string>
     <string name="tag_history">Your tag history with</string>
@@ -45,4 +45,5 @@
     <string name="adding_tag">Adding Tag&#8230;</string>
     <string name="success_add_tag">Success to add this Tag</string>
     
+    <string name="invitation_status">Invitation Status:</string>
 </resources>

@@ -48,13 +48,13 @@
 
         <Button
             android:id="@+id/negative"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
             android:background="@android:color/transparent"
             android:gravity="center"
             android:text="@string/negative"
-            android:textColor="@color/blue"
+            android:textColor="@color/selector_text_blue_gray"
             android:textSize="@dimen/text_size_middle"
             android:visibility="gone" />
 
@@ -67,13 +67,13 @@
 
         <Button
             android:id="@+id/positive"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
             android:background="@android:color/transparent"
             android:gravity="center"
             android:text="@string/positive"
-            android:textColor="@color/blue"
+            android:textColor="@color/selector_text_blue_gray"
             android:textSize="@dimen/text_size_middle"
             android:visibility="gone" />
     </LinearLayout>
