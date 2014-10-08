@@ -12,10 +12,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_create_item_height"
+        android:layout_height="55dp"
         android:orientation="vertical" >
 
-        <EditText
+        <com.meetisan.meetisan.widget.ClearEditText
             android:id="@+id/et_create_meeting_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -36,7 +36,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_create_item_height"
+        android:layout_height="50dp"
         android:layout_marginTop="40dp" >
 
         <View style="@style/CreateActivityDividingLine" />

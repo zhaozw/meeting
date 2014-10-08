@@ -16,22 +16,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.widget.CircleImageView;
+import com.meetisan.meetisan.widget.ClearEditText;
 import com.meetisan.meetisan.widget.LabelWithSwitchButton;
 
 public class CreateStep1Fragment extends Fragment {
 	private OnFragmentInteractionListener mListener;
-	private EditText mMeetingTitle;
+	private ClearEditText mMeetingTitle;
 	private LabelWithSwitchButton mPrivateMeeting;
 	private LinearLayout mMeetPersonLayout;
 	private RelativeLayout mMeetPersonItemLayout;
 	private CircleImageView mMeetPersonCircleImageView;
 	private TextView mMeetPersonTextView;
-	
+
 	private Bundle mMeetPersonBundle = null;
-	
+
 	public CreateStep1Fragment() {
 		// Required empty public constructor
 	}
@@ -46,13 +48,13 @@ public class CreateStep1Fragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_create_step1, container, false);
-		mMeetingTitle = (EditText) view.findViewById(R.id.et_create_meeting_title);
+		mMeetingTitle = (ClearEditText) view.findViewById(R.id.et_create_meeting_title);
 		mPrivateMeeting = (LabelWithSwitchButton) view.findViewById(R.id.switch_create_private_meeting);
 		mMeetPersonLayout = (LinearLayout) view.findViewById(R.id.ll_the_people_your_invite);
 		mMeetPersonItemLayout = (RelativeLayout) view.findViewById(R.id.rl_create_let_us_meeting_invite_people);
 		mMeetPersonCircleImageView = (CircleImageView) view.findViewById(R.id.iv_portrait);
 		mMeetPersonTextView = (TextView) view.findViewById(R.id.tv_create_invite_people_name);
-		
+
 		if (mMeetPersonBundle != null) {
 			if (mMeetPersonBundle.getBoolean("IsMeetPerson")) {
 				String name = mMeetPersonBundle.getString("PersonName");
@@ -66,13 +68,14 @@ public class CreateStep1Fragment extends Fragment {
 				} else {
 					mMeetPersonCircleImageView.setImageResource(R.drawable.portrait_person_default);
 				}
-//				mMeetPersonItemLayout.setOnTouchListener(new DeleteTouchListener(null, new OnDeleteCallback() {
-//
-//					@Override
-//					public void onDelete(ListView listView, int position) {
-//						mMeetPersonLayout.setVisibility(View.GONE);
-//					}
-//				}));
+				// mMeetPersonItemLayout.setOnTouchListener(new
+				// DeleteTouchListener(null, new OnDeleteCallback() {
+				//
+				// @Override
+				// public void onDelete(ListView listView, int position) {
+				// mMeetPersonLayout.setVisibility(View.GONE);
+				// }
+				// }));
 				mMeetPersonLayout.setVisibility(View.VISIBLE);
 			}
 		}
@@ -90,7 +93,7 @@ public class CreateStep1Fragment extends Fragment {
 			mListener.onFragmentInteraction(uri);
 		}
 	}
-	
+
 	public boolean checkUserInput() {
 		if (mMeetingTitle.getText().toString().length() <= 0) {
 			mMeetingTitle.setError(getString(R.string.please_input_meeting_title));
@@ -102,18 +105,19 @@ public class CreateStep1Fragment extends Fragment {
 	public Map<String, Object> getData() {
 		Map<String, Object> data = new TreeMap<String, Object>();
 		data.put(ServerKeys.KEY_TITLE, mMeetingTitle.getText().toString());
-		data.put(ServerKeys.KEY_IS_PRIVATE, mPrivateMeeting.isChecked() ? 1 : 2);
+		data.put(ServerKeys.KEY_IS_PRIVATE, mPrivateMeeting.isChecked() ? 0 : 1);
+		long mUserId = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_ID, -1L);
+		data.put(ServerKeys.KEY_CREATE_USER_ID, mUserId);
 		return data;
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
 			mListener = (OnFragmentInteractionListener) activity;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
+			throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
 		}
 	}
 

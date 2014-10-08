@@ -25,15 +25,19 @@
             android:scaleType="centerInside"
             android:src="@drawable/icon_back" />
 
-        <com.meetisan.meetisan.widget.SearchPanel
+        <com.meetisan.meetisan.widget.ClearEditText
             android:id="@+id/search_panel"
+            style="@style/SearchLayout.Edit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/btn_title_left"
-            android:background="@android:color/transparent" />
+            android:background="@drawable/search_edit_selector"
+            android:drawablePadding="3dp" />
     </RelativeLayout>
 
     <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView
@@ -48,15 +52,28 @@
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="true" />
 
-    <TextView
-        android:id="@+id/txt_empty_tags"
+    <LinearLayout
+        android:id="@+id/layout_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/content_empty_default"
-        android:textColor="@color/content_empty_tips_text_color"
-        android:textSize="@dimen/text_size_small"
-        android:visibility="gone" />
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/txt_empty_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/text_size_middle" />
+
+        <Button
+            android:id="@+id/btn_create_tag"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="40dp"
+            android:text="@string/want_to_create_tag" />
+    </LinearLayout>
 
 </RelativeLayout>

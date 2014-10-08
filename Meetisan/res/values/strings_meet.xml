@@ -13,7 +13,7 @@
     <string name="end">End</string>
     <string name="location_upcase">LOCATION</string>
     <string name="meet">Meet</string>
-    <string name="cancel">Cancel</string>
+    <string name="set_time">Set Time</string>
     <string name="attend_meeting_success">Success To Attend This Meeting</string>
     <string name="attend_meeting_failure">Failed To Attend This Meeting</string>
     <string name="cancel_attend_meeting_success">Success To Cancel Attend This Meeting</string>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/activity_title_height"
+        layout="@layout/title_with_image_btn" />
+
+    <View
+        android:id="@+id/view_line_up"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/gap_line_color" />
+
+    <RelativeLayout
+        android:id="@+id/layout_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/txt_report_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tag_name"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:id="@+id/txt_tag_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/txt_report_tips"
+            android:ellipsize="end"
+            android:gravity="center|right"
+            android:singleLine="true"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/text_size_small" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_line_down"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="@color/gap_line_color" />
+
+    <com.meetisan.meetisan.widget.LabelWithIcon
+        android:id="@+id/btn_tag_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:src="@drawable/icon_arrow_down"
+        android:text="@string/tag_category"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_small" />
+
+    <View
+        android:id="@+id/view_gap_below"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="@color/gap_line_color" />
+
+    <Button
+        android:id="@+id/btn_create"
+        style="@style/ButtonStyle"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/do_create_tag" />
+
+</LinearLayout>

@@ -11,13 +11,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
@@ -29,9 +33,8 @@ import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.widget.ClearEditText;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
-import com.meetisan.meetisan.widget.SearchPanel;
-import com.meetisan.meetisan.widget.SearchPanel.SearchListener;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
@@ -39,10 +42,15 @@ import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
 public class SearchTagsActivity extends Activity implements OnClickListener {
 
+	private static final String FORMAT_CREATE_TAG_TIPS = "A '%s' Tag doesn\'t exist. You can search for related Tags or Create this Tag yourself.";
+
 	private PullToRefreshListView mPullTagsListView;
 	private ListView mTagsListView;
 	private List<TagInfo> mTagsData = new ArrayList<TagInfo>();
-	private SearchPanel mSearchPanel;
+	// private SearchPanel mSearchPanel;
+	private ClearEditText mSearchView;
+	private TextView mEmptyTxt;
+	private LinearLayout mEmptyLayout;
 
 	private long mMaxMyTags = 0;
 	private TagsAdapter mTagsAdapter;
@@ -68,42 +76,66 @@ public class SearchTagsActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_title_left:
-			this.finish();
+			onBackPressed();
+			break;
+		case R.id.btn_create_tag:
+			Intent intent = new Intent(this, CreateTagsActivity.class);
+			intent.putExtra("TagName", tagName);
+			startActivity(intent);
 			break;
 		}
 	}
+
+	// @Override
+	// public void onDestroy() {
+	// super.onDestroy();
+	// InputMethodUtils.hideInputMethod(SearchTagsActivity.this);
+	// }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
 		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);
-		mSearchPanel = (SearchPanel) findViewById(R.id.search_panel);
-		mSearchPanel.setSearchListener(new SearchListener() {
+		mSearchView = (ClearEditText) findViewById(R.id.search_panel);
+		mSearchView.setOnEditorActionListener(new OnEditorActionListener() {
 
 			@Override
-			public void onClickSearchResult(String query) {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onClear() {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void onAutoSuggestion(String query) {
-				// TODO Auto-generated method stub
-				tagName = query;
+				tagName = v.getText().toString();
 				getMyTagsFromServer(1, true, true);
+				return false;
 			}
 		});
+		// mSearchView.setSearchListener(new SearchListener() {
+		//
+		// @Override
+		// public void onClickSearchResult(String query) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		//
+		// @Override
+		// public void onClear() {
+		// // TODO Auto-generated method stub
+		// }
+		//
+		// @Override
+		// public void onAutoSuggestion(String query) {
+		// // TODO Auto-generated method stub
+		// tagName = query;
+		// getMyTagsFromServer(1, true, true);
+		// }
+		// });
+
+		mEmptyTxt = (TextView) findViewById(R.id.txt_empty_tags);
+		mEmptyLayout = (LinearLayout) findViewById(R.id.layout_empty);
+		((Button) findViewById(R.id.btn_create_tag)).setOnClickListener(this);
 
 		mPullTagsListView = (PullToRefreshListView) findViewById(R.id.list_tags);
 		mPullTagsListView.setMode(Mode.BOTH);
-		TextView mEmptyTagsView = (TextView) findViewById(R.id.txt_empty_tags);
-		mPullTagsListView.setEmptyView(mEmptyTagsView);
+		// mPullTagsListView.setEmptyView(mEmptyLayout);
 		mPullTagsListView.setOnRefreshListener(new OnRefreshListener2() {
 
 			@Override
@@ -164,6 +196,13 @@ public class SearchTagsActivity extends Activity implements OnClickListener {
 		} else {
 			mPullTagsListView.setMode(Mode.BOTH);
 		}
+
+		if (!TextUtils.isEmpty(tagName) && mTagsData.size() <= 0) {
+			mEmptyTxt.setText(String.format(FORMAT_CREATE_TAG_TIPS, tagName));
+			mEmptyLayout.setVisibility(View.VISIBLE);
+		} else {
+			mEmptyLayout.setVisibility(View.GONE);
+		}
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;
@@ -189,7 +228,7 @@ public class SearchTagsActivity extends Activity implements OnClickListener {
 
 		if (isNeedsDialog) {
 			if (mProgressDialog == null) {
-				mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+				mProgressDialog = new CustomizedProgressDialog(this, R.string.searching);
 			} else {
 				if (mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();

@@ -67,7 +67,12 @@ public class MeetingAdapter extends BaseAdapter {
 			httpBitmap.displayBitmap(holder.mCircleImage, mMeetingInfo.getLogoUri());
 		}
 		holder.mNameTxt.setText(Util.formatOutput(mMeetingInfo.getTitle()));
-		holder.mDistanceTxt.setText((int) mMeetingInfo.getDistance() + "km");
+		double distance = mMeetingInfo.getDistance();
+		if (distance > 0) {
+			holder.mDistanceTxt.setText((int) distance + "km");
+		} else {
+			holder.mDistanceTxt.setVisibility(View.GONE);
+		}
 		List<TagInfo> tagsList = mMeetingInfo.getTags();
 		int tagsCount = tagsList.size();
 		if (tagsCount >= 1) {

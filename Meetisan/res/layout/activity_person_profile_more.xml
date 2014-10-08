@@ -54,7 +54,7 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <EditText
+                <com.meetisan.meetisan.widget.ClearEditText
                     android:id="@+id/txt_school"
                     style="@style/ProfileEditTextStyle" />
             </LinearLayout>
@@ -73,7 +73,7 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <EditText
+                <com.meetisan.meetisan.widget.ClearEditText
                     android:id="@+id/txt_city"
                     style="@style/ProfileEditTextStyle" />
             </LinearLayout>
@@ -92,7 +92,7 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <EditText
+                <com.meetisan.meetisan.widget.ClearEditText
                     android:id="@+id/txt_age"
                     style="@style/ProfileEditTextStyle" />
             </LinearLayout>
@@ -111,7 +111,7 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <EditText
+                <com.meetisan.meetisan.widget.ClearEditText
                     android:id="@+id/txt_gender"
                     style="@style/ProfileEditTextStyle" />
             </LinearLayout>
@@ -146,7 +146,7 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <EditText
+                <com.meetisan.meetisan.widget.ClearEditText
                     android:id="@+id/txt_experience"
                     style="@style/ProfileEditTextStyle" />
             </LinearLayout>
@@ -165,7 +165,7 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <EditText
+                <com.meetisan.meetisan.widget.ClearEditText
                     android:id="@+id/txt_education"
                     style="@style/ProfileEditTextStyle" />
             </LinearLayout>
@@ -185,7 +185,7 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <EditText
+                <com.meetisan.meetisan.widget.ClearEditText
                     android:id="@+id/txt_skills"
                     style="@style/ProfileEditTextStyle" />
             </LinearLayout>

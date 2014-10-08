@@ -2,20 +2,23 @@
 <resources>
 
 	<string name="meeting_title">Meeting Title</string>
+	<string name="meeting_title_upcase">MEETING TITLE</string>
+    <string name="meeting_location_upcase">MEETING LOCATION</string>
+    <string name="meeting_tags_upcase">MEETING TAGS</string>
 	<string name="insert_a_meeting_title_tip">INSERT A MEETING TITLE</string>
 	<string name="private_meeting_tip">Private Meeting</string>
 	<string name="format_step_index">(%1$d/%2$d)</string>
-	<string name="maximum_number">Maximum number of people for your meeting</string>
-	<string name="single_meeting">Single Meeting</string>
-	<string name="multiple_meeting">Multiple meeting</string>
+	<string name="meeting_types_upcase">MEETING TYPES</string>
+	<string name="single_meeting">1-on-1</string>
+	<string name="multiple_meeting">Multiple</string>
 	<string name="location">Location</string>
-	<string name="time_sample">7/10/2014 19:00</string>
-	<string name="time_sample2">7/10/2014 21:00</string>
-	<string name="i_want_my_meeting_time_to_be">I want my meeting time to be</string>
-	<string name="set_by_me">Set by me</string>
-	<string name="set_by_him_her">Set by him/her</string>
+	<string name="location_upcase">LOCATION</string>
+	<string name="who_set_meeting_time">WHO WILL SETTING MEETING TIME?</string>
+	<string name="add_meeting_option">Add Meeting Option</string>
+	<string name="set_by_me">I\'ll choose</string>
+	<string name="set_by_him_her">Let them choose(only for 1-on1s)</string>
 	<string name="provide_free_time_slots">Provide free time slots</string>
-	<string name="set_the_time">Set the time</string>
+	<string name="meeting_times_upcase">MEETING TIMES</string>
 	<string name="start">Start</string>
 	<string name="end">End</string>
 	<string name="create">Create</string>
@@ -24,11 +27,12 @@
 	<string name="please_select_some_tags">Please select up to 3 tags</string>
 	<string name="please_select_less_tags">You can only select up to 3 tags</string>
 	<string name="set">Set</string>
-	<string name="select_logo_for_your_meeting">Select logo for your meeting</string>
+	<string name="select_an_image_upcase">SELECT AN IMAGE</string>
 	<string name="please_input_a_description_for_your_meeting">Please input a description for your meeting</string>
 	<string name="meeting_time">Meeting Time</string>
 	<string name="meeting_location">Meeting Location</string>
 	<string name="invite_people">Invite People</string>
+	<string name="invite_people_upcase">INVITE PEOPLE</string>
 	<string name="invite">invite</string>
 	<string name="has_been_invited_to_your_meeting">Has been invited to your meeting.</string>
 	<string name="slide_to_delete_people_invited">Slide to left to delete the people your invite.</string>

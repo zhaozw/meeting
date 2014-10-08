@@ -44,7 +44,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textColorHint">@color/gray</item>
-        <item name="android:imeOptions">actionDone|actionDone</item>
+        <item name="android:inputType">text</item>
+        <item name="android:imeOptions">actionDone</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textSize">@dimen/text_size_small</item>
@@ -97,6 +98,7 @@
     </style>
 
     <style name="SearchLayout.Edit">
+        <item name="android:inputType">text</item>
         <item name="android:autoText">false</item>
         <item name="android:imeOptions">actionSearch</item>
         <item name="android:drawableLeft">@drawable/search_icon_left</item>
@@ -137,16 +139,17 @@
     <style name="CreateActivityDividingLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
+        <item name="android:focusable">false</item>
         <item name="android:background">@color/activity_create_dividing_line_color</item>
     </style>
 
     <style name="CreateActivityItemSelected">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/activity_create_item_height</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">@dimen/text_size_big</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
         <item name="android:drawableRight">@drawable/selector_create_item_selected</item>
         <item name="android:button">@null</item>
     </style>
@@ -170,4 +173,5 @@
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
     </style>
-</resources>
+
+</resources>

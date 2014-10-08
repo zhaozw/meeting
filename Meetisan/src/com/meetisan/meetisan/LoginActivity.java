@@ -101,6 +101,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 		if (DebugUtils.IS_DEBUG) {
 			email = "719236409@qq.com";
 			pwd = "1234567";
+			// email = "1415574892@qq.com";
+			// pwd = "gygy";
 		}
 
 		if (TextUtils.isEmpty(email)) {

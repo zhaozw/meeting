@@ -26,8 +26,10 @@ public class ServerKeys {
 	private static final String API_TTAG = "/api/ttag/";
 	private static final String API_TUSER_TAG = "/api/tUserTag/";
 	private static final String API_TMEET = "/api/tmeeting/";
+	private static final String API_TMEET_ENDORSE = "/api/tMeeting/";
 	private static final String API_TNOTIFICATION = "/api/tnotification/";
 	private static final String API_TMEET_MEMBER = "/api/tmeetingmember/";
+	private static final String API_TMEET_MEMBER_ENDORSE = "/api/tMeetingMember/";
 	private static final String API_TTAG_CATEGORY = "/api/tTagCategory/";
 	private static final String API_TAG_MOMENT = "/api/ttagmoment/";
 	private static final String API_TAG_CREATE_APPLY = "/api/tTagCreateApply/";
@@ -58,6 +60,8 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_TAG_INFO = SERVER_ADDRESS + API_TTAG + "get";
 	/** http://{域名}/api/tTagCategory/GetList/?pageindex={页码}&pagesize={每页数量} */
 	public static final String FULL_URL_GET_TAG_LIST = SERVER_ADDRESS + API_TTAG_CATEGORY + "GetList";
+	/** http://{域名}/api/tTagCreateApply/Add/ */
+	public static final String FULL_URL_CREATE_TAG = SERVER_ADDRESS + API_TAG_CREATE_APPLY + "Add";
 	/**
 	 * http://{域名}/api/tuser/getlist/{当前用户ID}/?pageindex={页码}&pagesize={每页数量}&
 	 * lat={当前用户经度}&lon={当前用户纬度}&tagIDs={按tag筛选时传入tag
@@ -136,14 +140,36 @@ public class ServerKeys {
 	public static final String FULL_URL_GET_TAG_MOMENT_LIST = SERVER_ADDRESS + API_TAG_MOMENT + "getlist";
 	/** http://{域名}/api/ttagmoment/add */
 	public static final String FULL_URL_ADD_TAG_MOMENT = SERVER_ADDRESS + API_TAG_MOMENT + "add";
-	/** http://{域名}/api/tTagCreateApply/Add/ */
-	public static final String FULL_URL_CREATE_TAG = SERVER_ADDRESS + API_TAG_CREATE_APPLY + "Add";
-	/** http://{域名}/api/ttag/searchtag/?name={要搜索的关键字}&pageindex={页码}&pagesize={每页数量} */
+	/**
+	 * http://{域名}/api/ttag/searchtag/?name={要搜索的关键字}&pageindex={页码}&pagesize={
+	 * 每页数量}
+	 */
 	public static final String FULL_URL_SEARCH_TAG = SERVER_ADDRESS + API_TTAG + "searchtag";
-	/** http://meetisanapp.azurewebsites.net/api/tUserTag/Add/  (UserID ：对应用户ID  TagID：对应要加入的tag) */
+	/**
+	 * http://meetisanapp.azurewebsites.net/api/tUserTag/Add/ (UserID ：对应用户ID
+	 * TagID：对应要加入的tag)
+	 */
 	public static final String FULL_URL_USER_ADD_TAG = SERVER_ADDRESS + API_TUSER_TAG + "Add";
-	/** http://{域名}/api/treport/add */	
+	/** http://{域名}/api/treport/add */
 	public static final String FULL_URL_SEND_REPORT = SERVER_ADDRESS + API_TREPORT + "add";
+	/** http://{域名}/api/tNotification/UpdateStatus */
+	public static final String FULL_URL_UPDATE_NOTIFICATION_STATUS = SERVER_ADDRESS + API_TNOTIFICATION
+			+ "UpdateStatus";
+
+	/**
+	 * http://{域名}/api/tMeeting/GetEndorseMeeting/{当前用户ID}/?pageindex={页码}&
+	 * pagesize={每页数量}
+	 */
+	public static final String FULL_URL_ENDORSE_MEET = SERVER_ADDRESS + API_TMEET_ENDORSE + "GetEndorseMeeting";
+
+	/**
+	 * http://{域名}/api/tMeetingMember/GetEndorseMember/{Meeting的标识ID}/?pageindex
+	 * ={页码}&pagesize={每页数量}&userid={当前用户ID}
+	 */
+	public static final String FULL_URL_ENDORSE_MEMBER_LIST = SERVER_ADDRESS + API_TMEET_MEMBER_ENDORSE
+			+ "GetEndorseMember";
+	/** http://{域名}/api/tMeetingMember/EndorseMember/ */
+	public static final String FULL_URL_ENDORSE_MEMBERS = SERVER_ADDRESS + API_TMEET_MEMBER_ENDORSE + "EndorseMember";
 
 	// Keys
 	public static final String KEY_ID = "ID";
@@ -168,6 +194,7 @@ public class ServerKeys {
 	public static final String KEY_REG_ID = "RegistrationID";
 	public static final String KEY_TAG_ID = "TagID";
 	public static final String KEY_USER_TAG_ID = "UserTagID";
+	public static final String KEY_USER_TAG_IDS = "UserTagIDs";
 	public static final String KEY_USER_ID = "UserID";
 	public static final String KEY_USER_NAME = "UserName";
 	public static final String KEY_CATEGORY_ID = "CategoryID";

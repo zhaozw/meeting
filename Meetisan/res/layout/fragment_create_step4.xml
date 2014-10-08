@@ -14,17 +14,8 @@
         tools:context=".CreateStep1Fragment" >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/select_logo_for_your_meeting"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_small" />
-
-        <View style="@style/CreateActivityDividingLine" />
+            style="@style/ProfileTitleLabelStyle"
+            android:text="@string/select_an_image_upcase" />
 
         <RelativeLayout
             android:id="@+id/rl_create_set_icon"
@@ -43,7 +34,7 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
-                android:src="@drawable/portrait_person_default"
+                android:src="@drawable/portrait_meet_default"
                 customized:border_color="@android:color/white"
                 customized:border_width="0dp" />
 
@@ -70,36 +61,24 @@
                 android:ellipsize="end"
                 android:gravity="right"
                 android:lines="1"
-                android:text="@string/app_name"
                 android:textColor="@android:color/black" />
         </RelativeLayout>
 
-        <View style="@style/CreateActivityDividingLine" />
-
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/please_input_a_description_for_your_meeting"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_small" />
+            style="@style/ProfileTitleLabelStyle"
+            android:text="@string/description_upcase" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:orientation="vertical" >
 
-            <View style="@style/CreateActivityDividingLine" />
-
-            <EditText
+            <com.meetisan.meetisan.widget.ClearEditText
                 android:id="@+id/et_create_meeting_description"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
                 android:background="@null"
+                android:gravity="top|left"
                 android:inputType="text"
                 android:padding="5dp"
                 android:singleLine="true" />

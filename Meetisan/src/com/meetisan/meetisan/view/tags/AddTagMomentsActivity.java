@@ -26,20 +26,21 @@ import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.database.UserInfoKeeper;
-import com.meetisan.meetisan.utils.HttpRequest;
-import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
-import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.DialogUtils;
+import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
+import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Tools;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.widget.ClearEditText;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class AddTagMomentsActivity extends Activity implements OnClickListener {
 
 	private long mTagID = -1, mUserID = -1;
-	private TextView mTitleTxt;
+	private ClearEditText mTitleTxt;
 	private ImageView mMomentView;
 	private RelativeLayout mBottomLayout;
 
@@ -83,7 +84,7 @@ public class AddTagMomentsActivity extends Activity implements OnClickListener {
 		mRightBtn.setOnClickListener(this);
 
 		((TextView) findViewById(R.id.tv_title_text)).setText(R.string.tag_moments);
-		mTitleTxt = (TextView) findViewById(R.id.txt_tag_title);
+		mTitleTxt = (ClearEditText) findViewById(R.id.txt_tag_title);
 		mMomentView = (ImageView) findViewById(R.id.iv_moment_add);
 		mBottomLayout = (RelativeLayout) findViewById(R.id.layout_bottom);
 		mBottomLayout.setOnClickListener(this);

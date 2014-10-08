@@ -32,6 +32,18 @@
             android:text="@string/meet_member"
             android:textColor="@android:color/white"
             android:textSize="@dimen/activity_title_text_size" />
+
+        <TextView
+            android:id="@+id/txt_title_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:textColor="@drawable/selector_text_white_gray"
+            android:textSize="@dimen/text_size_middle"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView

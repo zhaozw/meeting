@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.utils.Tools;
 import com.meetisan.meetisan.widget.CircleImageView;
+import com.meetisan.meetisan.widget.ClearEditText;
 
 /**
  * A fragment with a Google +1 button. Activities that contain this fragment
@@ -35,7 +37,7 @@ import com.meetisan.meetisan.widget.CircleImageView;
  */
 public class CreateStep4Fragment extends Fragment {
 	private OnFragmentInteractionListener mListener;
-	private EditText mDescriptionEditText;
+	private ClearEditText mDescriptionEditText;
 	/* 组件 */
 	private RelativeLayout switchAvatar;
 	private CircleImageView faceImage;
@@ -70,7 +72,7 @@ public class CreateStep4Fragment extends Fragment {
 		items = new String[] { getString(R.string.select_picture), getString(R.string.take_picture) };
 		// 设置事件监听
 		switchAvatar.setOnClickListener(listener);
-		mDescriptionEditText = (EditText) view.findViewById(R.id.et_create_meeting_description);
+		mDescriptionEditText = (ClearEditText) view.findViewById(R.id.et_create_meeting_description);
 
 		return view;
 	}
@@ -107,9 +109,8 @@ public class CreateStep4Fragment extends Fragment {
 							// 判断存储卡是否可以用，可用进行存储
 							if (Tools.hasSdcard()) {
 
-								intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri
-										.fromFile(new File(Environment
-												.getExternalStorageDirectory(), IMAGE_FILE_NAME)));
+								intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment
+										.getExternalStorageDirectory(), IMAGE_FILE_NAME)));
 							}
 
 							startActivityForResult(intentFromCapture, CAMERA_REQUEST_CODE);
@@ -177,13 +178,11 @@ public class CreateStep4Fragment extends Fragment {
 
 			case CAMERA_REQUEST_CODE:
 				if (Tools.hasSdcard()) {
-					File tempFile = new File(Environment.getExternalStorageDirectory() + "/"
-							+ IMAGE_FILE_NAME);
+					File tempFile = new File(Environment.getExternalStorageDirectory() + "/" + IMAGE_FILE_NAME);
 
 					startPhotoZoom(Uri.fromFile(tempFile));
 				} else {
-					Toast.makeText(getActivity(), R.string.can_not_find_sd_card, Toast.LENGTH_LONG)
-							.show();
+					Toast.makeText(getActivity(), R.string.can_not_find_sd_card, Toast.LENGTH_LONG).show();
 				}
 
 				break;
@@ -205,9 +204,8 @@ public class CreateStep4Fragment extends Fragment {
 	}
 
 	public boolean checkUserInput() {
-		if (mDescriptionEditText.getText().toString().length() <= 0) {
-			mDescriptionEditText
-					.setError(getString(R.string.please_input_a_description_for_your_meeting));
+		if (TextUtils.isEmpty(mDescriptionEditText.getText())) {
+			mDescriptionEditText.setError(getString(R.string.please_input_a_description_for_your_meeting));
 			return false;
 		}
 		return true;
@@ -226,8 +224,7 @@ public class CreateStep4Fragment extends Fragment {
 		try {
 			mListener = (OnFragmentInteractionListener) activity;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
+			throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
 		}
 	}
 

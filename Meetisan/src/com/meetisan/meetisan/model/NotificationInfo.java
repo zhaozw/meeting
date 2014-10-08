@@ -3,13 +3,13 @@ package com.meetisan.meetisan.model;
 public class NotificationInfo {
 	private long id;
 	private long userID;
-	/*
+	/**
 	 * 当Type为2，3时，此ID为tag的ID 当Type为1时，此ID为meeting的ID 当Type为4 ，5时，此ID为操作用户的ID
 	 */
 	private long reportObjectID;
 	private String title;
 	private String content;
-	/*
+	/**
 	 * Type的含义： 1：收到meeting邀请 2：tag创建申请通过 3：tag创建申请不通过 4：有人参加我创建的meeting
 	 * 5：有人拒绝我的meeting邀请
 	 */
@@ -19,6 +19,7 @@ public class NotificationInfo {
 	public static final int TYPE_TAG_CREATE_FAILED = 3;
 	public static final int TYPE_MEETING_INVITE_JOIN = 4;
 	public static final int TYPE_MEETING_INVITE_REFUSE = 5;
+	/** 1表示已读，0表示未读 */
 	private int status;
 	private String createDate;
 

@@ -1,7 +1,9 @@
 package com.meetisan.meetisan.notifications;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +47,7 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 	private long mTotal = 0;
 	private long mUserId = -1;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -56,6 +59,14 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		getNotificationsFromServer(1, true, true);
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (mAdapter != null) {
+			mAdapter.notifyDataSetChanged();
+		}
+	}
+
 	private void initTitle() {
 		TextView textView = (TextView) findViewById(R.id.tv_title_text);
 		textView.setText(R.string.notifications);
@@ -64,8 +75,7 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initContentView() {
 		mPullView = (PullToRefreshListView) findViewById(R.id.list_notifications);
-		TextView mEmptyView = new TextView(this);
-		mEmptyView.setText(R.string.content_empty_default);
+		TextView mEmptyView = (TextView) findViewById(R.id.txt_empty_notifications);
 		mPullView.setEmptyView(mEmptyView);
 		mPullView.setMode(Mode.BOTH);
 		mPullView.setOnRefreshListener(new OnRefreshListener2() {
@@ -85,7 +95,8 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 						"Last Loading: " + Util.getCurFormatDate());
 				int count = mListView.getCount() - 2; // reduce header and
 														// footer item
-				// Log.d(TAG, "-------total = " + mTotalNotifications + "; count = " +
+				// Log.d(TAG, "-------total = " + mTotalNotifications +
+				// "; count = " +
 				// count);
 				if (count < mTotal) {
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
@@ -195,8 +206,14 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		NotificationInfo info = mData.get(position);
+		NotificationInfo info = mData.get(position - 1);
+		if (info.getStatus() != 1) {
+			updateNotificationsStatusToServer(info.getId(), 1);
+			info.setStatus(1);
+		}
+
 		int type = info.getType();
+		Log.d(TAG, "Click Item Type: " + type);
 		switch (type) {
 		case NotificationInfo.TYPE_MEETING_INVITATION:
 		case NotificationInfo.TYPE_MEETING_INVITE_JOIN:
@@ -213,10 +230,19 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 			tagIntent.putExtra(ServerKeys.KEY_USER_ID, info.getUserID());
 			tagIntent.putExtra(ServerKeys.KEY_TAG_ID, info.getReportObjectID());
 			tagIntent.putExtra(ServerKeys.KEY_TYPE, type);
+			startActivity(tagIntent);
 			break;
 		default:
 			break;
 		}
 	}
 
+	private void updateNotificationsStatusToServer(long notificationId, int status) {
+		HttpRequest request = new HttpRequest();
+
+		Map<String, String> data = new HashMap<String, String>();
+		data.put(ServerKeys.KEY_ID, String.valueOf(notificationId));
+		data.put(ServerKeys.KEY_STATUS, String.valueOf(status));
+		request.post(ServerKeys.FULL_URL_UPDATE_NOTIFICATION_STATUS, data);
+	}
 }

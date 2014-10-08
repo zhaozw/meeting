@@ -17,7 +17,7 @@
  *  limitations under the License.
  */
 
-package com.meetisan.meetisan.widget;
+package com.meetisan.meetisan.widget.wheel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,7 +59,7 @@ public class WheelView extends View {
 	private static final int MIN_DELTA_FOR_SCROLLING = 1;
 
 	/** Current value & label text color */
-	private static final int VALUE_TEXT_COLOR = 0xFFEE602A;
+	private static final int VALUE_TEXT_COLOR = 0xFF000000;
 
 	/** Items text color */
 	private static final int ITEMS_TEXT_COLOR = 0xFFC0C0C0;
@@ -423,19 +423,22 @@ public class WheelView extends View {
 	 */
 	private void initResourcesIfNecessary() {
 		if (itemsPaint == null) {
-			itemsPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
+			/* | Paint.FAKE_BOLD_TEXT_FLAG */
+			itemsPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
 			// itemsPaint.density = getResources().getDisplayMetrics().density;
 			itemsPaint.setTextSize(context.getResources().getDimension(VALUE_TEXT_SIZE));
 		}
 
 		if (valuePaint == null) {
-			valuePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.FAKE_BOLD_TEXT_FLAG | Paint.DITHER_FLAG);
+			/* | Paint.FAKE_BOLD_TEXT_FLAG */
+			valuePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
 			// valuePaint.density = getResources().getDisplayMetrics().density;
 			valuePaint.setTextSize(context.getResources().getDimension(VALUE_TEXT_SIZE));
 			valuePaint.setShadowLayer(0.1f, 0, 0.1f, 0xFFC0C0C0);
 		}
 		if (labelPaint == null) {
-			labelPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.FAKE_BOLD_TEXT_FLAG | Paint.DITHER_FLAG);
+			/* | Paint.FAKE_BOLD_TEXT_FLAG */
+			labelPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
 			// valuePaint.density = getResources().getDisplayMetrics().density;
 			labelPaint.setTextSize(context.getResources().getDimension(LABEL_TEXT_SIZE));
 			labelPaint.setShadowLayer(0.1f, 0, 0.1f, 0xFFC0C0C0);

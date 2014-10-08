@@ -54,7 +54,7 @@
             android:background="@android:color/transparent"
             android:gravity="center"
             android:text="@string/negative"
-            android:textColor="@color/selector_text_blue_gray"
+            android:textColor="@color/selector_blue_to_gray"
             android:textSize="@dimen/text_size_middle"
             android:visibility="gone" />
 
@@ -73,7 +73,7 @@
             android:background="@android:color/transparent"
             android:gravity="center"
             android:text="@string/positive"
-            android:textColor="@color/selector_text_blue_gray"
+            android:textColor="@color/selector_blue_to_gray"
             android:textSize="@dimen/text_size_middle"
             android:visibility="gone" />
     </LinearLayout>

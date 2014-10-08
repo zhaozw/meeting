@@ -25,7 +25,7 @@ public class Util {
 	public static final long SECONDS_OF_ONE_DAY = 24 * 3600;
 	public static final String[] MONTH_ABBREVIATION = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
 			"Oct", "Nov", "Dec" };
-	public static final String[] WEEK_ABBREVIATION = { "Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat" };
+	public static final String[] WEEK_ABBREVIATION = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
 	/**
 	 * @param level
@@ -356,7 +356,7 @@ public class Util {
 		dateTime = dateTime.replaceAll("T", " ");
 		int index = dateTime.lastIndexOf(".");
 		if (index > 0) {
-			dateTime = dateTime.substring(index, dateTime.length());
+			dateTime = dateTime.substring(0, index);
 		}
 		long time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime).getTime();
 		Date date = new Date(time);
@@ -370,8 +370,38 @@ public class Util {
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		int min = calendar.get(Calendar.MINUTE);
 
-		return hour + ":" + min + "    " + WEEK_ABBREVIATION[week - 1] + ", " + day + " " + MONTH_ABBREVIATION[month]
-				+ ", " + year;
+		return String.format("%02d", hour) + ":" + String.format("%02d", min) + "    " + WEEK_ABBREVIATION[week - 1]
+				+ ", " + String.format("%02d", day) + " " + MONTH_ABBREVIATION[month] + ", " + year;
+	}
+
+	/**
+	 * convert [2012-01-12T10:03:41.753] to [12 Jan, 2012]
+	 * 
+	 * @param dateTime
+	 * @return
+	 * @throws ParseException
+	 */
+	public static String convertDateToNotificationTime(String dateTime) throws ParseException {
+		dateTime = dateTime.replaceAll("T", " ");
+		int index = dateTime.lastIndexOf(".");
+		if (index > 0) {
+			dateTime = dateTime.substring(0, index);
+		}
+		long time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime).getTime();
+		Date date = new Date(time);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		int week = calendar.get(Calendar.DAY_OF_WEEK);
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		int min = calendar.get(Calendar.MINUTE);
+		String end = (hour >= 12) ? "pm" : "am";
+
+		return WEEK_ABBREVIATION[week - 1] + ", " + String.format("%02d", day) + " " + MONTH_ABBREVIATION[month] + ", "
+				+ year + "   " + String.format("%02d", hour) + ":" + String.format("%02d", min) + "  " + end;
 	}
 
 	public static String convertTime2FormatMeetTime(String startTime, String endTime) {

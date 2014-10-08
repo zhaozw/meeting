@@ -2,63 +2,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="${relativePackage}.${activityClass}" >
+    android:background="@android:color/white" >
 
-    <RelativeLayout
-        android:id="@+id/rl_title"
-        android:layout_width="match_parent"
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
         android:layout_height="@dimen/activity_title_height"
-        android:layout_gravity="center"
-        android:background="@color/activity_title_bg_color"
-         >
+        layout="@layout/title_with_image_btn" />
 
-        <Button
-            android:id="@+id/btn_title_left"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            android:background="@android:color/transparent"
-            android:text="@string/cancel"
-            android:textColor="@drawable/selector_text_white_gray"
-            android:visibility="visible" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_title"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/txt_title"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/layout_start_time"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:ellipsize="end"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_middle"
-            android:textStyle="bold"
-            android:visibility="visible" />
+            android:layout_gravity="center_vertical"
+            android:padding="15dp" >
 
-        <Button
-            android:id="@+id/btn_title_right"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:background="@android:color/transparent"
-            android:text="@string/set"
-            android:textColor="@drawable/selector_text_white_gray"
-            android:visibility="visible" />
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:text="@string/start"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_small" />
 
-    <DatePicker
-        android:id="@+id/datePicker1"
-        android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/txt_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_small" />
+        </RelativeLayout>
+
+        <View style="@style/CreateActivityDividingLine" />
+
+        <RelativeLayout
+            android:id="@+id/layout_end_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="15dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:text="@string/end"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_small" />
+
+            <TextView
+                android:id="@+id/txt_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_small" />
+        </RelativeLayout>
+
+        <View style="@style/CreateActivityDividingLine" />
+    </LinearLayout>
+
+    <com.meetisan.meetisan.widget.wheel.MeetisanTimeWheel
+        android:id="@+id/time_wheel"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_title"
-        android:layout_centerHorizontal="true" />
-
-    <TimePicker
-        android:id="@+id/timePicker1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/datePicker1"
-        android:layout_below="@+id/datePicker1"
-        android:layout_marginTop="14dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp" />
 
 </RelativeLayout>

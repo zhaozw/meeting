@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="my_tags">My Tags</string>
     <string name="all_tags">All Tags</string>
-    
+    <string name="title_endorse">Endorse</string>
     <string name="endorsed_you">endorsed you</string>
-    
+    <string name="endorsing">Endorsing&#8230;</string>
+    <string name="endorse_success">Endorse Success!</string>
+
     <!-- Tag Profile -->
     <string name="tag_profile">Tag Profile</string>
     <string name="general_details">General Details</string>
@@ -17,8 +19,11 @@
     <string name="associated_tags_upcase">ASSOCIATED TAGS</string>
     <string name="tag_moments_upcase">MOMENTS</string>
     <string name="tag_moments">Tag Moments</string>
+    <string name="tag_name">Tag Name</string>
+    <string name="tag_category">Tag Category</string>
     <string name="no_tag_moment_image">-</string>
     <string name="empty_tag_moment_tips">Without Tag Moment, you can tap to send&#8230;</string>
+    <string name="empty_tag_tips">You don\'t have any Tags.</string>
     <string name="view_all_moments">View All Moments</string>
     <string name="tag_history">Your tag history with</string>
     <string name="tag_history_upcase">YOUR TAG HISTORY</string>
@@ -26,11 +31,15 @@
     <string name="people_have_meet">People you\'ve meet</string>
     <string name="meetings_attended">Meetings Attended</string>
     <string name="no_meetings_attended_with_tag_tips">You haven’t attended any meetings with this Tag.</string>
+    <string name="no_meetings_to_endorse_tips">You have no meetings to Endorse.</string>
+    <string name="no_members_to_endorse_tips">This meeting has no members to endorse.</string>
     <string name="no_people_meet_with_tag_tips">You haven’t meet anyone with this Tag.</string>
     <string name="people_associated">People with this Tag</string>
     <string name="meetings_associated">Meetings with this Tag</string>
-    
+    <string name="meetings_to_endorse">Meetings to Endorse</string>
     <string name="send">Send</string>
+    <string name="creating">Creating</string>
+    <string name="updating">Updating&#8230;</string>
     <string name="uploading_image">Uploading Image&#8230;</string>
     <string name="add_tag_moments">Add Tag Moments</string>
     <string name="tap_upload_tips">Tap to change image.</string>
@@ -44,6 +53,10 @@
     <string name="add_this_tag">Add Tag</string>
     <string name="adding_tag">Adding Tag&#8230;</string>
     <string name="success_add_tag">Success to add this Tag</string>
-    
     <string name="invitation_status">Invitation Status:</string>
+    <string name="want_to_create_tag">I want to create this Tag</string>
+    <string name="do_create_tag">Create Tag</string>
+    <string name="create_tag">Create Tag</string>
+    <string name="go_back_to_tags">Go back to Tags</string>
+
 </resources>

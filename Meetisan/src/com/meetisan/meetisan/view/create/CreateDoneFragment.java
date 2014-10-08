@@ -23,11 +23,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
-import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
@@ -37,6 +36,7 @@ import com.meetisan.meetisan.utils.Tools;
 import com.meetisan.meetisan.view.dashboard.MyConnectionsActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.LabelWithIcon;
 
 /**
  * A fragment with a Google +1 button. Activities that contain this fragment
@@ -60,17 +60,20 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 	private OnFragmentInteractionListener mListener;
 	private TextView mTitleTextView;
 	private TextView mLocationTextView;
-	private TextView mStartTimeTextView;
-	private TextView mEndTimeTextView;
+	private TextView mStartTime1Txt, mStartTime2Txt, mStartTime3Txt;
+	private TextView mEndTime1Txt, mEndTime2Txt, mEndTime3Txt;
+	private LinearLayout mTime2Layout, mTime3Layout;
+	private TextView mTagOneTxt, mTagTwoTxt, mTagThreeTxt;
 	private Button mCreateDoneButton;
 	private CircleImageView mLogoImageView;
-	private RelativeLayout mInvitePeopleLayout;
-	private TextView mInviteTextView;
-	private long mInvitePeopleID = -1;
+	private LabelWithIcon mInviteLabel;
+	// private long mInvitePeopleID = -1;
+	private ArrayList<Long> mInviteList = new ArrayList<Long>();
 	private String mInvitePeopleName = null;
 
 	Map<String, Object> data = new TreeMap<String, Object>();
-	List<TagInfo> tagInfos = new ArrayList<TagInfo>();
+	Map<String, Object> timeMap = new TreeMap<String, Object>();
+	List<TagInfo> tagList = new ArrayList<TagInfo>();
 
 	/**
 	 * Use this factory method to create a new instance of this fragment using
@@ -95,8 +98,10 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 	public CreateDoneFragment() {
 		Bundle bundle = getArguments();
 		if (bundle != null && bundle.getBoolean("IsMeetPerson")) {
-			mInvitePeopleID = bundle.getLong("PersonID");
+			long mInvitePeopleID = bundle.getLong("PersonID");
+			mInviteList.add(mInvitePeopleID);
 			mInvitePeopleName = bundle.getString("PersonName");
+			mInviteLabel.setText(mInvitePeopleName);
 		}
 	}
 
@@ -115,38 +120,73 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		View view = inflater.inflate(R.layout.fragment_create_done, container, false);
 		mTitleTextView = (TextView) view.findViewById(R.id.tv_create_done_title);
 		mLocationTextView = (TextView) view.findViewById(R.id.tv_create_done_location);
-		mStartTimeTextView = (TextView) view.findViewById(R.id.tv_create_done_start_time);
-		mEndTimeTextView = (TextView) view.findViewById(R.id.tv_create_done_end_time);
+
+		mStartTime1Txt = (TextView) view.findViewById(R.id.tv_create_start_time_1);
+		mEndTime1Txt = (TextView) view.findViewById(R.id.tv_create_end_time_1);
+		mStartTime2Txt = (TextView) view.findViewById(R.id.tv_create_start_time_2);
+		mEndTime2Txt = (TextView) view.findViewById(R.id.tv_create_end_time_2);
+		mStartTime3Txt = (TextView) view.findViewById(R.id.tv_create_start_time_3);
+		mEndTime3Txt = (TextView) view.findViewById(R.id.tv_create_end_time_3);
+		mTime2Layout = (LinearLayout) view.findViewById(R.id.layout_time_2);
+		mTime3Layout = (LinearLayout) view.findViewById(R.id.layout_time_3);
+
+		mTagOneTxt = (TextView) view.findViewById(R.id.txt_tag_one);
+		mTagTwoTxt = (TextView) view.findViewById(R.id.txt_tag_two);
+		mTagThreeTxt = (TextView) view.findViewById(R.id.txt_tag_three);
+
 		mCreateDoneButton = (Button) view.findViewById(R.id.btn_create_done);
 		mCreateDoneButton.setOnClickListener(this);
 		mLogoImageView = (CircleImageView) view.findViewById(R.id.iv_portrait);
-		mInvitePeopleLayout = (RelativeLayout) view.findViewById(R.id.rl_create_invite_people);
-		mInvitePeopleLayout.setOnClickListener(this);
-		mInviteTextView = (TextView) view.findViewById(R.id.tv_create_done_invite);
-		if (mInvitePeopleName != null) {
-			mInviteTextView.setText(mInvitePeopleName);
-			mInviteTextView.setVisibility(View.VISIBLE);
-		}
+		mInviteLabel = (LabelWithIcon) view.findViewById(R.id.rl_create_invite_people);
+		mInviteLabel.setOnClickListener(this);
+		mInviteLabel.setText(mInvitePeopleName);
 		FragmentActivity activity = getActivity();
 
 		if (activity instanceof CreateActivity) {
 			CreateActivity createActivity = (CreateActivity) activity;
 			data = createActivity.getData();
-			tagInfos = createActivity.getTagInfos();
+			timeMap = createActivity.getMeetTime();
+			tagList = createActivity.getTagInfos();
 			mTitleTextView.setText((String) data.get(ServerKeys.KEY_TITLE));
 			if (data.get("Address") != null) {
 				mLocationTextView.setText((String) data.get("Address"));
 			}
 
-			Calendar calendar = Calendar.getInstance();
-			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm",
-					Locale.getDefault());
-			long startTime = (Long) data.get("StartTime");
-			calendar.setTimeInMillis(startTime);
-			mStartTimeTextView.setText(formatter.format(calendar.getTime()));
-			long endTime = (Long) data.get("EndTime");
-			calendar.setTimeInMillis(endTime);
-			mEndTimeTextView.setText(formatter.format(calendar.getTime()));
+			int tagsCount = tagList.size();
+			if (tagsCount >= 1) {
+				mTagOneTxt.setText(tagList.get(0).getTitle());
+				mTagOneTxt.setVisibility(View.VISIBLE);
+			}
+			if (tagsCount >= 2) {
+				mTagTwoTxt.setText(tagList.get(1).getTitle());
+				mTagTwoTxt.setVisibility(View.VISIBLE);
+			}
+			if (tagsCount >= 3) {
+				mTagThreeTxt.setText(tagList.get(2).getTitle());
+				mTagThreeTxt.setVisibility(View.VISIBLE);
+			}
+
+			String startTime = (String) timeMap.get("StartTime1");
+			mStartTime1Txt.setText(startTime);
+			String endTime = (String) timeMap.get("EndTime1");
+			mEndTime1Txt.setText(endTime);
+
+			startTime = (String) timeMap.get("StartTime2");
+			if (startTime != null) {
+				mStartTime2Txt.setText(startTime);
+				endTime = (String) timeMap.get("EndTime2");
+				mEndTime2Txt.setText(endTime);
+				mTime2Layout.setVisibility(View.VISIBLE);
+			}
+
+			startTime = (String) timeMap.get("StartTime3");
+			if (startTime != null) {
+				mStartTime3Txt.setText(startTime);
+				endTime = (String) timeMap.get("EndTime3");
+				mEndTime3Txt.setText(endTime);
+				mTime3Layout.setVisibility(View.VISIBLE);
+			}
+
 			if (data.get("Logo") != null) {
 				mLogoImageView.setImageBitmap(Tools.base64ToBitmap((String) data.get("Logo")));
 			}
@@ -173,8 +213,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		try {
 			mListener = (OnFragmentInteractionListener) activity;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
+			throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
 		}
 	}
 
@@ -189,7 +228,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		int id = v.getId();
 		switch (id) {
 		case R.id.btn_create_done:
-			doneRequest(data, tagInfos);
+			doneRequest(data, tagList);
 			break;
 		case R.id.rl_create_invite_people:
 			Intent intent = new Intent(getActivity().getApplicationContext(), MyConnectionsActivity.class);
@@ -205,9 +244,11 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
 			if (requestCode == REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE) {
-				mInviteTextView.setText(data.getStringExtra("inviteName"));
-				mInviteTextView.setVisibility(View.VISIBLE);
-				mInvitePeopleID = data.getLongExtra("inviteID", -1);
+				mInviteLabel.setText(data.getStringExtra("inviteName"));
+				long mInvitePeopleID = data.getLongExtra("inviteID", -1);
+				if (mInvitePeopleID != -1) {
+					mInviteList.add(mInvitePeopleID);
+				}
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -220,8 +261,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		HttpRequest request = new HttpRequest();
 		if (isNeedsDialog) {
 			if (mProgressDialog == null) {
-				mProgressDialog = new CustomizedProgressDialog(getActivity(),
-						R.string.please_waiting);
+				mProgressDialog = new CustomizedProgressDialog(getActivity(), R.string.please_waiting);
 			} else {
 				if (mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
@@ -268,32 +308,26 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 
 	}
 
-	private String convert(Map<String, Object> map, List<TagInfo> tagInfos)
-			throws JSONException {
+	private String convert(Map<String, Object> map, List<TagInfo> tagInfos) throws JSONException {
 		JSONObject data = new JSONObject();
-		JSONObject meeting = new JSONObject(map);
-		meeting.put("Description", "A Party");
-		long mUserId = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_ID, -1L);
-		meeting.put("CreateUserID", mUserId);
-//		meeting.put("Status", 0);
 
+		JSONObject meetJson = new JSONObject(map);
+		meetJson.put("Status", 0);
 		Calendar calendar = Calendar.getInstance();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm",
-				Locale.getDefault());
-		meeting.put("CreateDate", formatter.format(calendar.getTime()));
-		meeting.remove("StartTime");
-		meeting.remove("EndTime");
-		data.put("Meeting", meeting);
-		JSONArray tags = new JSONArray();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+		String createTime = formatter.format(calendar.getTime());
+		createTime = createTime.replace(" ", "T");
+		meetJson.put("CreateDate", createTime);
+		data.put("Meeting", meetJson);
+
+		JSONArray tagJson = new JSONArray();
 		for (TagInfo tagInfo : tagInfos) {
-			tags.put(tagInfo.getId());
+			tagJson.put(tagInfo.getId());
 		}
-		data.put("Tags", tags);
-		JSONArray invitedArray = new JSONArray();
-		if (mInvitePeopleID != -1) {
-			invitedArray.put(mInvitePeopleID);
-		}
-		data.put("Invited", invitedArray);
+		data.put("Tags", tagJson);
+
+		JSONArray invitedJson = new JSONArray(mInviteList);
+		data.put("Invited", invitedJson);
 
 		return data.toString();
 	}

@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,11 +23,12 @@ import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.widget.ClearEditText;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class PersonMoreInfoActivity extends Activity implements OnClickListener {
 
-	private EditText mSchoolTxt, mCityTxt, mBirthdayTxt, mGenderTxt, mExperienceTxt, mEducationTxt, mSkillsTxt;
+	private ClearEditText mSchoolTxt, mCityTxt, mBirthdayTxt, mGenderTxt, mExperienceTxt, mEducationTxt, mSkillsTxt;
 	private TextView mSaveTxt;
 	private PeopleInfo mUserInfo = new PeopleInfo();
 	private long userId = -1;
@@ -70,13 +70,13 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		mBackBtn.setVisibility(View.VISIBLE);
 
 		// mNameTxt = (EditText) findViewById(R.id.txt_name);
-		mSchoolTxt = (EditText) findViewById(R.id.txt_school);
-		mCityTxt = (EditText) findViewById(R.id.txt_city);
-		mBirthdayTxt = (EditText) findViewById(R.id.txt_age);
-		mGenderTxt = (EditText) findViewById(R.id.txt_gender);
-		mExperienceTxt = (EditText) findViewById(R.id.txt_experience);
-		mEducationTxt = (EditText) findViewById(R.id.txt_education);
-		mSkillsTxt = (EditText) findViewById(R.id.txt_skills);
+		mSchoolTxt = (ClearEditText) findViewById(R.id.txt_school);
+		mCityTxt = (ClearEditText) findViewById(R.id.txt_city);
+		mBirthdayTxt = (ClearEditText) findViewById(R.id.txt_age);
+		mGenderTxt = (ClearEditText) findViewById(R.id.txt_gender);
+		mExperienceTxt = (ClearEditText) findViewById(R.id.txt_experience);
+		mEducationTxt = (ClearEditText) findViewById(R.id.txt_education);
+		mSkillsTxt = (ClearEditText) findViewById(R.id.txt_skills);
 
 		Log.e("-------", "Profile User ID: " + userId + "; Cur User ID: " + curUserId);
 		if (userId != curUserId) {

@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,13 +20,14 @@ import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.widget.ClearEditText;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class ReportActivity extends Activity implements OnClickListener {
 
 	private long mReportID = -1;
 	private boolean isReportUser = true;
-	private EditText mEvidenceTxt;
+	private ClearEditText mEvidenceTxt;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,7 +59,7 @@ public class ReportActivity extends Activity implements OnClickListener {
 		mRightBtn.setOnClickListener(this);
 		((TextView) findViewById(R.id.tv_title_text)).setText(R.string.report);
 
-		mEvidenceTxt = (EditText) findViewById(R.id.txt_evidence);
+		mEvidenceTxt = (ClearEditText) findViewById(R.id.txt_evidence);
 	}
 
 	@Override

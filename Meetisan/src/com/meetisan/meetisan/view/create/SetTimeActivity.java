@@ -1,77 +1,88 @@
 package com.meetisan.meetisan.view.create;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.DatePicker.OnDateChangedListener;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.TimePicker.OnTimeChangedListener;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.widget.wheel.MeetisanTimeWheel;
+import com.meetisan.meetisan.widget.wheel.MeetisanTimeWheel.OnDateWheelScrollListener;
+import com.meetisan.meetisan.widget.wheel.WheelView;
 
-public class SetTimeActivity extends Activity implements OnClickListener {
-	private Button mBackButton;
-	private TextView mTitleTextView;
-	private Button mSetButton;
-	private DatePicker mDatePicker;
-	private TimePicker mTimePicker;
-	private String title;
-	private long time;
+public class SetTimeActivity extends Activity implements OnClickListener, OnDateWheelScrollListener {
+
+	private RelativeLayout mStartLayout, mEndLayout;
+	private TextView mStartTxt, mEndTxt;
+	private MeetisanTimeWheel mTimeWheel;
+
+	// private Calendar mStartCalendar;
+	// private Calendar mEndCalendar;
+
+	private long mStartTime = 0, mEndTime = 0;
+	private int setTimeIndex = 0;
+
+	private boolean isSetStartLayout = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set_time);
+
 		Intent intent = getIntent();
-		title  = intent.getStringExtra("title");
-		time = intent.getLongExtra("time", 0);
-		initView();
+		setTimeIndex = intent.getIntExtra("SetIndex", 0);
+		long mStartTime = intent.getLongExtra("StartTime", -1L);
+		long mEndTime = intent.getLongExtra("EndTime", -1L);
+
+		initView(mStartTime, mEndTime);
 	}
 
-	private void initView() {
-		mBackButton = (Button) findViewById(R.id.btn_title_left);
-		mTitleTextView = (TextView) findViewById(R.id.txt_title);
-		mSetButton = (Button) findViewById(R.id.btn_title_right);
-		
-		mBackButton.setOnClickListener(this);
-		mTitleTextView.setText(title);
-		mSetButton.setOnClickListener(this);
-		
-		mDatePicker = (DatePicker) findViewById(R.id.datePicker1);
-		mTimePicker = (TimePicker) findViewById(R.id.timePicker1);
+	private void initView(long startTime, long endTime) {
+		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
+		mTitleTxt.setText(R.string.set_time);
+		mTitleTxt.setVisibility(View.VISIBLE);
+		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
+		mBackBtn.setOnClickListener(this);
+		mBackBtn.setVisibility(View.VISIBLE);
+
+		mTimeWheel = (MeetisanTimeWheel) findViewById(R.id.time_wheel);
+		mTimeWheel.setOnDateWheelScrollListener(this);
+		mStartTxt = (TextView) findViewById(R.id.txt_start_time);
+		mEndTxt = (TextView) findViewById(R.id.txt_end_time);
+
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(time);
-		mDatePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new OnDateChangedListener() {
-			
-			@Override
-			public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-				Calendar calendar2 = Calendar.getInstance();
-				calendar2.set(Calendar.YEAR, year);
-				calendar2.set(Calendar.MONTH, monthOfYear);
-				calendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-				time = calendar2.getTimeInMillis();
-			}
-		});
-		mTimePicker.setIs24HourView(true);
-		mTimePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
-		mTimePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
-		mTimePicker.setOnTimeChangedListener(new OnTimeChangedListener() {
-			
-			@Override
-			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-				Calendar calendar2 = Calendar.getInstance();
-				calendar2.set(Calendar.HOUR_OF_DAY, hourOfDay);
-				calendar2.set(Calendar.MINUTE, minute);
-				time = calendar2.getTimeInMillis();
-			}
-		});
+		if (startTime != -1) {
+			calendar.setTimeInMillis(startTime);
+		} else {
+			startTime = calendar.getTimeInMillis();
+		}
+		mStartTime = startTime;
+		setTimeTxtValue(mStartTxt, calendar);
+		mTimeWheel.setDate(calendar);
+
+		if (endTime == -1) {
+			endTime = startTime + 3600 * 1000;
+		}
+		mEndTime = endTime;
+		calendar.setTimeInMillis(endTime);
+		setTimeTxtValue(mEndTxt, calendar);
+
+		mStartLayout = (RelativeLayout) findViewById(R.id.layout_start_time);
+		mStartLayout.setOnClickListener(this);
+		mEndLayout = (RelativeLayout) findViewById(R.id.layout_end_time);
+		mEndLayout.setOnClickListener(this);
+		isSetStartLayout = true;
+		setLayoutBgColor(isSetStartLayout);
+
 	}
 
 	@Override
@@ -79,18 +90,72 @@ public class SetTimeActivity extends Activity implements OnClickListener {
 		int id = v.getId();
 		switch (id) {
 		case R.id.btn_title_left:
-			setResult(RESULT_CANCELED);
-			finish();
+			onBackPressed();
 			break;
 		case R.id.btn_title_right:
-			Intent intent = new Intent();
-			intent.putExtra("time", time);
-			setResult(RESULT_OK, intent);
-			finish();
+			// Intent intent = new Intent();
+			// intent.putExtra("time", time);
+			// setResult(RESULT_OK, intent);
+			// finish();
+			break;
+		case R.id.layout_start_time:
+			isSetStartLayout = true;
+			setLayoutBgColor(isSetStartLayout);
+			mTimeWheel.setDate(mStartTime);
+			break;
+		case R.id.layout_end_time:
+			isSetStartLayout = false;
+			setLayoutBgColor(isSetStartLayout);
+			mTimeWheel.setDate(mEndTime);
 			break;
 		default:
 			break;
 		}
 	}
 
+	private void setLayoutBgColor(boolean isSetStartLayout) {
+		if (isSetStartLayout) {
+			mStartLayout.setBackgroundColor(getResources().getColor(R.color.bg_create_tag_select_color));
+			mEndLayout.setBackgroundColor(Color.TRANSPARENT);
+		} else {
+			mStartLayout.setBackgroundColor(Color.TRANSPARENT);
+			mEndLayout.setBackgroundColor(getResources().getColor(R.color.bg_create_tag_select_color));
+		}
+	}
+
+	private void setTimeTxtValue(TextView mTextView, Calendar date) {
+		if (mTextView == null || date == null) {
+			return;
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault());
+		String time = formatter.format(date.getTime());
+		mTextView.setText(time);
+	}
+
+	@Override
+	public void onDateScrollFinished(WheelView wheel) {
+		int hour = mTimeWheel.getHour();
+		int min = mTimeWheel.getMinute();
+		Calendar date = mTimeWheel.getDate();
+
+		date.set(Calendar.HOUR_OF_DAY, hour);
+		date.set(Calendar.MINUTE, min);
+		if (isSetStartLayout) {
+			mStartTime = date.getTimeInMillis();
+			setTimeTxtValue(mStartTxt, date);
+		} else {
+			mEndTime = date.getTimeInMillis();
+			setTimeTxtValue(mEndTxt, date);
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent();
+		intent.putExtra("StartTime", mStartTime);
+		intent.putExtra("EndTime", mEndTime);
+		intent.putExtra("SetIndex", setTimeIndex);
+		setResult(RESULT_OK, intent);
+		finish();
+	}
 }

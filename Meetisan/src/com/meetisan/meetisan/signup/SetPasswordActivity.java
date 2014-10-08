@@ -34,6 +34,7 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 	private EditText mPwdTxt, mConfirmPwdTxt;
 	private String email = null;
 	private String mActivationCode = null, mInputCode = null;
+	private boolean isRegistion = true;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +48,7 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 		if (bundle != null) {
 			mActivationCode = bundle.getString("ActivationCode");
 			mInputCode = bundle.getString("InputCode");
+			isRegistion = bundle.getBoolean("isRegistion");
 		}
 
 		email = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_EMAIL, null);
@@ -175,7 +177,12 @@ public class SetPasswordActivity extends Activity implements OnClickListener {
 					mUserInfo.setRegId(registrationID);
 
 					if (UserInfoKeeper.writeUserInfo(SetPasswordActivity.this, mUserInfo)) {
-						Intent intent = new Intent(SetPasswordActivity.this, MainActivity.class);
+						Intent intent = null;
+						if (isRegistion) {
+							intent = new Intent(SetPasswordActivity.this, SetNameActivity.class);
+						} else {
+							intent = new Intent(SetPasswordActivity.this, MainActivity.class);
+						}
 						startActivity(intent);
 						finish();
 					}

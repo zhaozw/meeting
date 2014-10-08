@@ -20,8 +20,7 @@ import android.widget.TextView;
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.model.TagInfo;
 
-public class CreateActivity extends FragmentActivity implements OnClickListener,
-		OnFragmentInteractionListener {
+public class CreateActivity extends FragmentActivity implements OnClickListener, OnFragmentInteractionListener {
 	// private static final String TAG = CreateActivity.class.getSimpleName();
 	private ImageButton mLeftButton;
 	private TextView mTitleTextView;
@@ -76,8 +75,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		mLeftButton.setVisibility(View.GONE);
 		mLeftButton.setOnClickListener(this);
 		mStepsTitleText = getResources().getStringArray(R.array.ActivityCreateTitles);
-		String indexString = String.format(getString(R.string.format_step_index),
-				mCurrentStepIndex, totoalSteps);
+		String indexString = String.format(getString(R.string.format_step_index), mCurrentStepIndex, totoalSteps);
 		mTitleTextView.setText(mStepsTitleText[mCurrentStepIndex - 1] + indexString);
 		mRightButton.setText(R.string.next);
 		mRightButton.setOnClickListener(this);
@@ -91,8 +89,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	}
 
 	private void setTitleViews(int stepIndex) {
-		String indexString = String.format(getString(R.string.format_step_index), stepIndex,
-				totoalSteps);
+		String indexString = String.format(getString(R.string.format_step_index), stepIndex, totoalSteps);
 		switch (stepIndex) {
 		case 1:
 			mLeftButton.setVisibility(View.GONE);
@@ -117,7 +114,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		case 5:
 			String string3 = getString(R.string.create_successful);
 			mTitleTextView.setText(string3);
-			mRightButton.setVisibility(View.GONE);
+			mRightButton.setText(null);
 			break;
 		default:
 			break;
@@ -277,6 +274,13 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 			data.putAll(mCreateStep4Fragment.getData());
 		}
 		return data;
+	}
+
+	public Map<String, Object> getMeetTime() {
+		if (mCreateStep3Fragment != null) {
+			return mCreateStep3Fragment.getMeetTime();
+		}
+		return null;
 	}
 
 	public List<TagInfo> getTagInfos() {

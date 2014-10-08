@@ -25,7 +25,7 @@
 
 	<!-- for search panel -->
     <color name="search_list_divider_color">#EBEBEB</color>
-    <color name="search_list_border_color">#B3B3B3</color>
+    <color name="search_list_border_color">@android:color/white</color>
     <color name="search_list_pressed_color">#B3B3B3</color>
 	<color name="button_title">#FFFFFF</color>
 	<color name="button_title_pressed">#B7B7B7</color>

@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
+    android:scrollbars="none"
     tools:context=".CreateStep1Fragment" >
 
     <LinearLayout
@@ -13,269 +14,325 @@
         android:orientation="vertical"
         tools:context=".CreateStep1Fragment" >
 
+        <TextView
+            style="@style/ProfileTitleLabelStyle"
+            android:text="@string/meeting_title_upcase" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical" >
+
+            <com.meetisan.meetisan.widget.CircleImageView
+                xmlns:customized="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/iv_portrait"
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/portrait_person_default"
+                customized:border_color="@android:color/white"
+                customized:border_width="0dp" />
+
+            <TextView
+                android:id="@+id/tv_create_done_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_middle" />
+        </RelativeLayout>
+
+        <TextView
+            style="@style/ProfileTitleLabelStyle"
+            android:text="@string/meeting_tags_upcase" />
+
         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="50dp"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <TextView
+                android:id="@+id/txt_tag_one"
+                style="@style/TagLabelStyle" />
+
+            <TextView
+                android:id="@+id/txt_tag_two"
+                style="@style/TagLabelStyle" />
+
+            <TextView
+                android:id="@+id/txt_tag_three"
+                style="@style/TagLabelStyle" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/ProfileTitleLabelStyle"
+            android:text="@string/meeting_time_upcase" />
+
+        <LinearLayout
+            android:id="@+id/layout_time_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:focusable="true"
             android:orientation="vertical" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/meeting_title"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/text_size_middle" />
-
-            <View style="@style/CreateActivityDividingLine" />
-
             <RelativeLayout
+                android:id="@+id/ll_set_start_time"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="center_vertical" >
-
-                <com.meetisan.meetisan.widget.CircleImageView
-                    xmlns:customized="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/iv_portrait"
-                    android:layout_width="55dp"
-                    android:layout_height="50dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:src="@drawable/portrait_person_default"
-                    customized:border_color="@android:color/white"
-                    customized:border_width="0dp" />
-
-                <TextView
-                    android:id="@+id/tv_create_done_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:text="@string/meeting_title"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_middle" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:orientation="horizontal"
-                    android:padding="0dp" >
-
-                    <TextView
-                        android:id="@+id/txt_tag_one"
-                        style="@style/TagLabelStyle"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/txt_tag_two"
-                        style="@style/TagLabelStyle"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/txt_tag_three"
-                        style="@style/TagLabelStyle"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </RelativeLayout>
-
-            <View style="@style/CreateActivityDividingLine" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical" >
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/meeting_location"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/text_size_middle" />
-
-            <View style="@style/CreateActivityDividingLine" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="center_vertical" >
-
-                <TextView
-                    android:id="@+id/tv_create_done_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textColor="@android:color/black" />
-            </RelativeLayout>
-
-            <View style="@style/CreateActivityDividingLine" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_set_start_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:orientation="vertical" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/meeting_time"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/text_size_middle" />
-
-            <View style="@style/CreateActivityDividingLine" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="center_vertical" >
+                android:layout_gravity="center_vertical"
+                android:focusable="false"
+                android:padding="10dp" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="5dp"
                     android:text="@string/start"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_middle" />
+                    android:textSize="@dimen/text_size_small" />
 
                 <TextView
-                    android:id="@+id/tv_create_done_start_time"
+                    android:id="@+id/tv_create_start_time_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:text="@string/time_sample"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_middle" />
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/text_size_small" />
             </RelativeLayout>
 
-            <View style="@style/CreateActivityDividingLine" />
+            <View
+                style="@style/CreateActivityDividingLine"
+                android:layout_marginLeft="15dp" />
+
+            <RelativeLayout
+                android:id="@+id/ll_set_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:focusable="false"
+                android:padding="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/end"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
+
+                <TextView
+                    android:id="@+id/tv_create_end_time_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_set_end_time"
+            android:id="@+id/layout_time_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:orientation="vertical" >
+            android:focusable="true"
+            android:orientation="vertical"
+            android:visibility="gone" >
 
             <RelativeLayout
+                android:id="@+id/ll_set_start_time_2"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="center_vertical" >
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:focusable="false"
+                android:padding="10dp" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:text="@string/end"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/start"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_middle" />
+                    android:textSize="@dimen/text_size_small" />
 
                 <TextView
-                    android:id="@+id/tv_create_done_end_time"
+                    android:id="@+id/tv_create_start_time_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:text="@string/time_sample2"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_middle" />
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/text_size_small" />
             </RelativeLayout>
 
-            <View style="@style/CreateActivityDividingLine" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/invite_people"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/text_size_middle" />
-
-            <View style="@style/CreateActivityDividingLine" />
+            <View
+                style="@style/CreateActivityDividingLine"
+                android:layout_marginLeft="15dp" />
 
             <RelativeLayout
-                android:id="@+id/rl_create_invite_people"
+                android:id="@+id/ll_set_end_time_2"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:clickable="true" >
+                android:layout_marginBottom="10dp"
+                android:focusable="false"
+                android:padding="10dp" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/invite"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="@dimen/text_size_middle" />
-
-                <ImageView
-                    android:id="@+id/iv_right_arrow"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@android:color/transparent"
-                    android:clickable="false"
-                    android:contentDescription="@string/app_name"
-                    android:gravity="center"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/icon_right_arrow" />
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/end"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
 
                 <TextView
-                    android:id="@+id/tv_create_done_invite"
-                    style="@style/TagLabelStyle"
+                    android:id="@+id/tv_create_end_time_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@id/iv_right_arrow"
-                    android:text="@string/meet" />
+                    android:layout_marginRight="20dp"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_time_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <RelativeLayout
+                android:id="@+id/ll_set_start_time_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:focusable="false"
+                android:padding="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/start"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
+
+                <TextView
+                    android:id="@+id/tv_create_start_time_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/text_size_small" />
             </RelativeLayout>
 
-            <View style="@style/CreateActivityDividingLine" />
+            <View
+                style="@style/CreateActivityDividingLine"
+                android:layout_marginLeft="15dp" />
+
+            <RelativeLayout
+                android:id="@+id/ll_set_end_time_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:focusable="false"
+                android:padding="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/end"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
+
+                <TextView
+                    android:id="@+id/tv_create_end_time_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
         </LinearLayout>
+
+        <TextView
+            style="@style/ProfileTitleLabelStyle"
+            android:text="@string/meeting_location_upcase" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:minHeight="40dp" >
+
+            <TextView
+                android:id="@+id/tv_create_done_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
+
+        <TextView
+            style="@style/ProfileTitleLabelStyle"
+            android:text="@string/invite_people_upcase" />
+
+        <com.meetisan.meetisan.widget.LabelWithIcon
+            android:id="@+id/rl_create_invite_people"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/meetings_attended"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_small" />
 
         <Button
             android:id="@+id/btn_create_done"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:background="@color/activity_create_button_done"
-            android:text="@string/done"
-            android:textColor="@color/selector_create_text_done"
-            android:textSize="@dimen/text_size_big" />
+            style="@style/ButtonStyle"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/create_meeting" />
     </LinearLayout>
 
 </ScrollView>

@@ -93,6 +93,8 @@ public class DashboardActivity extends Activity implements OnClickListener {
 		mSettingsBtn.setOnClickListener(this);
 		ImageButton mConnectionsBtn = (ImageButton) findViewById(R.id.btn_connections);
 		mConnectionsBtn.setOnClickListener(this);
+		ImageButton mEndorseBtn = (ImageButton) findViewById(R.id.btn_endorse);
+		mEndorseBtn.setOnClickListener(this);
 		mPortraitView = (CircleImageView) findViewById(R.id.iv_portrait);
 		mPortraitView.setOnClickListener(this);
 		mNameTxt = (TextView) findViewById(R.id.txt_name);
@@ -190,6 +192,10 @@ public class DashboardActivity extends Activity implements OnClickListener {
 		case R.id.layout_all_meetings:
 			Intent intent4 = new Intent(DashboardActivity.this, MyMeetingsActivity.class);
 			startActivity(intent4);
+			break;
+		case R.id.btn_endorse:
+			Intent intent5 = new Intent(this, EndorseActivity.class);
+			startActivity(intent5);
 			break;
 		default:
 			break;

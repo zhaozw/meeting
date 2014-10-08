@@ -79,6 +79,7 @@ public class ActivationActivity extends Activity implements OnClickListener {
 		Intent intent = new Intent(ActivationActivity.this, SetPasswordActivity.class);
 		intent.putExtra("ActivationCode", mActivationCode);
 		intent.putExtra("InputCode", mEnterCode);
+		intent.putExtra("isRegistion", isRegistion);
 		startActivity(intent);
 		ActivationActivity.this.finish();
 	}

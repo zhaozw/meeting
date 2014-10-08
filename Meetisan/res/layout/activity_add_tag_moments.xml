@@ -12,11 +12,10 @@
         android:layout_alignParentTop="true"
         layout="@layout/title_with_image_btn" />
 
-    <EditText
+    <com.meetisan.meetisan.widget.ClearEditText
         android:id="@+id/txt_tag_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/view_line_up"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/include_title"
         android:background="@android:color/transparent"
         android:gravity="top|left"

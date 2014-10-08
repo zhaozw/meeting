@@ -34,7 +34,7 @@
         android:layout_below="@+id/txt_report_tips"
         android:background="@android:color/darker_gray" />
 
-    <EditText
+    <com.meetisan.meetisan.widget.ClearEditText
         android:id="@+id/txt_evidence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

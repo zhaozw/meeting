@@ -66,7 +66,7 @@ public class TagsActivity extends Activity {
 
 		initView();
 		getMyTagsFromServer(1, true, true);
-		getAllTagsFromServer(1, true, true);
+		getAllTagsFromServer(1, true, false);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

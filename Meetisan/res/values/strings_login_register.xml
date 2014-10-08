@@ -6,6 +6,10 @@
     <string name="login">Log In</string>
     <string name="sign_up">Sign up</string>
     <string name="forget_password">Forget Password?</string>
+    
+    <string name="your_name">Your Name</string>
+    <string name="your_tagline">Your Tagline</string>
+    <string name="empty_name_tips">Please enter your Name</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="empty_email_tips">Please enter your E-Mail</string>
