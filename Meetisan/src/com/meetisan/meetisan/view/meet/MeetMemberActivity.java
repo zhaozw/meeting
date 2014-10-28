@@ -200,6 +200,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 						JSONObject userJson = peopleArray.getJSONObject(i);
 
 						peopleInfo.setId(userJson.getLong(ServerKeys.KEY_USER_ID));
+						peopleInfo.setStatus(userJson.getInt(ServerKeys.KEY_STATUS));
 						// peopleInfo.setEmail(userJson.getString(ServerKeys.KEY_EMAIL));
 						if (!userJson.isNull(ServerKeys.KEY_NAME)) {
 							peopleInfo.setName(userJson.getString(ServerKeys.KEY_NAME));

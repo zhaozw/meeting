@@ -40,7 +40,7 @@
 	<color name="segment_group_text_check">#8BD4C9</color>
 	
 	<!-- Custom prgress dialog -->
-	<color name="border_square_color_gray">#55000000</color>
+	<color name="border_square_color_gray">#99000000</color>
 	<!-- Custom Popup Menu -->
 	<color name="popup_menu_bg">#77000000</color>
 	

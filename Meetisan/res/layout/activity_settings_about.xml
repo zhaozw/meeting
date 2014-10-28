@@ -74,13 +74,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/gap_line_color" />
-                <com.meetisan.meetisan.widget.LabelWithIcon
+
+                <com.meetisan.meetisan.widget.LabelWithIcon
                     android:id="@+id/btn_score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/to_score" />
+                    android:text="@string/rate_us"
+                    android:textColor="@android:color/black" />
 
-                <View
+                <!--
+                     <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/gap_line_color" />
@@ -100,7 +103,7 @@
                     android:id="@+id/btn_follow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/follow_us_on_linkedin" />
+                    android:text="@string/follow_us_on_linkedin" />                -->
 
                 <View
                     android:layout_width="match_parent"
@@ -111,13 +114,20 @@
                     android:id="@+id/btn_feedbak"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/feedback" />
+                    android:text="@string/feedback"
+                    android:textColor="@android:color/black" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/gap_line_color" />
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_logout"
+                style="@style/RedButtonStyle"
+                android:layout_marginTop="20dp"
+                android:text="@string/logout" />
         </LinearLayout>
     </ScrollView>
 

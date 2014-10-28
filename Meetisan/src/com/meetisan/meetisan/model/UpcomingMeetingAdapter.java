@@ -73,7 +73,14 @@ public class UpcomingMeetingAdapter extends BaseAdapter {
 
 		holder.mTitleTxt.setText(mMeetingInfo.getTitle());
 		holder.mTimeTxt.setText(Util.convertDateTime(mMeetingInfo.getDeterminStartTime()));
-		holder.mDistanceTxt.setText((int) mMeetingInfo.getDistance() + "km");
+
+		int distance = (int) mMeetingInfo.getDistance();
+		if (distance >= 1000) {
+			holder.mDistanceTxt.setText((int) distance / 1000 + "km");
+		} else {
+			holder.mDistanceTxt.setText((int) distance + "m");
+		}
+		
 		holder.mStatusTxt.setText(mMeetingInfo.getCreateUserId() == mUserId ? "Created"
 				: "Attended");
 

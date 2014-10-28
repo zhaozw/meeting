@@ -35,6 +35,7 @@
                     android:text="@string/single_meeting" />
 
                 <View
+                    android:id="@+id/view_types_line"
                     style="@style/CreateActivityDividingLine"
                     android:layout_marginLeft="15dp" />
 
@@ -80,7 +81,7 @@
                 <RadioButton
                     android:id="@+id/rb_create_set_time_by_me"
                     style="@style/CreateActivityItemSelected"
-                    android:checked="false"
+                    android:checked="true"
                     android:text="@string/set_by_me" />
 
                 <View
@@ -90,7 +91,6 @@
                 <RadioButton
                     android:id="@+id/rb_create_set_time_by_him_her"
                     style="@style/CreateActivityItemSelected"
-                    android:checked="true"
                     android:text="@string/set_by_him_her" />
             </RadioGroup>
         </LinearLayout>
@@ -318,7 +318,8 @@
             android:layout_marginBottom="10dp"
             android:clickable="true"
             android:gravity="center"
-            android:padding="10dp" >
+            android:padding="10dp"
+            android:visibility="gone" >
 
             <ImageView
                 android:id="@+id/iv_add"

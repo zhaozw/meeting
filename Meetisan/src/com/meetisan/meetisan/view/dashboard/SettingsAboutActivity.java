@@ -9,10 +9,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.meetisan.meetisan.LoginActivity;
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.utils.DialogUtils;
+import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.ServerKeys;
+import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
+import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.LabelWithIcon;
 
 public class SettingsAboutActivity extends Activity implements OnClickListener {
@@ -33,7 +44,7 @@ public class SettingsAboutActivity extends Activity implements OnClickListener {
 
 	private void initView() {
 		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
-		mTitleTxt.setText(R.string.about_meetisan);
+		mTitleTxt.setText(R.string.settings);
 		mTitleTxt.setVisibility(View.VISIBLE);
 		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
 		mBackBtn.setOnClickListener(this);
@@ -45,6 +56,9 @@ public class SettingsAboutActivity extends Activity implements OnClickListener {
 		labelBtn.setOnClickListener(this);
 		labelBtn = (LabelWithIcon) findViewById(R.id.btn_feedbak);
 		labelBtn.setOnClickListener(this);
+
+		Button mLogoutBtn = (Button) findViewById(R.id.btn_logout);
+		mLogoutBtn.setOnClickListener(this);
 	}
 
 	private void showAppVersion() {
@@ -87,9 +101,63 @@ public class SettingsAboutActivity extends Activity implements OnClickListener {
 			emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody); // 正文
 			startActivity(Intent.createChooser(emailIntent, "Please select an App to send Email"));
 			break;
+		case R.id.btn_logout:
+			logoutMeetisan();
+			break;
 		default:
 			break;
 		}
 	}
 
+	private void logoutMeetisan() {
+		DialogUtils.showDialog(SettingsAboutActivity.this, R.string.logout, R.string.logout_tips, R.string.positive,
+				R.string.cancel, new OnDialogClickListener() {
+
+					@Override
+					public void onClick(boolean isPositiveBtn) {
+						if (isPositiveBtn) {
+							doLogoutMeetisan();
+						}
+					}
+				});
+	}
+
+	private CustomizedProgressDialog mProgressDialog = null;
+
+	private void doLogoutMeetisan() {
+
+		HttpRequest request = new HttpRequest();
+
+		if (mProgressDialog == null) {
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+		} else {
+			if (mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+			}
+		}
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+				if (UserInfoKeeper.clearUserInfo(SettingsAboutActivity.this)) {
+					Intent intent = new Intent(SettingsAboutActivity.this, LoginActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					startActivity(intent);
+					SettingsAboutActivity.this.finish();
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+			}
+		});
+
+		long mUserID = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
+		request.post(ServerKeys.FULL_URL_LOGOUT + "/" + mUserID, null);
+		mProgressDialog.show();
+	}
 }

@@ -3,15 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="@dimen/activity_title_height"
     android:layout_gravity="center"
-    android:background="@android:color/transparent"
-    android:padding="5dp" >
+    android:background="@android:color/transparent" >
 
     <ImageButton
         android:id="@+id/btn_title_icon_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:background="@android:color/transparent"
         android:scaleType="centerInside"
         android:src="@drawable/icon_back"
@@ -33,10 +32,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:background="@android:color/transparent"
         android:scaleType="centerInside"
         android:src="@drawable/icon_next"
         android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray" />
 
 </RelativeLayout>

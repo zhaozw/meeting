@@ -153,6 +153,15 @@
         <item name="android:drawableRight">@drawable/selector_create_item_selected</item>
         <item name="android:button">@null</item>
     </style>
+    
+    <style name="PopupItemSelected">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:drawableRight">@drawable/selector_create_item_selected</item>
+        <item name="android:button">@null</item>
+    </style>
 
     <style name="AnimationBottomEnterTopExit">
         <item name="android:windowEnterAnimation">@anim/alpha_appear</item>

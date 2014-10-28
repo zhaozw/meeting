@@ -42,6 +42,8 @@ import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.view.dashboard.PersonProfileActivity;
 import com.meetisan.meetisan.widget.CustomizePopupView;
+import com.meetisan.meetisan.widget.CustomizeSearchPopupView;
+import com.meetisan.meetisan.widget.CustomizeSearchPopupView.OnSearchPopupClickListener;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.SearchPanel;
 import com.meetisan.meetisan.widget.SearchPanel.SearchListener;
@@ -54,12 +56,14 @@ public class MeetActivity extends Activity {
 	private static final String TAG = MeetActivity.class.getSimpleName();
 
 	private RelativeLayout mListLayout;
-	private CustomizePopupView mMeetingTagPopupView, mPeopleTagPopupView, mMeetingSortPopupView, mPeopleSortPopupView;
+	private CustomizePopupView mMeetingSortPopupView;// mPeopleSortPopupView;
+	private CustomizeSearchPopupView mPeopleTagPopupView, mMeetingTagPopupView;
 	private PullToRefreshListView mPullPeopleView, mPullMeetingsView;
 	private ListView mPeopleListView, mMeetingsListView;
 	private ImageButton mFilterBtn;
 	private SearchPanel mSearchPanel;
 	private RadioGroup mControlGroup;
+	private SegmentedGroup mTagsGroup;
 	private List<PeopleInfo> mPeopleData = new ArrayList<PeopleInfo>();
 	private List<MeetingInfo> mMeetingData = new ArrayList<MeetingInfo>();
 
@@ -72,8 +76,8 @@ public class MeetActivity extends Activity {
 	private float mLat = 0f, mLon = 0f;
 	/** Meeting List order type */
 	private int mMeetingOrder = OrderType.SORT_DISTANCE;
-	/** People List order type */
-	private int mPeopleOrder = OrderType.SORT_DISTANCE;
+	private long[] mPeopleSearchTagIDs;
+	private long[] mMeetingSearchTagIDs;
 	/** People List Search Condition */
 	private String mPeopleSearchFilter = "";
 	/** Meet List Search Condition */
@@ -100,7 +104,7 @@ public class MeetActivity extends Activity {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
 
-		SegmentedGroup mTagsGroup = (SegmentedGroup) findViewById(R.id.group_meet);
+		mTagsGroup = (SegmentedGroup) findViewById(R.id.group_meet);
 		mTagsGroup.setTintColor(getResources().getColor(R.color.segment_group_bg_check),
 				getResources().getColor(R.color.segment_group_text_check));
 		mTagsGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -114,6 +118,14 @@ public class MeetActivity extends Activity {
 					mSearchPanel.setTextQuery(mMeetSearchFilter);
 					mPullPeopleView.setVisibility(View.GONE);
 					mPullMeetingsView.setVisibility(View.VISIBLE);
+				}
+
+				if (mControlGroup.isShown()) {
+					if (checkedId == R.id.radio_people) {
+						((RadioButton) findViewById(R.id.rb_sort)).setVisibility(View.GONE);
+					} else {
+						((RadioButton) findViewById(R.id.rb_sort)).setVisibility(View.VISIBLE);
+					}
 				}
 			}
 		});
@@ -160,15 +172,22 @@ public class MeetActivity extends Activity {
 			}
 		});
 		mControlGroup = (RadioGroup) findViewById(R.id.group_control);
-		mControlGroup.setOnCheckedChangeListener(new PopupCheckChangeListener());
+		mControlGroup.setOnCheckedChangeListener(new PopupControlCheckChangeListener());
 		mFilterBtn = (ImageButton) findViewById(R.id.btn_filter);
 		mFilterBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (mSearchPanel.getVisibility() == View.VISIBLE) {
+				if (mSearchPanel.isShown()) {
 					mSearchPanel.setVisibility(View.GONE);
-					mControlGroup.clearCheck();
+
 					mControlGroup.setVisibility(View.VISIBLE);
+					mControlGroup.clearCheck();
+					if (mTagsGroup.getCheckedRadioButtonId() == R.id.radio_people) {
+						((RadioButton) findViewById(R.id.rb_sort)).setVisibility(View.GONE);
+					} else {
+						((RadioButton) findViewById(R.id.rb_sort)).setVisibility(View.VISIBLE);
+					}
+
 					mFilterBtn.setImageResource(R.drawable.selector_button_search);
 				} else {
 					mControlGroup.setVisibility(View.GONE);
@@ -305,20 +324,41 @@ public class MeetActivity extends Activity {
 	}
 
 	private void initPopupViewMenu(int height) {
-		String[] sortMeetingItems = new String[] { "sort by distance", "sort by meeting time", "sort by create time" };
-		mMeetingSortPopupView = new CustomizePopupView(MeetActivity.this, sortMeetingItems,
-				new PopupItemClickListener(), new PopupItemDismissListener(), height);
+		String[] sortMeetingItems = new String[] { "By distance", "By meeting time" };
+		mMeetingSortPopupView = new CustomizePopupView(MeetActivity.this, sortMeetingItems, new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Log.d(TAG, "---Meeting Sort Item Click: " + position);
+				mMeetingSortPopupView.dismiss();
+				mMeetingOrder = position; // Item Order equals Server API Order
+				getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter, true, true);
+			}
+		}, new PopupItemDismissListener(), height);
 
-		String[] sortPeopleItems = new String[] { "sort by distance" };
-		mPeopleSortPopupView = new CustomizePopupView(MeetActivity.this, sortPeopleItems, new PopupItemClickListener(),
-				new PopupItemDismissListener(), height);
+		// String[] sortPeopleItems = new String[] { "sort by distance" };
+		// mPeopleSortPopupView = new CustomizePopupView(MeetActivity.this,
+		// sortPeopleItems, new PopupItemClickListener(),
+		// new PopupItemDismissListener(), height);
 
-		String[] tagItems = new String[] { "sort by tag name" };
-		mMeetingTagPopupView = new CustomizePopupView(MeetActivity.this, tagItems, new PopupItemClickListener(),
-				new PopupItemDismissListener(), height);
+		mMeetingTagPopupView = new CustomizeSearchPopupView(MeetActivity.this, "Show meetings around me",
+				new OnSearchPopupClickListener() {
 
-		mPeopleTagPopupView = new CustomizePopupView(MeetActivity.this, tagItems, new PopupItemClickListener(),
-				new PopupItemDismissListener(), height);
+					@Override
+					public void onSearch(boolean isAll, long[] tagIDs) {
+						mMeetingSearchTagIDs = tagIDs;
+						getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter, true, false);
+					}
+				}, new PopupItemDismissListener(), height);
+
+		mPeopleTagPopupView = new CustomizeSearchPopupView(MeetActivity.this, "Show everyone around me",
+				new OnSearchPopupClickListener() {
+
+					@Override
+					public void onSearch(boolean isAll, long[] tagIDs) {
+						mPeopleSearchTagIDs = tagIDs;
+						getPeoplesFromServer(1, mLat, mLon, mPeopleSearchFilter, true, true);
+					}
+				}, new PopupItemDismissListener(), height);
 	}
 
 	private void updatePeopleListView() {
@@ -341,61 +381,36 @@ public class MeetActivity extends Activity {
 		}
 	}
 
-	private class PopupCheckChangeListener implements OnCheckedChangeListener {
+	private class PopupControlCheckChangeListener implements OnCheckedChangeListener {
 
 		@Override
 		public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-			if (((RadioButton) findViewById(R.id.rb_tag)).isChecked()) {
-				if (mMeetingsListView.isShown()) {
-					mMeetingTagPopupView.showPopupDown(group);
+			if (mTagsGroup.getCheckedRadioButtonId() == R.id.radio_people) {
+				if (checkedId == R.id.rb_tag) {
+					if (mPeopleTagPopupView.isShowing()) {
+						mPeopleTagPopupView.dismiss();
+						mControlGroup.clearCheck();
+					} else {
+						Log.d(TAG, "Show People Tag PopupView");
+						mPeopleTagPopupView.showPopupDown(group, "Show everyone around me");
+					}
 				} else {
-					mPeopleTagPopupView.showPopupDown(group);
+					mPeopleTagPopupView.dismiss();
 				}
 			} else {
-				mMeetingTagPopupView.dismiss();
-				mPeopleTagPopupView.dismiss();
-			}
-
-			if (((RadioButton) findViewById(R.id.rb_sort)).isChecked()) {
-				if (mMeetingsListView.isShown()) {
+				if (checkedId == R.id.rb_tag) {
+					Log.d(TAG, "Show Meetings Tag PopupView");
+					mMeetingSortPopupView.dismiss();
+					mMeetingTagPopupView.showPopupDown(group, "Show meetings around me");
+				} else if (checkedId == R.id.rb_sort) {
+					mMeetingTagPopupView.dismiss();
 					mMeetingSortPopupView.showPopupDown(group);
 				} else {
-					mPeopleSortPopupView.showPopupDown(group);
+					mMeetingSortPopupView.dismiss();
+					mMeetingTagPopupView.dismiss();
 				}
-			} else {
-				mMeetingSortPopupView.dismiss();
-				mPeopleSortPopupView.dismiss();
 			}
 		}
-	}
-
-	private class PopupItemClickListener implements OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			if (mMeetingTagPopupView.isShowing()) {
-				Log.d(TAG, "---Meeting Tag Item Click: " + position);
-				mMeetingTagPopupView.dismiss();
-			}
-			if (mPeopleTagPopupView.isShowing()) {
-				Log.d(TAG, "---People Tag Item Click: " + position);
-				mPeopleTagPopupView.dismiss();
-			}
-			if (mMeetingSortPopupView.isShowing()) {
-				Log.d(TAG, "---Meeting Sort Item Click: " + position);
-				mMeetingSortPopupView.dismiss();
-				mMeetingOrder = position; // Item Order equals Server API Order
-				getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter, true, true);
-			}
-			if (mPeopleSortPopupView.isShowing()) {
-				Log.d(TAG, "---People Sort Item Click: " + position);
-				mPeopleSortPopupView.dismiss();
-				mPeopleOrder = position; // Item Order equals Server API Order
-				// TODO.. Server API does not work
-				// getPeoplesFromServer(1, mLat, mLon, true, true);
-			}
-		}
-
 	}
 
 	private class PopupItemDismissListener implements OnDismissListener {
@@ -506,8 +521,17 @@ public class MeetActivity extends Activity {
 			}
 		});
 
+		String tagIDs = "";
+		if (mPeopleSearchTagIDs != null) {
+			for (int i = 0; i < mPeopleSearchTagIDs.length; i++) {
+				tagIDs = tagIDs + mPeopleSearchTagIDs[i] + ",";
+			}
+			tagIDs = tagIDs.substring(0, tagIDs.lastIndexOf(","));
+		}
+
 		request.get(ServerKeys.FULL_URL_GET_UESR_LIST + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
-				+ ServerKeys.PAGE_SIZE + "&lat=" + mLat + "&lon=" + mLon + "&tagIDs=" + "&name=" + mFilter, null);
+				+ ServerKeys.PAGE_SIZE + "&lat=" + mLat + "&lon=" + mLon + "&tagIDs=" + tagIDs + "&name=" + mFilter,
+				null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();
@@ -606,9 +630,17 @@ public class MeetActivity extends Activity {
 			}
 		});
 
+		String tagIDs = "";
+		if (mMeetingSearchTagIDs != null) {
+			for (int i = 0; i < mMeetingSearchTagIDs.length; i++) {
+				tagIDs = tagIDs + mMeetingSearchTagIDs[i] + ",";
+			}
+			tagIDs = tagIDs.substring(0, tagIDs.lastIndexOf(","));
+		}
+
 		request.get(ServerKeys.FULL_URL_GET_MEET_LIST + "/?pageindex=" + pageIndex + "&pagesize="
 				+ ServerKeys.PAGE_SIZE + "&ordertype=" + orderType + "&lat=" + mLat + "&lon=" + mLon + "&tagIDs="
-				+ "&title=" + title, null);
+				+ tagIDs + "&title=" + title, null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();

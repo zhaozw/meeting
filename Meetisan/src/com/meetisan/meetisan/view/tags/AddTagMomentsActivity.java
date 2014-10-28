@@ -145,8 +145,8 @@ public class AddTagMomentsActivity extends Activity implements OnClickListener {
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
 		// outputX outputY 是裁剪图片宽高
-		intent.putExtra("outputX", 96);
-		intent.putExtra("outputY", 96);
+		intent.putExtra("outputX", 128);
+		intent.putExtra("outputY", 128);
 		intent.putExtra("return-data", true);
 		startActivityForResult(intent, RESULT_REQUEST_CODE);
 	}
@@ -169,41 +169,48 @@ public class AddTagMomentsActivity extends Activity implements OnClickListener {
 	 * 显示选择对话框
 	 */
 	private void showPickImageDialog(final boolean isFinish) {
+		Intent intentFromGallery = new Intent();
+		intentFromGallery.setType("image/*"); // 设置文件类型
+		intentFromGallery.setAction(Intent.ACTION_GET_CONTENT);
+		startActivityForResult(intentFromGallery, IMAGE_REQUEST_CODE);
 
-		new AlertDialog.Builder(this).setTitle(R.string.profile_picture)
-				.setItems(items, new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which) {
-						case 0:
-							Intent intentFromGallery = new Intent();
-							intentFromGallery.setType("image/*"); // 设置文件类型
-							intentFromGallery.setAction(Intent.ACTION_GET_CONTENT);
-							startActivityForResult(intentFromGallery, IMAGE_REQUEST_CODE);
-							break;
-						case 1:
-							Intent intentFromCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-							// 判断存储卡是否可以用，可用进行存储
-							if (Tools.hasSdcard()) {
-								intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment
-										.getExternalStorageDirectory(), IMAGE_FILE_NAME)));
-							}
-							startActivityForResult(intentFromCapture, CAMERA_REQUEST_CODE);
-							break;
-						}
-					}
-				}).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-						if (isFinish) {
-							AddTagMomentsActivity.this.finish();
-						}
-					}
-
-				}).show();
+		// new AlertDialog.Builder(this).setTitle(R.string.profile_picture)
+		// .setItems(items, new DialogInterface.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(DialogInterface dialog, int which) {
+		// switch (which) {
+		// case 0:
+		// Intent intentFromGallery = new Intent();
+		// intentFromGallery.setType("image/*"); // 设置文件类型
+		// intentFromGallery.setAction(Intent.ACTION_GET_CONTENT);
+		// startActivityForResult(intentFromGallery, IMAGE_REQUEST_CODE);
+		// break;
+		// case 1:
+		// Intent intentFromCapture = new
+		// Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		// // 判断存储卡是否可以用，可用进行存储
+		// if (Tools.hasSdcard()) {
+		// intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new
+		// File(Environment
+		// .getExternalStorageDirectory(), IMAGE_FILE_NAME)));
+		// }
+		// startActivityForResult(intentFromCapture, CAMERA_REQUEST_CODE);
+		// break;
+		// }
+		// }
+		// }).setNegativeButton(R.string.cancel, new
+		// DialogInterface.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(DialogInterface dialog, int which) {
+		// dialog.dismiss();
+		// if (isFinish) {
+		// AddTagMomentsActivity.this.finish();
+		// }
+		// }
+		//
+		// }).show();
 
 	}
 

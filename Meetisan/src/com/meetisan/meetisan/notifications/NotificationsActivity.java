@@ -29,6 +29,7 @@ import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.view.dashboard.PersonProfileActivity;
 import com.meetisan.meetisan.view.meet.MeetProfileActivity;
 import com.meetisan.meetisan.view.tags.TagProfileActivity;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
@@ -215,22 +216,41 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		int type = info.getType();
 		Log.d(TAG, "Click Item Type: " + type);
 		switch (type) {
+		case NotificationInfo.TYPE_MEETING_CANCEL:
+			Intent cancelIntent = new Intent(getApplicationContext(), MeetProfileActivity.class);
+			cancelIntent.putExtra(ServerKeys.KEY_USER_ID, mUserId);
+			cancelIntent.putExtra(ServerKeys.KEY_MEETING_ID, info.getReportObjectID());
+			cancelIntent.putExtra("IsMeetCanceled", true);
+			cancelIntent.putExtra(ServerKeys.KEY_TYPE, type);
+			startActivity(cancelIntent);
+			break;
 		case NotificationInfo.TYPE_MEETING_INVITATION:
-		case NotificationInfo.TYPE_MEETING_INVITE_JOIN:
+			Intent inviteIntent = new Intent(getApplicationContext(), MeetProfileActivity.class);
+			inviteIntent.putExtra(ServerKeys.KEY_USER_ID, mUserId);
+			inviteIntent.putExtra(ServerKeys.KEY_MEETING_ID, info.getReportObjectID());
+			inviteIntent.putExtra(ServerKeys.KEY_TYPE, type);
+			startActivity(inviteIntent);
+			break;
 		case NotificationInfo.TYPE_MEETING_INVITE_REFUSE:
-			Intent meetIntent = new Intent(getApplicationContext(), MeetProfileActivity.class);
-			meetIntent.putExtra(ServerKeys.KEY_USER_ID, info.getUserID());
-			meetIntent.putExtra(ServerKeys.KEY_MEETING_ID, info.getReportObjectID());
-			meetIntent.putExtra(ServerKeys.KEY_TYPE, type);
-			startActivity(meetIntent);
+			Intent refuseIntent = new Intent(getApplicationContext(), PersonProfileActivity.class);
+			refuseIntent.putExtra(ServerKeys.KEY_USER_ID, info.getReportObjectID());
+			startActivity(refuseIntent);
 			break;
 		case NotificationInfo.TYPE_TAG_CREATE_FAILED:
+			Intent rejectIntent = new Intent(getApplicationContext(), TagRejectedActivity.class);
+			startActivity(rejectIntent);
+			break;
 		case NotificationInfo.TYPE_TAG_CREATE_SUCCESS:
 			Intent tagIntent = new Intent(getApplicationContext(), TagProfileActivity.class);
 			tagIntent.putExtra(ServerKeys.KEY_USER_ID, info.getUserID());
 			tagIntent.putExtra(ServerKeys.KEY_TAG_ID, info.getReportObjectID());
 			tagIntent.putExtra(ServerKeys.KEY_TYPE, type);
 			startActivity(tagIntent);
+			break;
+		case NotificationInfo.TYPE_MEETING_INVITE_JOIN:
+			Intent joinIntent = new Intent(getApplicationContext(), PersonProfileActivity.class);
+			joinIntent.putExtra(ServerKeys.KEY_USER_ID, info.getReportObjectID());
+			startActivity(joinIntent);
 			break;
 		default:
 			break;

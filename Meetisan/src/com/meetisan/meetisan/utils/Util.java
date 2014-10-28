@@ -353,6 +353,9 @@ public class Util {
 	 * @throws ParseException
 	 */
 	public static String convertDateToMeetTime(String dateTime) throws ParseException {
+		if (dateTime == null || !dateTime.contains("T")) {
+			return "-";
+		}
 		dateTime = dateTime.replaceAll("T", " ");
 		int index = dateTime.lastIndexOf(".");
 		if (index > 0) {
@@ -402,6 +405,31 @@ public class Util {
 
 		return WEEK_ABBREVIATION[week - 1] + ", " + String.format("%02d", day) + " " + MONTH_ABBREVIATION[month] + ", "
 				+ year + "   " + String.format("%02d", hour) + ":" + String.format("%02d", min) + "  " + end;
+	}
+
+	/**
+	 * convert [2012-01-12T10:03:41.753] to Unix Time
+	 * 
+	 * @param dateTime
+	 * @return if over return true, else return false
+	 * @throws ParseException
+	 */
+	public static boolean isMeetOverByTime(String dateTime) {
+		dateTime = dateTime.replaceAll("T", " ");
+		int index = dateTime.lastIndexOf(".");
+		if (index > 0) {
+			dateTime = dateTime.substring(0, index);
+		}
+		try {
+			long time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime).getTime();
+			if (time <= System.currentTimeMillis()) {
+				return true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 
 	public static String convertTime2FormatMeetTime(String startTime, String endTime) {

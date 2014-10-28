@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,6 +49,7 @@ public class CreateStep1Fragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_create_step1, container, false);
 		mMeetingTitle = (ClearEditText) view.findViewById(R.id.et_create_meeting_title);
 		mPrivateMeeting = (LabelWithSwitchButton) view.findViewById(R.id.switch_create_private_meeting);
+		mPrivateMeeting.setChecked(false);
 		mMeetPersonLayout = (LinearLayout) view.findViewById(R.id.ll_the_people_your_invite);
 		mMeetPersonItemLayout = (RelativeLayout) view.findViewById(R.id.rl_create_let_us_meeting_invite_people);
 		mMeetPersonCircleImageView = (CircleImageView) view.findViewById(R.id.iv_portrait);

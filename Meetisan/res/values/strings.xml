@@ -5,8 +5,10 @@
     <string name="notifications">Notifications</string>
     <string name="loading">Loading&#8230;</string>
     <string name="loading_complete">Loading Complete</string>
-    <string name="please_waiting">Please waiting&#8230;</string>
+    <string name="please_waiting">Loading &#8230;</string>
+    <string name="logging_in">Logging in&#8230;</string>
     <string name="searching">Searching&#8230;</string>
+    <string name="search">Search</string>
     <string name="update_user_info">Update information&#8230;</string>
     <string name="deleting">Deleting&#8230;</string>
     <string name="loading_userinfo">Loading user information&#8230;</string>
@@ -21,6 +23,7 @@
     <string name="register_device_to_gcm_failed">Failed to register your device to GCM.\nPlease check whether the device is connected to the network.</string>
     <string name="device_not_support_google_play_services">Your device is not supported Google Play services.</string>
     <string name="cancel">Cancel</string>
+    <string name="cancel_meeting">Cancel Meeting</string>
     <string name="sure">Sure</string>
     <string name="ok">OK</string>
     <string name="search_hint">Search</string>

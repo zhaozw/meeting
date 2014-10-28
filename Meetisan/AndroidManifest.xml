@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.meetisan.meetisan"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.2 Beta" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -77,7 +77,7 @@
         <activity
             android:name=".LauncherActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -87,203 +87,213 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.create.CreateActivity"
             android:label="@string/title_create"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name=".view.create.SelectPersonActivity"
+            android:label="@string/title_create"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.meet.MeetActivity"
             android:label="@string/title_meet"
-            android:windowSoftInputMode="adjustNothing|stateHidden" >
+            android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.meet.MeetProfileActivity"
             android:label="@string/title_meet"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.meet.MeetMemberActivity"
             android:label="@string/title_meet"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.meet.ReportActivity"
             android:label="@string/report"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.TagsActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.TagProfileActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.CreateTagsActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.CreateTagsResultActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.TagMomentsActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.AddTagMomentsActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.TagConnectedPeopleActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.TagAssociatedPeopleActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.TagAttendedMeetingsActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.TagAssociatedMeetingsActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.TagsCategoryActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.SearchTagsActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.PersonTagsActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.tags.IndexableListActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.DashboardActivity"
             android:label="@string/title_dashboard"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.EndorseActivity"
             android:label="@string/title_dashboard"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.EndorseMemberActivity"
             android:label="@string/title_dashboard"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.MyMeetingsActivity"
             android:label="@string/title_dashboard"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.MyConnectionsActivity"
             android:label="@string/title_dashboard"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.PersonProfileActivity"
             android:label="@string/title_dashboard"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.PersonMoreInfoActivity"
             android:label="@string/title_tags"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.SettingsActivity"
             android:label="@string/settings"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.SettingsAboutActivity"
             android:label="@string/about_meetisan"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.SettingsNotifyActivity"
             android:label="@string/notify"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.SettingsPrivacyActivity"
             android:label="@string/privacy"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".view.dashboard.SettingsPushActivity"
             android:label="@string/push_notifications"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".notifications.NotificationsActivity"
             android:label="@string/title_notification"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name=".notifications.TagRejectedActivity"
+            android:label="@string/title_notification"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".LoginActivity"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".signup.InsertEmailActivity"
             android:label="@string/insert_email"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".signup.ActivationActivity"
             android:label="@string/activation_code"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".signup.SetPasswordActivity"
             android:label="@string/password"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".signup.SetNameActivity"
             android:label="@string/your_name"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".signup.SetTaglineActivity"
             android:label="@string/your_tagline"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".GoogleMapActivity"
             android:label="@string/settings"
-            android:windowSoftInputMode="adjustNothing|adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustNothing|adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
             android:name="com.meetisan.meetisan.view.create.SetTimeActivity"

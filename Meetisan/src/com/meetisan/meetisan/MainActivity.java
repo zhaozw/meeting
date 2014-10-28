@@ -16,6 +16,7 @@ import android.widget.TabHost;
 
 import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.notifications.NotificationsActivity;
+import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
@@ -31,8 +32,8 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 
 	public static final String LOG_ACTIVITY_SERVICE = "=====MainActivity====";
 
-	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_create, R.id.rb_meet,
-			R.id.rb_tags, R.id.rb_dashboard, R.id.rb_notifications };
+	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_create, R.id.rb_meet, R.id.rb_tags,
+			R.id.rb_dashboard, R.id.rb_notifications };
 
 	private static final String TAB_1 = "create";
 	private static final String TAB_2 = "meet";
@@ -107,8 +108,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		mTagsIntent = new Intent(this, TagsActivity.class);
 		mDashboardIntent = new Intent(this, DashboardActivity.class);
 		mNotificationsIntent = new Intent(this, NotificationsActivity.class);
-		mIntents = new Intent[] { mCreateIntent, mMeetIntent, mTagsIntent, mDashboardIntent,
-				mNotificationsIntent };
+		mIntents = new Intent[] { mCreateIntent, mMeetIntent, mTagsIntent, mDashboardIntent, mNotificationsIntent };
 		initTab();
 	}
 
@@ -178,14 +178,12 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 			// }
 			// });
 			// Save current location information to SharedPreferences for use
-			UserInfoKeeper.writeUserInfo(MainActivity.this, UserInfoKeeper.KEY_USER_LAT,
-					(float) latitude);
-			UserInfoKeeper.writeUserInfo(MainActivity.this, UserInfoKeeper.KEY_USER_LON,
-					(float) longitude);
+			UserInfoKeeper.writeUserInfo(MainActivity.this, UserInfoKeeper.KEY_USER_LAT, (float) latitude);
+			UserInfoKeeper.writeUserInfo(MainActivity.this, UserInfoKeeper.KEY_USER_LON, (float) longitude);
 
 			long mUserID = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
-			request.post(ServerKeys.FULL_URL_UPDATE_LOCATION + "/" + mUserID + "/?lat=" + latitude
-					+ "&lon=" + longitude, null);
+			request.post(ServerKeys.FULL_URL_UPDATE_LOCATION + "/" + mUserID + "/?lat=" + latitude + "&lon="
+					+ longitude, null);
 		} else {
 			ToastHelper.showToast(R.string.failed_get_location);
 		}
@@ -213,12 +211,20 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 			if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
 				String messge = intent.getStringExtra(KEY_MESSAGE);
 				String extras = intent.getStringExtra(KEY_EXTRAS);
-				StringBuilder showMsg = new StringBuilder();
+				final StringBuilder showMsg = new StringBuilder();
 				showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
 				if (!Util.isEmpty(extras)) {
 					showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
 				}
-				
+
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						DialogUtils.showDialog(MainActivity.this, "Tips", showMsg.toString(), "OK", null, null);
+					}
+				});
 			}
 		}
 	}

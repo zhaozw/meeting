@@ -29,6 +29,7 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 	private ImageButton mBackBtn;
 	private Button mSendBtn;
 	private EditText mEmailTxt;
+	private TextView mTipsTxt;
 
 	private boolean isRegistion = false;
 
@@ -46,6 +47,12 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
 		mTitleTxt.setText(R.string.insert_email);
 		mTitleTxt.setVisibility(View.VISIBLE);
+		mTipsTxt = (TextView) findViewById(R.id.txt_tips);
+		if (isRegistion) {
+			mTipsTxt.setText(R.string.insert_email_registe_tips);
+		} else {
+			mTipsTxt.setText(R.string.insert_email_reset_tips);
+		}
 		mBackBtn = (ImageButton) findViewById(R.id.btn_title_icon_left);
 		mBackBtn.setOnClickListener(this);
 		mBackBtn.setVisibility(View.VISIBLE);

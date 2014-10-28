@@ -75,6 +75,7 @@
             android:text="@string/positive"
             android:textColor="@color/selector_blue_to_gray"
             android:textSize="@dimen/text_size_middle"
+            android:textStyle="bold"
             android:visibility="gone" />
     </LinearLayout>
 

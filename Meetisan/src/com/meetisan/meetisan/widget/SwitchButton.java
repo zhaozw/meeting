@@ -44,8 +44,8 @@ public class SwitchButton extends CompoundButton implements Runnable {
 	protected void onDraw(Canvas canvas) {
 		int width = getWidth();// View的總寬度
 		int height = getHeight();// View的總高度
-		int radius = height / 2;// 圓角半徑
-		int stroke = height > 50 ? height / 50 : 1; // 框線寬度
+		int stroke = height > 50 ? height / 50 : 4; // 框線寬度
+		int radius = height / 2 - stroke;// 圓角半徑
 
 		RectF frame = new RectF(stroke, stroke, width - stroke, height - stroke);// 背景框的位置，預留1px給邊框
 
@@ -62,12 +62,11 @@ public class SwitchButton extends CompoundButton implements Runnable {
 		int bgRed = 255 - (int) ((255 - 78) * movePercent);// 漸變色計算
 		int bgGgreen = 255 - (int) ((255 - 209) * movePercent);// 漸變色計算
 		int bgBlue = 255 - (int) ((255 - 100) * movePercent);// 漸變色計算
-
 		int bgColor = Color.rgb(bgRed, bgGgreen, bgBlue);// 漸變色成果
 
-		int strokeRed = 0xcc - (int) ((255 - 78) * movePercent);// 漸變色計算
-		int strokeGreen = 0xcc - (int) ((255 - 209) * movePercent);// 漸變色計算
-		int strokeBlue = 0xcc - (int) ((255 - 100) * movePercent);// 漸變色計算
+		int strokeRed = 0xcc - (int) ((0xcc - 78) * movePercent);// 漸變色計算
+		int strokeGreen = 0xcc - (int) ((0xcc - 209) * movePercent);// 漸變色計算
+		int strokeBlue = 0xcc - (int) ((0xcc - 100) * movePercent);// 漸變色計算
 		int strokeColor = Color.rgb(strokeRed, strokeGreen, strokeBlue);// 漸變色成果
 
 		mPaint.setColor(strokeColor);// 畫筆設為淺灰

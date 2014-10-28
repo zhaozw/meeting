@@ -27,7 +27,7 @@
             android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_gravity="bottom"
-            android:background="@color/activity_main_tab_background_color"
+            android:background="@drawable/bg_main_tab"
             android:gravity="center"
             android:orientation="horizontal" >
 

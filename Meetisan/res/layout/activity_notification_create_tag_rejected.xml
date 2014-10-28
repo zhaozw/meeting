@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/activity_title_height"
+        layout="@layout/title_with_image_btn" />
+
+    <TextView
+        android:id="@+id/txt_report_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/tag_rejected"
+        android:textColor="@color/meetisan_btn_logout_bg_normal"
+        android:textSize="@dimen/text_size_middle"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_empty_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/tag_rejected_tips"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_middle" />
+
+    <Button
+        android:id="@+id/btn_contact"
+        style="@style/ButtonStyle"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:text="Contact us" />
+
+</LinearLayout>

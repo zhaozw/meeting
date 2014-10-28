@@ -58,5 +58,7 @@
     <string name="do_create_tag">Create Tag</string>
     <string name="create_tag">Create Tag</string>
     <string name="go_back_to_tags">Go back to Tags</string>
+    <string name="tag_rejected">Tag Rejected</string>
+    <string name="tag_rejected_tips">    Your Tag has not been approved, Please search for other simila Tags or Contact Us if you have any questions.</string>
 
 </resources>

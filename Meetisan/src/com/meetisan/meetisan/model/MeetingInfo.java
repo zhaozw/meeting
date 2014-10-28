@@ -41,12 +41,14 @@ public class MeetingInfo {
 	private String endTime3 = null;
 	/** meet create date */
 	private String createDate = null;
-	/** meet join status, 0:已参加; 1：未参加; 2：当前用户为meeting创建人 */
+	/** meet join status, 0:已参加; 1：未参加; 2：当前用户为meeting创建人; 3: 拒绝邀请 ; 4: 收到邀请; */
 	private int joinStatus = 0;
 	/** meet status */
 	private int status = 0;
 	/** meet join */
 	private boolean canJoin = false;
+	/** meet time set type: 1: I'll choose; 2: Let them choose */
+	private int timeSetType = 1;
 	/** meet tags */
 	private List<TagInfo> tags = new ArrayList<TagInfo>();
 
@@ -208,6 +210,14 @@ public class MeetingInfo {
 
 	public void setLogoUri(String logoUri) {
 		this.logoUri = logoUri;
+	}
+
+	public int getTimeSetType() {
+		return timeSetType;
+	}
+
+	public void setTimeSetType(int timeSetType) {
+		this.timeSetType = timeSetType;
 	}
 
 	public double getDistance() {

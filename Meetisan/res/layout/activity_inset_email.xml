@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pic_background"
+    android:background="@drawable/bg_login"
     android:orientation="vertical" >
 
     <include
@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="@string/insert_email_tips"
+                android:text="@string/insert_email_registe_tips"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_small" />
 
@@ -51,7 +51,8 @@
                 android:layout_marginTop="150dp"
                 android:text="@string/support_email_tips"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_middle" />
+                android:textSize="@dimen/text_size_middle"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/txt_sign_up"
@@ -60,7 +61,8 @@
                 android:layout_marginTop="15dp"
                 android:text="@string/support_more_tips"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_small" />
+                android:textSize="@dimen/text_size_small"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

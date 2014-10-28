@@ -1,9 +1,7 @@
-package com.meetisan.meetisan.view.dashboard;
+package com.meetisan.meetisan.view.create;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
-import com.meetisan.meetisan.model.PeopleAdapter;
+import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
@@ -37,56 +35,50 @@ import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
-public class EndorseMemberActivity extends Activity implements OnClickListener {
-	private static final String TAG = EndorseMemberActivity.class.getSimpleName();
+public class SelectPersonActivity extends Activity {
+	private static final String TAG = SelectPersonActivity.class.getSimpleName();
 
 	private PullToRefreshListView mPullPeopleView;
 	private ListView mPeopleListView;
 	private List<PeopleInfo> mPeopleData = new ArrayList<PeopleInfo>();
 
-	private PeopleAdapter mPeopleAdapter;
+	private SelectPeopleAdapter mPeopleAdapter;
 
-	private long mMeetingID = -1;
-	private long mUserID = -1;
 	private long mTotalPeople = 0;
+	private long mUserId = -1;
+	private boolean mIsInvitePeople = true;
+	private boolean mIsMulitSelect = false;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_meet_member);
+		setContentView(R.layout.activity_select_person);
 
-		Bundle bundle = new Bundle();
-		bundle = this.getIntent().getExtras();
-		if (bundle != null) {
-			mMeetingID = bundle.getLong("MeetingID");
-			mUserID = bundle.getLong("UserID");
-		}
-
-		if (mMeetingID < 0 || mUserID < 0) {
-			ToastHelper.showToast(R.string.app_occurred_exception);
-			this.finish();
-		}
+		mUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
+		mIsMulitSelect = getIntent().getBooleanExtra("isMulitSelect", false);
+		getPeoplesFromServer(1, true, true);
 
 		initView();
-
-		getPeoplesFromServer(1, true, true);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
-
-		((ImageButton) findViewById(R.id.btn_title_icon_left)).setOnClickListener(this);
-		((TextView) findViewById(R.id.txt_title)).setText(R.string.title_endorse);
-		TextView mRightTxt = (TextView) findViewById(R.id.txt_title_right);
-		mRightTxt.setText(R.string.save);
-		mRightTxt.setVisibility(View.VISIBLE);
-		mRightTxt.setOnClickListener(this);
+		TextView mTitleTxt = (TextView) findViewById(R.id.tv_title_text);
+		mTitleTxt.setText(R.string.by_meeting_tags);
+		mTitleTxt.setVisibility(View.VISIBLE);
+		ImageButton mBackBtn = (ImageButton) findViewById(R.id.btn_title_left);
+		mBackBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		});
+		mBackBtn.setVisibility(View.VISIBLE);
 
 		/** -----------Init People ListView-------------- */
-		mPullPeopleView = (PullToRefreshListView) findViewById(R.id.list_people);
-		TextView mEmptyView = (TextView) findViewById(R.id.txt_empty_meetings);
-		mEmptyView.setText(R.string.no_members_to_endorse_tips);
-		mPullPeopleView.setEmptyView(mEmptyView);
+		mPullPeopleView = (PullToRefreshListView) findViewById(R.id.list_connections);
+		TextView mPeopleEmptyView = (TextView) findViewById(R.id.txt_empty_connections);
+		mPullPeopleView.setEmptyView(mPeopleEmptyView);
 		mPullPeopleView.setMode(Mode.BOTH);
 		mPullPeopleView.setOnRefreshListener(new OnRefreshListener2() {
 
@@ -105,8 +97,6 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 						"Last Loading: " + Util.getCurFormatDate());
 				int count = mPeopleListView.getCount() - 2; // reduce header and
 															// footer item
-				// Log.d(TAG, "-------total = " + mTotalPeople + "; count = " +
-				// count);
 				if (count < mTotalPeople) {
 					int pageIndex = count / ServerKeys.PAGE_SIZE + 1;
 					getPeoplesFromServer(pageIndex, false, false);
@@ -118,7 +108,7 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 		});
 		mPeopleListView = mPullPeopleView.getRefreshableView();
 		registerForContextMenu(mPeopleListView);
-		mPeopleAdapter = new PeopleAdapter(this, mPeopleData);
+		mPeopleAdapter = new SelectPeopleAdapter(this, mPeopleData);
 		mPeopleListView.setAdapter(mPeopleAdapter);
 		mPeopleAdapter.notifyDataSetChanged();
 		mPullPeopleView.setVisibility(View.VISIBLE);
@@ -126,34 +116,45 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Intent intent = new Intent();
-				Bundle bundle = new Bundle();
-				bundle.putLong("UserID", mPeopleData.get(arg2 - 1).getId());
-				intent.setClass(EndorseMemberActivity.this, PersonProfileActivity.class);
-				intent.putExtras(bundle);
-				startActivity(intent);
+				// TODO Auto-generated method stub
+				if (!mIsMulitSelect) {
+					Log.d(TAG, "----------On Item Click-------");
+					Intent inviteIntent = new Intent();
+					inviteIntent.putExtra("inviteName", mPeopleData.get(arg2 - 1).getName());
+					inviteIntent.putExtra("inviteID", mPeopleData.get(arg2 - 1).getId());
+					setResult(RESULT_OK, inviteIntent);
+					SelectPersonActivity.this.finish();
+					return;
+				} else {
+					if (mPeopleAdapter != null) {
+						mPeopleAdapter.toggleSelect(arg2 - 1);
+					}
+				}
 			}
 		});
 
 	}
 
 	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.btn_title_icon_left:
-			finish();
-			break;
-		case R.id.txt_title_right:
-			doEndorsePeople();
-			break;
-		default:
-			break;
-		}
-	}
+	public void onBackPressed() {
+		if (mPeopleAdapter != null) {
+			List<PeopleInfo> mSelectList = mPeopleAdapter.getSelectList();
+			JSONArray nameArray = new JSONArray();
+			JSONArray idArray = new JSONArray();
+			for (PeopleInfo info : mSelectList) {
+				nameArray.put(info.getName());
+				idArray.put(info.getId());
+			}
 
-	private void doEndorsePeople() {
-		if (mPeopleData.size() > 0) {
-			endorsePeoplesToServer();
+			Intent inviteIntent = new Intent();
+			inviteIntent.putExtra("inviteName", nameArray.toString());
+			inviteIntent.putExtra("inviteID", idArray.toString());
+			setResult(RESULT_OK, inviteIntent);
+			Log.d(TAG, "Name = " + nameArray.toString());
+			Log.d(TAG, "IDs = " + idArray.toString());
+			finish();
+		} else {
+			super.onBackPressed();
 		}
 	}
 
@@ -174,6 +175,10 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 	 * 
 	 * @param pageIndex
 	 *            load page index
+	 * @param mLat
+	 *            location
+	 * @param mLon
+	 *            location
 	 * @param isRefresh
 	 *            is refresh or load more
 	 * @param isNeedsDialog
@@ -242,9 +247,6 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 
 				} catch (JSONException e) {
 					e.printStackTrace();
-					// TODO.. server response exception, if Data is null, return
-					// is JSONArray not
-					// JSONObject
 					// ToastHelper.showToast(R.string.server_response_exception,
 					// Toast.LENGTH_LONG);
 				} finally {
@@ -262,47 +264,12 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_ENDORSE_MEMBER_LIST + "/" + mMeetingID + "/?pageindex=" + pageIndex
-				+ "&pagesize=" + ServerKeys.PAGE_SIZE + "&userid=" + mUserID, null);
+		request.get(ServerKeys.FULL_URL_GET_USER_CONNECTION_LIST + "/" + mUserId + "/?pageindex=" + pageIndex
+				+ "&pagesize=" + ServerKeys.PAGE_SIZE, null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();
 		}
-	}
-
-	private void endorsePeoplesToServer() {
-		final CustomizedProgressDialog mProgressDialog = new CustomizedProgressDialog(this, R.string.endorsing);
-		HttpRequest request = new HttpRequest();
-
-		request.setOnHttpRequestListener(new OnHttpRequestListener() {
-
-			@Override
-			public void onSuccess(String url, String result) {
-				mProgressDialog.dismiss();
-				ToastHelper.showToast(R.string.endorse_success, Toast.LENGTH_LONG);
-				EndorseMemberActivity.this.finish();
-			}
-
-			@Override
-			public void onFailure(String url, int errorNo, String errorMsg) {
-				mProgressDialog.dismiss();
-				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
-			}
-		});
-
-		Map<String, String> data = new HashMap<String, String>();
-		data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
-		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
-		JSONArray mPeopleArray = new JSONArray();
-		List<TagInfo> tagList = mPeopleData.get(0).getTopTags();
-		for (TagInfo info : tagList) {
-			mPeopleArray.put(info.getId());
-		}
-		data.put(ServerKeys.KEY_USER_TAG_IDS, mPeopleArray.toString());
-
-		request.post(ServerKeys.FULL_URL_ENDORSE_MEMBERS, data);
-
-		mProgressDialog.show();
 	}
 
 }

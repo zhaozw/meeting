@@ -174,7 +174,7 @@ public class DashboardActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_settings:
-			Intent intent1 = new Intent(this, SettingsActivity.class);
+			Intent intent1 = new Intent(this, SettingsAboutActivity.class);
 			startActivity(intent1);
 			break;
 		case R.id.iv_portrait:

@@ -228,4 +228,5 @@ public class ServerKeys {
 	public static final String KEY_CAN_JOIN = "CanJoin";
 	public static final String KEY_REPORT_ID = "ReportObjectID";
 	public static final String KEY_REPORT_TYPE = "Type";
+	public static final String KEY_TIME_SET_TYPE = "TimeSetType";
 }

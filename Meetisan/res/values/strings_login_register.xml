@@ -14,10 +14,11 @@
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="empty_email_tips">Please enter your E-Mail</string>
     <string name="empty_pwd_tips">Please enter your password</string>
-    <string name="error_incorrect_email_or_pwd">E-Mail or password is incorrect</string>
+    <string name="error_incorrect_email_or_pwd">Incorrect username or password</string>
     
-    <string name="insert_email">Insert Email</string>
-    <string name="insert_email_tips">We will send an activation code to your email to setup your account</string>
+    <string name="insert_email">Input Email</string>
+    <string name="insert_email_registe_tips">We\'ll send an Activation Code to your email to setup your account.</string>
+    <string name="insert_email_reset_tips">We\'ll send an Activation Code to your email to reset your password.</string>
     <string name="send_code">Send Activation Code</string>
     <string name="support_email_tips">We currently support only registered with the UNSW E-Mail!</string>
     <string name="support_more_tips">Other institutions we will update as soon as possible, pay attention to our website, obtain other colleges update time</string>

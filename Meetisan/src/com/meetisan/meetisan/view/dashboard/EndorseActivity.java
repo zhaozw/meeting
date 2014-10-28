@@ -30,7 +30,6 @@ import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
-import com.meetisan.meetisan.view.meet.MeetProfileActivity;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
@@ -61,6 +60,12 @@ public class EndorseActivity extends Activity {
 		getMeetingsFromServer(1, true, true);
 
 		initView();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		getMeetingsFromServer(1, true, false);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

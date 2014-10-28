@@ -13,6 +13,11 @@ import com.meetisan.meetisan.R;
 public class CustomizedProgressDialog extends ProgressDialog {
 	private Context context = null;
 	private int msgId = R.string.loading;
+	private DialogStyle style = DialogStyle.PROGRESS;
+
+	public enum DialogStyle {
+		PROGRESS, ERROR, OK
+	}
 
 	public CustomizedProgressDialog(Context context, int msgId) {
 		super(context);
@@ -20,10 +25,21 @@ public class CustomizedProgressDialog extends ProgressDialog {
 		this.msgId = msgId;
 	}
 
+	public CustomizedProgressDialog(Context context, int msgId, DialogStyle style) {
+		super(context);
+		this.context = context;
+		this.msgId = msgId;
+		this.style = style;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.layout_progress_dialog);
+		if (style == DialogStyle.PROGRESS) {
+			setContentView(R.layout.dialog_progress);
+		} else if (style == DialogStyle.ERROR) {
+			setContentView(R.layout.dialog_error);
+		}
 		setScreenBrightness();
 		this.setOnShowListener(new OnShowListener() {
 
@@ -31,21 +47,40 @@ public class CustomizedProgressDialog extends ProgressDialog {
 			public void onShow(DialogInterface dialog) {
 				// ImageView image = (ImageView)
 				// CustomizedProgressDialog.this.findViewById(R.id.loading_imgeview);
-				// AnimationDrawable animationDrawable = (AnimationDrawable) image.getBackground();
+				// AnimationDrawable animationDrawable = (AnimationDrawable)
+				// image.getBackground();
 				// animationDrawable.stop();
 				// animationDrawable.start();
 				// Animation animation = AnimationUtils.loadAnimation(context,
 				// R.anim.progress_indicator);
 				// image.startAnimation(animation);
 
-				TextView tipsTxt = (TextView) CustomizedProgressDialog.this
-						.findViewById(R.id.txt_tips);
+				TextView tipsTxt = (TextView) CustomizedProgressDialog.this.findViewById(R.id.txt_tips);
 				if (tipsTxt != null) {
 					tipsTxt.setText(context.getResources().getString(msgId));
 				}
 			}
 		});
 		this.setCancelable(false);
+
+		if (style == DialogStyle.ERROR) {
+			new Thread() {
+				@Override
+				public void run() {
+					long start = System.currentTimeMillis();
+					while (System.currentTimeMillis() - start < 1000) {
+						try {
+							sleep(200);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+					CustomizedProgressDialog.this.dismiss();
+				}
+			}.start();
+		}
 	}
 
 	public int getMsgId() {

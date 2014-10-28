@@ -39,7 +39,7 @@ public class PeopleInfo {
 	private float longitude = 0.0f;
 	/** people latitude */
 	private float latitude = 0.0f;
-	/** people status */
+	/** people status:  0: Invited; 1: Accepted; 2: Declined*/
 	private int status = 0;
 	/** people create date [2014-07-23T02:40:47.786] */
 	private String createDate = null;

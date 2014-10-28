@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,6 +50,7 @@ import com.meetisan.meetisan.widget.LabelWithIcon;
 public class CreateDoneFragment extends Fragment implements OnClickListener {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+	private static final String TAG = CreateDoneFragment.class.getSimpleName();
 	private static final String ARG_PARAM1 = "param1";
 	private static final String ARG_PARAM2 = "param2";
 	public static final int REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE = 5;
@@ -231,8 +233,13 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 			doneRequest(data, tagList);
 			break;
 		case R.id.rl_create_invite_people:
-			Intent intent = new Intent(getActivity().getApplicationContext(), MyConnectionsActivity.class);
-			intent.putExtra("isInvitePeople", true);
+			CreateActivity createActivity = (CreateActivity) getActivity();
+			data = createActivity.getData();
+			int maxPerson = (Integer) data.get("MaxPerson");
+			boolean isMultiModel = maxPerson == 1 ? false : true;
+
+			Intent intent = new Intent(getActivity().getApplicationContext(), SelectPersonActivity.class);
+			intent.putExtra("isMulitSelect", isMultiModel);
 			startActivityForResult(intent, REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE);
 			break;
 		default:
@@ -244,10 +251,28 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
 			if (requestCode == REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE) {
-				mInviteLabel.setText(data.getStringExtra("inviteName"));
-				long mInvitePeopleID = data.getLongExtra("inviteID", -1);
-				if (mInvitePeopleID != -1) {
-					mInviteList.add(mInvitePeopleID);
+				String mInvitePeopleName = data.getStringExtra("inviteName");
+				String mInvitePeopleID = data.getStringExtra("inviteID");
+				Log.d(TAG, "Name = " + mInvitePeopleName);
+				Log.d(TAG, "IDs = " + mInvitePeopleID);
+				if (mInvitePeopleName != null && mInvitePeopleID != null) {
+					try {
+						JSONArray idArray = new JSONArray(mInvitePeopleID);
+						mInviteList.clear();
+						for (int i = 0; i < idArray.length(); i++) {
+							mInviteList.add(idArray.getLong(i));
+						}
+
+						String names = "";
+						JSONArray nameArray = new JSONArray(mInvitePeopleName);
+						for (int i = 0; i < nameArray.length(); i++) {
+							names += (nameArray.getString(i) + "  ");
+						}
+						mInviteLabel.setText(names);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
 				}
 			}
 		}
@@ -297,8 +322,9 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 
 		try {
 			request.postJsonString(ServerKeys.FULL_URL_MEETING_ADD, convert(map, tagInfos));
+
+			Log.e("CreateDoneFragment", convert(map, tagInfos));
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -331,4 +357,5 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 
 		return data.toString();
 	}
+
 }

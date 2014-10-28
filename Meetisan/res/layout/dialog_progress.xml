@@ -9,12 +9,15 @@
     android:minHeight="60dp"
     android:minWidth="180dp"
     android:orientation="vertical"
-    android:padding="15dp" >
+    android:paddingTop="25dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp" >
 
     <ProgressBar
         android:id="@+id/progressbar"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:indeterminateDrawable="@drawable/anim_progress" />
 
     <TextView

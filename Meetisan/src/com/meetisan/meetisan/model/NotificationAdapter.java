@@ -82,6 +82,9 @@ public class NotificationAdapter extends BaseAdapter {
 		case NotificationInfo.TYPE_MEETING_INVITE_REFUSE:
 			holder.icon.setImageResource(R.drawable.icon_person_join_refuse);
 			break;
+		case NotificationInfo.TYPE_MEETING_CANCEL:
+			holder.icon.setImageResource(R.drawable.icon_meeting_invitation);
+			break;
 		}
 
 		return convertView;

@@ -17,7 +17,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
 
 import com.meetisan.meetisan.database.UserInfoKeeper;
@@ -29,6 +28,7 @@ import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog.DialogStyle;
 
 public class LoginActivity extends Activity implements OnClickListener {
 	// private static final String TAG = LoginActivity.class.getSimpleName();
@@ -101,8 +101,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 		if (DebugUtils.IS_DEBUG) {
 			email = "719236409@qq.com";
 			pwd = "1234567";
-			// email = "1415574892@qq.com";
-			// pwd = "gygy";
+			email = "1415574892@qq.com";
+			pwd = "gygy";
+			// email = "hua.fan@unsw.edu.au";
+			// pwd = "1234567";
 		}
 
 		if (TextUtils.isEmpty(email)) {
@@ -129,7 +131,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		HttpRequest request = new HttpRequest();
 
 		if (mProgressDialog == null) {
-			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.logging_in);
 		} else {
 			if (mProgressDialog.isShowing()) {
 				mProgressDialog.dismiss();
@@ -172,7 +174,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 			@Override
 			public void onFailure(String url, int errorNo, String errorMsg) {
 				mProgressDialog.dismiss();
-				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				CustomizedProgressDialog mErrorDialog = new CustomizedProgressDialog(LoginActivity.this,
+						R.string.error_incorrect_email_or_pwd, DialogStyle.ERROR);
+				mErrorDialog.show();
 			}
 		});
 

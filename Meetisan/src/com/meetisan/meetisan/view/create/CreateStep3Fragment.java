@@ -16,12 +16,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.GoogleMapActivity;
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.utils.DebugUtils;
 import com.meetisan.meetisan.widget.LabelWithIcon;
 
 /**
@@ -48,6 +52,7 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 
 	private RadioGroup mMaximumNumber;
 	private RadioGroup mSetTime;
+	private RadioButton mThemChooseBtn;
 	private RelativeLayout mAddLayout;
 	private LinearLayout mTime1Layout, mTime2Layout, mTime3Layout;
 	private TextView mStartTime1Txt, mStartTime2Txt, mStartTime3Txt;
@@ -95,8 +100,36 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_create_step3, container, false);
-		mMaximumNumber = (RadioGroup) view.findViewById(R.id.rg_create_maximum_number);
 		mSetTime = (RadioGroup) view.findViewById(R.id.rg_create_set_time);
+		mSetTime.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if (checkedId == R.id.rb_create_set_time_by_him_her) {
+					if (!mTime3Layout.isShown()) {
+						mAddLayout.setVisibility(View.VISIBLE);
+					}
+				} else {
+					mAddLayout.setVisibility(View.GONE);
+					mTime2Layout.setVisibility(View.GONE);
+					mTime3Layout.setVisibility(View.GONE);
+				}
+			}
+		});
+		mThemChooseBtn = (RadioButton) view.findViewById(R.id.rb_create_set_time_by_him_her);
+		mMaximumNumber = (RadioGroup) view.findViewById(R.id.rg_create_maximum_number);
+		mMaximumNumber.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if (checkedId == R.id.rb_create_maximum_number_single) {
+					mThemChooseBtn.setVisibility(View.VISIBLE);
+				} else {
+					mThemChooseBtn.setVisibility(View.GONE);
+					mSetTime.check(R.id.rb_create_set_time_by_me);
+				}
+			}
+		});
 
 		mAddLayout = (RelativeLayout) view.findViewById(R.id.layout_add_option);
 		mAddLayout.setOnClickListener(this);
@@ -191,8 +224,14 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 				: 2);
 		data.put("Lon", String.valueOf(mLongitude));
 		data.put("Lat", String.valueOf(mLatitude));
+		if (DebugUtils.IS_DEBUG) {
+			float lon = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_LON, 0.0f);
+			float lat = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_LAT, 0.0f);
+			data.put("Lon", String.valueOf(lon)); // for test
+			data.put("Lat", String.valueOf(lat)); // for test
+		}
 		data.put("Address", address);
-		data.put("TimeSetType", (mSetTime.getCheckedRadioButtonId() == R.id.rb_create_set_time_by_me) ? 1 : 0);
+		data.put("TimeSetType", (mSetTime.getCheckedRadioButtonId() == R.id.rb_create_set_time_by_me) ? 1 : 2);
 
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -200,12 +239,17 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 		String start1 = formatter.format(calendar.getTime());
 		start1 = start1.replace(" ", "T");
 		data.put("StartTime1", start1);
-		data.put("DetermineStartTime", start1);
 		calendar.setTimeInMillis(endTime1);
 		String end1 = formatter.format(calendar.getTime());
 		end1 = end1.replace(" ", "T");
 		data.put("EndTime1", end1);
-		data.put("DetermineEndTime", end1);
+		if (mSetTime.getCheckedRadioButtonId() == R.id.rb_create_set_time_by_me) {
+			data.put("DetermineStartTime", start1);
+			data.put("DetermineEndTime", end1);
+		} else {
+			data.put("DetermineStartTime", null);
+			data.put("DetermineEndTime", null);
+		}
 
 		if (startTime2 > 0 && endTime2 > 0) {
 			calendar.setTimeInMillis(startTime2);

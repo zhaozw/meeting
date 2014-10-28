@@ -1,5 +1,6 @@
-package com.meetisan.meetisan.model;
+package com.meetisan.meetisan.view.create;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -7,33 +8,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.model.PeopleInfo;
+import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CircleImageView;
 
-public class PeopleAdapter extends BaseAdapter {
+public class SelectPeopleAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
-	private List<PeopleInfo> peopleData;
+	private List<PeopleInfo> peopleData = new ArrayList<PeopleInfo>();
 	private HttpBitmap httpBitmap;
 	private boolean showStatus = false;
+	private List<PeopleInfo> mSelectList = new ArrayList<PeopleInfo>();
 
-	public PeopleAdapter(Context mContext, List<PeopleInfo> peopleData) {
+	public SelectPeopleAdapter(Context mContext, List<PeopleInfo> peopleData) {
 		inflater = LayoutInflater.from(mContext);
 		this.peopleData = peopleData;
 		this.showStatus = false;
 		httpBitmap = new HttpBitmap(mContext);
+		initSelectList();
 	}
 
-	public PeopleAdapter(Context mContext, List<PeopleInfo> peopleData, boolean showStatus) {
+	public SelectPeopleAdapter(Context mContext, List<PeopleInfo> peopleData, boolean showStatus) {
 		inflater = LayoutInflater.from(mContext);
 		this.peopleData = peopleData;
 		this.showStatus = showStatus;
 		httpBitmap = new HttpBitmap(mContext);
+		initSelectList();
+	}
+
+	private void initSelectList() {
+		mSelectList.clear();
 	}
 
 	@Override
@@ -56,7 +67,7 @@ public class PeopleAdapter extends BaseAdapter {
 
 		final ViewHolder holder;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.item_listview_meet_people, parent, false);
+			convertView = inflater.inflate(R.layout.item_listview_select_people, parent, false);
 			// convertView = View.inflate(mContext,
 			// R.layout.item_listview_meet_people, null);
 			holder = new ViewHolder();
@@ -68,6 +79,7 @@ public class PeopleAdapter extends BaseAdapter {
 			holder.mTagOneTxt = (TextView) convertView.findViewById(R.id.txt_tag_one);
 			holder.mTagTwoTxt = (TextView) convertView.findViewById(R.id.txt_tag_two);
 			holder.mTagThreeTxt = (TextView) convertView.findViewById(R.id.txt_tag_three);
+			holder.checkBox = (CheckBox)convertView.findViewById(R.id.cb_select);
 
 			convertView.setTag(holder);
 		} else {
@@ -119,13 +131,31 @@ public class PeopleAdapter extends BaseAdapter {
 			holder.mTagThreeTxt.setText(tagsList.get(2).getTitle());
 			holder.mTagThreeTxt.setVisibility(View.VISIBLE);
 		}
+		holder.checkBox.setChecked(mSelectList.contains(mPeopleInfo));
 
 		return convertView;
+	}
+
+	public void toggleSelect(int position) {
+		PeopleInfo info = peopleData.get(position);
+
+		if (mSelectList.contains(info)) {
+			mSelectList.remove(info);
+		} else {
+			mSelectList.add(info);
+		}
+
+		notifyDataSetChanged();
+	}
+
+	public List<PeopleInfo> getSelectList() {
+		return mSelectList;
 	}
 
 	static class ViewHolder {
 		CircleImageView mCircleImage;
 		ImageView mInvitationImage;
+		CheckBox checkBox;
 		TextView mNameTxt;
 		TextView mCollegeTxt;
 		TextView mDistanceTxt;

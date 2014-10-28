@@ -23,7 +23,8 @@ public class HttpBitmap {
 				@Override
 				public void loadFailDisplay(View imageView, Bitmap bitmap) {
 					// TODO Auto-generated method stub
-					((ImageView) imageView).setImageResource(R.drawable.icon_portrait_load_failed);
+					// ((ImageView)
+					// imageView).setImageResource(R.drawable.icon_portrait_load_failed);
 				}
 
 				@Override
