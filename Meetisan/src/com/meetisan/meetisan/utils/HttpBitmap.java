@@ -8,8 +8,6 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.meetisan.meetisan.R;
-
 public class HttpBitmap {
 	private static FinalBitmap finalBitmap;
 

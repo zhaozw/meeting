@@ -105,7 +105,7 @@ public class CreateStep1Fragment extends Fragment {
 	public Map<String, Object> getData() {
 		Map<String, Object> data = new TreeMap<String, Object>();
 		data.put(ServerKeys.KEY_TITLE, mMeetingTitle.getText().toString());
-		data.put(ServerKeys.KEY_IS_PRIVATE, mPrivateMeeting.isChecked() ? 0 : 1);
+		data.put(ServerKeys.KEY_IS_PRIVATE, mPrivateMeeting.isChecked() ? 1 : 0);
 		long mUserId = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_ID, -1L);
 		data.put(ServerKeys.KEY_CREATE_USER_ID, mUserId);
 		return data;

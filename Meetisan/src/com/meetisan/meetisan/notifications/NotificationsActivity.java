@@ -33,6 +33,8 @@ import com.meetisan.meetisan.view.dashboard.PersonProfileActivity;
 import com.meetisan.meetisan.view.meet.MeetProfileActivity;
 import com.meetisan.meetisan.view.tags.TagProfileActivity;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.DeleteTouchListener;
+import com.meetisan.meetisan.widget.DeleteTouchListener.OnDeleteCallback;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
@@ -41,6 +43,7 @@ import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 public class NotificationsActivity extends Activity implements OnItemClickListener {
 	private static final String TAG = NotificationsActivity.class.getSimpleName();
 	private PullToRefreshListView mPullView;
+	private DeleteTouchListener mNotificationTouchListener;
 	private ListView mListView;
 	private List<NotificationInfo> mData = new ArrayList<NotificationInfo>();
 	private NotificationAdapter mAdapter;
@@ -110,17 +113,34 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		});
 		mListView = mPullView.getRefreshableView();
 		registerForContextMenu(mListView);
+
 		mAdapter = new NotificationAdapter(this, mData);
 		mListView.setAdapter(mAdapter);
 		mAdapter.notifyDataSetChanged();
 		mPullView.setVisibility(View.VISIBLE);
 		mListView.setOnItemClickListener(this);
 		mPullView.setVisibility(View.VISIBLE);
+
+		mNotificationTouchListener = new DeleteTouchListener(mListView, new OnDeleteCallback() {
+
+			@Override
+			public void onDelete(ListView listView, int position) {
+				position = position - 1; // ListView Header
+				if (position < mListView.getCount()) {
+					deleteNotificationFromServer(mData.get(position).getId(), position, true);
+				}
+			}
+		});
+		mListView.setOnTouchListener(mNotificationTouchListener);
+		mListView.setOnScrollListener(mNotificationTouchListener.makeScrollListener());
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;
 
 	private void getNotificationsFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
+		if (mNotificationTouchListener != null) {
+			mNotificationTouchListener.hideDeleteLayout();// to hide delete layout
+		}
 		HttpRequest request = new HttpRequest();
 
 		if (isNeedsDialog) {
@@ -205,6 +225,13 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		}
 	}
 
+	private void updateDeleteResult(boolean result, int position) {
+		if (result && mData.size() > position) {
+			mData.remove(position);
+		}
+		mAdapter.notifyDataSetChanged();
+	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		NotificationInfo info = mData.get(position - 1);
@@ -264,5 +291,38 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		data.put(ServerKeys.KEY_ID, String.valueOf(notificationId));
 		data.put(ServerKeys.KEY_STATUS, String.valueOf(status));
 		request.post(ServerKeys.FULL_URL_UPDATE_NOTIFICATION_STATUS, data);
+	}
+
+	/**
+	 * delete user Tag from server
+	 * 
+	 * @param notificationId
+	 * @param position
+	 * @param isNeedsDialog
+	 */
+	private void deleteNotificationFromServer(long notificationId, final int position, final boolean isNeedsDialog) {
+
+		HttpRequest request = new HttpRequest();
+
+		final CustomizedProgressDialog mProgressDialog = new CustomizedProgressDialog(this, R.string.waiting);
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+				updateDeleteResult(true, position);
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				updateDeleteResult(false, position);
+			}
+		});
+
+		request.delete(ServerKeys.FULL_URL_DELETE_NOTIFICATION + "/" + notificationId);
+		mProgressDialog.show();
 	}
 }

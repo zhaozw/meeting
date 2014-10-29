@@ -6,6 +6,7 @@
     <string name="loading">Loading&#8230;</string>
     <string name="loading_complete">Loading Complete</string>
     <string name="please_waiting">Loading &#8230;</string>
+    <string name="waiting">Waiting &#8230;</string>
     <string name="logging_in">Logging in&#8230;</string>
     <string name="searching">Searching&#8230;</string>
     <string name="search">Search</string>

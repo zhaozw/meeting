@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
@@ -47,6 +48,7 @@ public class NotificationAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_listview_notifications, parent, false);
 			holder = new ViewHolder();
+			holder.mRightLayout = (RelativeLayout) convertView.findViewById(R.id.item_right);
 			holder.icon = (CircleImageView) convertView.findViewById(R.id.iv_portrait);
 			holder.news = (ImageView) convertView.findViewById(R.id.iv_news);
 			holder.name = (TextView) convertView.findViewById(R.id.txt_name);
@@ -91,6 +93,7 @@ public class NotificationAdapter extends BaseAdapter {
 	}
 
 	static class ViewHolder {
+		RelativeLayout mRightLayout;
 		CircleImageView icon;
 		ImageView news;
 		TextView name;

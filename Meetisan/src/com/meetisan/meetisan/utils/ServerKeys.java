@@ -27,7 +27,7 @@ public class ServerKeys {
 	private static final String API_TUSER_TAG = "/api/tUserTag/";
 	private static final String API_TMEET = "/api/tmeeting/";
 	private static final String API_TMEET_ENDORSE = "/api/tMeeting/";
-	private static final String API_TNOTIFICATION = "/api/tnotification/";
+	private static final String API_TNOTIFICATION = "/api/tNotification/";
 	private static final String API_TMEET_MEMBER = "/api/tmeetingmember/";
 	private static final String API_TMEET_MEMBER_ENDORSE = "/api/tMeetingMember/";
 	private static final String API_TTAG_CATEGORY = "/api/tTagCategory/";
@@ -155,7 +155,8 @@ public class ServerKeys {
 	/** http://{域名}/api/tNotification/UpdateStatus */
 	public static final String FULL_URL_UPDATE_NOTIFICATION_STATUS = SERVER_ADDRESS + API_TNOTIFICATION
 			+ "UpdateStatus";
-
+	/** http://{域名}/api/tNotification/Delete/{Notification的标识ID} */
+	public static final String FULL_URL_DELETE_NOTIFICATION = SERVER_ADDRESS + API_TNOTIFICATION + "Delete";
 	/**
 	 * http://{域名}/api/tMeeting/GetEndorseMeeting/{当前用户ID}/?pageindex={页码}&
 	 * pagesize={每页数量}
