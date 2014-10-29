@@ -72,17 +72,19 @@ public class UpcomingMeetingAdapter extends BaseAdapter {
 		}
 
 		holder.mTitleTxt.setText(mMeetingInfo.getTitle());
-		holder.mTimeTxt.setText(Util.convertDateTime(mMeetingInfo.getDeterminStartTime()));
+		String time = Util.convertDateTime(mMeetingInfo.getDeterminStartTime());
+		if (time != null) {
+			holder.mTimeTxt.setText(time.replaceAll("-", "/"));
+		}
 
 		int distance = (int) mMeetingInfo.getDistance();
 		if (distance >= 1000) {
 			holder.mDistanceTxt.setText((int) distance / 1000 + "km");
-		} else {
+		} else if (distance > 0) {
 			holder.mDistanceTxt.setText((int) distance + "m");
 		}
-		
-		holder.mStatusTxt.setText(mMeetingInfo.getCreateUserId() == mUserId ? "Created"
-				: "Attended");
+
+		holder.mStatusTxt.setText(mMeetingInfo.getCreateUserId() == mUserId ? "Creater" : "");
 
 		List<TagInfo> tagsList = mMeetingInfo.getTags();
 		int tagsCount = tagsList.size();

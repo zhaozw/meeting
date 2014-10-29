@@ -222,14 +222,16 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 		Map<String, Object> data = new TreeMap<String, Object>();
 		data.put("MaxPerson", (mMaximumNumber.getCheckedRadioButtonId() == R.id.rb_create_maximum_number_single) ? 1
 				: 2);
-		data.put("Lon", String.valueOf(mLongitude));
-		data.put("Lat", String.valueOf(mLatitude));
-		if (DebugUtils.IS_DEBUG) {
-			float lon = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_LON, 0.0f);
-			float lat = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_LAT, 0.0f);
-			data.put("Lon", String.valueOf(lon)); // for test
-			data.put("Lat", String.valueOf(lat)); // for test
-		}
+		data.put("Lon", mLongitude);
+		data.put("Lat", mLatitude);
+		// if (DebugUtils.IS_DEBUG) {
+		// float lon = UserInfoKeeper.readUserInfo(getActivity(),
+		// UserInfoKeeper.KEY_USER_LON, 0.0f);
+		// float lat = UserInfoKeeper.readUserInfo(getActivity(),
+		// UserInfoKeeper.KEY_USER_LAT, 0.0f);
+		// data.put("Lon", String.valueOf(lon)); // for test
+		// data.put("Lat", String.valueOf(lat)); // for test
+		// }
 		data.put("Address", address);
 		data.put("TimeSetType", (mSetTime.getCheckedRadioButtonId() == R.id.rb_create_set_time_by_me) ? 1 : 2);
 

@@ -238,7 +238,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 			int maxPerson = (Integer) data.get("MaxPerson");
 			boolean isMultiModel = maxPerson == 1 ? false : true;
 
-			Intent intent = new Intent(getActivity().getApplicationContext(), SelectPersonActivity.class);
+			Intent intent = new Intent(getActivity().getApplicationContext(), SelectPeopleActivity.class);
 			intent.putExtra("isMulitSelect", isMultiModel);
 			startActivityForResult(intent, REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE);
 			break;

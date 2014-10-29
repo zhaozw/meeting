@@ -95,7 +95,7 @@
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
         <activity
-            android:name=".view.create.SelectPersonActivity"
+            android:name=".view.create.SelectPeopleActivity"
             android:label="@string/title_create"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>

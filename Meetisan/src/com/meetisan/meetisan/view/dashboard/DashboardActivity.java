@@ -260,7 +260,7 @@ public class DashboardActivity extends Activity implements OnClickListener {
 						JSONObject meetingJson = meetJson.getJSONObject(ServerKeys.KEY_MEETING);
 						meetingInfo.setId(meetingJson.getLong(ServerKeys.KEY_ID));
 						meetingInfo.setCreateUserId(meetingJson.getLong(ServerKeys.KEY_CREATE_USER_ID));
-						// meetingInfo.setStartTime(meetingJson.getString(ServerKeys.KEY_START_TIME));
+						meetingInfo.setDeterminStartTime(meetingJson.getString(ServerKeys.KEY_DETERMIN_START_TIME));
 						if (!meetingJson.isNull(ServerKeys.KEY_TITLE)) {
 							meetingInfo.setTitle(meetingJson.getString(ServerKeys.KEY_TITLE));
 						}

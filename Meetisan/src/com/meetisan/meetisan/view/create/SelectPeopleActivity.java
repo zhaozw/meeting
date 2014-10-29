@@ -35,8 +35,8 @@ import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshListView;
 
-public class SelectPersonActivity extends Activity {
-	private static final String TAG = SelectPersonActivity.class.getSimpleName();
+public class SelectPeopleActivity extends Activity {
+	private static final String TAG = SelectPeopleActivity.class.getSimpleName();
 
 	private PullToRefreshListView mPullPeopleView;
 	private ListView mPeopleListView;
@@ -119,11 +119,16 @@ public class SelectPersonActivity extends Activity {
 				// TODO Auto-generated method stub
 				if (!mIsMulitSelect) {
 					Log.d(TAG, "----------On Item Click-------");
+					JSONArray nameArray = new JSONArray();
+					JSONArray idArray = new JSONArray();
+					nameArray.put(mPeopleData.get(arg2 - 1).getName());
+					idArray.put(mPeopleData.get(arg2 - 1).getId());
+
 					Intent inviteIntent = new Intent();
-					inviteIntent.putExtra("inviteName", mPeopleData.get(arg2 - 1).getName());
-					inviteIntent.putExtra("inviteID", mPeopleData.get(arg2 - 1).getId());
+					inviteIntent.putExtra("inviteName", nameArray.toString());
+					inviteIntent.putExtra("inviteID", idArray.toString());
 					setResult(RESULT_OK, inviteIntent);
-					SelectPersonActivity.this.finish();
+					SelectPeopleActivity.this.finish();
 					return;
 				} else {
 					if (mPeopleAdapter != null) {
