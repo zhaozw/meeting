@@ -37,6 +37,7 @@ import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog.DialogStyle;
 import com.meetisan.meetisan.widget.LabelWithIcon;
 
 public class MeetProfileActivity extends Activity implements OnClickListener {
@@ -45,7 +46,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	private ImageButton mConnectionView;
 	private CircleImageView mLogoView;
 	private LabelWithIcon mLocationBtn;
-	private Button mMeetBtn, mRejectBtn;
+	private Button mMeetBtn, mMeetTimeBtn, mCancelMeetBtn, mRejectBtn;
 	private TextView mTitleTxt, mDescriptionTxt, mFirstTagTxt, mSecondTagTxt, mThirdTagTxt, mNoTagTxt, mCannotJoinTxt;
 	private TextView mStartTime1Txt, mEndTime1Txt, mStartTime2Txt, mEndTime2Txt, mStartTime3Txt, mEndTime3Txt,
 			mReportTxt;
@@ -56,6 +57,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	private MeetingInfo mMeetInfo = new MeetingInfo();
 
 	private HttpBitmap httpBitmap;
+	private int mSelectTimeIndex = -1;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,7 +75,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		}
 
 		if (mMeetingID < 0 || mUserID < 0) {
-			ToastHelper.showToast(R.string.app_occurred_exception);
+			// ToastHelper.showToast(R.string.app_occurred_exception);
 			this.finish();
 		}
 
@@ -102,6 +104,10 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		mMeetLayout = (LinearLayout) findViewById(R.id.layout_meet_and_report);
 		mMeetBtn = (Button) findViewById(R.id.btn_meet);
 		mMeetBtn.setOnClickListener(this);
+		mMeetTimeBtn = (Button) findViewById(R.id.btn_meet_set_time);
+		mMeetTimeBtn.setOnClickListener(this);
+		mCancelMeetBtn = (Button) findViewById(R.id.btn_cancel_meet);
+		mCancelMeetBtn.setOnClickListener(this);
 		mRejectBtn = (Button) findViewById(R.id.btn_meet_reject);
 		mRejectBtn.setOnClickListener(this);
 		mCannotJoinTxt = (TextView) findViewById(R.id.txt_cannot_join);
@@ -118,8 +124,11 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		mStartTime3Txt = (TextView) findViewById(R.id.txt_time_start_3);
 		mEndTime3Txt = (TextView) findViewById(R.id.txt_time_end_3);
 		mTime2Layout = (LinearLayout) findViewById(R.id.layout_time_2);
+		mTime2Layout.setOnClickListener(new TimeLayoutClickListener());
 		mTime3Layout = (LinearLayout) findViewById(R.id.layout_time_3);
+		mTime3Layout.setOnClickListener(new TimeLayoutClickListener());
 		mTime1Layout = (LinearLayout) findViewById(R.id.layout_time_1);
+		mTime1Layout.setOnClickListener(new TimeLayoutClickListener());
 
 		mLocationBtn = (LabelWithIcon) findViewById(R.id.btn_location);
 		mLocationBtn.setOnClickListener(this);
@@ -162,13 +171,33 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 			break;
 		case R.id.btn_meet:
-			attendMeeting();
+			if (mMeetInfo.getJoinStatus() == 4) {
+				doRejectOrAgreeMeeting(false);
+			} else {
+				attendMeeting();
+			}
+			break;
+		case R.id.btn_meet_set_time:
+			showSetMeetTimeDialog();
+			break;
+		case R.id.btn_cancel_meet:
+			if (mMeetInfo.getJoinStatus() == 2) {
+				DialogUtils.showDialog(MeetProfileActivity.this, "Warning", "Are you sure cancel this meeting?", "Yes",
+						"No", new OnDialogClickListener() {
+							@Override
+							public void onClick(boolean isPositiveBtn) {
+								if (isPositiveBtn) {
+									doCancelMeeting();
+								}
+							}
+						});
+			} else if (mMeetInfo.getJoinStatus() == 0) {
+				doDeleteMeeting();
+			}
 			break;
 		case R.id.btn_meet_reject:
 			if (mMeetInfo.getStatus() == 4) {
-				// doRejectMeeting();
-			} else if (mMeetInfo.getStatus() == 0 || mMeetInfo.getStatus() == 2) {
-				doCancelMeeting();
+				doRejectOrAgreeMeeting(true);
 			}
 			break;
 		case R.id.txt_report:
@@ -183,6 +212,10 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		default:
 			break;
 		}
+	}
+
+	private void showSetMeetTimeDialog() {
+		DialogUtils.showDialog(this, "Wait!", "Please select one of the Meeting Time Options", "OK", null, null);
 	}
 
 	private void updateMeetProfileUI() {
@@ -207,6 +240,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					mEndTime1Txt.setText(Util.formatOutput(null));
 				}
 			}
+			mTime1Layout.setBackgroundResource(android.R.color.white);
 			mTime1Layout.setVisibility(View.VISIBLE);
 		} else {
 			if (mMeetInfo.getStartTime1() != null && mMeetInfo.getEndTime1() != null) {
@@ -219,6 +253,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					mEndTime1Txt.setText(Util.formatOutput(null));
 				}
 			}
+			mTime1Layout.setBackgroundResource(android.R.color.white);
 			mTime1Layout.setVisibility(View.VISIBLE);
 
 			if (mMeetInfo.getStartTime2() != null && mMeetInfo.getEndTime2() != null) {
@@ -230,6 +265,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					mStartTime2Txt.setText(Util.formatOutput(null));
 					mEndTime2Txt.setText(Util.formatOutput(null));
 				}
+				mTime2Layout.setBackgroundResource(android.R.color.white);
 				mTime2Layout.setVisibility(View.VISIBLE);
 			} else {
 				mTime2Layout.setVisibility(View.GONE);
@@ -244,6 +280,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 					mStartTime3Txt.setText(Util.formatOutput(null));
 					mEndTime3Txt.setText(Util.formatOutput(null));
 				}
+				mTime3Layout.setBackgroundResource(android.R.color.white);
 				mTime3Layout.setVisibility(View.VISIBLE);
 			} else {
 				mTime3Layout.setVisibility(View.GONE);
@@ -252,35 +289,89 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		// mTime3Txt.setText(Util.convertTime2FormatMeetTime(mMeetInfo.getStartTime3(),
 		// mMeetInfo.getEndTime3()));
 		mLocationBtn.setText(Util.formatOutput(mMeetInfo.getAddress()));
-		// 0:已参加; 1：未参加; 2：当前用户为meeting创建人; 3: 拒绝邀请 ; 4: 收到邀请;
-		// 已过时
-		if (mMeetInfo.getDeterminEndTime() != null && Util.isMeetOverByTime(mMeetInfo.getDeterminEndTime())) {
-			mMeetLayout.setVisibility(View.GONE);
+
+		// // 0:已参加; 1：未参加; 2：当前用户为meeting创建人; 3: 拒绝邀请 ; 4: 收到邀请;
+		// // 已过时
+		// if (mMeetInfo.getDeterminEndTime() != null &&
+		// Util.isMeetOverByTime(mMeetInfo.getDeterminEndTime())) {
+		// mMeetLayout.setVisibility(View.GONE);
+		// mRejectBtn.setVisibility(View.GONE);
+		// mMeetBtn.setVisibility(View.GONE);
+		// mReportTxt.setVisibility(View.GONE);
+		// mCannotJoinTxt.setVisibility(View.VISIBLE);
+		// }
+		// CanJoin当前用户是否可以加入meeting,false:不可以;true:可以;
+		// Status标识meeting是否被后台管理员禁用的标识, 0:正常, 1:被禁用, 2:取消
+		// 使用CanJoin字段，另外status为1、2也不能参加
+		if (mMeetInfo.getJoinStatus() == 2) {
+			// 2:当前用户为meeting创建人;
+			mCancelMeetBtn.setVisibility(View.VISIBLE);
 			mRejectBtn.setVisibility(View.GONE);
 			mMeetBtn.setVisibility(View.GONE);
+			mMeetTimeBtn.setVisibility(View.GONE);
+			mReportTxt.setVisibility(View.GONE);
+			mCannotJoinTxt.setVisibility(View.GONE);
+		} else if (mMeetInfo.getStatus() == 1 || mMeetInfo.getStatus() == 2) {
+			// 该用户不可参加Meeting
+			mMeetLayout.setVisibility(View.GONE);
+			mCancelMeetBtn.setVisibility(View.GONE);
+			mRejectBtn.setVisibility(View.GONE);
+			mMeetBtn.setVisibility(View.GONE);
+			mMeetTimeBtn.setVisibility(View.GONE);
 			mReportTxt.setVisibility(View.GONE);
 			mCannotJoinTxt.setVisibility(View.VISIBLE);
 		} else {
+			// 可以参加
 			mCannotJoinTxt.setVisibility(View.GONE);
+			mMeetTimeBtn.setVisibility(View.GONE);
 
-			if (mMeetInfo.getJoinStatus() == 4) {
-				// 4: 收到邀请
-				mRejectBtn.setText("Reject");
-				mRejectBtn.setVisibility(View.VISIBLE);
-				mMeetBtn.setVisibility(View.VISIBLE);
-				mReportTxt.setVisibility(View.GONE);
-			} else if (mMeetInfo.getJoinStatus() == 0 || mMeetInfo.getJoinStatus() == 2) {
-				// 0:已参加;2：当前用户为meeting创建人;
-				mRejectBtn.setText(R.string.cancel_meeting);
-				mRejectBtn.setVisibility(View.VISIBLE);
-				mMeetBtn.setVisibility(View.GONE);
-				mReportTxt.setVisibility(View.GONE);
-			} else {
-				// 1：未参加;3: 拒绝邀请 ;
-				mMeetBtn.setText(R.string.meet);
+			if (mMeetInfo.getJoinStatus() == 0) {
+				// 0:已参加;
+				mCancelMeetBtn.setVisibility(View.VISIBLE);
 				mRejectBtn.setVisibility(View.GONE);
-				mMeetBtn.setVisibility(View.VISIBLE);
+				mMeetBtn.setVisibility(View.GONE);
 				mReportTxt.setVisibility(View.VISIBLE);
+			} else if (mMeetInfo.isCanJoin()) {
+				if (mMeetInfo.getJoinStatus() == 4) {
+					// 4: 收到邀请
+					mRejectBtn.setText("Reject");
+					mMeetBtn.setText("Agree to Meet");
+					mRejectBtn.setVisibility(View.VISIBLE);
+					mMeetBtn.setVisibility(View.VISIBLE);
+					mCancelMeetBtn.setVisibility(View.GONE);
+					mReportTxt.setVisibility(View.GONE);
+				} else if (mMeetInfo.getJoinStatus() == 2) {
+					// 2:当前用户为meeting创建人;
+					mCancelMeetBtn.setVisibility(View.VISIBLE);
+					mRejectBtn.setVisibility(View.GONE);
+					mMeetBtn.setVisibility(View.GONE);
+					mReportTxt.setVisibility(View.GONE);
+				} else if (mMeetInfo.getJoinStatus() == 1 || mMeetInfo.getJoinStatus() == 3) {
+					// 1：未参加; 3: 拒绝邀请 ;
+					mMeetBtn.setVisibility(View.VISIBLE);
+					mReportTxt.setVisibility(View.VISIBLE);
+					mRejectBtn.setVisibility(View.GONE);
+					mCancelMeetBtn.setVisibility(View.GONE);
+				}
+			} else {
+				// 该用户不可参加Meeting
+				if (mMeetInfo.getJoinStatus() == 4) {
+					// 4: 收到邀请，但没有选择Meeting时间
+					mRejectBtn.setText("Reject");
+					mMeetTimeBtn.setVisibility(View.VISIBLE);
+					mRejectBtn.setVisibility(View.VISIBLE);
+					mMeetBtn.setVisibility(View.GONE);
+					mCancelMeetBtn.setVisibility(View.GONE);
+					mReportTxt.setVisibility(View.GONE);
+				} else {
+					mMeetLayout.setVisibility(View.GONE);
+					mCancelMeetBtn.setVisibility(View.GONE);
+					mRejectBtn.setVisibility(View.GONE);
+					mMeetBtn.setVisibility(View.GONE);
+					mMeetTimeBtn.setVisibility(View.GONE);
+					mReportTxt.setVisibility(View.GONE);
+					mCannotJoinTxt.setVisibility(View.VISIBLE);
+				}
 			}
 		}
 
@@ -299,7 +390,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			mThirdTagTxt.setVisibility(View.VISIBLE);
 		}
 		if (tagsCount <= 0) {
-			mNoTagTxt.setText("Don\'t have any Tag !");
+			mNoTagTxt.setText("-");
 			mNoTagTxt.setVisibility(View.VISIBLE);
 			mFirstTagTxt.setVisibility(View.GONE);
 			mSecondTagTxt.setVisibility(View.GONE);
@@ -308,21 +399,52 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	}
 
 	private void attendMeeting() {
-		doAttendMeeting();
+		if (mSelectTimeIndex > 0) {
+			doSelectMeetingTime(mSelectTimeIndex);
+		} else {
+			doAttendMeeting();
+		}
 	}
 
-	private CustomizedProgressDialog mProgressDialog = null;
+	private class TimeLayoutClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			if (mMeetInfo == null || mMeetInfo.isCanJoin() || mMeetInfo.getJoinStatus() != 4) {
+				return;
+			}
+
+			if (v == mTime1Layout) {
+				mSelectTimeIndex = 1;
+				mTime1Layout.setBackgroundResource(R.color.gray);
+			} else {
+				mTime1Layout.setBackgroundResource(android.R.color.white);
+			}
+
+			if (v == mTime2Layout) {
+				mSelectTimeIndex = 2;
+				mTime2Layout.setBackgroundResource(R.color.gray);
+			} else {
+				mTime2Layout.setBackgroundResource(android.R.color.white);
+			}
+
+			if (v == mTime3Layout) {
+				mSelectTimeIndex = 3;
+				mTime3Layout.setBackgroundResource(R.color.gray);
+			} else {
+				mTime3Layout.setBackgroundResource(android.R.color.white);
+			}
+
+			mMeetTimeBtn.setVisibility(View.GONE);
+			mMeetBtn.setText("Agree to Meet");
+			mMeetBtn.setVisibility(View.VISIBLE);
+		}
+
+	}
 
 	private void getMeetProfileFromServer() {
+		final CustomizedProgressDialog mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
 		HttpRequest request = new HttpRequest();
-
-		if (mProgressDialog == null) {
-			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
-		} else {
-			if (mProgressDialog.isShowing()) {
-				mProgressDialog.dismiss();
-			}
-		}
 
 		request.setOnHttpRequestListener(new OnHttpRequestListener() {
 
@@ -406,25 +528,55 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		mProgressDialog.show();
 	}
 
-	private void doAttendMeeting() {
+	private void doSelectMeetingTime(int mSelectTimeIndex) {
 		HttpRequest request = new HttpRequest();
 
-		if (mProgressDialog == null) {
-			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
-		} else {
-			if (mProgressDialog.isShowing()) {
-				mProgressDialog.dismiss();
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				new CustomizedProgressDialog(MeetProfileActivity.this, R.string.meet_scheduled, DialogStyle.OK).show();
+				mMeetInfo.setCanJoin(true);
+				updateMeetProfileUI();
+				doAttendMeeting();
 			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				ToastHelper.showToast(R.string.attend_meeting_failure, Toast.LENGTH_LONG);
+			}
+		});
+
+		String mBeginTime = null;
+		String mEndTime = null;
+		if (mSelectTimeIndex == 1) {
+			mBeginTime = mMeetInfo.getStartTime1();
+			mEndTime = mMeetInfo.getEndTime1();
+		} else if (mSelectTimeIndex == 2) {
+			mBeginTime = mMeetInfo.getStartTime2();
+			mEndTime = mMeetInfo.getEndTime2();
+		} else if (mSelectTimeIndex == 3) {
+			mBeginTime = mMeetInfo.getStartTime3();
+			mEndTime = mMeetInfo.getEndTime3();
 		}
+
+		request.post(ServerKeys.FULL_URL_SELECT_MEETING_TIME + "/" + mMeetingID + "?beginTime=" + mBeginTime
+				+ "&endTime=" + mEndTime, null);
+	}
+
+	private void doAttendMeeting() {
+		HttpRequest request = new HttpRequest();
+		final CustomizedProgressDialog mProgressDialog = new CustomizedProgressDialog(this, R.string.waiting);
 
 		request.setOnHttpRequestListener(new OnHttpRequestListener() {
 
 			@Override
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
+				new CustomizedProgressDialog(MeetProfileActivity.this, R.string.succeed, DialogStyle.OK).show();
+
 				mMeetInfo.setJoinStatus(0);
 				updateMeetProfileUI();
-				ToastHelper.showToast(R.string.attend_meeting_success, Toast.LENGTH_LONG);
 			}
 
 			@Override
@@ -442,30 +594,23 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		mProgressDialog.show();
 	}
 
+	/** do cancel Meeting for Meeting Creator */
 	private void doCancelMeeting() {
 		HttpRequest request = new HttpRequest();
 
-		if (mProgressDialog == null) {
-			mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
-		} else {
-			if (mProgressDialog.isShowing()) {
-				mProgressDialog.dismiss();
-			}
-		}
-
+		final CustomizedProgressDialog mProgressDialog = new CustomizedProgressDialog(this, R.string.waiting);
 		request.setOnHttpRequestListener(new OnHttpRequestListener() {
 
 			@Override
 			public void onSuccess(String url, String result) {
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						mProgressDialog.dismiss();
-						ToastHelper.showToast(R.string.cancel_attend_meeting_success, Toast.LENGTH_LONG);
-						MeetProfileActivity.this.finish();
-					}
-				});
+				mProgressDialog.dismiss();
+				DialogUtils.showDialog(MeetProfileActivity.this, null, "Cancel done", "OK", null,
+						new OnDialogClickListener() {
+							@Override
+							public void onClick(boolean isPositiveBtn) {
+								MeetProfileActivity.this.finish();
+							}
+						});
 			}
 
 			@Override
@@ -481,11 +626,87 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 				});
 			}
 		});
+		// Map<String, String> data = new HashMap<String, String>();
+		// data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
+		request.post(ServerKeys.FULL_URL_CANCEL_MEET + "/" + mMeetingID, null);
+
+		mProgressDialog.show();
+	}
+
+	private void doDeleteMeeting() {
+		HttpRequest request = new HttpRequest();
+
+		final CustomizedProgressDialog mProgressDialog = new CustomizedProgressDialog(this, R.string.waiting);
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+				new CustomizedProgressDialog(MeetProfileActivity.this, R.string.meet_canceled, DialogStyle.OK).show();
+				mMeetInfo.setJoinStatus(1);
+				mMeetInfo.setCanJoin(true);
+				updateMeetProfileUI();
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				// TODO Auto-generated method stub
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(R.string.cancel_attend_meeting_failure, Toast.LENGTH_LONG);
+			}
+		});
 		Map<String, String> data = new HashMap<String, String>();
 		data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
 		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
+		request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
 
 		mProgressDialog.show();
-		request.delete(ServerKeys.FULL_URL_CANCEL_ATTEND_MEET, data);
 	}
+
+	private void doRejectOrAgreeMeeting(final boolean isReject) {
+		HttpRequest request = new HttpRequest();
+		final CustomizedProgressDialog mProgressDialog = new CustomizedProgressDialog(this, R.string.please_waiting);
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				mProgressDialog.dismiss();
+				
+				CustomizedProgressDialog mDialog = null;
+				if (isReject) {
+					mDialog = new CustomizedProgressDialog(MeetProfileActivity.this, R.string.meet_canceled,
+							DialogStyle.OK);
+					mMeetInfo.setJoinStatus(3);
+				} else {
+					mDialog = new CustomizedProgressDialog(MeetProfileActivity.this, R.string.meet_succeed,
+							DialogStyle.OK);
+					mMeetInfo.setJoinStatus(0);
+				}
+				mDialog.show();
+				updateMeetProfileUI();
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				mProgressDialog.dismiss();
+				// CustomizedProgressDialog mDialog = new
+				// CustomizedProgressDialog(this, R.string.fa, style)
+			}
+		});
+		Map<String, String> data = new HashMap<String, String>();
+		data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
+		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
+		if (isReject) {
+			data.put(ServerKeys.KEY_STATUS, String.valueOf(2));
+		} else {
+			data.put(ServerKeys.KEY_STATUS, String.valueOf(1));
+		}
+		data.put(ServerKeys.KEY_MEETING_USER_ID, String.valueOf(mMeetInfo.getCreateUserId()));
+		data.put(ServerKeys.KEY_USER_NAME, mUserName);
+
+		mProgressDialog.show();
+		request.post(ServerKeys.FULL_URL_UPDATE_MEETING_MEMBER_STATUS, data);
+	}
+
 }

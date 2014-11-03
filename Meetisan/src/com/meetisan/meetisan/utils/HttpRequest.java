@@ -42,6 +42,7 @@ public class HttpRequest {
 		if (finalHttp == null) {
 			finalHttp = new FinalHttp();
 			finalHttp.configCookieStore(new BasicCookieStore());
+			finalHttp.configTimeout(10 * 1000);
 		}
 	}
 
@@ -132,10 +133,11 @@ public class HttpRequest {
 				for (String key : keys) {
 					params.add(new BasicNameValuePair(key, data.get(key)));
 				}
+				Log.d(LOG_CAT, "Post Url:" + url + ", params:" + params.toString());
 
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				MyHttpDelete delete = new MyHttpDelete(url);
-				delete.setEntity(new UrlEncodedFormEntity(params));
+				delete.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 				HttpResponse response = httpClient.execute(delete);
 
 				if (response.getStatusLine().getStatusCode() == 200) {
@@ -194,7 +196,6 @@ public class HttpRequest {
 		@Override
 		public void onFailure(Throwable t, int errorNo, String strMsg) {
 			super.onFailure(t, errorNo, strMsg);
-			Log.e(LOG_CAT, t.toString());
 			if (mListener != null) {
 				mListener.onFailure(myUrl, errorNo, strMsg);
 			}

@@ -92,9 +92,14 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <com.meetisan.meetisan.widget.ClearEditText
+                <TextView
                     android:id="@+id/txt_age"
-                    style="@style/ProfileEditTextStyle" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
             </LinearLayout>
 
             <LinearLayout
@@ -111,9 +116,14 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <com.meetisan.meetisan.widget.ClearEditText
+                <TextView
                     android:id="@+id/txt_gender"
-                    style="@style/ProfileEditTextStyle" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small" />
             </LinearLayout>
 
             <TextView

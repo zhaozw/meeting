@@ -78,6 +78,17 @@
         <item name="android:singleLine">true</item>
     </style>
 
+    <style name="GrayButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@drawable/selector_text_white_gray</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/gray</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">@dimen/text_size_middle</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
     <style name="RedButtonStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -153,7 +164,7 @@
         <item name="android:drawableRight">@drawable/selector_create_item_selected</item>
         <item name="android:button">@null</item>
     </style>
-    
+
     <style name="PopupItemSelected">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -181,6 +192,14 @@
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="CustomWindowTransparent">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:inAnimation">@anim/slide_in_from_bottom</item>
+        <item name="android:outAnimation">@anim/slide_out_to_bottom</item>
     </style>
 
 </resources>

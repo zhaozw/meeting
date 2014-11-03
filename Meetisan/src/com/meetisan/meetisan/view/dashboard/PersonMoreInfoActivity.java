@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,8 +29,8 @@ import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class PersonMoreInfoActivity extends Activity implements OnClickListener {
 
-	private ClearEditText mSchoolTxt, mCityTxt, mBirthdayTxt, mGenderTxt, mExperienceTxt, mEducationTxt, mSkillsTxt;
-	private TextView mSaveTxt;
+	private ClearEditText mSchoolTxt, mCityTxt, mExperienceTxt, mEducationTxt, mSkillsTxt;
+	private TextView mSaveTxt, mBirthdayTxt, mGenderTxt;
 	private PeopleInfo mUserInfo = new PeopleInfo();
 	private long userId = -1;
 	private long curUserId = -1;
@@ -72,8 +73,11 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		// mNameTxt = (EditText) findViewById(R.id.txt_name);
 		mSchoolTxt = (ClearEditText) findViewById(R.id.txt_school);
 		mCityTxt = (ClearEditText) findViewById(R.id.txt_city);
-		mBirthdayTxt = (ClearEditText) findViewById(R.id.txt_age);
-		mGenderTxt = (ClearEditText) findViewById(R.id.txt_gender);
+		mBirthdayTxt = (TextView) findViewById(R.id.txt_age);
+		// mBirthdayTxt.setEnabled(false);
+		mBirthdayTxt.setOnClickListener(this);
+		mGenderTxt = (TextView) findViewById(R.id.txt_gender);
+		mGenderTxt.setOnClickListener(this);
 		mExperienceTxt = (ClearEditText) findViewById(R.id.txt_experience);
 		mEducationTxt = (ClearEditText) findViewById(R.id.txt_education);
 		mSkillsTxt = (ClearEditText) findViewById(R.id.txt_skills);
@@ -120,6 +124,33 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 				PersonMoreInfoActivity.this.finish();
 			}
 			break;
+		case R.id.txt_age:
+			Intent intent = new Intent(this, SettingsBirthdayActivity.class);
+			startActivityForResult(intent, SettingsBirthdayActivity.REQUEST_CODE);
+			break;
+		case R.id.txt_gender:
+			Intent intent1 = new Intent(this, SettingsGenderActivity.class);
+			startActivityForResult(intent1, SettingsGenderActivity.REQUEST_CODE);
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (data == null) {
+			return;
+		}
+		switch (requestCode) {
+		case SettingsBirthdayActivity.REQUEST_CODE:
+			String birthday = data.getStringExtra(SettingsBirthdayActivity.RESPONSE_NAME_VALUE);
+			mBirthdayTxt.setText(birthday);
+			break;
+		case SettingsGenderActivity.REQUEST_CODE:
+			int gender = data.getIntExtra(SettingsGenderActivity.RESPONSE_NAME_VALUE, mUserInfo.getGender());
+			mGenderTxt.setText(gender == 0 ? "Female" : "Male");
+			break;
 		default:
 			break;
 		}
@@ -135,7 +166,7 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		HttpRequest request = new HttpRequest();
 
 		if (mProgressDialog == null) {
-			mProgressDialog = new CustomizedProgressDialog(this, R.string.loading_userinfo);
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.loading);
 		} else {
 			if (mProgressDialog.isShowing()) {
 				mProgressDialog.dismiss();
@@ -179,35 +210,40 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		JSONObject userData = data.getJSONObject(ServerKeys.KEY_USER);
 		if (!userData.isNull(ServerKeys.KEY_NAME)) {
 			userInfo.setName(userData.getString(ServerKeys.KEY_NAME));
-		} else {
-			userInfo.setName("-");
 		}
+		// else {
+		// userInfo.setName("-");
+		// }
 		// userInfo.setAvatar(Util.base64ToBitmap(userData.getString(ServerKeys.KEY_AVATAR)));
 		// if (!userData.isNull(ServerKeys.KEY_SIGNATURE)) {
 		// userInfo.setSignature(userData.getString(ServerKeys.KEY_SIGNATURE));
 		// }
 		if (!userData.isNull(ServerKeys.KEY_UNIVERSITY)) {
 			userInfo.setUniversity(userData.getString(ServerKeys.KEY_UNIVERSITY));
-		} else {
-			userInfo.setUniversity("-");
 		}
+		// else {
+		// userInfo.setUniversity("-");
+		// }
 		if (!userData.isNull(ServerKeys.KEY_CITY)) {
 			userInfo.setCity(userData.getString(ServerKeys.KEY_CITY));
-		} else {
-			userInfo.setCity("-");
 		}
+		// else {
+		// userInfo.setCity("-");
+		// }
 		userInfo.setBirthday(userData.getString(ServerKeys.KEY_AGE));
 		userInfo.setGender(userData.getInt(ServerKeys.KEY_GENDER));
 		if (!userData.isNull(ServerKeys.KEY_EXPERIENCE)) {
 			userInfo.setExperience(userData.getString(ServerKeys.KEY_EXPERIENCE));
-		} else {
-			userInfo.setExperience("-");
 		}
+		// else {
+		// userInfo.setExperience("-");
+		// }
 		if (!userData.isNull(ServerKeys.KEY_EDUCATION)) {
 			userInfo.setEducation(userData.getString(ServerKeys.KEY_EDUCATION));
-		} else {
-			userInfo.setEducation("-");
 		}
+		// else {
+		// userInfo.setEducation("-");
+		// }
 		if (!userData.isNull(ServerKeys.KEY_SKILLS)) {
 			userInfo.setSkills(userData.getString(ServerKeys.KEY_SKILLS));
 		} else {
@@ -219,9 +255,10 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		userInfo.setStatus(userData.getInt(ServerKeys.KEY_STATUS));
 		if (!userData.isNull(ServerKeys.KEY_CREATE_DATE)) {
 			userInfo.setCreateDate(userData.getString(ServerKeys.KEY_CREATE_DATE));
-		} else {
-			userInfo.setCreateDate("-");
 		}
+		// else {
+		// userInfo.setCreateDate("-");
+		// }
 		if (!userData.isNull(ServerKeys.KEY_REG_ID)) {
 			userInfo.setRegId(userData.getString(ServerKeys.KEY_REG_ID));
 		}
@@ -234,7 +271,7 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		String mSchool = mSchoolTxt.getText().toString();
 		String mCity = mCityTxt.getText().toString();
 		String mBirthday = mBirthdayTxt.getText().toString();
-		String mGender = mGenderTxt.getText().toString();
+		int mGender = mGenderTxt.getText().toString().equals("Male") ? 0 : 1;
 		String mExperience = mExperienceTxt.getText().toString();
 		String mEducation = mEducationTxt.getText().toString();
 		String mSkills = mSkillsTxt.getText().toString();
@@ -263,6 +300,9 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		}
 		if (!mUserInfo.getSkills().equals(mSkills)) {
 			data.put(ServerKeys.KEY_SKILLS, mSkills);
+		}
+		if (mUserInfo.getGender() != mGender) {
+			data.put(ServerKeys.KEY_GENDER, String.valueOf(mGender));
 		}
 
 		if (data.size() <= 2) {
@@ -297,5 +337,4 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		request.post(ServerKeys.FULL_URL_UPDATE_USER_INFO, data);
 		mProgressDialog.show();
 	}
-
 }

@@ -36,6 +36,9 @@ public class TagInfo {
 	/** tag link */
 	private String link = null;
 
+	/** is endorsed, for user meeting endorsement */
+	private boolean isEndorsed = false;
+
 	/** tag host */
 	private TagHost tagHost;
 	/** tag moment */
@@ -155,6 +158,14 @@ public class TagInfo {
 
 	public void setLink(String link) {
 		this.link = link;
+	}
+
+	public boolean isEndorsed() {
+		return isEndorsed;
+	}
+
+	public void setEndorsed(boolean isEndorsed) {
+		this.isEndorsed = isEndorsed;
 	}
 
 	public TagHost getTagHost() {

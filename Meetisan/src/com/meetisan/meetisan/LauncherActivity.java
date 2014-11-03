@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
+import cn.jpush.android.api.JPushInterface;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -39,6 +40,13 @@ public class LauncherActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		JPushInterface.onResume(this);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		JPushInterface.onPause(this);
 	}
 
 	private void checkLoginState() {

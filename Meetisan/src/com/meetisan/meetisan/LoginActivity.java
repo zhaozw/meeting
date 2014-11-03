@@ -10,10 +10,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -53,15 +53,23 @@ public class LoginActivity extends Activity implements OnClickListener {
 		// mTitleTxt.setVisibility(View.VISIBLE);
 
 		mEmailTxt = (EditText) findViewById(R.id.email);
+		mEmailTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+				if (TextUtils.isEmpty(mEmailTxt.getText())) {
+					ToastHelper.showToast(R.string.empty_email_tips);
+					return true;
+				}
+
+				return false;
+			}
+		});
 		mPwdTxt = (EditText) findViewById(R.id.password);
 		mPwdTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					attemptLogin();
-					return true;
-				}
-				return false;
+				attemptLogin();
+				return true;
 			}
 		});
 		mForgotPwdTxt = (TextView) findViewById(R.id.txt_forget_pwd);
@@ -98,11 +106,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 		pwd = mPwdTxt.getText().toString();
 
 		// TODO.. for test
-		if (DebugUtils.IS_DEBUG) {
+		if (DebugUtils.IS_DEBUG && TextUtils.isEmpty(email)) {
 			email = "719236409@qq.com";
 			pwd = "1234567";
-			email = "1415574892@qq.com";
-			pwd = "gygy";
+			// email = "1415574892@qq.com";
+			// pwd = "gygy";
+			// email = "jhlseam@gmail.com";
+			// pwd = "n451t33m";
 			// email = "hua.fan@unsw.edu.au";
 			// pwd = "1234567";
 		}
@@ -184,6 +194,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		data.put(ServerKeys.KEY_EMAIL, email);
 		data.put(ServerKeys.KEY_PASSWORD, pwd);
 		registrationID = JPushInterface.getRegistrationID(getApplicationContext());
+		Log.e("Login", "==JPushInterface Registration ID: " + registrationID);
 		if (registrationID != null) {
 			data.put(ServerKeys.KEY_REG_ID, registrationID);
 		}
@@ -191,4 +202,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 		mProgressDialog.show();
 	}
 
+	// @Override
+	// public void onBackPressed() {
+	// System.exit(0);
+	// }
 }

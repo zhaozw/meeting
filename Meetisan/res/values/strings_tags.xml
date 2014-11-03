@@ -6,7 +6,7 @@
     <string name="title_endorse">Endorse</string>
     <string name="endorsed_you">endorsed you</string>
     <string name="endorsing">Endorsing&#8230;</string>
-    <string name="endorse_success">Endorse Success!</string>
+    <string name="endorse_success">Endorsement Successful!</string>
 
     <!-- Tag Profile -->
     <string name="tag_profile">Tag Profile</string>
@@ -38,9 +38,12 @@
     <string name="meetings_associated">Meetings with this Tag</string>
     <string name="meetings_to_endorse">Meetings to Endorse</string>
     <string name="send">Send</string>
+    <string name="sending_request">Sending Request&#8230;</string>
+    <string name="meeting_created">Meeting Created</string>
     <string name="creating">Creating</string>
     <string name="updating">Updating&#8230;</string>
     <string name="uploading_image">Uploading Image&#8230;</string>
+    <string name="sending_report">Sending report&#8230;</string>
     <string name="add_tag_moments">Add Tag Moments</string>
     <string name="tap_upload_tips">Tap to change image.</string>
     <string name="input_tag_moment_title_hint">Enter a description for this Moment&#8230;</string>
@@ -53,6 +56,7 @@
     <string name="add_this_tag">Add Tag</string>
     <string name="adding_tag">Adding Tag&#8230;</string>
     <string name="success_add_tag">Success to add this Tag</string>
+    <string name="succeed">Succeed</string>
     <string name="invitation_status">Invitation Status:</string>
     <string name="want_to_create_tag">I want to create this Tag</string>
     <string name="do_create_tag">Create Tag</string>

@@ -4,7 +4,7 @@ public class ServerKeys {
 	public static final String SERVER_ADDRESS = "http://meetisanapp.azurewebsites.net";
 	public static final int SERVER_PORT = 80;
 
-	public static final int PAGE_SIZE = 20;
+	public static final int PAGE_SIZE = 10;
 
 	public static final String KEY_STATUS = "Status";
 	public static final String KEY_STATUS_CODE = "StatusCode";
@@ -97,6 +97,12 @@ public class ServerKeys {
 	/** http://{域名}/api/tMeetingMember/Delete/ */
 	public static final String FULL_URL_CANCEL_ATTEND_MEET = SERVER_ADDRESS + API_TMEET_MEMBER + "Delete";
 	/**
+	 * http://meetisanapp.azurewebsites.net/api/tmeeting/cancel/
+	 * 
+	 * POST {meetingID}
+	 */
+	public static final String FULL_URL_CANCEL_MEET = SERVER_ADDRESS + API_TMEET + "cancel";
+	/**
 	 * http://{域名}/api/tmeeting/GetUserMeetingList/{用户ID}/?pageindex={页码}&
 	 * pagesize={每页数量}&lat={当前用户经度}&lon={当前用户经度}
 	 */
@@ -169,8 +175,24 @@ public class ServerKeys {
 	 */
 	public static final String FULL_URL_ENDORSE_MEMBER_LIST = SERVER_ADDRESS + API_TMEET_MEMBER_ENDORSE
 			+ "GetEndorseMember";
-	/** http://{域名}/api/tMeetingMember/EndorseMember/ */
+	/**
+	 * http://meetisanapp.azurewebsites.net/api/tMeetingMember/EndorseMember/
+	 * POST MeetingID：meeting的ID ， UserID：当前用户的ID ， UserTagIDs：要点赞的用户Tag ID的数组
+	 * CancelTagIDs：要取消点赞的用户Tag ID的数据
+	 */
 	public static final String FULL_URL_ENDORSE_MEMBERS = SERVER_ADDRESS + API_TMEET_MEMBER_ENDORSE + "EndorseMember";
+
+	/**
+	 * POST "MeetingID "：meeting的ID ;"UserID" ：当前用户的ID; "Status"：1代表同意 2代表拒绝 ;
+	 * MeetingUserID：meeting创建者的ID； "UserName“：当前用户名
+	 * http://meetisanapp.azurewebsites.net/api/tmeetingmember/update
+	 */
+	public static final String FULL_URL_UPDATE_MEETING_MEMBER_STATUS = SERVER_ADDRESS + API_TMEET_MEMBER + "update";
+	/**
+	 * http://{域名}/api/tMeeting/UpdateTime/{meeting的ID}?beginTime={选定开始时间}&
+	 * endTime={选定的结束时间}
+	 */
+	public static final String FULL_URL_SELECT_MEETING_TIME = SERVER_ADDRESS + API_TMEET_ENDORSE + "UpdateTime";
 
 	// Keys
 	public static final String KEY_ID = "ID";
@@ -196,6 +218,7 @@ public class ServerKeys {
 	public static final String KEY_TAG_ID = "TagID";
 	public static final String KEY_USER_TAG_ID = "UserTagID";
 	public static final String KEY_USER_TAG_IDS = "UserTagIDs";
+	public static final String KEY_CANCEL_TAG_IDS = "CancelTagIDs";
 	public static final String KEY_USER_ID = "UserID";
 	public static final String KEY_USER_NAME = "UserName";
 	public static final String KEY_CATEGORY_ID = "CategoryID";
@@ -203,6 +226,7 @@ public class ServerKeys {
 	public static final String KEY_LOGO = "Logo";
 	public static final String KEY_IMAGE = "Image";
 	public static final String KEY_ENDORSEMENTS = "Endorsements";
+	public static final String KEY_IS_ENDORSED = "IsEndorsed";
 	public static final String KEY_PEOPLES = "Peoples";
 	public static final String KEY_MEETINGS = "Meetings";
 	public static final String KEY_MEETING = "Meeting";

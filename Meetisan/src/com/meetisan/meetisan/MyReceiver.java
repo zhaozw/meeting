@@ -18,39 +18,41 @@ import com.meetisan.meetisan.utils.Util;
  * 如果不定义这个 Receiver，则： 1) 默认用户会打开主界面 2) 接收不到自定义消息
  */
 public class MyReceiver extends BroadcastReceiver {
-	private static final String TAG = "JPush";
+	private static final String TAG = "Jpush " + MyReceiver.class.getSimpleName();
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Bundle bundle = intent.getExtras();
-		Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
+		Log.d(TAG, "onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
 
 		if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
 			String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-			Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
+			Log.d(TAG, "接收Registration Id : " + regId);
 			// send the Registration Id to your server...
 
 		} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-			Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-			processCustomMessage(context, bundle);
+			Log.d(TAG, "自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
+			pushCustomMessage(context, bundle);
 
 		} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-			Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
 			int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-			Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
+			Log.d(TAG, "通知的ID: " + notifactionId);
 
 		} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-			Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
 
 			JPushInterface.reportNotificationOpened(context, bundle.getString(JPushInterface.EXTRA_MSG_ID));
-
 			// 打开自定义的Activity
-			Intent i = new Intent(context, MainActivity.class);
-			i.putExtras(bundle);
-			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(i);
+			if (!MainActivity.isForeground) {
+				Intent i = new Intent(context, MainActivity.class);
+				i.putExtra(JPushInterface.EXTRA_ALERT, bundle.getString(JPushInterface.EXTRA_ALERT, null));
+				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(i);
+			}
+
+			pushCustomMessage(context, bundle.getString(JPushInterface.EXTRA_ALERT, null));
 		} else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
-			Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
+			Log.d(TAG, "用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
 			// 在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity，
 			// 打开一个网页等..
 
@@ -58,7 +60,7 @@ public class MyReceiver extends BroadcastReceiver {
 			boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
 			Log.e(TAG, "[MyReceiver]" + intent.getAction() + " connected state change to " + connected);
 		} else {
-			Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
+			Log.d(TAG, "Unhandled intent - " + intent.getAction());
 		}
 	}
 
@@ -78,12 +80,12 @@ public class MyReceiver extends BroadcastReceiver {
 	}
 
 	// send msg to MainActivity
-	private void processCustomMessage(Context context, Bundle bundle) {
+	private void pushCustomMessage(Context context, Bundle bundle) {
 		if (MainActivity.isForeground) {
 			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-			Log.e(TAG, "====Msg: " + message);
 			String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-			Log.e(TAG, "====Extras: " + extras);
+			Log.e(TAG, "====Msg: " + message + "; Extras: " + extras);
+
 			Intent msgIntent = new Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
 			msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
 			if (!Util.isEmpty(extras)) {
@@ -91,13 +93,21 @@ public class MyReceiver extends BroadcastReceiver {
 					JSONObject extraJson = new JSONObject(extras);
 					if (null != extraJson && extraJson.length() > 0) {
 						msgIntent.putExtra(MainActivity.KEY_EXTRAS, extras);
-						Log.e(TAG, "====Json: " + extraJson);
 					}
 				} catch (JSONException e) {
-
+					e.printStackTrace();
 				}
 			}
 			context.sendBroadcast(msgIntent);
 		}
+	}
+
+	// send msg to MainActivity
+	private void pushCustomMessage(Context context, String message) {
+		Log.e(TAG, "====Msg: " + message);
+
+		Intent msgIntent = new Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
+		msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
+		context.sendBroadcast(msgIntent);
 	}
 }

@@ -34,9 +34,9 @@ import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Tools;
-import com.meetisan.meetisan.view.dashboard.MyConnectionsActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog.DialogStyle;
 import com.meetisan.meetisan.widget.LabelWithIcon;
 
 /**
@@ -237,9 +237,21 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 			data = createActivity.getData();
 			int maxPerson = (Integer) data.get("MaxPerson");
 			boolean isMultiModel = maxPerson == 1 ? false : true;
+			List<TagInfo> tagList = createActivity.getTagInfos();
+			String tagIDs = "";
+			if (tagList != null && tagList.size() > 0) {
+				for (int i = 0; i < tagList.size(); i++) {
+					if (i != tagList.size() - 1) {
+						tagIDs += tagList.get(i).getId() + ",";
+					} else {
+						tagIDs += tagList.get(i).getId();
+					}
+				}
+			}
 
 			Intent intent = new Intent(getActivity().getApplicationContext(), SelectPeopleActivity.class);
 			intent.putExtra("isMulitSelect", isMultiModel);
+			intent.putExtra("TagIDs", tagIDs);
 			startActivityForResult(intent, REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE);
 			break;
 		default:
@@ -286,7 +298,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		HttpRequest request = new HttpRequest();
 		if (isNeedsDialog) {
 			if (mProgressDialog == null) {
-				mProgressDialog = new CustomizedProgressDialog(getActivity(), R.string.please_waiting);
+				mProgressDialog = new CustomizedProgressDialog(getActivity(), R.string.sending_request);
 			} else {
 				if (mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
@@ -301,13 +313,15 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 				if (isNeedsDialog) {
 					mProgressDialog.dismiss();
 				}
-				ToastHelper.showToast("Create Meeting Success");
+				CustomizedProgressDialog mDialog = new CustomizedProgressDialog(getActivity(),
+						R.string.meeting_created, DialogStyle.OK);
+				mDialog.show();
 
 				FragmentActivity activity = getActivity();
 
 				if (activity instanceof CreateActivity) {
 					CreateActivity createActivity = (CreateActivity) activity;
-					createActivity.hideLastShowFirstFragment();
+					createActivity.createMeetingDone();
 				}
 			}
 

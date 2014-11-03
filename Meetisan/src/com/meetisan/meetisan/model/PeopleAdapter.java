@@ -96,7 +96,8 @@ public class PeopleAdapter extends BaseAdapter {
 			httpBitmap.displayBitmap(holder.mCircleImage, mPeopleInfo.getAvatarUri());
 		}
 		holder.mNameTxt.setText(Util.formatOutput(mPeopleInfo.getName()));
-		holder.mCollegeTxt.setText(Util.formatOutput(mPeopleInfo.getUniversity()));
+		// holder.mCollegeTxt.setText(Util.formatOutput(mPeopleInfo.getUniversity()));
+		holder.mCollegeTxt.setText("");
 		int distance = (int) mPeopleInfo.getDistance();
 		if (distance >= 1000) {
 			holder.mDistanceTxt.setText((int) distance / 1000 + "km");

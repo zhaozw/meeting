@@ -97,8 +97,10 @@ public class MeetActivity extends Activity {
 
 		initView();
 
+		// mPullPeopleView.onRefreshing(true);
 		getPeoplesFromServer(1, mLat, mLon, mPeopleSearchFilter, true, true);
 		getMeetingsFromServer(1, mMeetingOrder, mLat, mLon, mMeetSearchFilter, true, false);
+
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

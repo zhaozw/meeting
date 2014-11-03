@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -88,7 +89,7 @@ public class ReportActivity extends Activity implements OnClickListener {
 		HttpRequest request = new HttpRequest();
 
 		if (mProgressDialog == null) {
-			mProgressDialog = new CustomizedProgressDialog(this, R.string.uploading_image);
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.sending_report);
 		} else {
 			if (mProgressDialog.isShowing()) {
 				mProgressDialog.dismiss();
@@ -113,7 +114,8 @@ public class ReportActivity extends Activity implements OnClickListener {
 
 		Map<String, String> data = new TreeMap<String, String>();
 		data.put(ServerKeys.KEY_REPORT_ID, String.valueOf(mReportID));
-		data.put(ServerKeys.KEY_REPORT_TYPE, isReportUser ? "2" : "1");
+		data.put(ServerKeys.KEY_REPORT_TYPE, isReportUser ? "1" : "2");
+		Log.e("========", "Is report user: " + isReportUser);
 		request.post(ServerKeys.FULL_URL_SEND_REPORT, data);
 
 		mProgressDialog.show();

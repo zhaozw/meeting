@@ -1,6 +1,13 @@
 package com.meetisan.meetisan.model;
 
 public class NotificationInfo {
+	public static final int TYPE_MEETING_INVITATION = 1;
+	public static final int TYPE_TAG_CREATE_SUCCESS = 2;
+	public static final int TYPE_TAG_CREATE_FAILED = 3;
+	public static final int TYPE_MEETING_INVITE_JOIN = 4;
+	public static final int TYPE_MEETING_INVITE_REFUSE = 5;
+	public static final int TYPE_MEETING_CANCEL = 6;
+	
 	private long id;
 	private long userID;
 	/**
@@ -14,12 +21,6 @@ public class NotificationInfo {
 	 * 5：有人拒绝我的meeting邀请, 6:meeting 取消
 	 */
 	private int type;
-	public static final int TYPE_MEETING_INVITATION = 1;
-	public static final int TYPE_TAG_CREATE_SUCCESS = 2;
-	public static final int TYPE_TAG_CREATE_FAILED = 3;
-	public static final int TYPE_MEETING_INVITE_JOIN = 4;
-	public static final int TYPE_MEETING_INVITE_REFUSE = 5;
-	public static final int TYPE_MEETING_CANCEL = 6;
 	/** 1表示已读，0表示未读 */
 	private int status;
 	private String createDate;

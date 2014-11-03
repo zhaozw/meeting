@@ -69,6 +69,7 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		if (mAdapter != null) {
 			mAdapter.notifyDataSetChanged();
 		}
+		getNotificationsFromServer(1, true, false);
 	}
 
 	private void initTitle() {
@@ -139,7 +140,8 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 
 	private void getNotificationsFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
 		if (mNotificationTouchListener != null) {
-			mNotificationTouchListener.hideDeleteLayout();// to hide delete layout
+			mNotificationTouchListener.hideDeleteLayout();// to hide delete
+															// layout
 		}
 		HttpRequest request = new HttpRequest();
 
@@ -261,6 +263,7 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		case NotificationInfo.TYPE_MEETING_INVITE_REFUSE:
 			Intent refuseIntent = new Intent(getApplicationContext(), PersonProfileActivity.class);
 			refuseIntent.putExtra(ServerKeys.KEY_USER_ID, info.getReportObjectID());
+			refuseIntent.putExtra("IsMeetBtnVisible", false);
 			startActivity(refuseIntent);
 			break;
 		case NotificationInfo.TYPE_TAG_CREATE_FAILED:
@@ -277,6 +280,7 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		case NotificationInfo.TYPE_MEETING_INVITE_JOIN:
 			Intent joinIntent = new Intent(getApplicationContext(), PersonProfileActivity.class);
 			joinIntent.putExtra(ServerKeys.KEY_USER_ID, info.getReportObjectID());
+			joinIntent.putExtra("IsMeetBtnVisible", false);
 			startActivity(joinIntent);
 			break;
 		default:

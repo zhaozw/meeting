@@ -48,6 +48,7 @@ public class SelectPeopleActivity extends Activity {
 	private long mUserId = -1;
 	private boolean mIsInvitePeople = true;
 	private boolean mIsMulitSelect = false;
+	private String mTagIDs = "";
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +57,7 @@ public class SelectPeopleActivity extends Activity {
 
 		mUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
 		mIsMulitSelect = getIntent().getBooleanExtra("isMulitSelect", false);
+		mTagIDs = getIntent().getStringExtra("TagIDs");
 		getPeoplesFromServer(1, true, true);
 
 		initView();
@@ -189,6 +191,113 @@ public class SelectPeopleActivity extends Activity {
 	 * @param isNeedsDialog
 	 *            weather show progress dialog
 	 */
+	// private void getPeoplesFromServer(int pageIndex, final boolean isRefresh,
+	// final boolean isNeedsDialog) {
+	// HttpRequest request = new HttpRequest();
+	//
+	// if (isNeedsDialog) {
+	// if (mProgressDialog == null) {
+	// mProgressDialog = new CustomizedProgressDialog(this,
+	// R.string.please_waiting);
+	// } else {
+	// if (mProgressDialog.isShowing()) {
+	// mProgressDialog.dismiss();
+	// }
+	// }
+	// }
+	//
+	// request.setOnHttpRequestListener(new OnHttpRequestListener() {
+	//
+	// @Override
+	// public void onSuccess(String url, String result) {
+	// if (isNeedsDialog) {
+	// mProgressDialog.dismiss();
+	// }
+	// try {
+	// if (isRefresh) {
+	// mPeopleData.clear();
+	// }
+	//
+	// JSONObject dataJson = (new
+	// JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
+	// mTotalPeople = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
+	// Log.d(TAG, "Total People Count: " + mTotalPeople);
+	//
+	// JSONArray peopleArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
+	// for (int i = 0; i < peopleArray.length(); i++) {
+	// PeopleInfo peopleInfo = new PeopleInfo();
+	// JSONObject userJson = peopleArray.getJSONObject(i);
+	//
+	// peopleInfo.setId(userJson.getLong(ServerKeys.KEY_USER_ID));
+	// // peopleInfo.setEmail(userJson.getString(ServerKeys.KEY_EMAIL));
+	// if (!userJson.isNull(ServerKeys.KEY_NAME)) {
+	// peopleInfo.setName(userJson.getString(ServerKeys.KEY_NAME));
+	// }
+	// // if (!userJson.isNull(ServerKeys.KEY_UNIVERSITY)) {
+	// //
+	// peopleInfo.setUniversity(userJson.getString(ServerKeys.KEY_UNIVERSITY));
+	// // }
+	// if (!userJson.isNull(ServerKeys.KEY_AVATAR)) {
+	// peopleInfo.setAvatarUri(userJson.getString(ServerKeys.KEY_AVATAR));
+	// }
+	// peopleInfo.setDistance(-1); // for do not show this item
+	//
+	// JSONArray tagArray = userJson.getJSONArray(ServerKeys.KEY_TAGS);
+	// for (int j = 0; j < tagArray.length(); j++) {
+	// TagInfo tagInfo = new TagInfo();
+	// JSONObject tagJson = tagArray.getJSONObject(j);
+	// tagInfo.setId(tagJson.getLong(ServerKeys.KEY_ID));
+	// if (!tagJson.isNull(ServerKeys.KEY_TITLE)) {
+	// tagInfo.setTitle(tagJson.getString(ServerKeys.KEY_TITLE));
+	// }
+	// peopleInfo.addTopTag(tagInfo);
+	// }
+	//
+	// mPeopleData.add(peopleInfo);
+	// }
+	//
+	// } catch (JSONException e) {
+	// e.printStackTrace();
+	// // ToastHelper.showToast(R.string.server_response_exception,
+	// // Toast.LENGTH_LONG);
+	// } finally {
+	// updatePeopleListView();
+	// }
+	// }
+	//
+	// @Override
+	// public void onFailure(String url, int errorNo, String errorMsg) {
+	// if (isNeedsDialog) {
+	// mProgressDialog.dismiss();
+	// }
+	// ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+	// updatePeopleListView();
+	// }
+	// });
+	//
+	// request.get(ServerKeys.FULL_URL_GET_USER_CONNECTION_LIST + "/" + mUserId
+	// + "/?pageindex=" + pageIndex
+	// + "&pagesize=" + ServerKeys.PAGE_SIZE, null);
+	//
+	// if (isNeedsDialog) {
+	// mProgressDialog.show();
+	// }
+	// }
+
+	/**
+	 * get Peoples from server
+	 * 
+	 * @param pageIndex
+	 *            load page index
+	 * @param mLat
+	 *            location
+	 * @param mLon
+	 *            location
+	 * @param isRefresh
+	 *            is refresh or load more
+	 * @param isNeedsDialog
+	 *            weather show progress dialog
+	 */
 	private void getPeoplesFromServer(int pageIndex, final boolean isRefresh, final boolean isNeedsDialog) {
 		HttpRequest request = new HttpRequest();
 
@@ -221,22 +330,26 @@ public class SelectPeopleActivity extends Activity {
 					JSONArray peopleArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
 					for (int i = 0; i < peopleArray.length(); i++) {
 						PeopleInfo peopleInfo = new PeopleInfo();
-						JSONObject userJson = peopleArray.getJSONObject(i);
+						JSONObject peopleJson = peopleArray.getJSONObject(i);
 
-						peopleInfo.setId(userJson.getLong(ServerKeys.KEY_USER_ID));
-						// peopleInfo.setEmail(userJson.getString(ServerKeys.KEY_EMAIL));
+						JSONObject userJson = peopleJson.getJSONObject(ServerKeys.KEY_USER);
+						peopleInfo.setId(userJson.getLong(ServerKeys.KEY_ID));
+						peopleInfo.setEmail(userJson.getString(ServerKeys.KEY_EMAIL));
 						if (!userJson.isNull(ServerKeys.KEY_NAME)) {
 							peopleInfo.setName(userJson.getString(ServerKeys.KEY_NAME));
 						}
-						// if (!userJson.isNull(ServerKeys.KEY_UNIVERSITY)) {
-						// peopleInfo.setUniversity(userJson.getString(ServerKeys.KEY_UNIVERSITY));
-						// }
+						if (!userJson.isNull(ServerKeys.KEY_UNIVERSITY)) {
+							peopleInfo.setUniversity(userJson.getString(ServerKeys.KEY_UNIVERSITY));
+						}
+						// Log.d(TAG, "---People Name: " + peopleInfo.getName()
+						// + "; UNIV: " +
+						// peopleInfo.getUniversity());
 						if (!userJson.isNull(ServerKeys.KEY_AVATAR)) {
 							peopleInfo.setAvatarUri(userJson.getString(ServerKeys.KEY_AVATAR));
 						}
-						peopleInfo.setDistance(-1); // for do not show this item
+						peopleInfo.setDistance(userJson.getDouble(ServerKeys.KEY_DISTANCE));
 
-						JSONArray tagArray = userJson.getJSONArray(ServerKeys.KEY_TAGS);
+						JSONArray tagArray = peopleJson.getJSONArray(ServerKeys.KEY_TAGS);
 						for (int j = 0; j < tagArray.length(); j++) {
 							TagInfo tagInfo = new TagInfo();
 							JSONObject tagJson = tagArray.getJSONObject(j);
@@ -269,8 +382,12 @@ public class SelectPeopleActivity extends Activity {
 			}
 		});
 
-		request.get(ServerKeys.FULL_URL_GET_USER_CONNECTION_LIST + "/" + mUserId + "/?pageindex=" + pageIndex
-				+ "&pagesize=" + ServerKeys.PAGE_SIZE, null);
+		PeopleInfo mUserInfo = UserInfoKeeper.readUserInfo(this);
+		float mLat = mUserInfo.getLatitude();
+		float mLon = mUserInfo.getLongitude();
+
+		request.get(ServerKeys.FULL_URL_GET_UESR_LIST + "/" + mUserId + "/?pageindex=" + pageIndex + "&pagesize="
+				+ ServerKeys.PAGE_SIZE + "&lat=" + mLat + "&lon=" + mLon + "&tagIDs=" + mTagIDs + "&name=", null);
 
 		if (isNeedsDialog) {
 			mProgressDialog.show();

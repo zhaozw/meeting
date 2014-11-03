@@ -480,6 +480,6 @@ public class Util {
 	 * @return format string
 	 */
 	public static String formatOutput(String src) {
-		return ((src == null) || (src.equals(""))) ? "-" : src;
+		return ((src == null) || (src.equals(""))) ? "" : src;
 	}
 }

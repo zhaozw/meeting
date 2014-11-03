@@ -145,7 +145,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	 * {@link AdapterView#setAdapter(android.widget.Adapter)}
 	 * setAdapter(adapter)}. This is just for convenience!
 	 * 
-	 * @param adapter - Adapter to set
+	 * @param adapter
+	 *            - Adapter to set
 	 */
 	public void setAdapter(ListAdapter adapter) {
 		((AdapterView<ListAdapter>) mRefreshableView).setAdapter(adapter);
@@ -162,7 +163,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	 * this method and set everything up. This includes when the Android
 	 * Framework automatically sets the Empty View based on it's ID.
 	 * 
-	 * @param newEmptyView - Empty View to be used
+	 * @param newEmptyView
+	 *            - Empty View to be used
 	 */
 	public final void setEmptyView(View newEmptyView) {
 		FrameLayout refreshableViewWrapper = getRefreshableViewWrapper();
@@ -201,7 +203,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	 * {@link AdapterView#setOnItemClickListener(OnItemClickListener)
 	 * setOnItemClickListener(listener)}. This is just for convenience!
 	 * 
-	 * @param listener - OnItemClickListener to use
+	 * @param listener
+	 *            - OnItemClickListener to use
 	 */
 	public void setOnItemClickListener(OnItemClickListener listener) {
 		mRefreshableView.setOnItemClickListener(listener);
@@ -225,7 +228,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	 * when the Adapter View is scrolled to the top and the mode is set to
 	 * {@link Mode#PULL_FROM_START}
 	 * 
-	 * @param showIndicator - true if the indicators should be shown.
+	 * @param showIndicator
+	 *            - true if the indicators should be shown.
 	 */
 	public void setShowIndicator(boolean showIndicator) {
 		mShowIndicator = showIndicator;
@@ -239,23 +243,21 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 		}
 	}
 
-	;
-
 	@Override
 	protected void onPullToRefresh() {
 		super.onPullToRefresh();
 
 		if (getShowIndicatorInternal()) {
 			switch (getCurrentMode()) {
-				case PULL_FROM_END:
-					mIndicatorIvBottom.pullToRefresh();
-					break;
-				case PULL_FROM_START:
-					mIndicatorIvTop.pullToRefresh();
-					break;
-				default:
-					// NO-OP
-					break;
+			case PULL_FROM_END:
+				mIndicatorIvBottom.pullToRefresh();
+				break;
+			case PULL_FROM_START:
+				mIndicatorIvTop.pullToRefresh();
+				break;
+			default:
+				// NO-OP
+				break;
 			}
 		}
 	}
@@ -274,15 +276,15 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 
 		if (getShowIndicatorInternal()) {
 			switch (getCurrentMode()) {
-				case PULL_FROM_END:
-					mIndicatorIvBottom.releaseToRefresh();
-					break;
-				case PULL_FROM_START:
-					mIndicatorIvTop.releaseToRefresh();
-					break;
-				default:
-					// NO-OP
-					break;
+			case PULL_FROM_END:
+				mIndicatorIvBottom.releaseToRefresh();
+				break;
+			case PULL_FROM_START:
+				mIndicatorIvTop.releaseToRefresh();
+				break;
+			default:
+				// NO-OP
+				break;
 			}
 		}
 	}
@@ -471,5 +473,5 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 			}
 		}
 	}
-	
+
 }

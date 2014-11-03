@@ -2,7 +2,7 @@
 
 	<color name="gray">#FFC0C0C0</color>
 	<color name="blue">#3399FF</color>
-	
+
     <color name="activity_title_bg_color">#8BD4C9</color>
     <color name="activity_main_tab_check_color">#F47C7C</color>
 	<color name="activity_main_tab_background_color">#8BD4C9</color>
@@ -57,4 +57,5 @@
     <color name="btn_normal_text_color">@android:color/white</color>
     
     <color name="bg_create_tag_select_color">#E1E1E1</color>
+	<color name="bg_search_map">#22000000</color>
 </resources>

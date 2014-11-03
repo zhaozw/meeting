@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.widget.CircleImageView;
@@ -96,7 +97,7 @@ public class CreateStep1Fragment extends Fragment {
 
 	public boolean checkUserInput() {
 		if (mMeetingTitle.getText().toString().length() <= 0) {
-			mMeetingTitle.setError(getString(R.string.please_input_meeting_title));
+			DialogUtils.showDialog(getActivity(), "Wait!", "Please add a Meeting Title", "OK", null, null);
 			return false;
 		}
 		return true;

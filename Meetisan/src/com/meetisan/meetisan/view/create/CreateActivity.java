@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.model.TagInfo;
+import com.meetisan.meetisan.utils.InputMethodUtils;
 
 public class CreateActivity extends FragmentActivity implements OnClickListener, OnFragmentInteractionListener {
 	// private static final String TAG = CreateActivity.class.getSimpleName();
@@ -136,7 +137,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		}
 	}
 
-	public void hideLastShowFirstFragment() {
+	public void createMeetingDone() {
 
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -144,17 +145,19 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 			transaction.hide(mCreateDoneFragment);
 		}
 		mCurrentStepIndex = 1;
-		if (mCreateStep1Fragment == null) {
-			mCreateStep1Fragment = new CreateStep1Fragment();
-			transaction.add(R.id.fl_fragment_container, mCreateStep1Fragment);
-		} else {
-			transaction.show(mCreateStep1Fragment);
-		}
+		mCreateStep1Fragment = new CreateStep1Fragment();
+		mCreateStep2Fragment = null;
+		mCreateStep3Fragment = null;
+		mCreateStep4Fragment = null;
+		mCreateDoneFragment = null;
+		
+		transaction.add(R.id.fl_fragment_container, mCreateStep1Fragment);
 		transaction.commit();
 		setTitleViews(mCurrentStepIndex);
 	}
 
 	private void changeFragment(int id) {
+		InputMethodUtils.hideInputMethod(this);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		switch (mCurrentStepIndex) {
 		case 1:
@@ -246,7 +249,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		case 2:
 			return mCreateStep2Fragment.checkUserInput();
 		case 3:
-			break;
+			return mCreateStep3Fragment.checkUserInput();
 		case 4:
 			return mCreateStep4Fragment.checkUserInput();
 		default:

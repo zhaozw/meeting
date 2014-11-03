@@ -45,6 +45,7 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 	private PeopleInfo mUserInfo = new PeopleInfo();
 	private long userId = -1;
 	private long curUserId = -1;
+	private boolean isMeetBtnVisible = true;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,6 +56,7 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
 			userId = bundle.getLong("UserID");
+			isMeetBtnVisible = bundle.getBoolean("IsMeetBtnVisible", true);
 		}
 
 		curUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
@@ -81,7 +83,7 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		mBackBtn.setVisibility(View.VISIBLE);
 
 		mMeetLayout = (LinearLayout) findViewById(R.id.layout_meet);
-		if (userId == curUserId) {
+		if (userId == curUserId || !isMeetBtnVisible) {
 			mTitleTxt.setText(R.string.profile_summary);
 			mMeetLayout.setVisibility(View.GONE);
 		} else {

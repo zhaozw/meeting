@@ -39,6 +39,8 @@ public class CustomizedProgressDialog extends ProgressDialog {
 			setContentView(R.layout.dialog_progress);
 		} else if (style == DialogStyle.ERROR) {
 			setContentView(R.layout.dialog_error);
+		} else if (style == DialogStyle.OK) {
+			setContentView(R.layout.dialog_ok);
 		}
 		setScreenBrightness();
 		this.setOnShowListener(new OnShowListener() {
@@ -63,12 +65,12 @@ public class CustomizedProgressDialog extends ProgressDialog {
 		});
 		this.setCancelable(false);
 
-		if (style == DialogStyle.ERROR) {
+		if (style == DialogStyle.ERROR || style == DialogStyle.OK) {
 			new Thread() {
 				@Override
 				public void run() {
 					long start = System.currentTimeMillis();
-					while (System.currentTimeMillis() - start < 1000) {
+					while (System.currentTimeMillis() - start <= 1000) {
 						try {
 							sleep(200);
 						} catch (InterruptedException e) {

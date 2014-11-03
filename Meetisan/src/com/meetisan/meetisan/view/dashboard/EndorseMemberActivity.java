@@ -10,7 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
-import com.meetisan.meetisan.model.PeopleAdapter;
+import com.meetisan.meetisan.model.EndorseAdapter;
 import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
@@ -32,6 +33,7 @@ import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog.DialogStyle;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.Mode;
 import com.meetisan.meetisan.widget.listview.refresh.PullToRefreshBase.OnRefreshListener2;
@@ -44,7 +46,7 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 	private ListView mPeopleListView;
 	private List<PeopleInfo> mPeopleData = new ArrayList<PeopleInfo>();
 
-	private PeopleAdapter mPeopleAdapter;
+	private EndorseAdapter mPeopleAdapter;
 
 	private long mMeetingID = -1;
 	private long mUserID = -1;
@@ -118,7 +120,7 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 		});
 		mPeopleListView = mPullPeopleView.getRefreshableView();
 		registerForContextMenu(mPeopleListView);
-		mPeopleAdapter = new PeopleAdapter(this, mPeopleData);
+		mPeopleAdapter = new EndorseAdapter(this, mPeopleData);
 		mPeopleListView.setAdapter(mPeopleAdapter);
 		mPeopleAdapter.notifyDataSetChanged();
 		mPullPeopleView.setVisibility(View.VISIBLE);
@@ -126,12 +128,13 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Intent intent = new Intent();
-				Bundle bundle = new Bundle();
-				bundle.putLong("UserID", mPeopleData.get(arg2 - 1).getId());
-				intent.setClass(EndorseMemberActivity.this, PersonProfileActivity.class);
-				intent.putExtras(bundle);
-				startActivity(intent);
+				// Intent intent = new Intent();
+				// Bundle bundle = new Bundle();
+				// bundle.putLong("UserID", mPeopleData.get(arg2 - 1).getId());
+				// intent.setClass(EndorseMemberActivity.this,
+				// PersonProfileActivity.class);
+				// intent.putExtras(bundle);
+				// startActivity(intent);
 			}
 		});
 
@@ -152,7 +155,7 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 	}
 
 	private void doEndorsePeople() {
-		if (mPeopleData.size() > 0) {
+		if (mPeopleData.size() > 0 && mPeopleAdapter.getSelectTags().size() > 0) {
 			endorsePeoplesToServer();
 		}
 	}
@@ -205,7 +208,7 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 					}
 
 					JSONObject dataJson = (new JSONObject(result)).getJSONObject(ServerKeys.KEY_DATA);
-					mTotalPeople = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT);
+					mTotalPeople = dataJson.getLong(ServerKeys.KEY_TOTAL_COUNT) - 1;
 					Log.d(TAG, "Total People Count: " + mTotalPeople);
 
 					JSONArray peopleArray = dataJson.getJSONArray(ServerKeys.KEY_DATA_LIST);
@@ -234,6 +237,7 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 							if (!tagJson.isNull(ServerKeys.KEY_TITLE)) {
 								tagInfo.setTitle(tagJson.getString(ServerKeys.KEY_TITLE));
 							}
+							tagInfo.setEndorsed(tagJson.getBoolean(ServerKeys.KEY_IS_ENDORSED));
 							peopleInfo.addTopTag(tagInfo);
 						}
 
@@ -279,8 +283,16 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 			@Override
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
-				ToastHelper.showToast(R.string.endorse_success, Toast.LENGTH_LONG);
-				EndorseMemberActivity.this.finish();
+				CustomizedProgressDialog mDialog = new CustomizedProgressDialog(EndorseMemberActivity.this,
+						R.string.endorse_success, DialogStyle.OK);
+				mDialog.show();
+				mDialog.setOnDismissListener(new OnDismissListener() {
+
+					@Override
+					public void onDismiss(DialogInterface dialog) {
+						EndorseMemberActivity.this.finish();
+					}
+				});
 			}
 
 			@Override
@@ -293,12 +305,18 @@ public class EndorseMemberActivity extends Activity implements OnClickListener {
 		Map<String, String> data = new HashMap<String, String>();
 		data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
 		data.put(ServerKeys.KEY_USER_ID, String.valueOf(mUserID));
-		JSONArray mPeopleArray = new JSONArray();
-		List<TagInfo> tagList = mPeopleData.get(0).getTopTags();
+		JSONArray mAddEndorseArray = new JSONArray();
+		JSONArray mCancelEndorseArray = new JSONArray();
+		List<TagInfo> tagList = mPeopleAdapter.getSelectTags();
 		for (TagInfo info : tagList) {
-			mPeopleArray.put(info.getId());
+			if (info.isEndorsed()) {
+				mAddEndorseArray.put(info.getId());
+			} else {
+				mCancelEndorseArray.put(info.getId());
+			}
 		}
-		data.put(ServerKeys.KEY_USER_TAG_IDS, mPeopleArray.toString());
+		data.put(ServerKeys.KEY_USER_TAG_IDS, mAddEndorseArray.toString());
+		data.put(ServerKeys.KEY_CANCEL_TAG_IDS, mCancelEndorseArray.toString());
 
 		request.post(ServerKeys.FULL_URL_ENDORSE_MEMBERS, data);
 

@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,10 +207,10 @@ public class CreateStep4Fragment extends Fragment {
 	}
 
 	public boolean checkUserInput() {
-		if (TextUtils.isEmpty(mDescriptionEditText.getText())) {
-			mDescriptionEditText.setError(getString(R.string.please_input_a_description_for_your_meeting));
-			return false;
-		}
+		// if (TextUtils.isEmpty(mDescriptionEditText.getText())) {
+		// mDescriptionEditText.setError(getString(R.string.please_input_a_description_for_your_meeting));
+		// return false;
+		// }
 		return true;
 	}
 

@@ -15,13 +15,13 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,7 +31,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.DialogUtils;
+import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
+import com.meetisan.meetisan.widget.ClearEditText;
 
 public class GoogleMapActivity extends Activity implements OnMapClickListener {
 	private static final String TAG = GoogleMapActivity.class.getSimpleName();
@@ -56,7 +58,16 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		try {
 			Class.forName("com.google.android.maps.MapActivity");
 		} catch (Exception e) {
-			ToastHelper.showToast(R.string.can_not_use_google_map);
+			// ToastHelper.showToast(R.string.can_not_use_google_map);
+			DialogUtils.showDialog(GoogleMapActivity.this, "Warning!", "Can\'t user Google Map on your device", "OK",
+					null, new OnDialogClickListener() {
+
+						@Override
+						public void onClick(boolean isPositiveBtn) {
+							// TODO Auto-generated method stub
+							GoogleMapActivity.this.finish();
+						}
+					});
 			return;
 		}
 		Bundle bundle = new Bundle();
@@ -98,7 +109,15 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 				zoomToMeetingLocation(mMap, mLatitude, mLongitude);
 			}
 		} else {
-			ToastHelper.showToast("Can not Load Google Maps on your device");
+			DialogUtils.showDialog(GoogleMapActivity.this, "Warning!", "Can not Load Google Maps on your device", "OK",
+					null, new OnDialogClickListener() {
+
+						@Override
+						public void onClick(boolean isPositiveBtn) {
+							// TODO Auto-generated method stub
+							GoogleMapActivity.this.finish();
+						}
+					});
 		}
 	}
 
@@ -124,7 +143,9 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 			public void onClick(View v) {
 				if (isSetLocation) {
 					if (mSetLatLng == null) {
-						ToastHelper.showToast(R.string.error_set_meeting_location_empty);
+						// ToastHelper.showToast(R.string.error_set_meeting_location_empty);
+						DialogUtils.showDialog(GoogleMapActivity.this, "Wait!",
+								"Select a location by typing an address or tapping on thre map", "OK", null, null);
 					} else {
 						Intent data = new Intent();
 						data.putExtra("Latitude", mSetLatLng.latitude);
@@ -145,14 +166,14 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		if (isSetLocation) {
 			RelativeLayout mSearchLayout = (RelativeLayout) findViewById(R.id.layout_search);
 			mSearchLayout.setVisibility(View.VISIBLE);
-			Button mSearchBtn = (Button) findViewById(R.id.btn_search);
-			final EditText mSearchTxt = (EditText) findViewById(R.id.search_edit_text);
-			mSearchBtn.setOnClickListener(new OnClickListener() {
+			final ClearEditText mSearchTxt = (ClearEditText) findViewById(R.id.search_edit_text);
+			mSearchTxt.setOnEditorActionListener(new OnEditorActionListener() {
+
 				@Override
-				public void onClick(View v) {
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 					String locationName = mSearchTxt.getText().toString();
 					if (locationName == null || TextUtils.isEmpty(locationName)) {
-						ToastHelper.showToast("Please enter your search position!");
+						// ToastHelper.showToast("Please enter your search position!");
 					} else {
 						List<Address> addressList = getAddressByName(locationName);
 						if (addressList.size() > 0) {
@@ -163,9 +184,10 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 							String snippet = "Location: " + mAddressName;
 							setMarkerOptions(mMap, latLng, snippet);
 						} else {
-							ToastHelper.showToast("Can not find you enter position!");
+							// ToastHelper.showToast("Can not find you enter position!");
 						}
 					}
+					return false;
 				}
 			});
 		}
@@ -290,7 +312,7 @@ public class GoogleMapActivity extends Activity implements OnMapClickListener {
 		List<Address> address = null;
 		try {
 			Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-			address = geocoder.getFromLocationName(locationName, 5);
+			address = geocoder.getFromLocationName(locationName, 1);
 
 			for (Address add : address) {
 				Log.d(TAG, "GetFromLocationName: Latitude: " + add.getLatitude() + "; Longitude: " + add.getLongitude());

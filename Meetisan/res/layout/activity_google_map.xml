@@ -21,28 +21,22 @@
     <RelativeLayout
         android:id="@+id/layout_search"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_search_and_sort_panel_height"
+        android:layout_height="55dp"
         android:layout_below="@+id/include_title"
-        android:padding="5dp"
+        android:padding="10dp"
         android:visibility="gone" >
 
-        <EditText
+        <com.meetisan.meetisan.widget.ClearEditText
             android:id="@+id/search_edit_text"
-            style="@style/SearchLayout.Edit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:layout_toLeftOf="@+id/btn_search"
-            android:background="@drawable/search_edit_selector" />
-
-        <Button
-            android:id="@+id/btn_search"
-            style="@style/SearchLayout.Button"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/search_hint" />
+            android:background="@drawable/square_bg_gray_transparent"
+            android:drawableLeft="@drawable/search_icon_left"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:padding="5dp"
+            android:singleLine="true" />
     </RelativeLayout>
 
 </RelativeLayout>

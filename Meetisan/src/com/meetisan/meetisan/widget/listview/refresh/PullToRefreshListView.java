@@ -62,13 +62,14 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 	}
 
 	@Override
-	protected void onRefreshing(final boolean doScroll) {
+	public void onRefreshing(final boolean doScroll) {
 		/**
 		 * If we're not showing the Refreshing view, or the list is empty, the
 		 * the header/footer views won't show so we use the normal method.
 		 */
 		ListAdapter adapter = mRefreshableView.getAdapter();
 		if (!mListViewExtrasEnabled || !getShowViewWhileRefreshing() || null == adapter || adapter.isEmpty()) {
+			/* || adapter.isEmpty() */
 			super.onRefreshing(doScroll);
 			return;
 		}
@@ -79,22 +80,22 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 		final int selection, scrollToY;
 
 		switch (getCurrentMode()) {
-			case MANUAL_REFRESH_ONLY:
-			case PULL_FROM_END:
-				origLoadingView = getFooterLayout();
-				listViewLoadingView = mFooterLoadingView;
-				oppositeListViewLoadingView = mHeaderLoadingView;
-				selection = mRefreshableView.getCount() - 1;
-				scrollToY = getScrollY() - getFooterSize();
-				break;
-			case PULL_FROM_START:
-			default:
-				origLoadingView = getHeaderLayout();
-				listViewLoadingView = mHeaderLoadingView;
-				oppositeListViewLoadingView = mFooterLoadingView;
-				selection = 0;
-				scrollToY = getScrollY() + getHeaderSize();
-				break;
+		case MANUAL_REFRESH_ONLY:
+		case PULL_FROM_END:
+			origLoadingView = getFooterLayout();
+			listViewLoadingView = mFooterLoadingView;
+			oppositeListViewLoadingView = mHeaderLoadingView;
+			selection = mRefreshableView.getCount() - 1;
+			scrollToY = getScrollY() - getFooterSize();
+			break;
+		case PULL_FROM_START:
+		default:
+			origLoadingView = getHeaderLayout();
+			listViewLoadingView = mHeaderLoadingView;
+			oppositeListViewLoadingView = mFooterLoadingView;
+			selection = 0;
+			scrollToY = getScrollY() + getHeaderSize();
+			break;
 		}
 
 		// Hide our original Loading View
@@ -140,22 +141,22 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 		final boolean scrollLvToEdge;
 
 		switch (getCurrentMode()) {
-			case MANUAL_REFRESH_ONLY:
-			case PULL_FROM_END:
-				originalLoadingLayout = getFooterLayout();
-				listViewLoadingLayout = mFooterLoadingView;
-				selection = mRefreshableView.getCount() - 1;
-				scrollToHeight = getFooterSize();
-				scrollLvToEdge = Math.abs(mRefreshableView.getLastVisiblePosition() - selection) <= 1;
-				break;
-			case PULL_FROM_START:
-			default:
-				originalLoadingLayout = getHeaderLayout();
-				listViewLoadingLayout = mHeaderLoadingView;
-				scrollToHeight = -getHeaderSize();
-				selection = 0;
-				scrollLvToEdge = Math.abs(mRefreshableView.getFirstVisiblePosition() - selection) <= 1;
-				break;
+		case MANUAL_REFRESH_ONLY:
+		case PULL_FROM_END:
+			originalLoadingLayout = getFooterLayout();
+			listViewLoadingLayout = mFooterLoadingView;
+			selection = mRefreshableView.getCount() - 1;
+			scrollToHeight = getFooterSize();
+			scrollLvToEdge = Math.abs(mRefreshableView.getLastVisiblePosition() - selection) <= 1;
+			break;
+		case PULL_FROM_START:
+		default:
+			originalLoadingLayout = getHeaderLayout();
+			listViewLoadingLayout = mHeaderLoadingView;
+			scrollToHeight = -getHeaderSize();
+			selection = 0;
+			scrollLvToEdge = Math.abs(mRefreshableView.getFirstVisiblePosition() - selection) <= 1;
+			break;
 		}
 
 		// If the ListView header loading layout is showing, then we need to

@@ -367,12 +367,28 @@
                     android:id="@+id/btn_meet"
                     style="@style/ButtonStyle"
                     android:layout_margin="10dp"
-                    android:text="@string/meet" />
+                    android:text="@string/meet"
+                    android:visibility="gone" />
+                
+                <Button
+                    android:id="@+id/btn_meet_set_time"
+                    style="@style/GrayButtonStyle"
+                    android:layout_margin="10dp"
+                    android:text="@string/agree_to_meet"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn_cancel_meet"
+                    style="@style/RedButtonStyle"
+                    android:layout_margin="10dp"
+                    android:text="@string/cancel_meeting"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/btn_meet_reject"
                     style="@style/RedButtonStyle"
                     android:layout_margin="10dp"
+                    android:text="@string/reject"
                     android:visibility="gone" />
 
                 <TextView
@@ -385,7 +401,8 @@
                     android:padding="5dp"
                     android:text="@string/report"
                     android:textColor="@drawable/selector_text_red_gray"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <TextView

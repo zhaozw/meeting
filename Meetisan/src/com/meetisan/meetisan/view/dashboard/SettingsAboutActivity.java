@@ -142,9 +142,15 @@ public class SettingsAboutActivity extends Activity implements OnClickListener {
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
 				if (UserInfoKeeper.clearUserInfo(SettingsAboutActivity.this)) {
-					Intent intent = new Intent(SettingsAboutActivity.this, LoginActivity.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-					startActivity(intent);
+					// Intent intent = new Intent(SettingsAboutActivity.this,
+					// LoginActivity.class);
+					// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					// startActivity(intent);
+
+					Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(
+							getBaseContext().getPackageName());
+					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					startActivity(i);
 					SettingsAboutActivity.this.finish();
 				}
 			}

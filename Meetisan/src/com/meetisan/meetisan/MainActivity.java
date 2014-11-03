@@ -9,18 +9,20 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
+import cn.jpush.android.api.JPushInterface;
 
 import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.notifications.NotificationsActivity;
 import com.meetisan.meetisan.utils.DialogUtils;
+import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
-import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.view.create.CreateActivity;
 import com.meetisan.meetisan.view.dashboard.DashboardActivity;
 import com.meetisan.meetisan.view.meet.MeetActivity;
@@ -65,11 +67,15 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
+		String mJPushMsg = null;
 		Bundle bundle = new Bundle();
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
 			isMeetPerson = bundle.getBoolean("IsMeetPerson", false);
 			meetPersonID = bundle.getLong("PersonID", -1L);
+
+			mJPushMsg = bundle.getString(JPushInterface.EXTRA_ALERT, null);
+			Log.e(LOG_ACTIVITY_SERVICE, "=====MSG: " + mJPushMsg);
 		}
 		// if do not get meet PersonID
 		if (isMeetPerson && meetPersonID < 0) {
@@ -79,6 +85,11 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		syncUserLocationToServer();
 
 		setup();
+
+		registerMessageReceiver();
+
+		showJPushNotification(mJPushMsg);
+
 	}
 
 	@Override
@@ -189,6 +200,21 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		}
 	}
 
+	private void showJPushNotification(String msg) {
+		if (msg == null) {
+			return;
+		}
+		DialogUtils.showDialog(MainActivity.this, null, msg, "Show it now", "Later", new OnDialogClickListener() {
+
+			@Override
+			public void onClick(boolean isPositiveBtn) {
+				if (isPositiveBtn) {
+					mRadioGroup.check(RADIO_BTN_IDS[4]);
+				}
+			}
+		});
+	}
+
 	// for receive customer msg from jpush server
 	private MessageReceiver mMessageReceiver;
 	public static final String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
@@ -209,20 +235,13 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
-				String messge = intent.getStringExtra(KEY_MESSAGE);
-				String extras = intent.getStringExtra(KEY_EXTRAS);
-				final StringBuilder showMsg = new StringBuilder();
-				showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
-				if (!Util.isEmpty(extras)) {
-					showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
-				}
+				final String messge = intent.getStringExtra(KEY_MESSAGE);
+				final String extras = intent.getStringExtra(KEY_EXTRAS);
 
 				runOnUiThread(new Runnable() {
-
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
-						DialogUtils.showDialog(MainActivity.this, "Tips", showMsg.toString(), "OK", null, null);
+						showJPushNotification(messge);
 					}
 				});
 			}

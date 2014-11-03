@@ -13,6 +13,8 @@
     <string name="end">End</string>
     <string name="location_upcase">LOCATION</string>
     <string name="meet">Meet</string>
+    <string name="agree_to_meet">Agree to Meet</string>
+    <string name="cancel_meet">Cancel Meeting</string>
     <string name="set_time">Set Time</string>
     <string name="attend_meeting_success">Success To Attend This Meeting</string>
     <string name="attend_meeting_failure">Failed To Attend This Meeting</string>
@@ -27,6 +29,9 @@
     <string name="report_success">Report Submitted Successfully</string>
     <string name="report_failed">Report Submitted Failure</string>
     <string name="hint_enter_report_tips">Please include the Person\'s Name, the Meeting\'s Name, Time and Date, and nature of the misdemeanour.</string>
-
     <string name="meet_canceled_tips">This Meeting is been Canceled.</string>
+    <string name="meet_canceled">Meeting Cancelled</string>
+    <string name="meet_scheduled">Meeting Scheduled</string>
+    <string name="meet_succeed">Succeed</string>
+
 </resources>

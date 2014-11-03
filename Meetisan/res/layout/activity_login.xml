@@ -39,6 +39,7 @@
                 android:hint="@string/prompt_password"
                 android:imeActionId="@+id/login"
                 android:imeActionLabel="@string/login"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword" />
 
             <Button

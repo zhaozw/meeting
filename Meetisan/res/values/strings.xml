@@ -25,6 +25,7 @@
     <string name="device_not_support_google_play_services">Your device is not supported Google Play services.</string>
     <string name="cancel">Cancel</string>
     <string name="cancel_meeting">Cancel Meeting</string>
+    <string name="reject">Reject</string>
     <string name="sure">Sure</string>
     <string name="ok">OK</string>
     <string name="search_hint">Search</string>
@@ -42,4 +43,7 @@
     <string name="title_activity_set_time">SetTimeActivity</string>
     <string name="hello_world">Hello world!</string>
 
+    <string name="year">year</string>
+    <string name="month">month</string>
+    <string name="day">day</string>
 </resources>

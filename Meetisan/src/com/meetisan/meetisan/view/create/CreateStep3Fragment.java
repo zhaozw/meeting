@@ -24,8 +24,7 @@ import android.widget.TextView;
 
 import com.meetisan.meetisan.GoogleMapActivity;
 import com.meetisan.meetisan.R;
-import com.meetisan.meetisan.database.UserInfoKeeper;
-import com.meetisan.meetisan.utils.DebugUtils;
+import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.widget.LabelWithIcon;
 
 /**
@@ -59,8 +58,8 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 	private TextView mEndTime1Txt, mEndTime2Txt, mEndTime3Txt;
 	private long startTime1 = -1, startTime2 = -1, startTime3 = -1;
 	private long endTime1 = -1, endTime2 = -1, endTime3 = -1;;
-	private double mLatitude;
-	private double mLongitude;
+	private double mLatitude = -1;
+	private double mLongitude = -1;
 	private String address;
 
 	/**
@@ -157,7 +156,7 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 	private void updateTimeLayout(int index) {
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault());
-		long startTime = calendar.getTimeInMillis();
+		long startTime = calendar.getTimeInMillis() + 3600 * 1000 * 3;
 		long endTime = startTime + 3600 * 1000;
 
 		if (index == 1) {
@@ -216,6 +215,14 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
+	}
+
+	public boolean checkUserInput() {
+		if (mLongitude == -1 || mLatitude == -1) {
+			DialogUtils.showDialog(getActivity(), "Wait!", "Please select a location", "OK", null, null);
+			return false;
+		}
+		return true;
 	}
 
 	public Map<String, Object> getData() {
