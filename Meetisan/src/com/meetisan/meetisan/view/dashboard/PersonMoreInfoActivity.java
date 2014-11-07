@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +30,8 @@ import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 
 public class PersonMoreInfoActivity extends Activity implements OnClickListener {
 
-	private ClearEditText mSchoolTxt, mCityTxt, mExperienceTxt, mEducationTxt, mSkillsTxt;
+	private ClearEditText mSchoolTxt, mCityTxt;
+	private EditText mExperienceTxt, mEducationTxt, mSkillsTxt;
 	private TextView mSaveTxt, mBirthdayTxt, mGenderTxt;
 	private PeopleInfo mUserInfo = new PeopleInfo();
 	private long userId = -1;
@@ -78,9 +80,9 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		mBirthdayTxt.setOnClickListener(this);
 		mGenderTxt = (TextView) findViewById(R.id.txt_gender);
 		mGenderTxt.setOnClickListener(this);
-		mExperienceTxt = (ClearEditText) findViewById(R.id.txt_experience);
-		mEducationTxt = (ClearEditText) findViewById(R.id.txt_education);
-		mSkillsTxt = (ClearEditText) findViewById(R.id.txt_skills);
+		mExperienceTxt = (EditText) findViewById(R.id.txt_experience);
+		mEducationTxt = (EditText) findViewById(R.id.txt_education);
+		mSkillsTxt = (EditText) findViewById(R.id.txt_skills);
 
 		Log.e("-------", "Profile User ID: " + userId + "; Cur User ID: " + curUserId);
 		if (userId != curUserId) {
@@ -283,22 +285,23 @@ public class PersonMoreInfoActivity extends Activity implements OnClickListener 
 		// if (!mUserInfo.getName().equals(mName)) {
 		// data.put(ServerKeys.KEY_NAME, mName);
 		// }
-		if (!mUserInfo.getUniversity().equals(mSchool)) {
+		if ((mUserInfo.getUniversity() == null && mSchool != null) || !mUserInfo.getUniversity().equals(mSchool)) {
 			data.put(ServerKeys.KEY_UNIVERSITY, mSchool);
 		}
-		if (!mUserInfo.getCity().equals(mCity)) {
+		if ((mUserInfo.getCity() == null && mCity != null) || !mUserInfo.getCity().equals(mCity)) {
 			data.put(ServerKeys.KEY_CITY, mCity);
 		}
 		if (!mUserInfo.getBirthday().equals(mBirthday)) {
 			data.put(ServerKeys.KEY_AGE, mBirthday);
 		}
-		if (!mUserInfo.getExperience().equals(mExperience)) {
+		if ((mUserInfo.getExperience() == null && mExperience != null)
+				|| !mUserInfo.getExperience().equals(mExperience)) {
 			data.put(ServerKeys.KEY_EXPERIENCE, mExperience);
 		}
-		if (!mUserInfo.getEducation().equals(mEducation)) {
+		if ((mUserInfo.getEducation() == null && mEducation != null) || !mUserInfo.getEducation().equals(mEducation)) {
 			data.put(ServerKeys.KEY_EDUCATION, mEducation);
 		}
-		if (!mUserInfo.getSkills().equals(mSkills)) {
+		if ((mUserInfo.getSkills() == null && mSkills != null) || !mUserInfo.getSkills().equals(mSkills)) {
 			data.put(ServerKeys.KEY_SKILLS, mSkills);
 		}
 		if (mUserInfo.getGender() != mGender) {

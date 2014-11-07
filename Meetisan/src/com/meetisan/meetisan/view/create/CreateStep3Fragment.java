@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import com.meetisan.meetisan.GoogleMapActivity;
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.utils.DebugUtils;
 import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.widget.LabelWithIcon;
 
@@ -218,6 +220,11 @@ public class CreateStep3Fragment extends Fragment implements OnClickListener {
 	}
 
 	public boolean checkUserInput() {
+		if (DebugUtils.IS_DEBUG) {
+			mLongitude = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_LON, 0.0f);
+			mLatitude = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_LAT, 0.0f);
+		}
+
 		if (mLongitude == -1 || mLatitude == -1) {
 			DialogUtils.showDialog(getActivity(), "Wait!", "Please select a location", "OK", null, null);
 			return false;

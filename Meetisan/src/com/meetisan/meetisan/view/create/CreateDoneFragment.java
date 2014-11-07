@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
@@ -71,11 +72,12 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 	private LabelWithIcon mInviteLabel;
 	// private long mInvitePeopleID = -1;
 	private ArrayList<Long> mInviteList = new ArrayList<Long>();
-	private String mInvitePeopleName = null;
 
 	Map<String, Object> data = new TreeMap<String, Object>();
 	Map<String, Object> timeMap = new TreeMap<String, Object>();
 	List<TagInfo> tagList = new ArrayList<TagInfo>();
+	private PeopleInfo mInvitedPeople;
+	private boolean isMultipleMeetingType;
 
 	/**
 	 * Use this factory method to create a new instance of this fragment using
@@ -98,13 +100,13 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 	}
 
 	public CreateDoneFragment() {
-		Bundle bundle = getArguments();
-		if (bundle != null && bundle.getBoolean("IsMeetPerson")) {
-			long mInvitePeopleID = bundle.getLong("PersonID");
-			mInviteList.add(mInvitePeopleID);
-			mInvitePeopleName = bundle.getString("PersonName");
-			mInviteLabel.setText(mInvitePeopleName);
-		}
+		// Bundle bundle = getArguments();
+		// if (bundle != null && bundle.getBoolean("IsMeetPerson")) {
+		// long mInvitePeopleID = bundle.getLong("PersonID");
+		// mInviteList.add(mInvitePeopleID);
+		// mInvitePeopleName = bundle.getString("PersonName");
+		// mInviteLabel.setText(mInvitePeopleName);
+		// }
 	}
 
 	@Override
@@ -141,7 +143,6 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 		mLogoImageView = (CircleImageView) view.findViewById(R.id.iv_portrait);
 		mInviteLabel = (LabelWithIcon) view.findViewById(R.id.rl_create_invite_people);
 		mInviteLabel.setOnClickListener(this);
-		mInviteLabel.setText(mInvitePeopleName);
 		FragmentActivity activity = getActivity();
 
 		if (activity instanceof CreateActivity) {
@@ -192,6 +193,11 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 			if (data.get("Logo") != null) {
 				mLogoImageView.setImageBitmap(Tools.base64ToBitmap((String) data.get("Logo")));
 			}
+
+			mInvitedPeople = createActivity.getInvitedPeople();
+			if (mInvitedPeople != null) {
+				mInviteLabel.setText(mInvitedPeople.getName());
+			}
 		}
 
 		return view;
@@ -236,7 +242,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 			CreateActivity createActivity = (CreateActivity) getActivity();
 			data = createActivity.getData();
 			int maxPerson = (Integer) data.get("MaxPerson");
-			boolean isMultiModel = maxPerson == 1 ? false : true;
+			isMultipleMeetingType = maxPerson == 1 ? false : true;
 			List<TagInfo> tagList = createActivity.getTagInfos();
 			String tagIDs = "";
 			if (tagList != null && tagList.size() > 0) {
@@ -250,7 +256,7 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 			}
 
 			Intent intent = new Intent(getActivity().getApplicationContext(), SelectPeopleActivity.class);
-			intent.putExtra("isMulitSelect", isMultiModel);
+			intent.putExtra("isMulitSelect", isMultipleMeetingType);
 			intent.putExtra("TagIDs", tagIDs);
 			startActivityForResult(intent, REQUEST_CODE_CREATE_DONE_INVITE_PEOPLE);
 			break;
@@ -280,11 +286,25 @@ public class CreateDoneFragment extends Fragment implements OnClickListener {
 						for (int i = 0; i < nameArray.length(); i++) {
 							names += (nameArray.getString(i) + "  ");
 						}
+						if (isMultipleMeetingType && mInvitedPeople != null) {
+							if (!mInviteList.contains(mInvitedPeople.getId())) {
+								mInviteList.add(mInvitedPeople.getId());
+								names += mInvitedPeople.getName();
+							}
+						}
 						mInviteLabel.setText(names);
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 
+				} else {
+					String names = "";
+					mInviteList.clear();
+					if (mInvitedPeople != null) {
+						mInviteList.add(mInvitedPeople.getId());
+						names += mInvitedPeople.getName();
+						mInviteLabel.setText(names);
+					}
 				}
 			}
 		}

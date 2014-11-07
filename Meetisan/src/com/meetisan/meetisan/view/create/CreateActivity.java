@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
+import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.utils.InputMethodUtils;
 
@@ -150,7 +151,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		mCreateStep3Fragment = null;
 		mCreateStep4Fragment = null;
 		mCreateDoneFragment = null;
-		
+
 		transaction.add(R.id.fl_fragment_container, mCreateStep1Fragment);
 		transaction.commit();
 		setTitleViews(mCurrentStepIndex);
@@ -287,6 +288,17 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 	}
 
 	public List<TagInfo> getTagInfos() {
-		return mCreateStep2Fragment.getData();
+		if (mCreateStep2Fragment != null) {
+			return mCreateStep2Fragment.getData();
+		}
+		return null;
+	}
+
+	public PeopleInfo getInvitedPeople() {
+		if (mCreateStep1Fragment != null) {
+			return mCreateStep1Fragment.getInvitedPeople();
+		}
+		
+		return null;
 	}
 }

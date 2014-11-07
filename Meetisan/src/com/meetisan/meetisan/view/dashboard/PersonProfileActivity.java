@@ -219,7 +219,7 @@ public class PersonProfileActivity extends Activity implements OnClickListener {
 		HttpRequest request = new HttpRequest();
 
 		if (mProgressDialog == null) {
-			mProgressDialog = new CustomizedProgressDialog(this, R.string.loading_userinfo);
+			mProgressDialog = new CustomizedProgressDialog(this, R.string.loading);
 		} else {
 			if (mProgressDialog.isShowing()) {
 				mProgressDialog.dismiss();

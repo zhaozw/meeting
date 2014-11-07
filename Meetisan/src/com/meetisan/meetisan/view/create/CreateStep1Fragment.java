@@ -11,24 +11,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.utils.HttpBitmap;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.ClearEditText;
 import com.meetisan.meetisan.widget.LabelWithSwitchButton;
+import com.meetisan.meetisan.widget.SwipeLayout;
 
 public class CreateStep1Fragment extends Fragment {
 	private OnFragmentInteractionListener mListener;
 	private ClearEditText mMeetingTitle;
 	private LabelWithSwitchButton mPrivateMeeting;
 	private LinearLayout mMeetPersonLayout;
-	private RelativeLayout mMeetPersonItemLayout;
+	private LinearLayout mMeetPersonItemLayout;
+	private SwipeLayout mSwipeLayout;
 	private CircleImageView mMeetPersonCircleImageView;
 	private TextView mMeetPersonTextView;
 
@@ -52,9 +55,19 @@ public class CreateStep1Fragment extends Fragment {
 		mPrivateMeeting = (LabelWithSwitchButton) view.findViewById(R.id.switch_create_private_meeting);
 		mPrivateMeeting.setChecked(false);
 		mMeetPersonLayout = (LinearLayout) view.findViewById(R.id.ll_the_people_your_invite);
-		mMeetPersonItemLayout = (RelativeLayout) view.findViewById(R.id.rl_create_let_us_meeting_invite_people);
+		mMeetPersonItemLayout = (LinearLayout) view.findViewById(R.id.rl_create_let_us_meeting_invite_people);
 		mMeetPersonCircleImageView = (CircleImageView) view.findViewById(R.id.iv_portrait);
 		mMeetPersonTextView = (TextView) view.findViewById(R.id.tv_create_invite_people_name);
+
+		mSwipeLayout = (SwipeLayout) view.findViewById(R.id.swipe_layout);
+		mSwipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+		mSwipeLayout.findViewById(R.id.item_right_view).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mMeetPersonBundle = null;
+				mMeetPersonLayout.setVisibility(View.GONE);
+			}
+		});
 
 		if (mMeetPersonBundle != null) {
 			if (mMeetPersonBundle.getBoolean("IsMeetPerson")) {
@@ -110,6 +123,21 @@ public class CreateStep1Fragment extends Fragment {
 		long mUserId = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_USER_ID, -1L);
 		data.put(ServerKeys.KEY_CREATE_USER_ID, mUserId);
 		return data;
+	}
+
+	public PeopleInfo getInvitedPeople() {
+		if (mMeetPersonBundle != null) {
+			if (mMeetPersonBundle.getBoolean("IsMeetPerson")) {
+				PeopleInfo info = new PeopleInfo();
+				info.setId(mMeetPersonBundle.getLong("PersonID"));
+				info.setName(mMeetPersonBundle.getString("PersonName"));
+				info.setAvatarUri(mMeetPersonBundle.getString("AvatarUri"));
+
+				return info;
+			}
+		}
+
+		return null;
 	}
 
 	@Override

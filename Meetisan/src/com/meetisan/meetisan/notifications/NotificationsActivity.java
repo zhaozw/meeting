@@ -60,7 +60,7 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 
 		initTitle();
 		initContentView();
-		getNotificationsFromServer(1, true, true);
+		// getNotificationsFromServer(1, true, true);
 	}
 
 	@Override

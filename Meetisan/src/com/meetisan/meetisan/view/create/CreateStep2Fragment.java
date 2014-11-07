@@ -213,10 +213,7 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 				selectCount++;
 			}
 		}
-		if (selectCount <= 0 || selectCount > 3) {
-			showErrorDialog(selectCount);
-			return false;
-		}
+
 		return true;
 	}
 
@@ -249,12 +246,25 @@ public class CreateStep2Fragment extends Fragment implements OnItemClickListener
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
 		TagInfo info = mTagsData.get(position - 1);
 		if (info.getState() == 0) {
-			// is checked
+			int selectCount = 0;
+			for (TagInfo tagInfo : mTagsData) {
+				if (tagInfo.getState() == 1) {
+					selectCount++;
+				}
+			}
+			if (selectCount >= 3) {
+				DialogUtils.showDialog(mParentActivity, R.string.sorry, R.string.please_select_less_tags, R.string.ok,
+						-1, null);
+				return;
+			}
+
+			// set unchecked
 			info.setState(1);
 		} else {
-			// is unchecked
+			// set checked
 			info.setState(0);
 		}
 		mAdapter.notifyDataSetChanged();

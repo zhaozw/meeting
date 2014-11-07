@@ -196,7 +196,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.btn_meet_reject:
-			if (mMeetInfo.getStatus() == 4) {
+			if (mMeetInfo.getJoinStatus() == 4) {
 				doRejectOrAgreeMeeting(true);
 			}
 			break;
@@ -290,20 +290,20 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		// mMeetInfo.getEndTime3()));
 		mLocationBtn.setText(Util.formatOutput(mMeetInfo.getAddress()));
 
-		// // 0:已参加; 1：未参加; 2：当前用户为meeting创建人; 3: 拒绝邀请 ; 4: 收到邀请;
-		// // 已过时
-		// if (mMeetInfo.getDeterminEndTime() != null &&
-		// Util.isMeetOverByTime(mMeetInfo.getDeterminEndTime())) {
-		// mMeetLayout.setVisibility(View.GONE);
-		// mRejectBtn.setVisibility(View.GONE);
-		// mMeetBtn.setVisibility(View.GONE);
-		// mReportTxt.setVisibility(View.GONE);
-		// mCannotJoinTxt.setVisibility(View.VISIBLE);
-		// }
+		// JoinStatus: 0:已参加; 1：未参加; 2：当前用户为meeting创建人; 3: 拒绝邀请 ; 4: 收到邀请;
 		// CanJoin当前用户是否可以加入meeting,false:不可以;true:可以;
 		// Status标识meeting是否被后台管理员禁用的标识, 0:正常, 1:被禁用, 2:取消
 		// 使用CanJoin字段，另外status为1、2也不能参加
-		if (mMeetInfo.getJoinStatus() == 2) {
+
+		// 已过时
+		if (mMeetInfo.getDeterminEndTime() != null && Util.isMeetOverByTime(mMeetInfo.getDeterminEndTime())) {
+			mMeetLayout.setVisibility(View.GONE);
+			mRejectBtn.setVisibility(View.GONE);
+			mMeetBtn.setVisibility(View.GONE);
+			mCancelMeetBtn.setVisibility(View.GONE);
+			mReportTxt.setVisibility(View.GONE);
+			mCannotJoinTxt.setVisibility(View.VISIBLE);
+		} else if (mMeetInfo.getJoinStatus() == 2) {
 			// 2:当前用户为meeting创建人;
 			mCancelMeetBtn.setVisibility(View.VISIBLE);
 			mRejectBtn.setVisibility(View.GONE);
@@ -672,7 +672,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			@Override
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
-				
+
 				CustomizedProgressDialog mDialog = null;
 				if (isReject) {
 					mDialog = new CustomizedProgressDialog(MeetProfileActivity.this, R.string.meet_canceled,

@@ -15,6 +15,7 @@
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="false"
         android:scrollbars="none" >
 
         <LinearLayout
@@ -156,7 +157,7 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <com.meetisan.meetisan.widget.ClearEditText
+                <EditText
                     android:id="@+id/txt_experience"
                     style="@style/ProfileEditTextStyle" />
             </LinearLayout>
@@ -175,9 +176,10 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <com.meetisan.meetisan.widget.ClearEditText
+                <EditText
                     android:id="@+id/txt_education"
-                    style="@style/ProfileEditTextStyle" />
+                    style="@style/ProfileEditTextStyle"
+                    android:inputType="textMultiLine" />
             </LinearLayout>
 
             <LinearLayout
@@ -195,9 +197,10 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_small" />
 
-                <com.meetisan.meetisan.widget.ClearEditText
+                <EditText
                     android:id="@+id/txt_skills"
-                    style="@style/ProfileEditTextStyle" />
+                    style="@style/ProfileEditTextStyle"
+                    android:inputType="textMultiLine" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -67,50 +67,71 @@
             style="@style/ProfileTitleLabelStyle"
             android:text="@string/slide_to_delete_people_invited" />
 
-        <RelativeLayout
-            android:id="@+id/rl_create_let_us_meeting_invite_people"
+        <com.meetisan.meetisan.widget.SwipeLayout
+            android:id="@+id/swipe_layout"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_gravity="center_vertical" >
-
-            <com.meetisan.meetisan.widget.CircleImageView
-                xmlns:customized="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/iv_portrait"
-                android:layout_width="55dp"
-                android:layout_height="50dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/portrait_person_default"
-                customized:border_color="@android:color/white"
-                customized:border_width="0dp" />
+            android:layout_height="70dp" >
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/iv_portrait"
-                android:orientation="vertical" >
+                android:id="@+id/item_right"
+                android:layout_width="65dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" >
 
-                <TextView
-                    android:id="@+id/tv_create_invite_people_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:text="@string/meeting_title"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_middle" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:singleLine="true"
-                    android:text="@string/has_been_invited_to_your_meeting"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="@dimen/text_size_small" />
+                <ImageView
+                    android:id="@+id/item_right_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/selector_delete_listview_btn_bg"
+                    android:gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_delete" />
             </LinearLayout>
-        </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/rl_create_let_us_meeting_invite_people"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <com.meetisan.meetisan.widget.CircleImageView
+                    xmlns:customized="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/iv_portrait"
+                    android:layout_width="55dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/portrait_person_default"
+                    customized:border_color="@android:color/white"
+                    customized:border_width="0dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_create_invite_people_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:text="@string/meeting_title"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_middle" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:singleLine="true"
+                        android:text="@string/has_been_invited_to_your_meeting"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_small" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.meetisan.meetisan.widget.SwipeLayout>
 
         <View style="@style/CreateActivityDividingLine" />
     </LinearLayout>

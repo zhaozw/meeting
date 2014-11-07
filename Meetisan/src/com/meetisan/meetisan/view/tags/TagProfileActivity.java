@@ -10,6 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -31,6 +33,7 @@ import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.view.dashboard.PersonProfileActivity;
 import com.meetisan.meetisan.widget.CircleImageView;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
+import com.meetisan.meetisan.widget.CustomizedProgressDialog.DialogStyle;
 import com.meetisan.meetisan.widget.LabelWithIcon;
 import com.meetisan.meetisan.widget.TagInFrameFoto;
 
@@ -330,7 +333,9 @@ public class TagProfileActivity extends Activity implements OnClickListener {
 				mAddTagDialog.dismiss();
 				mTagInfo.setFollow(1);
 				mAddBtn.setVisibility(View.GONE);
-				ToastHelper.showToast(R.string.success_add_tag, Toast.LENGTH_LONG);
+				CustomizedProgressDialog mDialog = new CustomizedProgressDialog(TagProfileActivity.this,
+						R.string.success_add_tag, DialogStyle.OK);
+				mDialog.show();
 			}
 
 			@Override
