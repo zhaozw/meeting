@@ -41,12 +41,12 @@ public class SelectPeopleActivity extends Activity {
 	private PullToRefreshListView mPullPeopleView;
 	private ListView mPeopleListView;
 	private List<PeopleInfo> mPeopleData = new ArrayList<PeopleInfo>();
+	private List<Long> mSelectedIDs = new ArrayList<Long>();
 
 	private SelectPeopleAdapter mPeopleAdapter;
 
 	private long mTotalPeople = 0;
 	private long mUserId = -1;
-	private boolean mIsInvitePeople = true;
 	private boolean mIsMulitSelect = false;
 	private String mTagIDs = "";
 
@@ -58,6 +58,17 @@ public class SelectPeopleActivity extends Activity {
 		mUserId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_USER_ID, -1L);
 		mIsMulitSelect = getIntent().getBooleanExtra("isMulitSelect", false);
 		mTagIDs = getIntent().getStringExtra("TagIDs");
+		String mPeopleIDs = getIntent().getStringExtra("PeopleIDs");
+		if (mPeopleIDs != null) {
+			try {
+				JSONArray mIDArray = new JSONArray(mPeopleIDs);
+				for (int i = 0; i < mIDArray.length(); i++) {
+					mSelectedIDs.add(mIDArray.getLong(i));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 		getPeoplesFromServer(1, true, true);
 
 		initView();
@@ -110,7 +121,7 @@ public class SelectPeopleActivity extends Activity {
 		});
 		mPeopleListView = mPullPeopleView.getRefreshableView();
 		registerForContextMenu(mPeopleListView);
-		mPeopleAdapter = new SelectPeopleAdapter(this, mPeopleData);
+		mPeopleAdapter = new SelectPeopleAdapter(this, mPeopleData, mSelectedIDs);
 		mPeopleListView.setAdapter(mPeopleAdapter);
 		mPeopleAdapter.notifyDataSetChanged();
 		mPullPeopleView.setVisibility(View.VISIBLE);
@@ -119,8 +130,8 @@ public class SelectPeopleActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				// TODO Auto-generated method stub
+				Log.d(TAG, "----------On Item Click---" + arg2);
 				if (!mIsMulitSelect) {
-					Log.d(TAG, "----------On Item Click-------");
 					JSONArray nameArray = new JSONArray();
 					JSONArray idArray = new JSONArray();
 					nameArray.put(mPeopleData.get(arg2 - 1).getName());
@@ -166,7 +177,7 @@ public class SelectPeopleActivity extends Activity {
 	}
 
 	private void updatePeopleListView() {
-		mPeopleAdapter.notifyDataSetChanged();
+		mPeopleAdapter.notifyDataSetChanged(true);
 		mPullPeopleView.onRefreshComplete();
 		if (mPeopleData.size() >= mTotalPeople) {
 			mPullPeopleView.setMode(Mode.PULL_FROM_START);

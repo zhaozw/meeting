@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.meetisan.meetisan.R;
@@ -20,25 +20,18 @@ import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CircleImageView;
 
 public class SelectPeopleAdapter extends BaseAdapter {
+	private static final String TAG = SelectPeopleAdapter.class.getSimpleName();
 
 	private LayoutInflater inflater;
 	private List<PeopleInfo> peopleData = new ArrayList<PeopleInfo>();
 	private HttpBitmap httpBitmap;
-	private boolean showStatus = false;
-	private List<PeopleInfo> mSelectList = new ArrayList<PeopleInfo>();
+	private List<Integer> mSelectList = new ArrayList<Integer>();
+	private List<Long> mSelectedIDs = new ArrayList<Long>();
 
-	public SelectPeopleAdapter(Context mContext, List<PeopleInfo> peopleData) {
+	public SelectPeopleAdapter(Context mContext, List<PeopleInfo> peopleData, List<Long> selectedIDs) {
 		inflater = LayoutInflater.from(mContext);
 		this.peopleData = peopleData;
-		this.showStatus = false;
-		httpBitmap = new HttpBitmap(mContext);
-		initSelectList();
-	}
-
-	public SelectPeopleAdapter(Context mContext, List<PeopleInfo> peopleData, boolean showStatus) {
-		inflater = LayoutInflater.from(mContext);
-		this.peopleData = peopleData;
-		this.showStatus = showStatus;
+		this.mSelectedIDs = selectedIDs;
 		httpBitmap = new HttpBitmap(mContext);
 		initSelectList();
 	}
@@ -67,19 +60,17 @@ public class SelectPeopleAdapter extends BaseAdapter {
 
 		final ViewHolder holder;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.item_listview_select_people, parent, false);
-			// convertView = View.inflate(mContext,
-			// R.layout.item_listview_meet_people, null);
 			holder = new ViewHolder();
+			convertView = inflater.inflate(R.layout.item_listview_select_people, parent, false);
+
 			holder.mCircleImage = (CircleImageView) convertView.findViewById(R.id.iv_portrait);
-			holder.mInvitationImage = (ImageView) convertView.findViewById(R.id.iv_invitation);
 			holder.mNameTxt = (TextView) convertView.findViewById(R.id.txt_name);
 			holder.mCollegeTxt = (TextView) convertView.findViewById(R.id.txt_college);
 			holder.mDistanceTxt = (TextView) convertView.findViewById(R.id.txt_distance);
 			holder.mTagOneTxt = (TextView) convertView.findViewById(R.id.txt_tag_one);
 			holder.mTagTwoTxt = (TextView) convertView.findViewById(R.id.txt_tag_two);
 			holder.mTagThreeTxt = (TextView) convertView.findViewById(R.id.txt_tag_three);
-			holder.checkBox = (CheckBox)convertView.findViewById(R.id.cb_select);
+			holder.checkBox = (CheckBox) convertView.findViewById(R.id.cb_select);
 
 			convertView.setTag(holder);
 		} else {
@@ -90,19 +81,6 @@ public class SelectPeopleAdapter extends BaseAdapter {
 
 		// 防止图片错位，先设置为默认图片
 		holder.mCircleImage.setImageResource(R.drawable.portrait_person_default);
-		if (showStatus) {
-			holder.mInvitationImage.setVisibility(View.VISIBLE);
-			int status = mPeopleInfo.getStatus();
-			if (status == 0) {
-				holder.mInvitationImage.setImageResource(R.drawable.icon_invited);
-			} else if (status == 1) {
-				holder.mInvitationImage.setImageResource(R.drawable.icon_accept);
-			} else {
-				holder.mInvitationImage.setImageResource(R.drawable.icon_refuse);
-			}
-		} else {
-			holder.mInvitationImage.setVisibility(View.GONE);
-		}
 
 		if (mPeopleInfo.getAvatarUri() != null) {
 			httpBitmap.displayBitmap(holder.mCircleImage, mPeopleInfo.getAvatarUri());
@@ -131,30 +109,50 @@ public class SelectPeopleAdapter extends BaseAdapter {
 			holder.mTagThreeTxt.setText(tagsList.get(2).getTitle());
 			holder.mTagThreeTxt.setVisibility(View.VISIBLE);
 		}
-		holder.checkBox.setChecked(mSelectList.contains(mPeopleInfo));
+		holder.checkBox.setChecked(mSelectList.contains(position));
 
 		return convertView;
 	}
 
 	public void toggleSelect(int position) {
-		PeopleInfo info = peopleData.get(position);
-
-		if (mSelectList.contains(info)) {
-			mSelectList.remove(info);
+		int index = mSelectList.indexOf(position);
+		if (index != -1) {
+			mSelectList.remove(index);
+			Log.e(TAG, "Remove Item: index=" + position);
 		} else {
-			mSelectList.add(info);
+			mSelectList.add(position);
+			Log.e(TAG, "Add Item:  index=" + position);
+		}
+
+		notifyDataSetChanged();
+	}
+
+	public void notifyDataSetChanged(boolean b) {
+		mSelectList.clear();
+		for (int i = 0; i < peopleData.size(); i++) {
+			long id = peopleData.get(i).getId();
+			for (Long l : mSelectedIDs) {
+				if (id == l) {
+					mSelectList.add(i);
+					break;
+				}
+			}
 		}
 
 		notifyDataSetChanged();
 	}
 
 	public List<PeopleInfo> getSelectList() {
-		return mSelectList;
+		List<PeopleInfo> mSelectPeople = new ArrayList<PeopleInfo>();
+		for (Integer i : mSelectList) {
+			mSelectPeople.add(peopleData.get(i));
+		}
+
+		return mSelectPeople;
 	}
 
 	static class ViewHolder {
 		CircleImageView mCircleImage;
-		ImageView mInvitationImage;
 		CheckBox checkBox;
 		TextView mNameTxt;
 		TextView mCollegeTxt;

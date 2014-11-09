@@ -30,7 +30,9 @@ import com.meetisan.meetisan.model.TagCategoryAdapter;
 import com.meetisan.meetisan.model.TagInfo;
 import com.meetisan.meetisan.model.TagsAdapter;
 import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
@@ -71,9 +73,9 @@ public class TagsActivity extends Activity {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
-		ImageButton mSeachBtn = (ImageButton)findViewById(R.id.btn_search);
+		ImageButton mSeachBtn = (ImageButton) findViewById(R.id.btn_search);
 		mSeachBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -81,7 +83,7 @@ public class TagsActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		
+
 		SegmentedGroup mTagsGroup = (SegmentedGroup) findViewById(R.id.group_tags);
 		mTagsGroup.setTintColor(getResources().getColor(R.color.segment_group_bg_check),
 				getResources().getColor(R.color.segment_group_text_check));
@@ -137,7 +139,7 @@ public class TagsActivity extends Activity {
 			public void onDelete(ListView listView, int position) {
 				position = position - 1; // ListView Header
 				if (position < mTagsListView.getCount()) {
-					deleteUserTagFromServer(mTagsData.get(position).getUserTagId(), position, true);
+					confirmDeleteTagDialog(position);
 				}
 			}
 		});
@@ -230,6 +232,19 @@ public class TagsActivity extends Activity {
 		} else {
 			mPullCategoryListView.setMode(Mode.BOTH);
 		}
+	}
+
+	public void confirmDeleteTagDialog(final int position) {
+		DialogUtils.showDialog(TagsActivity.this, R.string.warning, R.string.delete_tag_warnig_tips, R.string.delete,
+				R.string.cancel, new OnDialogClickListener() {
+
+					@Override
+					public void onClick(boolean isPositiveBtn) {
+						if (isPositiveBtn) {
+							deleteUserTagFromServer(mTagsData.get(position).getUserTagId(), position, true);
+						}
+					}
+				});
 	}
 
 	private CustomizedProgressDialog mProgressDialog = null;

@@ -314,14 +314,35 @@
             style="@style/ProfileTitleLabelStyle"
             android:text="@string/invite_people_upcase" />
 
-        <com.meetisan.meetisan.widget.LabelWithIcon
+        <LinearLayout
             android:id="@+id/rl_create_invite_people"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_small" />
+            android:background="@drawable/selector_listview_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp" >
+
+            <TextView
+                android:id="@+id/txt_people_one"
+                style="@style/TagLabelStyle" />
+
+            <TextView
+                android:id="@+id/txt_people_two"
+                style="@style/TagLabelStyle" />
+
+            <TextView
+                android:id="@+id/txt_people_three"
+                style="@style/TagLabelStyle" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.2"
+                android:scaleType="centerInside"
+                android:src="@drawable/icon_right_arrow" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_create_done"

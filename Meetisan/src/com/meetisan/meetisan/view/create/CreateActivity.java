@@ -175,6 +175,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 			break;
 		case 5:
 			transaction.hide(mCreateDoneFragment);
+			mCreateDoneFragment = null;
 			break;
 		default:
 			break;
@@ -298,7 +299,7 @@ public class CreateActivity extends FragmentActivity implements OnClickListener,
 		if (mCreateStep1Fragment != null) {
 			return mCreateStep1Fragment.getInvitedPeople();
 		}
-		
+
 		return null;
 	}
 }

@@ -102,10 +102,10 @@ public class SearchTagsActivity extends Activity implements OnClickListener {
 
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				// TODO Auto-generated method stub
 				tagName = v.getText().toString();
 				getMyTagsFromServer(1, true, true);
-				return false;
+
+				return true;
 			}
 		});
 		// mSearchView.setSearchListener(new SearchListener() {
