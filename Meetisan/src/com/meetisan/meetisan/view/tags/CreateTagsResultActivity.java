@@ -12,7 +12,7 @@ import com.meetisan.meetisan.utils.ToastHelper;
 
 public class CreateTagsResultActivity extends Activity implements OnClickListener {
 
-	private static final String FORMAT_CREATE_TAG_RESULT_TIPS = "Thanks for creating a '%s' Tag! We will review this submission and notify you in 48 hours. Thanks for your patience!";
+	private static final String FORMAT_CREATE_TAG_RESULT_TIPS = "Thanks for creating a \n'%s' Tag!\n\n We will review this submission and notify you in 48 hours. Thanks for your patience!";
 
 	private TextView mEmptyTxt;
 

@@ -22,6 +22,8 @@ public class SettingsKeeper {
 	public static final String KEY_PUSH_MEETINGS_JOINS = "settings_push_meetings_joins";
 	/** settings of push notification, when I receive an invitation to a meeting */
 	public static final String KEY_PUSH_MEETINGS_INVITATION = "settings_push_meetings_invitation";
+	
+	public static final String KEY_IS_FIRST_USE_APP = "is_first_use_app";
 
 	/**
 	 * write settings to preferences

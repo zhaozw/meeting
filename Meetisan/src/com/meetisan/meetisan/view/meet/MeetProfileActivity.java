@@ -172,9 +172,9 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.btn_meet:
 			if (mMeetInfo.getJoinStatus() == 4) {
-				doRejectOrAgreeMeeting(false);
-			} else {
 				attendMeeting();
+			} else {
+				doAttendMeeting();
 			}
 			break;
 		case R.id.btn_meet_set_time:
@@ -229,19 +229,19 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		mTitleTxt.setText(Util.formatOutput(mMeetInfo.getTitle()));
 		mDescriptionTxt.setText(Util.formatOutput(mMeetInfo.getDescription()));
 
-		if (mMeetInfo.getTimeSetType() == 1) { // I'll choose
-			if (mMeetInfo.getDeterminStartTime() != null && mMeetInfo.getDeterminEndTime() != null) {
-				try {
-					mStartTime1Txt.setText(Util.convertDateToMeetTime(mMeetInfo.getDeterminStartTime()));
-					mEndTime1Txt.setText(Util.convertDateToMeetTime(mMeetInfo.getDeterminEndTime()));
-				} catch (ParseException e) {
-					e.printStackTrace();
-					mStartTime1Txt.setText(Util.formatOutput(null));
-					mEndTime1Txt.setText(Util.formatOutput(null));
-				}
+		if (mMeetInfo.getDeterminStartTime() != null && mMeetInfo.getDeterminEndTime() != null) {
+			try {
+				mStartTime1Txt.setText(Util.convertDateToMeetTime(mMeetInfo.getDeterminStartTime()));
+				mEndTime1Txt.setText(Util.convertDateToMeetTime(mMeetInfo.getDeterminEndTime()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+				mStartTime1Txt.setText(Util.formatOutput(null));
+				mEndTime1Txt.setText(Util.formatOutput(null));
 			}
 			mTime1Layout.setBackgroundResource(android.R.color.white);
 			mTime1Layout.setVisibility(View.VISIBLE);
+			mTime2Layout.setVisibility(View.GONE);
+			mTime3Layout.setVisibility(View.GONE);
 		} else {
 			if (mMeetInfo.getStartTime1() != null && mMeetInfo.getEndTime1() != null) {
 				try {
@@ -357,10 +357,18 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 				// 该用户不可参加Meeting
 				if (mMeetInfo.getJoinStatus() == 4) {
 					// 4: 收到邀请，但没有选择Meeting时间
+					if (null != mMeetInfo.getStartTime1() && null == mMeetInfo.getStartTime2()
+							&& null == mMeetInfo.getStartTime3()) {
+						mSelectTimeIndex = 1;
+						mMeetTimeBtn.setVisibility(View.GONE);
+						mMeetBtn.setText("Agree to Meet");
+						mMeetBtn.setVisibility(View.VISIBLE);
+					} else {
+						mMeetTimeBtn.setVisibility(View.VISIBLE);
+						mMeetBtn.setVisibility(View.GONE);
+					}
 					mRejectBtn.setText("Reject");
-					mMeetTimeBtn.setVisibility(View.VISIBLE);
 					mRejectBtn.setVisibility(View.VISIBLE);
-					mMeetBtn.setVisibility(View.GONE);
 					mCancelMeetBtn.setVisibility(View.GONE);
 					mReportTxt.setVisibility(View.GONE);
 				} else {
@@ -402,7 +410,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		if (mSelectTimeIndex > 0) {
 			doSelectMeetingTime(mSelectTimeIndex);
 		} else {
-			doAttendMeeting();
+			doRejectOrAgreeMeeting(false);
 		}
 	}
 
@@ -528,17 +536,24 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		mProgressDialog.show();
 	}
 
-	private void doSelectMeetingTime(int mSelectTimeIndex) {
+	private void doSelectMeetingTime(final int mSelectTimeIndex) {
+		Log.d(TAG, "Select Meeting Time");
 		HttpRequest request = new HttpRequest();
+
+		String mBeginTime = null;
+		String mEndTime = null;
 
 		request.setOnHttpRequestListener(new OnHttpRequestListener() {
 
 			@Override
 			public void onSuccess(String url, String result) {
-				new CustomizedProgressDialog(MeetProfileActivity.this, R.string.meet_scheduled, DialogStyle.OK).show();
+				// new CustomizedProgressDialog(MeetProfileActivity.this,
+				// R.string.meet_scheduled, DialogStyle.OK).show();
 				mMeetInfo.setCanJoin(true);
+				// mMeetInfo.setDeterminStartTime(mBeginTime);
+				// mMeetInfo.setDeterminEndTime(mEndTime);
 				updateMeetProfileUI();
-				doAttendMeeting();
+				doRejectOrAgreeMeeting(false);
 			}
 
 			@Override
@@ -547,8 +562,6 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		String mBeginTime = null;
-		String mEndTime = null;
 		if (mSelectTimeIndex == 1) {
 			mBeginTime = mMeetInfo.getStartTime1();
 			mEndTime = mMeetInfo.getEndTime1();
@@ -565,6 +578,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 	}
 
 	private void doAttendMeeting() {
+		Log.d(TAG, "Attend Meeting");
 		HttpRequest request = new HttpRequest();
 		final CustomizedProgressDialog mProgressDialog = new CustomizedProgressDialog(this, R.string.waiting);
 
@@ -604,7 +618,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			@Override
 			public void onSuccess(String url, String result) {
 				mProgressDialog.dismiss();
-				DialogUtils.showDialog(MeetProfileActivity.this, null, "Cancel done", "OK", null,
+				DialogUtils.showDialog(MeetProfileActivity.this, null, "Meeting cancelled", "OK", null,
 						new OnDialogClickListener() {
 							@Override
 							public void onClick(boolean isPositiveBtn) {

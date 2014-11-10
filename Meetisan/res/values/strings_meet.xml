@@ -29,7 +29,7 @@
     <string name="report_success">Report Submitted Successfully</string>
     <string name="report_failed">Report Submitted Failure</string>
     <string name="hint_enter_report_tips">Please include the Person\'s Name, the Meeting\'s Name, Time and Date, and nature of the misdemeanour.</string>
-    <string name="meet_canceled_tips">This Meeting is been Canceled.</string>
+    <string name="meet_canceled_tips">This Meeting is been cancelled.</string>
     <string name="meet_canceled">Meeting Cancelled</string>
     <string name="meet_scheduled">Meeting Scheduled</string>
     <string name="meet_succeed">Succeed</string>

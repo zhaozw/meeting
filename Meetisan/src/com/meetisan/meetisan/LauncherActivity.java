@@ -1,5 +1,11 @@
 package com.meetisan.meetisan;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,9 +16,15 @@ import cn.jpush.android.api.JPushInterface;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.meetisan.meetisan.database.SettingsKeeper;
 import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
+import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
+import com.meetisan.meetisan.utils.ServerKeys;
+import com.meetisan.meetisan.utils.ToastHelper;
 
 public class LauncherActivity extends Activity {
 	private static final String TAG = LauncherActivity.class.getSimpleName();
@@ -39,19 +51,89 @@ public class LauncherActivity extends Activity {
 
 	@Override
 	public void onResume() {
-		super.onResume();
 		JPushInterface.onResume(this);
+		super.onResume();
 	}
-	
+
 	@Override
 	public void onPause() {
-		super.onPause();
 		JPushInterface.onPause(this);
+		super.onPause();
 	}
 
 	private void checkLoginState() {
-		SplashTimeTask timerTask = new SplashTimeTask();
-		timerTask.execute();
+		// SplashTimeTask timerTask = new SplashTimeTask();
+		// timerTask.execute();
+
+		boolean isFirstUse = SettingsKeeper.readPreferSettings(LauncherActivity.this,
+				SettingsKeeper.KEY_IS_FIRST_USE_APP, true);
+		if (isFirstUse) {
+			Intent intent = new Intent(LauncherActivity.this, GuideActivity.class);
+			startActivity(intent);
+			LauncherActivity.this.finish();
+		} else {
+			PeopleInfo mUserInfo = UserInfoKeeper.readUserInfo(this);
+			if (mUserInfo.getEmail() != null && mUserInfo.getPwd() != null) {
+				doLogin(mUserInfo.getEmail(), mUserInfo.getPwd());
+			} else {
+				Intent intent = new Intent(LauncherActivity.this, LoginActivity.class);
+				startActivity(intent);
+				LauncherActivity.this.finish();
+			}
+		}
+	}
+
+	private void doLogin(final String email, final String pwd) {
+		HttpRequest request = new HttpRequest();
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				JSONObject json;
+				try {
+					PeopleInfo mUserInfo = new PeopleInfo();
+					json = new JSONObject(result);
+					JSONObject data = json.getJSONObject(ServerKeys.KEY_DATA);
+					mUserInfo.setId(data.getLong(ServerKeys.KEY_ID));
+					if (!data.isNull(ServerKeys.KEY_NAME)) {
+						mUserInfo.setName(data.getString(ServerKeys.KEY_NAME));
+					}
+					if (!data.isNull(ServerKeys.KEY_AVATAR)) {
+						mUserInfo.setAvatarUri(data.getString(ServerKeys.KEY_AVATAR));
+					}
+					mUserInfo.setEmail(email);
+					mUserInfo.setPwd(pwd);
+					mUserInfo.setRegId(JPushInterface.getRegistrationID(getApplicationContext()));
+
+					if (UserInfoKeeper.writeUserInfo(LauncherActivity.this, mUserInfo)) {
+						Intent intent = new Intent(LauncherActivity.this, MainActivity.class);
+						startActivity(intent);
+						LauncherActivity.this.finish();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+					ToastHelper.showToast(R.string.app_occurred_exception);
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				Intent intent = new Intent(LauncherActivity.this, LoginActivity.class);
+				startActivity(intent);
+				LauncherActivity.this.finish();
+			}
+		});
+
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put(ServerKeys.KEY_EMAIL, email);
+		data.put(ServerKeys.KEY_PASSWORD, pwd);
+		String registrationID = JPushInterface.getRegistrationID(getApplicationContext());
+		Log.e(TAG, "==Do Login, RegID: " + JPushInterface.getRegistrationID(getApplicationContext()));
+		if (registrationID != null) {
+			data.put(ServerKeys.KEY_REG_ID, registrationID);
+		}
+		request.post(ServerKeys.FULL_URL_LOGIN, data);
 	}
 
 	public class SplashTimeTask extends AsyncTask<Void, Integer, String> {
@@ -78,15 +160,22 @@ public class LauncherActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			long mUserID = UserInfoKeeper.readUserInfo(LauncherActivity.this, UserInfoKeeper.KEY_USER_ID, -1L);
+			boolean isFirstUse = SettingsKeeper.readPreferSettings(LauncherActivity.this,
+					SettingsKeeper.KEY_IS_FIRST_USE_APP, true);
 			Intent intent = null;
-			if (mUserID < 0) {
-				intent = new Intent(LauncherActivity.this, LoginActivity.class);
+			if (isFirstUse) {
+				intent = new Intent(LauncherActivity.this, GuideActivity.class);
 			} else {
-				intent = new Intent(LauncherActivity.this, MainActivity.class);
+				long mUserID = UserInfoKeeper.readUserInfo(LauncherActivity.this, UserInfoKeeper.KEY_USER_ID, -1L);
+				if (mUserID < 0) {
+					intent = new Intent(LauncherActivity.this, LoginActivity.class);
+				} else {
+					intent = new Intent(LauncherActivity.this, MainActivity.class);
+				}
 			}
 			startActivity(intent);
 			finish();
+
 		}
 
 	}
@@ -180,7 +269,7 @@ public class LauncherActivity extends Activity {
 						});
 			} else {
 				Log.e(TAG, "This device is not supported.");
-				DialogUtils.showDialog(LauncherActivity.this, -1,  R.string.device_not_support_google_play_services,
+				DialogUtils.showDialog(LauncherActivity.this, -1, R.string.device_not_support_google_play_services,
 						DialogUtils.RESOURCE_ID_NONE, R.string.exit, new OnDialogClickListener() {
 
 							@Override

@@ -107,6 +107,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		unRegisterMessageReceiver();
 	}
 
 	private void setup() {
@@ -228,6 +229,12 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
 		filter.addAction(MESSAGE_RECEIVED_ACTION);
 		registerReceiver(mMessageReceiver, filter);
+	}
+
+	private void unRegisterMessageReceiver() {
+		if (mMessageReceiver != null) {
+			unregisterReceiver(mMessageReceiver);
+		}
 	}
 
 	public class MessageReceiver extends BroadcastReceiver {
