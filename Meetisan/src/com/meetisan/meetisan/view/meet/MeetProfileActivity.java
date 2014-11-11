@@ -86,7 +86,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		initView();
 
 		if (isMeetCanceled) {
-			DialogUtils.showDialog(this, R.string.warning, R.string.meet_canceled_tips, -1, R.string.ok,
+			DialogUtils.showDialog(this, R.string.warning, R.string.meet_canceled_tips, R.string.ok, -1,
 					new OnDialogClickListener() {
 						@Override
 						public void onClick(boolean isPositiveBtn) {

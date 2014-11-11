@@ -5,8 +5,13 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.util.Linkify;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,7 +22,8 @@ import android.widget.Toast;
 
 import com.meetisan.meetisan.R;
 import com.meetisan.meetisan.database.UserInfoKeeper;
-import com.meetisan.meetisan.utils.FormatUtils;
+import com.meetisan.meetisan.utils.DialogUtils;
+import com.meetisan.meetisan.utils.DialogUtils.OnDialogClickListener;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
@@ -29,7 +35,7 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 	private ImageButton mBackBtn;
 	private Button mSendBtn;
 	private EditText mEmailTxt;
-	private TextView mTipsTxt;
+	private TextView mTipsTxt, mPrivacyTxt;
 
 	private boolean isRegistion = false;
 
@@ -59,6 +65,16 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 		mSendBtn = (Button) findViewById(R.id.btn_send_code);
 		mSendBtn.setOnClickListener(this);
 		mEmailTxt = (EditText) findViewById(R.id.email);
+
+		mPrivacyTxt = (TextView) findViewById(R.id.txt_privacy_link);
+
+		SpannableString sp = new SpannableString(
+				"By signing up, you agree to UNSW Social\'s Terms and that you have read our Privacy Policy");
+		sp.setSpan(new URLSpan("http://www.meetisan.com/legal/terms"), 41, 47, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		sp.setSpan(new URLSpan("http://www.meetisan.com/legal/privacy"), 75, 89, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		mPrivacyTxt.setText(sp);
+		mPrivacyTxt.setAutoLinkMask(Linkify.WEB_URLS);
+		mPrivacyTxt.setMovementMethod(LinkMovementMethod.getInstance());
 	}
 
 	@Override
@@ -75,15 +91,54 @@ public class InsertEmailActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	private class URLSpan extends ClickableSpan {
+		private String url;
+
+		public URLSpan(String url) {
+			this.url = url;
+		}
+
+		@Override
+		public void onClick(View widget) {
+			try {
+				Uri uri = Uri.parse(url);
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				startActivity(intent);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	private void attemptSendCode() {
 		String email = mEmailTxt.getText().toString();
 
-		if (TextUtils.isEmpty(email)) {
-			ToastHelper.showToast(R.string.empty_email_tips);
-			return;
-		}
-		if (!FormatUtils.checkEmailAvailable(email)) {
-			ToastHelper.showToast(R.string.error_invalid_email);
+		// if (TextUtils.isEmpty(email)) {
+		// ToastHelper.showToast(R.string.empty_email_tips);
+		// return;
+		// }
+		// if (!FormatUtils.checkEmailAvailable(email)) {
+		if (!email.endsWith("unsw.edu.au")) {
+			DialogUtils
+					.showDialog(
+							this,
+							"Sorry!",
+							"UNSW Social is only available to UNSW students. Register for other networking apps by Meetisan at www.meetisan.com.",
+							"OK", "Cancel", new OnDialogClickListener() {
+
+								@Override
+								public void onClick(boolean isPositiveBtn) {
+									if (isPositiveBtn) {
+										try {
+											Uri url = Uri.parse("http://www.meetisan.com");
+											Intent intent = new Intent(Intent.ACTION_VIEW, url);
+											startActivity(intent);
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+								}
+							});
 			return;
 		}
 
