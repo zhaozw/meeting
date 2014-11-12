@@ -74,7 +74,11 @@ public class LauncherActivity extends Activity {
 		} else {
 			PeopleInfo mUserInfo = UserInfoKeeper.readUserInfo(this);
 			if (mUserInfo.getEmail() != null && mUserInfo.getPwd() != null) {
-				doLogin(mUserInfo.getEmail(), mUserInfo.getPwd());
+				// doLogin(mUserInfo.getEmail(), mUserInfo.getPwd());
+
+				Intent intent = new Intent(LauncherActivity.this, MainActivity.class);
+				startActivity(intent);
+				LauncherActivity.this.finish();
 			} else {
 				Intent intent = new Intent(LauncherActivity.this, LoginActivity.class);
 				startActivity(intent);

@@ -158,7 +158,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		System.exit(0);
+		// System.exit(0);
 	}
 
 	private void syncUserLocationToServer() {

@@ -1,5 +1,8 @@
 package com.meetisan.meetisan;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,7 +13,13 @@ import android.os.Bundle;
 import android.util.Log;
 import cn.jpush.android.api.JPushInterface;
 
+import com.meetisan.meetisan.database.UserInfoKeeper;
+import com.meetisan.meetisan.model.PeopleInfo;
+import com.meetisan.meetisan.utils.HttpRequest;
+import com.meetisan.meetisan.utils.ServerKeys;
+import com.meetisan.meetisan.utils.ToastHelper;
 import com.meetisan.meetisan.utils.Util;
+import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 
 /**
  * 自定义接收器
@@ -28,8 +37,6 @@ public class MyReceiver extends BroadcastReceiver {
 		if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
 			String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
 			Log.d(TAG, "接收Registration Id : " + regId);
-			// send the Registration Id to your server...
-
 		} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
 			Log.d(TAG, "自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
 			pushCustomMessage(context, bundle);
@@ -48,9 +55,9 @@ public class MyReceiver extends BroadcastReceiver {
 				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(i);
+				// pushCustomMessage(context,
+				// bundle.getString(JPushInterface.EXTRA_ALERT, null));
 			}
-
-			pushCustomMessage(context, bundle.getString(JPushInterface.EXTRA_ALERT, null));
 		} else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
 			Log.d(TAG, "用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
 			// 在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity，
@@ -59,6 +66,9 @@ public class MyReceiver extends BroadcastReceiver {
 		} else if (JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
 			boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
 			Log.e(TAG, "[MyReceiver]" + intent.getAction() + " connected state change to " + connected);
+			if (connected) {
+				sendRegIdToServer();
+			}
 		} else {
 			Log.d(TAG, "Unhandled intent - " + intent.getAction());
 		}
@@ -109,5 +119,36 @@ public class MyReceiver extends BroadcastReceiver {
 		Intent msgIntent = new Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
 		msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
 		context.sendBroadcast(msgIntent);
+	}
+
+	private void sendRegIdToServer() {
+		Context context = MyApplication.getAppContext();
+		if (context == null) {
+			Log.e(TAG, "===========================================");
+		} else {
+			Log.d(TAG, "===========================================");
+		}
+		final String email = UserInfoKeeper.readUserInfo(context, UserInfoKeeper.KEY_USER_EMAIL, "");
+		final String pwd = UserInfoKeeper.readUserInfo(context, UserInfoKeeper.KEY_USER_PWD, "");
+		HttpRequest request = new HttpRequest();
+
+		request.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				Log.d(TAG, "Send Register ID to Server Result: " + result);
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+			}
+		});
+
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put(ServerKeys.KEY_EMAIL, email);
+		data.put(ServerKeys.KEY_PASSWORD, pwd);
+		data.put(ServerKeys.KEY_REG_ID, JPushInterface.getRegistrationID(context));
+
+		request.post(ServerKeys.FULL_URL_LOGIN, data);
 	}
 }

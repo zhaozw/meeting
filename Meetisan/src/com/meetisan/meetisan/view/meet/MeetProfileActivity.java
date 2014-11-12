@@ -357,7 +357,11 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 				// 该用户不可参加Meeting
 				if (mMeetInfo.getJoinStatus() == 4) {
 					// 4: 收到邀请，但没有选择Meeting时间
-					if (null != mMeetInfo.getStartTime1() && null == mMeetInfo.getStartTime2()
+					if (mMeetInfo.getTimeSetType() == 1) {
+						mMeetTimeBtn.setVisibility(View.GONE);
+						mMeetBtn.setText("Agree to Meet");
+						mMeetBtn.setVisibility(View.VISIBLE);
+					} else if (null != mMeetInfo.getStartTime1() && null == mMeetInfo.getStartTime2()
 							&& null == mMeetInfo.getStartTime3()) {
 						mSelectTimeIndex = 1;
 						mMeetTimeBtn.setVisibility(View.GONE);
@@ -418,7 +422,8 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 
 		@Override
 		public void onClick(View v) {
-			if (mMeetInfo == null || mMeetInfo.isCanJoin() || mMeetInfo.getJoinStatus() != 4) {
+			if (mMeetInfo == null || mMeetInfo.isCanJoin() || mMeetInfo.getJoinStatus() != 4
+					|| mMeetInfo.getTimeSetType() != 1) {
 				return;
 			}
 
@@ -629,15 +634,9 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onFailure(String url, int errorNo, String errorMsg) {
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						mProgressDialog.dismiss();
-						ToastHelper.showToast(R.string.cancel_attend_meeting_failure, Toast.LENGTH_LONG);
-					}
-				});
+				Log.d(TAG, errorMsg);
+				mProgressDialog.dismiss();
+				ToastHelper.showToast(R.string.cancel_attend_meeting_failure, Toast.LENGTH_LONG);
 			}
 		});
 		// Map<String, String> data = new HashMap<String, String>();
