@@ -97,7 +97,7 @@ public class ServerKeys {
 	/** http://{域名}/api/tMeetingMember/Delete/ */
 	public static final String FULL_URL_CANCEL_ATTEND_MEET = SERVER_ADDRESS + API_TMEET_MEMBER + "Delete";
 	/**
-	 * http://meetisanapp.azurewebsites.net/api/tmeeting/cancel/
+	 * http://meetisanapp.azurewebsites.net/api/tmeeting/cancel/{meetingID}
 	 * 
 	 * POST {meetingID}
 	 */

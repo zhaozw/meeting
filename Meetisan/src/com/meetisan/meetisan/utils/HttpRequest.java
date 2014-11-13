@@ -82,6 +82,11 @@ public class HttpRequest {
 		finalHttp.post(fullUrl, params, new MyAjaxCallBack(fullUrl));
 	}
 
+	public void post(String fullUrl) {
+		Log.d(LOG_CAT, "Post Url:" + fullUrl);
+		finalHttp.post(fullUrl, new MyAjaxCallBack(fullUrl));
+	}
+
 	public void postJsonString(String fullUrl, String jsonString) {
 		Log.d(LOG_CAT, "Post Url:" + fullUrl + ", json string:" + jsonString);
 		try {

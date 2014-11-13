@@ -166,6 +166,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent();
 			Bundle bundle = new Bundle();
 			bundle.putLong("MeetingID", mMeetingID);
+			bundle.putLong("CreateUserID", mMeetInfo.getCreateUserId());
 			intent.setClass(MeetProfileActivity.this, MeetMemberActivity.class);
 			intent.putExtras(bundle);
 			startActivity(intent);
@@ -641,7 +642,7 @@ public class MeetProfileActivity extends Activity implements OnClickListener {
 		});
 		// Map<String, String> data = new HashMap<String, String>();
 		// data.put(ServerKeys.KEY_MEETING_ID, String.valueOf(mMeetingID));
-		request.post(ServerKeys.FULL_URL_CANCEL_MEET + "/" + mMeetingID, null);
+		request.post(ServerKeys.FULL_URL_CANCEL_MEET + "/" + mMeetingID);
 
 		mProgressDialog.show();
 	}

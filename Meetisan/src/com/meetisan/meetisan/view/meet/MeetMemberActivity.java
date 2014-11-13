@@ -47,6 +47,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 	private PeopleAdapter mPeopleAdapter;
 
 	private long mMeetingID = -1;
+	private long mCreateUserID = -1;
 	private long mTotalPeople = 0;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 		bundle = this.getIntent().getExtras();
 		if (bundle != null) {
 			mMeetingID = bundle.getLong("MeetingID");
+			mCreateUserID = bundle.getLong("CreateUserID");
 		}
 
 		if (mMeetingID < 0) {
@@ -72,7 +74,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initView() {
-		
+
 		((ImageButton) findViewById(R.id.btn_title_icon_left)).setOnClickListener(this);
 
 		/** -----------Init People ListView-------------- */
@@ -111,7 +113,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 		});
 		mPeopleListView = mPullPeopleView.getRefreshableView();
 		registerForContextMenu(mPeopleListView);
-		mPeopleAdapter = new PeopleAdapter(this, mPeopleData, true);
+		mPeopleAdapter = new PeopleAdapter(this, mPeopleData, true, mCreateUserID);
 		mPeopleListView.setAdapter(mPeopleAdapter);
 		mPeopleAdapter.notifyDataSetChanged();
 		mPullPeopleView.setVisibility(View.VISIBLE);
@@ -128,7 +130,7 @@ public class MeetMemberActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		LinearLayout mInvitationLayout = (LinearLayout)findViewById(R.id.layout_bottom);
+		LinearLayout mInvitationLayout = (LinearLayout) findViewById(R.id.layout_bottom);
 		mInvitationLayout.setVisibility(View.VISIBLE);
 	}
 

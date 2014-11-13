@@ -21,6 +21,7 @@ public class PeopleAdapter extends BaseAdapter {
 	private List<PeopleInfo> peopleData;
 	private HttpBitmap httpBitmap;
 	private boolean showStatus = false;
+	private long createUserID = -1;
 
 	public PeopleAdapter(Context mContext, List<PeopleInfo> peopleData) {
 		inflater = LayoutInflater.from(mContext);
@@ -29,10 +30,11 @@ public class PeopleAdapter extends BaseAdapter {
 		httpBitmap = new HttpBitmap(mContext);
 	}
 
-	public PeopleAdapter(Context mContext, List<PeopleInfo> peopleData, boolean showStatus) {
+	public PeopleAdapter(Context mContext, List<PeopleInfo> peopleData, boolean showStatus, long createUserID) {
 		inflater = LayoutInflater.from(mContext);
 		this.peopleData = peopleData;
 		this.showStatus = showStatus;
+		this.createUserID = createUserID;
 		httpBitmap = new HttpBitmap(mContext);
 	}
 
@@ -63,7 +65,7 @@ public class PeopleAdapter extends BaseAdapter {
 			holder.mCircleImage = (CircleImageView) convertView.findViewById(R.id.iv_portrait);
 			holder.mInvitationImage = (ImageView) convertView.findViewById(R.id.iv_invitation);
 			holder.mNameTxt = (TextView) convertView.findViewById(R.id.txt_name);
-			holder.mCollegeTxt = (TextView) convertView.findViewById(R.id.txt_college);
+			holder.mHostTxt = (TextView) convertView.findViewById(R.id.txt_college);
 			holder.mDistanceTxt = (TextView) convertView.findViewById(R.id.txt_distance);
 			holder.mTagOneTxt = (TextView) convertView.findViewById(R.id.txt_tag_one);
 			holder.mTagTwoTxt = (TextView) convertView.findViewById(R.id.txt_tag_two);
@@ -88,8 +90,15 @@ public class PeopleAdapter extends BaseAdapter {
 			} else {
 				holder.mInvitationImage.setImageResource(R.drawable.icon_refuse);
 			}
+
+			if (mPeopleInfo.getId() == createUserID) {
+				holder.mHostTxt.setText("(Host)");
+			} else {
+				holder.mHostTxt.setText("");
+			}
 		} else {
 			holder.mInvitationImage.setVisibility(View.GONE);
+			holder.mHostTxt.setText("");
 		}
 
 		if (mPeopleInfo.getAvatarUri() != null) {
@@ -97,7 +106,6 @@ public class PeopleAdapter extends BaseAdapter {
 		}
 		holder.mNameTxt.setText(Util.formatOutput(mPeopleInfo.getName()));
 		// holder.mCollegeTxt.setText(Util.formatOutput(mPeopleInfo.getUniversity()));
-		holder.mCollegeTxt.setText("");
 		int distance = (int) mPeopleInfo.getDistance();
 		if (distance >= 1000) {
 			holder.mDistanceTxt.setText((int) distance / 1000 + "km");
@@ -128,7 +136,7 @@ public class PeopleAdapter extends BaseAdapter {
 		CircleImageView mCircleImage;
 		ImageView mInvitationImage;
 		TextView mNameTxt;
-		TextView mCollegeTxt;
+		TextView mHostTxt;
 		TextView mDistanceTxt;
 		TextView mTagOneTxt;
 		TextView mTagTwoTxt;
