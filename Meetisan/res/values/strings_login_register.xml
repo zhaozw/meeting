@@ -12,8 +12,8 @@
     <string name="empty_name_tips">Please enter your Name</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="empty_email_tips">Please enter your E-Mail</string>
-    <string name="empty_pwd_tips">Please enter your password</string>
+    <string name="empty_email_tips">Please input Email</string>
+    <string name="empty_pwd_tips">Please input password</string>
     <string name="error_incorrect_email_or_pwd">Incorrect username or password</string>
     
     <string name="insert_email">Input Email</string>

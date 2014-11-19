@@ -23,10 +23,12 @@ import com.meetisan.meetisan.database.UserInfoKeeper;
 import com.meetisan.meetisan.model.PeopleInfo;
 import com.meetisan.meetisan.signup.InsertEmailActivity;
 import com.meetisan.meetisan.utils.DebugUtils;
+import com.meetisan.meetisan.utils.DialogUtils;
 import com.meetisan.meetisan.utils.HttpRequest;
 import com.meetisan.meetisan.utils.HttpRequest.OnHttpRequestListener;
 import com.meetisan.meetisan.utils.ServerKeys;
 import com.meetisan.meetisan.utils.ToastHelper;
+import com.meetisan.meetisan.utils.Util;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog;
 import com.meetisan.meetisan.widget.CustomizedProgressDialog.DialogStyle;
 
@@ -57,7 +59,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			@Override
 			public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
 				if (TextUtils.isEmpty(mEmailTxt.getText())) {
-					ToastHelper.showToast(R.string.empty_email_tips);
+					DialogUtils.showDialog(LoginActivity.this, R.string.tip, R.string.empty_email_tips, R.string.ok, -1, null);
 					return true;
 				}
 
@@ -69,7 +71,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			@Override
 			public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
 				attemptLogin();
-				return true;
+				return false;
 			}
 		});
 		mForgotPwdTxt = (TextView) findViewById(R.id.txt_forget_pwd);
@@ -118,7 +120,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		}
 
 		if (TextUtils.isEmpty(email)) {
-			ToastHelper.showToast(R.string.empty_email_tips);
+			DialogUtils.showDialog(this, R.string.tip, R.string.empty_email_tips, R.string.ok, -1, null);
 			return;
 		}
 
@@ -128,7 +130,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		// }
 
 		if (TextUtils.isEmpty(pwd)) {
-			ToastHelper.showToast(R.string.empty_pwd_tips);
+			DialogUtils.showDialog(this, R.string.tip, R.string.empty_pwd_tips, R.string.ok, -1, null);
 			return;
 		}
 
